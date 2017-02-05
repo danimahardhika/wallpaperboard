@@ -30,6 +30,9 @@ dependencies {
 }
 ```
 
+# How to Use
+Take a look inside <a href="https://github.com/danimahardhika/wallpaperboard/wiki" target="_blank">Wiki Site</a>.
+
 # Previews
 <img src="https://raw.githubusercontent.com/danimahardhika/wallpaperboard/master/arts/SS01.jpg" width="215">
 <img src="https://raw.githubusercontent.com/danimahardhika/wallpaperboard/master/arts/SS02.jpg" width="215">
@@ -39,6 +42,24 @@ dependencies {
 <img src="https://raw.githubusercontent.com/danimahardhika/wallpaperboard/master/arts/SS06.jpg" width="215">
 <img src="https://raw.githubusercontent.com/danimahardhika/wallpaperboard/master/arts/SS07.jpg" width="215">
 <img src="https://raw.githubusercontent.com/danimahardhika/wallpaperboard/master/arts/SS08.jpg" width="215">
+
+# Features
+* License Checker
+* Cloud Based Wallpaper
+ * Category
+ * Mark wallpaper as favorite
+ * Preview wallpaper
+ * Apply wallpaper: enable or disable wallpaper scroll
+ * Download wallpaper
+* Settings
+ * Clear Cache
+ * Swith to Dark Theme
+* About
+* Donation
+* Muzei Live Wallpaper: smart art source loader with advanded settings
+
+# Support Development
+Support development by making donation through demo app at Google Play.
 
 # License
 ```
