@@ -361,6 +361,8 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
                 Preferences.getPreferences(this).isDarkTheme() ?
                         R.color.navigation_view_item_highlight_dark :
                         R.color.navigation_view_item_highlight);
+        mNavigationView.getMenu().getItem(mNavigationView.getMenu().size() - 2).setVisible(
+                getResources().getBoolean(R.bool.enable_donation));
         mNavigationView.setItemTextColor(colorStateList);
         mNavigationView.setItemIconTintList(colorStateList);
         mNavigationView.setNavigationItemSelectedListener(item -> {
