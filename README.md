@@ -1,5 +1,6 @@
 # Wallpaper Board <img src="https://raw.githubusercontent.com/danimahardhika/wallpaperboard/master/arts/icon.png" width="35">
-Android Wallpaper Dashboard
+[![](https://jitpack.io/v/danimahardhika/wallpaperboard.svg)](https://jitpack.io/#danimahardhika/wallpaperboard) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+<br>Android Wallpaper Dashboard
 <p><a href='https://play.google.com/store/apps/details?id=com.dm.wallpaper.board.demo&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width="200"/></a></p>
 
 # Gradle Dependency
