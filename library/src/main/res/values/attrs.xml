@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="main_background" format="color"/>
+    <attr name="card_background" format="color"/>
+    <attr name="ripple_color" format="color"/>
+    <attr name="ripple_accent" format="color"/>
+    <attr name="divider_list" format="color"/>
+    <attr name="fast_scroll" format="color"/>
+
+    <attr name="toolbar_color" format="color"/>
+    <attr name="toolbar_accent" format="color"/>
+    <attr name="toolbar_icon" format="color"/>
+    <attr name="toolbar_hint" format="color"/>
+
+    <attr name="search_toolbar_color" format="color"/>
+    <attr name="search_toolbar_icon" format="color"/>
+    <attr name="search_toolbar_hint" format="color"/>
+
+</resources>

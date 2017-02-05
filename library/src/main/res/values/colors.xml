@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorPrimary">#828282</color>
+    <color name="colorPrimaryDark">#E0E0E0</color>
+    <color name="colorAccent">#F44336</color>
+
+    <color name="darkColorPrimary">#FFFFFF</color>
+    <color name="darkColorPrimaryDark">#121212</color>
+    <color name="darkColorAccent">#F44336</color>
+
+    <!-- Splash Screen -->
+    <color name="splashColor">#F2F2F2</color>
+
+    <!-- Toolbar -->
+    <color name="toolbar">#F5F5F5</color>
+    <color name="toolbarDark">#181818</color>
+    <color name="toolbarIcon">#424242</color>
+    <color name="toolbarIconDark">#BBFFFFFF</color>
+    <color name="toolbarHintText">#44FFFFFF</color>
+    <color name="toolbarHintTextDark">#44FFFFFF</color>
+
+    <!-- Toolbar Search -->
+    <color name="searchToolbar">#F5F5F5</color>
+    <color name="searchToolbarDark">#181818</color>
+    <color name="searchToolbarIcon">#424242</color>
+    <color name="searchToolbarIconDark">#DDFFFFFF</color>
+    <color name="searchToolbarHintText">#44000000</color>
+    <color name="searchToolbarHintTextDark">#44FFFFFF</color>
+
+    <!-- Popup Bubble -->
+    <color name="popupBubble">#F44336</color>
+    <color name="popupBubbleText">#FFFFFF</color>
+
+    <!-- Navigation View -->
+    <color name="navigationViewTitle">#FFFFFF</color>
+    <color name="navigationViewTitleBack">#55000000</color>
+    <color name="navigationViewText">#484848</color>
+    <color name="navigationViewTextDark">#DDFFFFFF</color>
+    <color name="navigationViewTextSelected">#F44336</color>
+    <color name="navigationViewTextSelectedDark">#F44336</color>
+
+    <!-- Card -->
+    <color name="cardBackground">#FFFFFF</color>
+    <color name="cardBackgroundDark">#181818</color>
+    <color name="rippleColor">#55000000</color>
+    <color name="rippleColorDark">#55FFFFFF</color>
+    <color name="rippleAccent">#44F44336</color>
+    <color name="rippleAccentDark">#44F44336</color>
+
+    <!-- Attributes -->
+    <color name="mainBackground">#FAFAFA</color>
+    <color name="mainBackgroundDark">#000000</color>
+    <color name="primaryText">#484848</color>
+    <color name="primaryTextDark">#EEFFFFFF</color>
+    <color name="secondaryText">#777777</color>
+    <color name="secondaryTextDark">#99FFFFFF</color>
+    <color name="dividerList">#EEEEEE</color>
+    <color name="dividerListDark">#22FFFFFF</color>
+
+    <color name="fastScrollTrack">#666666</color>
+    <color name="fastScrollTrackDark">#BBBBBB</color>
+
+    <!-- Favorite Wallpaper -->
+    <color name="favoriteColor">#F44336</color>
+
+    <!-- Wallpaper Preview -->
+    <color name="wallpaperStatusBar">#88000000</color>
+    <color name="wallpaperToolbar">#66000000</color>
+
+</resources>

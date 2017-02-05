@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingPrefix"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:minHeight="?attr/actionBarSize"
+        android:background="?attr/toolbar_color"
+        app:theme="@style/ToolbarStyle">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:textColor="?attr/toolbar_icon"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:text="@string/muzei_settings"
+            android:textSize="@dimen/text_toolbar_title"
+            fontPath="fonts/Font-Medium.ttf"/>
+
+    </android.support.v7.widget.Toolbar>
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        android:layout_above="@+id/muzei_save"
+        android:clipToPadding="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/muzei_refresh_duration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/content_margin"
+                android:orientation="vertical"
+                android:gravity="center_vertical"
+                android:background="?attr/selectableItemBackground"
+                app:theme="@style/ButtonStyle">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/muzei_refresh_duration"
+                    android:textSize="@dimen/text_content_title"
+                    android:textColor="?android:attr/textColorPrimary"
+                    fontPath="fonts/Font-Medium.ttf"/>
+
+                <TextView
+                    android:id="@+id/muzei_rotate_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_content"
+                    android:layout_marginTop="4dp"
+                    android:textColor="?attr/colorAccent"
+                    fontPath="fonts/Font-Regular.ttf"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/content_margin"
+                android:layout_marginStart="@dimen/content_margin"
+                android:layout_marginEnd="@dimen/content_margin"
+                android:layout_marginRight="@dimen/content_margin"
+                android:background="?attr/divider_list"/>
+
+            <LinearLayout
+                android:id="@+id/muzei_wifi_only"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="?attr/selectableItemBackground"
+                app:theme="@style/ButtonStyle">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/content_margin"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/muzei_wifi_only"
+                        android:textSize="@dimen/text_content_title"
+                        android:textColor="?android:attr/textColorPrimary"
+                        fontPath="fonts/Font-Medium.ttf"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/muzei_wifi_only_desc"
+                        android:textSize="@dimen/text_content"
+                        android:layout_marginTop="4dp"
+                        android:textColor="?android:attr/textColorSecondary"
+                        fontPath="fonts/Font-Regular.ttf"/>
+
+                </LinearLayout>
+
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/muzei_wifi_only_check"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:background="@android:color/transparent"
+                    android:layout_margin="@dimen/content_margin"
+                    app:theme="@style/CheckBoxStyle"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/content_margin"
+                android:layout_marginStart="@dimen/content_margin"
+                android:layout_marginEnd="@dimen/content_margin"
+                android:layout_marginRight="@dimen/content_margin"
+                android:background="?attr/divider_list"/>
+
+            <LinearLayout
+                android:id="@+id/muzei_select_categories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/content_margin"
+                android:orientation="vertical"
+                android:gravity="center_vertical"
+                android:background="?attr/selectableItemBackground"
+                app:theme="@style/ButtonStyle">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/muzei_category"
+                    android:textSize="@dimen/text_content_title"
+                    android:textColor="?android:attr/textColorPrimary"
+                    fontPath="fonts/Font-Medium.ttf"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/muzei_category_desc"
+                    android:textSize="@dimen/text_content"
+                    android:layout_marginTop="4dp"
+                    android:textColor="?android:attr/textColorSecondary"
+                    fontPath="fonts/Font-Regular.ttf"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_shadow"
+        android:background="@drawable/reverse_shadow"
+        android:layout_above="@+id/muzei_save"/>
+
+    <LinearLayout
+        android:id="@+id/muzei_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/card_padding"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:background="?attr/colorAccent"
+        android:foreground="?attr/selectableItemBackground"
+        app:theme="@style/ButtonStyle">
+
+        <ImageView
+            android:id="@+id/muzei_save_icon"
+            android:layout_width="22dp"
+            android:layout_height="22dp" />
+
+        <TextView
+            android:id="@+id/muzei_save_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:layout_marginStart="6dp"
+            android:text="@string/muzei_settings_save"
+            android:textSize="@dimen/text_content_title"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textAllCaps="true"
+            fontPath="fonts/Font-Bold.ttf"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_shadow"
+        android:layout_below="@+id/toolbar"
+        android:background="@drawable/toolbar_shadow" />
+
+</RelativeLayout>
