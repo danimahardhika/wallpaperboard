@@ -26,7 +26,7 @@ Add the dependency
 ```Gradle
 dependencies {
     //...
-    compile 'com.github.danimahardhika:wallpaperboard:1.0.0'
+    compile 'com.github.danimahardhika:wallpaperboard:1.0.1'
 }
 ```
 
@@ -49,7 +49,7 @@ Take a look inside <a href="https://github.com/danimahardhika/wallpaperboard/wik
  * Category
  * Mark wallpaper as favorite
  * Preview wallpaper
- * Apply wallpaper: enable or disable wallpaper scroll
+ * Apply wallpaper: inbuilt wallpaper crop
  * Download wallpaper
 * Settings
  * Clear Cache
