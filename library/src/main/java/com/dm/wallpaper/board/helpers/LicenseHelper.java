@@ -152,5 +152,4 @@ public class LicenseHelper implements LicenseCheckerCallback {
             ((AppCompatActivity) mContext).finish();
         }
     }
-
 }

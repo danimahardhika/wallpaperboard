@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.util.SparseArrayCompat;
 
 import com.dm.wallpaper.board.helpers.TimeHelper;
 import com.dm.wallpaper.board.items.Category;
@@ -80,8 +81,33 @@ public class Database extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        resetDatabase(db);
+    }
 
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        resetDatabase(db);
+    }
+
+    private void resetDatabase(SQLiteDatabase db) {
+        Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE type=\'table\'", null);
+        SparseArrayCompat<String> tables = new SparseArrayCompat<>();
+        if (cursor.moveToFirst()) {
+            do {
+                tables.append(tables.size(), cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        for (int i = 0; i < tables.size(); i++) {
+            try {
+                String dropQuery = "DROP TABLE IF EXISTS " + tables.get(i);
+                if (!tables.get(i).equalsIgnoreCase("SQLITE_SEQUENCE"))
+                    db.execSQL(dropQuery);
+            } catch (Exception ignored) {}
+        }
+        onCreate(db);
     }
 
     public void addCategories(List<WallpaperJson> categories) {

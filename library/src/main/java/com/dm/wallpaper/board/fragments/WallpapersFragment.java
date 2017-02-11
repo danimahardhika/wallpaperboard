@@ -329,7 +329,6 @@ public class WallpapersFragment extends Fragment implements WallpaperListener {
                     mAdapter = new WallpapersAdapter(getActivity(), wallpapers, false, false);
                     mRecyclerView.setAdapter(mAdapter);
 
-
                     WallpaperBoardListener listener = (WallpaperBoardListener) getActivity();
                     listener.OnWallpapersChecked(new Intent().putExtra(Extras.EXTRA_SIZE,
                             Preferences.getPreferences(getActivity()).getAvailableWallpapersCount()));

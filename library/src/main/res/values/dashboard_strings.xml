@@ -58,9 +58,6 @@
     <string name="muzei_wifi_only">Refresh from Wifi Only</string>
     <string name="muzei_wifi_only_desc">Load wallpaper only if device connected to wifi</string>
 
-    <string name="muzei_favorite_only">Load Favorite Wallpaper Only</string>
-    <string name="muzei_favorite_only_desc">Load wallpaper which only marked as favorite</string>
-
     <string name="muzei_category">Select Categories</string>
     <string name="muzei_category_desc">Load wallpaper only from selected categories</string>
 
@@ -101,11 +98,11 @@
     <string name="license_check_retry">Unable to check license, please try again in a few moments</string>
 
     <!-- Search -->
-    <string name="search_result_empty">No result found for</string>
+    <string name="search_result_empty">No result found for %s</string>
 
     <!-- Crash Report -->
     <string name="crash_report">Crash Report</string>
-    <string name="crash_report_message">Unfortunately</string>
+    <string name="crash_report_message">Unfortunately %s has crashed. Choose send report below to help developer fix the issue.</string>
     <string name="crash_report_message_1">has crashed. Choose send report below to help developer fix the issue.</string>
     <string name="crash_report_send">Send Report</string>
     <string name="email_client">Choose Email Client</string>

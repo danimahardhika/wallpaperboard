@@ -146,14 +146,12 @@ public class InAppBillingFragment extends DialogFragment {
 
             InAppBilling[] inAppBillings;
             boolean isBillingNotReady = false;
-            String appName;
 
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
                 mProgress.setVisibility(View.VISIBLE);
                 inAppBillings = new InAppBilling[mProductsId.length];
-                appName = " ("+ getActivity().getResources().getString(R.string.app_name) +")";
             }
 
             @Override
@@ -171,7 +169,7 @@ public class InAppBillingFragment extends DialogFragment {
                                     .getPurchaseListingDetails(mProductsId[i]);
                             if (product != null) {
                                 InAppBilling inAppBilling;
-                                String title = product.title.replace(appName, "");
+                                String title = product.title.substring(0, product.title.lastIndexOf("("));
                                 inAppBilling = new InAppBilling(product.priceText, mProductsId[i], title);
                                 inAppBillings[i] = inAppBilling;
                             } else {

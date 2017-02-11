@@ -49,9 +49,8 @@ public class WallpaperBoardCrashReport extends AppCompatActivity {
             String stackTrace = bundle.getString(EXTRA_STACKTRACE);
             String deviceInfo = CrashReportHelper.getDeviceInfoForCrashReport(this);
 
-            String message = getResources().getString(R.string.crash_report_message) +" "+
-                    getResources().getString(R.string.app_name) +" "+
-                    getResources().getString(R.string.crash_report_message_1);
+            String message = String.format(getResources().getString(R.string.crash_report_message),
+                    getResources().getString(R.string.app_name));
             new MaterialDialog.Builder(this)
                     .title(R.string.crash_report)
                     .content(message)
@@ -64,7 +63,7 @@ public class WallpaperBoardCrashReport extends AppCompatActivity {
                         intent.setType("message/rfc822");
                         intent.putExtra(Intent.EXTRA_EMAIL,
                                 new String[]{getResources().getString(R.string.dev_email)});
-                        intent.putExtra(Intent.EXTRA_SUBJECT, "CandyBar: Crash Report");
+                        intent.putExtra(Intent.EXTRA_SUBJECT, "WallpaperBoard: Crash Report");
 
                         intent = prepareUri(deviceInfo, stackTrace, intent);
 

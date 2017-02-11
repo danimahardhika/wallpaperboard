@@ -294,7 +294,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Vi
         WallpaperHelper.downloadWallpaper(mContext,
                 ColorHelper.getAttributeColor(mContext, R.attr.colorAccent),
                 mWallpapers.get(mLastSelectedPosition).getUrl(),
-                mWallpapers.get(mLastSelectedPosition).getName(), -1);
+                mWallpapers.get(mLastSelectedPosition).getName());
     }
 
     public void search(String query) {
@@ -313,5 +313,4 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Vi
         }
         notifyDataSetChanged();
     }
-
 }

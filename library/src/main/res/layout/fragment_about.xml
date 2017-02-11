@@ -40,8 +40,8 @@
 
                     <com.mikhaellopez.circularimageview.CircularImageView
                         android:id="@+id/profile"
-                        android:layout_width="96dp"
-                        android:layout_height="96dp"
+                        android:layout_width="@dimen/about_profile"
+                        android:layout_height="@dimen/about_profile"
                         android:layout_alignBottom="@+id/image"
                         android:layout_marginBottom="-44dp"
                         android:layout_centerHorizontal="true"
@@ -95,12 +95,12 @@
                             android:paddingRight="@dimen/card_padding"
                             android:paddingEnd="@dimen/card_padding"
                             android:paddingTop="10dp"
-                            android:paddingBottom="@dimen/card_padding">
+                            android:paddingBottom="@dimen/card_padding"
+                            android:gravity="end">
 
                             <TextView
                                 android:id="@+id/email"
-                                android:layout_width="0dp"
-                                android:layout_weight="1"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textAllCaps="true"
                                 android:padding="@dimen/button_padding"
@@ -116,8 +116,7 @@
 
                             <TextView
                                 android:id="@+id/link1"
-                                android:layout_width="0dp"
-                                android:layout_weight="1"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textAllCaps="true"
                                 android:padding="@dimen/button_padding"
@@ -133,8 +132,7 @@
 
                             <TextView
                                 android:id="@+id/link2"
-                                android:layout_width="0dp"
-                                android:layout_weight="1"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textAllCaps="true"
                                 android:padding="@dimen/button_padding"
@@ -268,12 +266,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:paddingTop="10dp">
+                        android:paddingTop="10dp"
+                        android:gravity="end">
 
                         <TextView
                             android:id="@+id/dev_google_plus"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textAllCaps="true"
                             android:padding="@dimen/button_padding"
@@ -289,8 +287,7 @@
 
                         <TextView
                             android:id="@+id/dev_github"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textAllCaps="true"
                             android:padding="@dimen/button_padding"

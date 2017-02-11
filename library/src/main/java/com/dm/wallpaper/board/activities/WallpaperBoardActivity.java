@@ -396,14 +396,14 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
 
         if (titleText.length() == 0) {
             container.setVisibility(View.GONE);
-            return;
+        } else {
+            title.setText(titleText);
+            try {
+                String versionText = "v" + getPackageManager()
+                        .getPackageInfo(getPackageName(), 0).versionName;
+                version.setText(versionText);
+            } catch (Exception ignored) {}
         }
-        title.setText(titleText);
-        try {
-            String versionText = "v" + getPackageManager()
-                    .getPackageInfo(getPackageName(), 0).versionName;
-            version.setText(versionText);
-        } catch (Exception ignored) {}
 
         if (ColorHelper.isValidColor(imageUrl)) {
             image.setBackgroundColor(Color.parseColor(imageUrl));
@@ -509,5 +509,4 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
             OnSearchExpanded(false);
         }
     }
-
 }

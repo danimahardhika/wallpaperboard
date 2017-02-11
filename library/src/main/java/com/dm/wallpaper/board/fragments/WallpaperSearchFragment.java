@@ -94,7 +94,8 @@ public class WallpaperSearchFragment extends Fragment implements WallpaperListen
         mSwipe.setEnabled(false);
 
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),
+                getActivity().getResources().getInteger(R.integer.column_num)));
         mRecyclerView.setHasFixedSize(false);
         mFastScroll.attachRecyclerView(mRecyclerView);
 
@@ -151,6 +152,7 @@ public class WallpaperSearchFragment extends Fragment implements WallpaperListen
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+        ViewHelper.resetSpanCount(getActivity(), mRecyclerView);
         resetNavigationBarMargin();
     }
 
@@ -187,8 +189,8 @@ public class WallpaperSearchFragment extends Fragment implements WallpaperListen
         try {
             mAdapter.search(query);
             if (mAdapter.getItemCount()==0) {
-                String text = getActivity().getResources().getString(R.string.search_result_empty)
-                        +" \"" +query+ "\"";
+                String text = String.format(getActivity().getResources().getString(
+                        R.string.search_result_empty), query);
                 mSearchResult.setText(text);
                 mSearchResult.setVisibility(View.VISIBLE);
             }

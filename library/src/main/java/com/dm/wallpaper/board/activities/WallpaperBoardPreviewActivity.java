@@ -133,7 +133,6 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
         toolbar.setNavigationIcon(R.drawable.ic_toolbar_back);
         setSupportActionBar(toolbar);
 
-        mAttacher = new PhotoViewAttacher(mWallpaper);
         mFab.setOnClickListener(this);
 
         mExitTransition = ActivityTransition.with(getIntent())
@@ -240,7 +239,7 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
             return true;
         } else if (id == R.id.menu_save) {
             if (PermissionHelper.isPermissionStorageGranted(this)) {
-                WallpaperHelper.downloadWallpaper(this, mColor, mUrl, mName, R.id.coordinator_layout);
+                WallpaperHelper.downloadWallpaper(this, mColor, mUrl, mName);
                 return true;
             }
             PermissionHelper.requestStoragePermission(this);
@@ -267,7 +266,7 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
         if (requestCode == PermissionHelper.PERMISSION_STORAGE) {
             if (grantResults.length > 0 &&
                     grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                WallpaperHelper.downloadWallpaper(this, mColor, mUrl, mName, R.id.coordinator_layout);
+                WallpaperHelper.downloadWallpaper(this, mColor, mUrl, mName);
             } else {
                 PermissionHelper.showPermissionStorageDenied(this);
             }
@@ -329,6 +328,7 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
     }
 
     private void OnWallpaperLoaded(@ColorInt int textColor) {
+        mAttacher = new PhotoViewAttacher(mWallpaper);
         mAttacher.setScaleType(ImageView.ScaleType.CENTER_CROP);
         mProgress.setVisibility(View.GONE);
         mRunnable = null;

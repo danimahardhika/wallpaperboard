@@ -132,7 +132,8 @@ public class WallpaperOptionsFragment extends DialogFragment implements View.OnC
             WallpaperHelper.applyWallpaper(getActivity(), null, color, mUrl, mName);
         } else if (id == R.id.save) {
             if (PermissionHelper.isPermissionStorageGranted(getActivity())) {
-                WallpaperHelper.downloadWallpaper(getActivity(), color, mUrl, mName, -1);
+                WallpaperHelper.downloadWallpaper(getActivity(), color, mUrl, mName);
+                dismiss();
                 return;
             }
             PermissionHelper.requestStoragePermission(getActivity());

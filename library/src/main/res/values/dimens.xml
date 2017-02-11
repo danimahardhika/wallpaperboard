@@ -38,4 +38,12 @@
     <dimen name="text_content_subtitle">15sp</dimen>
     <dimen name="text_content">14sp</dimen>
 
+    <!-- Splash Screen -->
+    <dimen name="splash_screen_logo">96dp</dimen>
+    <dimen name="splash_screen_text">14sp</dimen>
+
+    <!-- About header image height -->
+    <dimen name="about_profile">96dp</dimen>
+    <dimen name="about_image_height">120dp</dimen>
+
 </resources>

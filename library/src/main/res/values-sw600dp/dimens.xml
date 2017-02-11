@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Splash Screen -->
+    <dimen name="splash_screen_logo">114dp</dimen>
+    <dimen name="splash_screen_text">16sp</dimen>
+
+    <!-- About header image height -->
+    <dimen name="about_profile">110dp</dimen>
+    <dimen name="about_image_height">180dp</dimen>
+
+</resources>

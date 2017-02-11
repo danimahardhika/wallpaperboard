@@ -40,9 +40,9 @@ public class ImageConfig {
         L.writeLogs(false);
         L.writeDebugLogs(false);
         return new ImageLoaderConfiguration.Builder(context)
-                .diskCacheSize(100 * 1024 * 1024)
+                .diskCacheSize(200 * 1024 * 1024)
                 .threadPriority(Thread.NORM_PRIORITY - 2)
-                .threadPoolSize(3)
+                .threadPoolSize(4)
                 .tasksProcessingOrder(QueueProcessingType.FIFO)
                 .diskCache(new UnlimitedDiskCache(new File(
                         context.getCacheDir().toString() + "/uil-images")))
