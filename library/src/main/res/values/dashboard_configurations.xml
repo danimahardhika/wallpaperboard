@@ -95,9 +95,6 @@
     * ex: <string name="about_image">#000000</string> -->
     <string name="about_image">https://c.slashgear.com/wp-content/uploads/2015/08/AndroidMarshmallow_10.jpg</string>
 
-    <!-- About header image height -->
-    <dimen name="about_image_height">120dp</dimen>
-
     <!-- About profile image
     * If you want to use image from url, just put the url here
     * If you want to use image stored in project (drawable folder)
