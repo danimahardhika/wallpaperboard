@@ -103,7 +103,6 @@
     <!-- Crash Report -->
     <string name="crash_report">Crash Report</string>
     <string name="crash_report_message">Unfortunately %s has crashed. Choose send report below to help developer fix the issue.</string>
-    <string name="crash_report_message_1">has crashed. Choose send report below to help developer fix the issue.</string>
     <string name="crash_report_send">Send Report</string>
     <string name="email_client">Choose Email Client</string>
 

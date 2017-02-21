@@ -59,6 +59,8 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
 
     @BindView(R2.id.scrollview)
     NestedScrollView mScrollView;
+    @BindView(R2.id.card_contributors)
+    CardView mCardContributors;
     @BindView(R2.id.contributors)
     LinearLayout mContributors;
     @BindView(R2.id.contributors_icon)
@@ -112,8 +114,7 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
             mContributorsIcon.setImageDrawable(DrawableHelper.getTintedDrawable(
                     getActivity(), R.drawable.ic_toolbar_people, color));
             mContributors.setOnClickListener(this);
-            CardView cardView = ButterKnife.findById(getActivity(), R.id.card_contributors);
-            cardView.setVisibility(View.VISIBLE);
+            mCardContributors.setVisibility(View.VISIBLE);
         }
 
         mLicenses.setOnClickListener(this);

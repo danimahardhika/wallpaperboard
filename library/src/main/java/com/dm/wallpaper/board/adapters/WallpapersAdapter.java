@@ -266,6 +266,8 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Vi
     }
 
     private void setFavorite(@NonNull ImageView imageView, @ColorInt int color, int position) {
+        if (position < 0 || position > mWallpapers.size()) return;
+
         if (mIsFavoriteMode) {
             if (!mContext.getResources().getBoolean(R.bool.card_wallpaper_auto_generated_color))
                 color = ContextCompat.getColor(mContext, R.color.favoriteColor);
