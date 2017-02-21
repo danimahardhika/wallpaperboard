@@ -158,6 +158,7 @@
                 android:id="@+id/card_contributors"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"                                
                 app:cardBackgroundColor="?attr/card_background"
                 app:cardElevation="@dimen/card_elevation"
                 app:cardUseCompatPadding="true"
