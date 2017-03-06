@@ -126,8 +126,12 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Vi
         setFavorite(holder.favorite, ColorHelper.getAttributeColor(
                 mContext, android.R.attr.textColorPrimary), position);
 
-        ImageLoader.getInstance().displayImage(mWallpapers.get(position).getThumbUrl(), new ImageViewAware(holder.image),
-                mOptions.build(), ImageConfig.getTargetSize(mContext), new SimpleImageLoadingListener() {
+        String url = WallpaperHelper.getThumbnailUrl(mContext,
+                mWallpapers.get(position).getUrl(),
+                mWallpapers.get(position).getThumbUrl());
+
+        ImageLoader.getInstance().displayImage(url, new ImageViewAware(holder.image),
+                mOptions.build(), ImageConfig.getThumbnailSize(mContext), new SimpleImageLoadingListener() {
                     @Override
                     public void onLoadingStarted(String imageUri, View view) {
                         super.onLoadingStarted(imageUri, view);

@@ -79,7 +79,7 @@ public class ImageConfig {
         return options;
     }
 
-    public static ImageSize getTargetSize(@NonNull Context context) {
+    public static ImageSize getThumbnailSize(@NonNull Context context) {
         int quality = context.getResources().getInteger(R.integer.wallpaper_grid_preview_quality);
         if (quality <= 0) quality = 1;
         return new ImageSize((50 * quality), (50 * quality));

@@ -27,13 +27,6 @@
     <!-- Muzei base color -->
     <color name="muzei_color">#F44336</color>
 
-    <!-- CONFIG: SPLASH SCREEN -->
-
-    <!-- Splash screen duration
-    * Splash screen duration in milliseconds
-    * default: 700 milliseconds = 0.7 seconds -->
-    <integer name="splash_screen_duration">700</integer>
-
     <!-- CONFIG: TOOLBAR -->
 
     <!-- Toolbar title -->

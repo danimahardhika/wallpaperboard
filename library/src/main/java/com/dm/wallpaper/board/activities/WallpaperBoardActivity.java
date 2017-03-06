@@ -109,6 +109,8 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
     private String mLicenseKey;
     private String[] mDonationProductsId;
 
+    public static boolean sRszIoAvailable;
+
     public void initMainActivity(@Nullable Bundle savedInstanceState, boolean isLicenseCheckerEnabled,
                                  @NonNull byte[] salt, @NonNull String licenseKey,
                                  @NonNull String[] donationProductsId) {

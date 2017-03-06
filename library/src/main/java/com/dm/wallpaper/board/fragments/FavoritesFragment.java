@@ -2,7 +2,6 @@ package com.dm.wallpaper.board.fragments;
 
 import android.content.res.Configuration;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -73,7 +72,8 @@ public class FavoritesFragment extends Fragment implements WallpaperListener {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         ViewCompat.setNestedScrollingEnabled(mRecyclerView, false);
-        resetNavigationBarMargin();
+        ViewHelper.resetNavigationBarBottomPadding(getActivity(), mRecyclerView,
+                getActivity().getResources().getConfiguration().orientation);
         mSwipe.setEnabled(false);
 
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -89,7 +89,7 @@ public class FavoritesFragment extends Fragment implements WallpaperListener {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         ViewHelper.resetSpanCount(getActivity(), mRecyclerView);
-        resetNavigationBarMargin();
+        ViewHelper.resetNavigationBarBottomPadding(getActivity(), mRecyclerView, newConfig.orientation);
     }
 
     @Override
@@ -104,21 +104,6 @@ public class FavoritesFragment extends Fragment implements WallpaperListener {
         if (position < 0 || position > mRecyclerView.getAdapter().getItemCount()) return;
 
         mRecyclerView.scrollToPosition(position);
-    }
-
-    private void resetNavigationBarMargin() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            int paddingTop = getActivity().getResources().getDimensionPixelOffset(R.dimen.card_margin_top);
-            int paddingLeft = getActivity().getResources().getDimensionPixelOffset(R.dimen.card_margin_left);
-            int paddingBottom = getActivity().getResources().getDimensionPixelOffset(R.dimen.card_margin_bottom);
-            if (getActivity().getResources().getConfiguration().orientation
-                    == Configuration.ORIENTATION_PORTRAIT) {
-                int navbar = ViewHelper.getNavigationBarHeight(getActivity());
-                mRecyclerView.setPadding(paddingLeft, paddingTop, 0, (paddingBottom + navbar));
-                return;
-            }
-            mRecyclerView.setPadding(paddingLeft, paddingTop, 0, paddingBottom);
-        }
     }
 
     private void getWallpapers() {

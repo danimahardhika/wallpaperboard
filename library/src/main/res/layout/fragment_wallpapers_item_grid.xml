@@ -34,14 +34,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="@dimen/card_padding">
+            android:gravity="center_vertical">
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:paddingRight="@dimen/content_padding"
-                android:paddingEnd="@dimen/content_padding"
+                android:padding="@dimen/card_padding"
                 android:orientation="vertical">
 
                 <TextView
@@ -68,10 +67,11 @@
 
             <ImageView
                 android:id="@+id/favorite"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:padding="2dp"
-                android:layout_gravity="center_vertical"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="8dp"
+                android:layout_marginRight="@dimen/content_padding"
+                android:layout_marginEnd="@dimen/content_padding"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 app:theme="@style/ButtonStyle"/>
 

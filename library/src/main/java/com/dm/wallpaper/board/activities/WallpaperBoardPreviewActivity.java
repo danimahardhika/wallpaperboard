@@ -9,6 +9,7 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,12 +31,14 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.danimahardhika.cafebar.CafeBar;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.adapters.WallpapersAdapter;
 import com.dm.wallpaper.board.fragments.dialogs.WallpaperSettingsFragment;
 import com.dm.wallpaper.board.helpers.ColorHelper;
 import com.dm.wallpaper.board.helpers.DrawableHelper;
+import com.dm.wallpaper.board.helpers.FileHelper;
 import com.dm.wallpaper.board.helpers.PermissionHelper;
 import com.dm.wallpaper.board.helpers.ViewHelper;
 import com.dm.wallpaper.board.helpers.WallpaperHelper;
@@ -49,6 +52,8 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -239,9 +244,40 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
             return true;
         } else if (id == R.id.menu_save) {
             if (PermissionHelper.isPermissionStorageGranted(this)) {
+                File target = new File(WallpaperHelper.getDefaultWallpapersDirectory(this).toString()
+                        + File.separator + mName + FileHelper.IMAGE_EXTENSION);
+
+                if (target.exists()) {
+                    CafeBar.builder(this)
+                            .to(findViewById(R.id.rootview))
+                            .autoDismiss(false)
+                            .swipeToDismiss(false)
+                            .floating(true)
+                            .maxLines(4)
+                            .content(String.format(getResources().getString(R.string.wallpaper_download_exist),
+                                    ("\"" +mName + FileHelper.IMAGE_EXTENSION+ "\"")))
+                            .icon(R.drawable.ic_toolbar_download)
+                            .positiveText(R.string.wallpaper_download_exist_replace)
+                            .positiveColor(mColor)
+                            .positiveTypeface(Typeface.createFromAsset(getAssets(), "fonts/Font-Bold.ttf"))
+                            .onPositive(cafeBar -> {
+                                WallpaperHelper.downloadWallpaper(this, mColor, mUrl, mName);
+                                cafeBar.dismiss();
+                            })
+                            .negativeText(R.string.wallpaper_download_exist_new)
+                            .negativeTypeface(Typeface.createFromAsset(getAssets(), "fonts/Font-Bold.ttf"))
+                            .onNegative(cafeBar -> {
+                                WallpaperHelper.downloadWallpaper(this, mColor, mUrl, mName +"_"+ System.currentTimeMillis());
+                                cafeBar.dismiss();
+                            })
+                            .build().show();
+                    return true;
+                }
+
                 WallpaperHelper.downloadWallpaper(this, mColor, mUrl, mName);
                 return true;
             }
+
             PermissionHelper.requestStoragePermission(this);
             return true;
         } else if (id == R.id.menu_wallpaper_settings) {

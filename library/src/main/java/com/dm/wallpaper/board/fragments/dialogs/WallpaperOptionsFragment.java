@@ -1,6 +1,8 @@
 package com.dm.wallpaper.board.fragments.dialogs;
 
 import android.app.Dialog;
+import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,12 +15,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.danimahardhika.cafebar.CafeBar;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.helpers.ColorHelper;
 import com.dm.wallpaper.board.helpers.DrawableHelper;
+import com.dm.wallpaper.board.helpers.FileHelper;
 import com.dm.wallpaper.board.helpers.PermissionHelper;
 import com.dm.wallpaper.board.helpers.WallpaperHelper;
 import com.dm.wallpaper.board.utils.Extras;
+
+import java.io.File;
 
 /*
  * Wallpaper Board
@@ -132,6 +138,48 @@ public class WallpaperOptionsFragment extends DialogFragment implements View.OnC
             WallpaperHelper.applyWallpaper(getActivity(), null, color, mUrl, mName);
         } else if (id == R.id.save) {
             if (PermissionHelper.isPermissionStorageGranted(getActivity())) {
+                File target = new File(WallpaperHelper.getDefaultWallpapersDirectory(getActivity()).toString()
+                        + File.separator + mName + FileHelper.IMAGE_EXTENSION);
+
+                if (target.exists()) {
+                    Context context = getActivity();
+                    CafeBar.builder(getActivity())
+                            .autoDismiss(false)
+                            .swipeToDismiss(false)
+                            .floating(true)
+                            .fitSystemWindow(true)
+                            .maxLines(4)
+                            .content(String.format(getResources().getString(R.string.wallpaper_download_exist),
+                                    ("\"" +mName + FileHelper.IMAGE_EXTENSION+ "\"")))
+                            .icon(R.drawable.ic_toolbar_download)
+                            .positiveText(R.string.wallpaper_download_exist_replace)
+                            .positiveColor(color)
+                            .positiveTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/Font-Bold.ttf"))
+                            .onPositive(cafeBar -> {
+                                if (context == null) {
+                                    cafeBar.dismiss();
+                                    return;
+                                }
+
+                                WallpaperHelper.downloadWallpaper(context, color, mUrl, mName);
+                                cafeBar.dismiss();
+                            })
+                            .negativeText(R.string.wallpaper_download_exist_new)
+                            .negativeTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/Font-Bold.ttf"))
+                            .onNegative(cafeBar -> {
+                                if (context == null) {
+                                    cafeBar.dismiss();
+                                    return;
+                                }
+
+                                WallpaperHelper.downloadWallpaper(context, color, mUrl, mName +"_"+ System.currentTimeMillis());
+                                cafeBar.dismiss();
+                            })
+                            .build().show();
+                    dismiss();
+                    return;
+                }
+
                 WallpaperHelper.downloadWallpaper(getActivity(), color, mUrl, mName);
                 dismiss();
                 return;
