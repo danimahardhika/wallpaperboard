@@ -72,6 +72,7 @@ public class WallpaperBoardSplashActivity extends AppCompatActivity {
         splashTitle.setTextColor(ColorHelper.setColorAlpha(titleColor, 0.6f ));
 
         TextView splashLoading = ButterKnife.findById(this, R.id.splash_loading);
+        splashLoading.setTextColor(titleColor);
         splashLoading.setText(String.format(
                 getResources().getString(R.string.splash_screen_loading),
                 getResources().getString(R.string.app_name)));
