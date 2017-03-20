@@ -11,9 +11,11 @@
 * Latest version of Android Support Library</li>
 * Java SE Development Kit 8</li>
 
-<p>Take a look on this <a href="https://raw.githubusercontent.com/danimahardhika/candybar-library/698d102f504f5a843af4f5bc67a340a09b3c5889/screenshots/requirements.jpg">screenshot</a> for requirements
-<p>The minimum API level supported by this library is API 15</p>
-Add JitPack repository to root ```build.gradle```
+Take a look on this [screenshot](https://raw.githubusercontent.com/danimahardhika/candybar-library/698d102f504f5a843af4f5bc67a340a09b3c5889/screenshots/requirements.jpg) for requirements
+
+The minimum API level supported by this library is API 15
+
+Add JitPack repository to root `build.gradle`
 ```Gradle
 allprojects {
     repositories {
@@ -34,26 +36,19 @@ dependencies {
 Take a look inside <a href="https://github.com/danimahardhika/wallpaperboard/wiki" target="_blank">Wiki Site</a>.
 
 # Previews
-<img src="https://raw.githubusercontent.com/danimahardhika/wallpaperboard/master/arts/SS01.jpg" width="215">
-<img src="https://raw.githubusercontent.com/danimahardhika/wallpaperboard/master/arts/SS02.jpg" width="215">
-<img src="https://raw.githubusercontent.com/danimahardhika/wallpaperboard/master/arts/SS03.jpg" width="215">
-<img src="https://raw.githubusercontent.com/danimahardhika/wallpaperboard/master/arts/SS04.jpg" width="215">
-<img src="https://raw.githubusercontent.com/danimahardhika/wallpaperboard/master/arts/SS05.jpg" width="215">
-<img src="https://raw.githubusercontent.com/danimahardhika/wallpaperboard/master/arts/SS06.jpg" width="215">
-<img src="https://raw.githubusercontent.com/danimahardhika/wallpaperboard/master/arts/SS07.jpg" width="215">
-<img src="https://raw.githubusercontent.com/danimahardhika/wallpaperboard/master/arts/SS08.jpg" width="215">
+<img src="https://raw.githubusercontent.com/danimahardhika/wallpaperboard/master/arts/SS01.jpg" width="215"> <img src="https://raw.githubusercontent.com/danimahardhika/wallpaperboard/master/arts/SS02.jpg" width="215"> <img src="https://raw.githubusercontent.com/danimahardhika/wallpaperboard/master/arts/SS03.jpg" width="215"> <img src="https://raw.githubusercontent.com/danimahardhika/wallpaperboard/master/arts/SS04.jpg" width="215"> <img src="https://raw.githubusercontent.com/danimahardhika/wallpaperboard/master/arts/SS05.jpg" width="215"> <img src="https://raw.githubusercontent.com/danimahardhika/wallpaperboard/master/arts/SS06.jpg" width="215"> <img src="https://raw.githubusercontent.com/danimahardhika/wallpaperboard/master/arts/SS07.jpg" width="215"> <img src="https://raw.githubusercontent.com/danimahardhika/wallpaperboard/master/arts/SS08.jpg" width="215">
 
 # Features
 * License Checker
 * Cloud Based Wallpaper
- * Category
- * Mark wallpaper as favorite
- * Preview wallpaper
- * Apply wallpaper: inbuilt wallpaper crop
- * Download wallpaper
+  * Category
+  * Mark wallpaper as favorite
+  * Preview wallpaper
+  * Apply wallpaper: inbuilt wallpaper crop
+  * Download wallpaper
 * Settings
- * Clear Cache
- * Swith to Dark Theme
+  * Clear Cache
+  * Swith to Dark Theme
 * About
 * Donation
 * Muzei Live Wallpaper: smart art source loader with advanded settings
