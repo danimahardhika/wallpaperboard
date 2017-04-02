@@ -415,7 +415,11 @@ public class WallpaperHelper {
                                 canvas.drawBitmap(bitmaps[0], null, rectF, paint);
                             }
 
-                            manager.setBitmap(bitmap);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                manager.setBitmap(bitmap, null, true, WallpaperManager.FLAG_LOCK | WallpaperManager.FLAG_SYSTEM);
+                            } else {
+                                manager.setBitmap(bitmap);
+                            }
                             return true;
                         }
                         return false;
