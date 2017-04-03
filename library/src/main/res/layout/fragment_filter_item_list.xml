@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="MissingPrefix"
     android:id="@+id/container"
@@ -16,7 +15,7 @@
     android:paddingRight="@dimen/dialog_content_padding"
     android:paddingEnd="@dimen/dialog_content_padding"
     android:background="?attr/selectableItemBackground"
-    app:theme="@style/ButtonStyle">
+    android:theme="@style/ButtonStyle">
 
     <android.support.v7.widget.AppCompatCheckBox
         android:id="@+id/checkbox"
@@ -24,18 +23,16 @@
         android:layout_height="wrap_content"
         android:clickable="false"
         android:background="@android:color/transparent"
-        app:theme="@style/CheckBoxStyle"/>
+        android:theme="@style/CheckBoxStyle"/>
 
     <TextView
         android:id="@+id/title"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/card_padding"
-        android:paddingStart="@dimen/card_padding"
+        android:paddingLeft="@dimen/content_margin"
+        android:paddingStart="@dimen/content_margin"
         android:textSize="@dimen/text_content_title"
-        android:singleLine="true"
-        android:ellipsize="end"
         android:textColor="?android:attr/textColorPrimary"
         fontPath="fonts/Font-Regular.ttf"/>
 

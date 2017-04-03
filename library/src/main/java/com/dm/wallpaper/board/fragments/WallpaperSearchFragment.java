@@ -33,9 +33,8 @@ import com.dm.wallpaper.board.helpers.DrawableHelper;
 import com.dm.wallpaper.board.helpers.SoftKeyboardHelper;
 import com.dm.wallpaper.board.helpers.ViewHelper;
 import com.dm.wallpaper.board.items.Wallpaper;
-import com.dm.wallpaper.board.utils.Extras;
+import com.dm.wallpaper.board.utils.LogUtil;
 import com.dm.wallpaper.board.utils.listeners.WallpaperListener;
-import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,8 +64,6 @@ public class WallpaperSearchFragment extends Fragment implements WallpaperListen
 
     @BindView(R2.id.recyclerview)
     RecyclerView mRecyclerView;
-    @BindView(R2.id.fastscroll)
-    RecyclerFastScroller mFastScroll;
     @BindView(R2.id.swipe)
     SwipeRefreshLayout mSwipe;
     @BindView(R2.id.search_result)
@@ -89,15 +86,13 @@ public class WallpaperSearchFragment extends Fragment implements WallpaperListen
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
         ViewCompat.setNestedScrollingEnabled(mRecyclerView, false);
-        ViewHelper.resetNavigationBarBottomPadding(getActivity(), mRecyclerView,
-                getActivity().getResources().getConfiguration().orientation);
+        ViewHelper.resetViewBottomPadding(mRecyclerView, false);
         mSwipe.setEnabled(false);
 
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),
-                getActivity().getResources().getInteger(R.integer.column_num)));
+                getActivity().getResources().getInteger(R.integer.wallpapers_column_count)));
         mRecyclerView.setHasFixedSize(false);
-        mFastScroll.attachRecyclerView(mRecyclerView);
 
         getWallpapers();
     }
@@ -107,7 +102,7 @@ public class WallpaperSearchFragment extends Fragment implements WallpaperListen
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_wallpaper_search, menu);
         MenuItem search = menu.findItem(R.id.menu_search);
-        int color = ColorHelper.getAttributeColor(getActivity(), R.attr.search_toolbar_icon);
+        int color = ColorHelper.getAttributeColor(getActivity(), R.attr.toolbar_icon);
         search.setIcon(DrawableHelper.getTintedDrawable(getActivity(),
                 R.drawable.ic_toolbar_search, color));
 
@@ -121,7 +116,7 @@ public class WallpaperSearchFragment extends Fragment implements WallpaperListen
         mSearchView.clearFocus();
 
         ViewHelper.changeSearchViewTextColor(mSearchView, color,
-                ColorHelper.getAttributeColor(getActivity(), R.attr.search_toolbar_hint));
+                ColorHelper.setColorAlpha(color, 0.6f));
         View view = mSearchView.findViewById(android.support.v7.appcompat.R.id.search_plate);
         if (view != null) view.setBackgroundColor(Color.TRANSPARENT);
 
@@ -153,7 +148,7 @@ public class WallpaperSearchFragment extends Fragment implements WallpaperListen
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         ViewHelper.resetSpanCount(getActivity(), mRecyclerView);
-        ViewHelper.resetNavigationBarBottomPadding(getActivity(), mRecyclerView, newConfig.orientation);
+        ViewHelper.resetViewBottomPadding(mRecyclerView, false);
     }
 
     @Override
@@ -163,7 +158,7 @@ public class WallpaperSearchFragment extends Fragment implements WallpaperListen
     }
 
     @Override
-    public void OnWallpaperSelected(int position) {
+    public void onWallpaperSelected(int position) {
         if (mAdapter == null) return;
         if (position < 0 || position > mAdapter.getItemCount()) return;
 
@@ -181,7 +176,7 @@ public class WallpaperSearchFragment extends Fragment implements WallpaperListen
             }
             else mSearchResult.setVisibility(View.GONE);
         } catch (Exception e) {
-            Log.d(Extras.LOG_TAG, Log.getStackTraceString(e));
+            LogUtil.e(Log.getStackTraceString(e));
         }
     }
 
@@ -205,7 +200,7 @@ public class WallpaperSearchFragment extends Fragment implements WallpaperListen
                         wallpapers = database.getFilteredWallpapers();
                         return true;
                     } catch (Exception e) {
-                        Log.d(Extras.LOG_TAG, Log.getStackTraceString(e));
+                        LogUtil.e(Log.getStackTraceString(e));
                         return false;
                     }
                 }

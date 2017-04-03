@@ -20,6 +20,6 @@ package com.dm.wallpaper.board.utils.listeners;
 
 public interface RefreshDurationListener {
 
-    void OnRefreshDurationSet(int rotateTime, boolean isMinute);
+    void onRefreshDurationSet(int rotateTime, boolean isMinute);
 
 }

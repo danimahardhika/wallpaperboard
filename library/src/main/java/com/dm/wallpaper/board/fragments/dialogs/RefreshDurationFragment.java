@@ -19,7 +19,7 @@ import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.helpers.ColorHelper;
 import com.dm.wallpaper.board.helpers.DrawableHelper;
-import com.dm.wallpaper.board.utils.Extras;
+import com.dm.wallpaper.board.utils.LogUtil;
 import com.dm.wallpaper.board.utils.listeners.RefreshDurationListener;
 
 import butterknife.BindView;
@@ -44,6 +44,16 @@ import butterknife.ButterKnife;
  */
 
 public class RefreshDurationFragment extends DialogFragment implements View.OnClickListener {
+
+    @BindView(R2.id.number_picker)
+    NumberPicker mNumberPicker;
+    @BindView(R2.id.minute)
+    AppCompatRadioButton mMinute;
+    @BindView(R2.id.hour)
+    AppCompatRadioButton mHour;
+
+    private int mRotateTime;
+    private boolean mIsMinute;
 
     private static final String MINUTE = "minute";
     private static final String ROTATE_TIME = "rotate_time";
@@ -70,16 +80,6 @@ public class RefreshDurationFragment extends DialogFragment implements View.OnCl
             dialog.show(ft, TAG);
         } catch (IllegalStateException | IllegalArgumentException ignored) {}
     }
-
-    @BindView(R2.id.number_picker)
-    NumberPicker mNumberPicker;
-    @BindView(R2.id.minute)
-    AppCompatRadioButton mMinute;
-    @BindView(R2.id.hour)
-    AppCompatRadioButton mHour;
-
-    private int mRotateTime;
-    private boolean mIsMinute;
 
     @NonNull
     @Override
@@ -120,7 +120,7 @@ public class RefreshDurationFragment extends DialogFragment implements View.OnCl
     @Override
     public void onDismiss(DialogInterface dialog) {
         RefreshDurationListener listener = (RefreshDurationListener) getActivity();
-        listener.OnRefreshDurationSet(mNumberPicker.getValue(), mMinute.isChecked());
+        listener.onRefreshDurationSet(mNumberPicker.getValue(), mMinute.isChecked());
         super.onDismiss(dialog);
     }
 
@@ -146,7 +146,7 @@ public class RefreshDurationFragment extends DialogFragment implements View.OnCl
                     pf.set(picker, DrawableHelper.getTintedDrawable(
                             getActivity(), R.drawable.numberpicker_divider, color));
                 } catch (Exception e) {
-                    Log.d(Extras.LOG_TAG, Log.getStackTraceString(e));
+                    LogUtil.e(Log.getStackTraceString(e));
                 }
                 break;
             }

@@ -16,7 +16,9 @@ import android.widget.LinearLayout;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.danimahardhika.cafebar.CafeBar;
+import com.danimahardhika.cafebar.CafeBarTheme;
 import com.dm.wallpaper.board.R;
+import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.helpers.ColorHelper;
 import com.dm.wallpaper.board.helpers.DrawableHelper;
 import com.dm.wallpaper.board.helpers.FileHelper;
@@ -25,6 +27,9 @@ import com.dm.wallpaper.board.helpers.WallpaperHelper;
 import com.dm.wallpaper.board.utils.Extras;
 
 import java.io.File;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /*
  * Wallpaper Board
@@ -45,6 +50,18 @@ import java.io.File;
  */
 
 public class WallpaperOptionsFragment extends DialogFragment implements View.OnClickListener {
+
+    @BindView(R2.id.apply)
+    LinearLayout mApply;
+    @BindView(R2.id.save)
+    LinearLayout mSave;
+    @BindView(R2.id.apply_icon)
+    ImageView mApplyIcon;
+    @BindView(R2.id.save_icon)
+    ImageView mSaveIcon;
+
+    private String mName;
+    private String mUrl;
 
     private static final String TAG = "com.dm.wallpaper.board.dialog.wallpaper.options";
 
@@ -70,14 +87,6 @@ public class WallpaperOptionsFragment extends DialogFragment implements View.OnC
         } catch (IllegalArgumentException | IllegalStateException ignored) {}
     }
 
-    private LinearLayout mApply;
-    private LinearLayout mSave;
-    private ImageView mApplyIcon;
-    private ImageView mSaveIcon;
-
-    private String mName;
-    private String mUrl;
-
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -86,10 +95,7 @@ public class WallpaperOptionsFragment extends DialogFragment implements View.OnC
         MaterialDialog dialog = builder.build();
         dialog.show();
 
-        mApply = (LinearLayout) dialog.findViewById(R.id.apply);
-        mSave = (LinearLayout) dialog.findViewById(R.id.save);
-        mApplyIcon = (ImageView) dialog.findViewById(R.id.apply_icon);
-        mSaveIcon = (ImageView) dialog.findViewById(R.id.save_icon);
+        ButterKnife.bind(this, dialog);
         return dialog;
     }
 
@@ -144,10 +150,9 @@ public class WallpaperOptionsFragment extends DialogFragment implements View.OnC
                 if (target.exists()) {
                     Context context = getActivity();
                     CafeBar.builder(getActivity())
+                            .theme(new CafeBarTheme.Custom(ColorHelper.getAttributeColor(getActivity(), R.attr.card_background)))
                             .autoDismiss(false)
-                            .swipeToDismiss(false)
-                            .floating(true)
-                            .fitSystemWindow(true)
+                            .fitSystemWindow(R.bool.view_fitsystemwindow)
                             .maxLines(4)
                             .content(String.format(getResources().getString(R.string.wallpaper_download_exist),
                                     ("\"" +mName + FileHelper.IMAGE_EXTENSION+ "\"")))

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <integer name="column_num">4</integer>
+    <integer name="wallpapers_column_count">4</integer>
 
 </resources>

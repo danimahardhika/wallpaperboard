@@ -22,13 +22,15 @@
         android:orientation="vertical"
         android:foreground="?attr/selectableItemBackground"
         android:clickable="true"
-        app:theme="@style/ButtonStyle">
+        android:theme="@style/ButtonStyle">
 
-        <com.dm.wallpaper.board.utils.views.WallpaperView
+        <com.dm.wallpaper.board.utils.views.HeaderView
             android:id="@+id/image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            app:heightRatio="1"
+            app:widthRatio="1"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,7 +42,12 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/card_padding"
+                android:paddingTop="@dimen/content_margin"
+                android:paddingBottom="@dimen/content_margin"
+                android:paddingLeft="@dimen/content_margin"
+                android:paddingStart="@dimen/content_margin"
+                android:paddingRight="8dp"
+                android:paddingEnd="8dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -49,7 +56,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="@dimen/text_content"
-                    android:singleLine="true"
+                    android:maxLines="1"
                     android:ellipsize="end"
                     fontPath="fonts/Font-Medium.ttf"/>
 
@@ -59,7 +66,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="?android:attr/textColorSecondary"
                     android:textSize="@dimen/text_content"
-                    android:singleLine="true"
+                    android:maxLines="1"
                     android:ellipsize="end"
                     fontPath="fonts/Font-Regular.ttf"/>
 
@@ -73,7 +80,7 @@
                 android:layout_marginRight="@dimen/content_padding"
                 android:layout_marginEnd="@dimen/content_padding"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                app:theme="@style/ButtonStyle"/>
+                android:theme="@style/ButtonStyle"/>
 
         </LinearLayout>
 

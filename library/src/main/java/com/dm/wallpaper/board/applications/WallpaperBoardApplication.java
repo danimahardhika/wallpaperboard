@@ -7,6 +7,7 @@ import android.util.Patterns;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.activities.WallpaperBoardCrashReport;
 import com.dm.wallpaper.board.utils.ImageConfig;
+import com.dm.wallpaper.board.utils.LogUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.text.SimpleDateFormat;
@@ -46,6 +47,9 @@ public class WallpaperBoardApplication extends Application {
                 .setDefaultFontPath("fonts/Font-Regular.ttf")
                 .setFontAttrId(R.attr.fontPath)
                 .build());
+
+        //Enable logging
+        LogUtil.setLoggingEnabled(true);
 
         if (Patterns.EMAIL_ADDRESS.matcher(getResources().getString(R.string.dev_email)).matches()) {
             mHandler = Thread.getDefaultUncaughtExceptionHandler();

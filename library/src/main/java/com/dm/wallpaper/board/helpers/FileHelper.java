@@ -7,7 +7,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
 
-import com.dm.wallpaper.board.utils.Extras;
+import com.dm.wallpaper.board.utils.LogUtil;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -35,6 +36,31 @@ import java.io.OutputStream;
 public class FileHelper {
 
     public static final String IMAGE_EXTENSION = ".jpeg";
+    public static final int MB = (1024 * 1014);
+    public static final int KB = 1024;
+
+    public static long getCacheSize(@NonNull File dir) {
+        if (dir.exists()) {
+            long result = 0;
+            File[] fileList = dir.listFiles();
+            for (File aFileList : fileList) {
+                if (aFileList.isDirectory()) {
+                    result += getCacheSize(aFileList);
+                } else {
+                    result += aFileList.length();
+                }
+            }
+            return result;
+        }
+        return 0;
+    }
+
+    public static void clearCache(@NonNull File cache) {
+        if (cache.isDirectory())
+            for (File child : cache.listFiles())
+                clearCache(child);
+        cache.delete();
+    }
 
     static boolean copyFile(@NonNull File file, @NonNull File target) {
         try {
@@ -56,7 +82,7 @@ public class FileHelper {
             outputStream.close();
             return true;
         } catch (Exception e) {
-            Log.d(Extras.LOG_TAG, Log.getStackTraceString(e));
+            LogUtil.e(Log.getStackTraceString(e));
         }
         return false;
     }
@@ -66,7 +92,7 @@ public class FileHelper {
         try {
             return FileProvider.getUriForFile(context, applicationId + ".fileProvider", file);
         } catch (IllegalArgumentException e) {
-            Log.d(Extras.LOG_TAG, Log.getStackTraceString(e));
+            LogUtil.e(Log.getStackTraceString(e));
         }
         return null;
     }

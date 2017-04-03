@@ -84,20 +84,20 @@ public class ColorHelper {
         return Color.argb(alpha2, red, green, blue);
     }
 
-    public static ColorStateList getColorStateList(int attr, @ColorInt int color, @ColorInt int color2) {
+    public static ColorStateList getColorStateList(@ColorInt int color) {
         int[][] states = new int[][] {
-                new int[] {attr},
+                new int[] {android.R.attr.state_pressed},
                 new int[] {}
         };
         int[] colors = new int[] {
-                color,
-                color2
+                ColorHelper.getDarkerColor(color, 0.9f),
+                color
         };
         return new ColorStateList(states, colors);
     }
 
     private static boolean isLightToolbar(@NonNull Context context) {
-        int color = getAttributeColor(context, R.attr.toolbar_color);
+        int color = getAttributeColor(context, R.attr.colorPrimary);
         int red = Color.red(color);
         int green = Color.green(color);
         int blue = Color.blue(color);

@@ -20,18 +20,12 @@
             android:paddingStart="@dimen/card_margin_left"
             android:paddingLeft="@dimen/card_margin_left"
             android:paddingBottom="@dimen/card_margin_bottom"
-            android:clipToPadding="false"/>
+            android:clipToPadding="false"
+            android:scrollbars="vertical"
+            android:scrollbarThumbVertical="?attr/colorAccent"
+            android:scrollbarSize="4dp"/>
 
     </android.support.v4.widget.SwipeRefreshLayout>
-
-    <com.pluscubed.recyclerfastscroll.RecyclerFastScroller
-        android:id="@+id/fastscroll"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="end"
-        app:rfs_barColor="?attr/fast_scroll"
-        app:rfs_handleNormalColor="?attr/fast_scroll"
-        app:rfs_handlePressedColor="?attr/colorAccent"/>
 
     <ProgressBar
         android:id="@+id/progress"

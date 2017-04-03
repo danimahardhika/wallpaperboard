@@ -11,7 +11,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -41,10 +40,10 @@ import com.dm.wallpaper.board.preferences.Preferences;
 import com.dm.wallpaper.board.utils.Animator;
 import com.dm.wallpaper.board.utils.Extras;
 import com.dm.wallpaper.board.utils.ListUtils;
+import com.dm.wallpaper.board.utils.LogUtil;
 import com.dm.wallpaper.board.utils.listeners.SearchListener;
 import com.dm.wallpaper.board.utils.listeners.WallpaperBoardListener;
 import com.dm.wallpaper.board.utils.listeners.WallpaperListener;
-import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 import com.rafakob.drawme.DrawMeButton;
 
 import java.io.InputStream;
@@ -78,8 +77,6 @@ public class WallpapersFragment extends Fragment implements WallpaperListener {
 
     @BindView(R2.id.recyclerview)
     RecyclerView mRecyclerView;
-    @BindView(R2.id.fastscroll)
-    RecyclerFastScroller mFastScroll;
     @BindView(R2.id.swipe)
     SwipeRefreshLayout mSwipe;
     @BindView(R2.id.progress)
@@ -99,18 +96,15 @@ public class WallpapersFragment extends Fragment implements WallpaperListener {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ViewCompat.setNestedScrollingEnabled(mRecyclerView, false);
-        ViewHelper.resetNavigationBarBottomPadding(getActivity(), mRecyclerView,
-                getActivity().getResources().getConfiguration().orientation);
+        ViewHelper.resetViewBottomPadding(mRecyclerView, true);
 
         mProgress.getIndeterminateDrawable().setColorFilter(ColorHelper.getAttributeColor(
                 getActivity(), R.attr.colorAccent), PorterDuff.Mode.SRC_IN);
 
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),
-                getActivity().getResources().getInteger(R.integer.column_num)));
+                getActivity().getResources().getInteger(R.integer.wallpapers_column_count)));
         mRecyclerView.setHasFixedSize(false);
-        mFastScroll.attachRecyclerView(mRecyclerView);
 
         mSwipe.setColorSchemeColors(ColorHelper.getAttributeColor(
                 getActivity(), R.attr.colorAccent));
@@ -129,7 +123,7 @@ public class WallpapersFragment extends Fragment implements WallpaperListener {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         ViewHelper.resetSpanCount(getActivity(), mRecyclerView);
-        ViewHelper.resetNavigationBarBottomPadding(getActivity(), mRecyclerView, newConfig.orientation);
+        ViewHelper.resetViewBottomPadding(mRecyclerView, true);
     }
 
     @Override
@@ -146,7 +140,7 @@ public class WallpapersFragment extends Fragment implements WallpaperListener {
 
                 setHasOptionsMenu(false);
                 SearchListener listener = (SearchListener) getActivity();
-                listener.OnSearchExpanded(true);
+                listener.onSearchExpanded(true);
 
                 FragmentTransaction ft = fm.beginTransaction()
                         .replace(R.id.container, new WallpaperSearchFragment(),
@@ -184,7 +178,7 @@ public class WallpapersFragment extends Fragment implements WallpaperListener {
     }
 
     @Override
-    public void OnWallpaperSelected(int position) {
+    public void onWallpaperSelected(int position) {
         if (mAdapter == null) return;
         if (position < 0 || position > mAdapter.getItemCount()) return;
 
@@ -204,7 +198,7 @@ public class WallpapersFragment extends Fragment implements WallpaperListener {
                 Animator.startAlphaAnimation(getActivity().findViewById(R.id.popup_bubble), 200, View.GONE);
                 getWallpapers(true);
             });
-            Animator.startSlideDownAnimation(getActivity(), popupBubble, null);
+            Animator.startSlideDownAnimation(popupBubble, View.VISIBLE);
         }
     }
 
@@ -297,7 +291,7 @@ public class WallpapersFragment extends Fragment implements WallpaperListener {
                         }
                         return false;
                     } catch (Exception e) {
-                        Log.d(Extras.LOG_TAG, Log.getStackTraceString(e));
+                        LogUtil.e(Log.getStackTraceString(e));
                         return false;
                     }
                 }
@@ -315,7 +309,7 @@ public class WallpapersFragment extends Fragment implements WallpaperListener {
                     mRecyclerView.setAdapter(mAdapter);
 
                     WallpaperBoardListener listener = (WallpaperBoardListener) getActivity();
-                    listener.OnWallpapersChecked(new Intent().putExtra(Extras.EXTRA_SIZE,
+                    listener.onWallpapersChecked(new Intent().putExtra(Extras.EXTRA_SIZE,
                             Preferences.getPreferences(getActivity()).getAvailableWallpapersCount()));
                 } else {
                     Toast.makeText(getActivity(), R.string.connection_failed, Toast.LENGTH_LONG).show();

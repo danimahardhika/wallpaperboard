@@ -20,6 +20,6 @@ package com.dm.wallpaper.board.utils.listeners;
 
 public interface SearchListener {
 
-    void OnSearchExpanded(boolean expand);
+    void onSearchExpanded(boolean expand);
 
 }

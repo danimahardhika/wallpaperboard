@@ -13,15 +13,14 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:minHeight="?attr/actionBarSize"
-        android:background="?attr/toolbar_color"
-        app:theme="@style/ToolbarStyle">
+        android:background="?attr/colorPrimary">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:textColor="?attr/toolbar_icon"
-            android:singleLine="true"
+            android:maxLines="1"
             android:ellipsize="end"
             android:text="@string/muzei_settings"
             android:textSize="@dimen/text_toolbar_title"
@@ -178,7 +177,7 @@
         android:id="@+id/muzei_save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/card_padding"
+        android:padding="@dimen/content_margin"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
         android:gravity="center"

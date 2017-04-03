@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -21,9 +20,8 @@ import com.dm.wallpaper.board.adapters.WallpapersAdapter;
 import com.dm.wallpaper.board.databases.Database;
 import com.dm.wallpaper.board.helpers.ViewHelper;
 import com.dm.wallpaper.board.items.Wallpaper;
-import com.dm.wallpaper.board.utils.Extras;
+import com.dm.wallpaper.board.utils.LogUtil;
 import com.dm.wallpaper.board.utils.listeners.WallpaperListener;
-import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,8 +51,6 @@ public class FavoritesFragment extends Fragment implements WallpaperListener {
 
     @BindView(R2.id.recyclerview)
     RecyclerView mRecyclerView;
-    @BindView(R2.id.fastscroll)
-    RecyclerFastScroller mFastScroll;
     @BindView(R2.id.swipe)
     SwipeRefreshLayout mSwipe;
 
@@ -71,16 +67,13 @@ public class FavoritesFragment extends Fragment implements WallpaperListener {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ViewCompat.setNestedScrollingEnabled(mRecyclerView, false);
-        ViewHelper.resetNavigationBarBottomPadding(getActivity(), mRecyclerView,
-                getActivity().getResources().getConfiguration().orientation);
+        ViewHelper.resetViewBottomPadding(mRecyclerView, true);
         mSwipe.setEnabled(false);
 
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),
-                getActivity().getResources().getInteger(R.integer.column_num)));
+                getActivity().getResources().getInteger(R.integer.wallpapers_column_count)));
         mRecyclerView.setHasFixedSize(false);
-        mFastScroll.attachRecyclerView(mRecyclerView);
 
         getWallpapers();
     }
@@ -89,7 +82,7 @@ public class FavoritesFragment extends Fragment implements WallpaperListener {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         ViewHelper.resetSpanCount(getActivity(), mRecyclerView);
-        ViewHelper.resetNavigationBarBottomPadding(getActivity(), mRecyclerView, newConfig.orientation);
+        ViewHelper.resetViewBottomPadding(mRecyclerView, true);
     }
 
     @Override
@@ -99,7 +92,7 @@ public class FavoritesFragment extends Fragment implements WallpaperListener {
     }
 
     @Override
-    public void OnWallpaperSelected(int position) {
+    public void onWallpaperSelected(int position) {
         if (mRecyclerView == null) return;
         if (position < 0 || position > mRecyclerView.getAdapter().getItemCount()) return;
 
@@ -126,7 +119,7 @@ public class FavoritesFragment extends Fragment implements WallpaperListener {
                         wallpapers = database.getFavoriteWallpapers();
                         return true;
                     } catch (Exception e) {
-                        Log.d(Extras.LOG_TAG, Log.getStackTraceString(e));
+                        LogUtil.e(Log.getStackTraceString(e));
                         return false;
                     }
                 }

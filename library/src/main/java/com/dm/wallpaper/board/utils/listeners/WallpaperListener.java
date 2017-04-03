@@ -20,6 +20,6 @@ package com.dm.wallpaper.board.utils.listeners;
 
 public interface WallpaperListener {
 
-    void OnWallpaperSelected(int position);
+    void onWallpaperSelected(int position);
 
 }

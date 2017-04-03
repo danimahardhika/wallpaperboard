@@ -45,6 +45,9 @@ import butterknife.ButterKnife;
 
 public class FilterFragment extends DialogFragment {
 
+    @BindView(R2.id.listview)
+    ListView listView;
+
     private boolean mIsMuzei;
 
     private static final String MUZEI = "muzei";
@@ -70,9 +73,6 @@ public class FilterFragment extends DialogFragment {
             dialog.show(ft, TAG);
         } catch (IllegalArgumentException | IllegalStateException ignored) {}
     }
-
-    @BindView(R2.id.listview)
-    ListView listView;
 
     @NonNull
     @Override
@@ -102,6 +102,8 @@ public class FilterFragment extends DialogFragment {
 
     @Override
     public void onDismiss(DialogInterface dialog) {
+        if (getActivity() == null) return;
+
         FragmentManager fm = getActivity().getSupportFragmentManager();
         if (fm == null) return;
 

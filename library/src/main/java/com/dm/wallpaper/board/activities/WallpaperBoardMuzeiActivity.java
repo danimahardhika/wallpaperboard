@@ -82,7 +82,7 @@ public class WallpaperBoardMuzeiActivity extends AppCompatActivity implements Vi
         ViewCompat.setNestedScrollingEnabled(mScrollView, false);
         ViewHelper.disableTranslucentNavigationBar(this);
         ColorHelper.setStatusBarColor(this,
-                ColorHelper.getAttributeColor(this, R.attr.toolbar_color));
+                ColorHelper.getAttributeColor(this, R.attr.colorPrimary));
         ColorHelper.setStatusBarIconColor(this);
         ColorHelper.setNavigationBarColor(this, ColorHelper.getDarkerColor(
                 ColorHelper.getAttributeColor(this, R.attr.colorAccent), 0.8f));
@@ -117,8 +117,7 @@ public class WallpaperBoardMuzeiActivity extends AppCompatActivity implements Vi
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        ViewHelper.resetNavigationBarBottomPadding(this, mScrollView,
-                getResources().getConfiguration().orientation);
+        ViewHelper.resetViewBottomPadding(mScrollView, false);
     }
 
     @Override
@@ -149,7 +148,7 @@ public class WallpaperBoardMuzeiActivity extends AppCompatActivity implements Vi
     }
 
     @Override
-    public void OnRefreshDurationSet(int rotateTime, boolean isMinute) {
+    public void onRefreshDurationSet(int rotateTime, boolean isMinute) {
         mRotateTime = rotateTime;
         mIsMinute = isMinute;
         initRefreshDuration();

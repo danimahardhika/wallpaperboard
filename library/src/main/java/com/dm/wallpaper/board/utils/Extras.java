@@ -31,13 +31,14 @@ public class Extras {
     public static final String EXTRA_NAME = "name";
     public static final String EXTRA_AUTHOR = "author";
     public static final String EXTRA_IMAGE = "image";
+
     public static final String EXTRA_SIZE = "size";
+    public static final String EXTRA_PACKAGE_NAME = "packageName";
+
     public static final String EXTRA_KEY = "key";
     public static final String EXTRA_PRODUCT_ID = "productId";
     public static final String EXTRA_TYPE = "type";
 
     public static final int TYPE_CONTRIBUTORS = 1;
-
-    public static final String LOG_TAG = "WallpaperBoard";
 
 }

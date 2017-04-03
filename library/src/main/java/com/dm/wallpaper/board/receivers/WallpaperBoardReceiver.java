@@ -3,7 +3,9 @@ package com.dm.wallpaper.board.receivers;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
+import com.dm.wallpaper.board.utils.LogUtil;
 import com.dm.wallpaper.board.utils.listeners.WallpaperBoardListener;
 
 /*
@@ -30,7 +32,11 @@ public class WallpaperBoardReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        WallpaperBoardListener listener = (WallpaperBoardListener) context;
-        listener.OnWallpapersChecked(intent);
+        try {
+            WallpaperBoardListener listener = (WallpaperBoardListener) context;
+            listener.onWallpapersChecked(intent);
+        } catch (Exception e) {
+            LogUtil.e(Log.getStackTraceString(e));
+        }
     }
 }

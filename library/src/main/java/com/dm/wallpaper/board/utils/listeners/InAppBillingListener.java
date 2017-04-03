@@ -22,8 +22,8 @@ import com.dm.wallpaper.board.items.InAppBilling;
 
 public interface InAppBillingListener {
 
-    void OnInAppBillingSelected(InAppBilling product);
-    void OnInAppBillingInitialized(boolean success);
-    void OnInAppBillingConsume(String productId);
+    void onInAppBillingSelected(InAppBilling product);
+    void onInAppBillingInitialized(boolean success);
+    void onInAppBillingConsume(String productId);
 
 }

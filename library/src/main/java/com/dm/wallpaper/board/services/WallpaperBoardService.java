@@ -10,6 +10,7 @@ import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.items.WallpaperJson;
 import com.dm.wallpaper.board.receivers.WallpaperBoardReceiver;
 import com.dm.wallpaper.board.utils.Extras;
+import com.dm.wallpaper.board.utils.LogUtil;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -61,11 +62,12 @@ public class WallpaperBoardService extends IntentService {
                 if (wallpapersJson == null) return;
 
                 int size = wallpapersJson.getWallpapers.size();
+                broadcastIntent.putExtra(Extras.EXTRA_PACKAGE_NAME, getPackageName());
                 broadcastIntent.putExtra(Extras.EXTRA_SIZE, size);
                 sendBroadcast(broadcastIntent);
             }
         } catch (Exception e) {
-            Log.d(Extras.LOG_TAG, Log.getStackTraceString(e));
+            LogUtil.e(Log.getStackTraceString(e));
         }
     }
 }

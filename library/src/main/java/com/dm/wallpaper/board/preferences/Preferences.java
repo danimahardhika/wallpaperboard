@@ -1,5 +1,10 @@
 package com.dm.wallpaper.board.preferences;
 
+import android.content.Context;
+import android.support.annotation.NonNull;
+
+import com.dm.wallpaper.board.helpers.PreferencesHelper;
+
 /*
  * Wallpaper Board
  *
@@ -18,15 +23,10 @@ package com.dm.wallpaper.board.preferences;
  * limitations under the License.
  */
 
-import android.content.Context;
-import android.support.annotation.NonNull;
-
-import com.dm.wallpaper.board.helpers.PreferencesHelper;
-
 public class Preferences {
 
+    @NonNull
     public static PreferencesHelper getPreferences(@NonNull Context context) {
         return new PreferencesHelper(context);
     }
-
 }

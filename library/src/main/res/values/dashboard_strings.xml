@@ -48,6 +48,9 @@
     <string name="wallpaper_scroll_disable_desc">Dashboard will apply wallpaper based on current view of wallpaper.
         Drag to left or right to adjust wallpaper. Pinch or double tap to zoom wallpaper.</string>
 
+    <string name="wallpaper_favorite_added">%s added to favorite</string>
+    <string name="wallpaper_favorite_removed">%s removed from favorite</string>
+
     <!-- Muzei -->
     <string name="minute">Minute</string>
     <string name="hour">Hour</string>
@@ -73,18 +76,21 @@
     <string name="billing_load_product_failed">Unable to load InApp Purchase products</string>
 
     <!-- Preferences -->
+    <string name="pref_data_header">Data &amp; Cache</string>
     <string name="pref_data_cache">Clear Cache</string>
     <string name="pref_data_cache_desc">Remove image cache from your storage created
         after loading cloud wallpaper thumbnails</string>
-    <string name="pref_data_cache_size">Cache Size :</string>
+    <string name="pref_data_cache_size">Cache Size: %s</string>
     <string name="pref_data_cache_cleared">Cache Cleared</string>
     <string name="pref_data_cache_clear_dialog">Do you really want to clear cache?</string>
 
+    <string name="pref_theme_header">Theme</string>
     <string name="pref_theme_dark">Dark Theme</string>
     <string name="pref_theme_dark_desc">Switch between dark or light theme</string>
 
+    <string name="pref_wallpaper_header">Wallpaper</string>
     <string name="pref_wallpaper_location">Wallpaper Save Location</string>
-    <string name="pref_wallpaper_location_desc">Try to download at least one wallpaper first.</string>
+    <string name="pref_wallpaper_location_desc">Try to download at least one wallpaper first</string>
 
     <!-- Permission -->
     <string name="permission_storage_denied">Storage permission needed to save wallpaper</string>
@@ -102,7 +108,7 @@
     <string name="license_check_retry">Unable to check license, please try again in a few moments</string>
 
     <!-- Search -->
-    <string name="search_result_empty">No result found for %s</string>
+    <string name="search_result_empty">No result found for \"%s\"</string>
 
     <!-- Crash Report -->
     <string name="crash_report">Crash Report</string>
@@ -122,7 +128,6 @@
 
     <!-- Splash screen -->
     <string name="splash_screen_title">Wallpaper Board</string>
-    <string name="splash_screen_loading">Preparing %s …</string>
 
     <!-- DrawerToggle -->
     <string name="txt_open">Open</string>

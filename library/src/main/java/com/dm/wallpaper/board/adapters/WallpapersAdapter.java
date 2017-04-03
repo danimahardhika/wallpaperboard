@@ -21,6 +21,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.danimahardhika.cafebar.CafeBar;
+import com.danimahardhika.cafebar.CafeBarTheme;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.activities.WallpaperBoardPreviewActivity;
@@ -36,7 +38,8 @@ import com.dm.wallpaper.board.items.Wallpaper;
 import com.dm.wallpaper.board.utils.Extras;
 import com.dm.wallpaper.board.utils.ImageConfig;
 import com.dm.wallpaper.board.utils.listeners.WallpaperListener;
-import com.dm.wallpaper.board.utils.views.WallpaperView;
+import com.dm.wallpaper.board.utils.views.HeaderView;
+
 import com.kogitune.activitytransition.ActivityTransitionLauncher;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -103,7 +106,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Vi
                 mContext.getResources().getDimensionPixelSize(R.dimen.default_image_padding));
         mOptions = ImageConfig.getRawDefaultImageOptions();
         mOptions.resetViewBeforeLoading(true);
-        mOptions.cacheInMemory(false);
+        mOptions.cacheInMemory(true);
         mOptions.cacheOnDisk(true);
         mOptions.showImageForEmptyUri(failed);
         mOptions.showImageOnFail(failed);
@@ -181,7 +184,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Vi
         @BindView(R2.id.container)
         LinearLayout container;
         @BindView(R2.id.image)
-        WallpaperView image;
+        HeaderView image;
         @BindView(R2.id.name)
         TextView name;
         @BindView(R2.id.author)
@@ -226,7 +229,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Vi
                                     fragment instanceof FavoritesFragment ||
                                     fragment instanceof WallpaperSearchFragment) {
                                 WallpaperListener listener = (WallpaperListener) fragment;
-                                listener.OnWallpaperSelected(position);
+                                listener.onWallpaperSelected(position);
                             }
                         }
                     }
@@ -245,6 +248,18 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Vi
 
                 mWallpapers.get(position).setFavorite(!mWallpapers.get(position).isFavorite());
                 setFavorite(favorite, name.getCurrentTextColor(), position);
+
+                CafeBar.builder(mContext)
+                        .theme(new CafeBarTheme.Custom(ColorHelper.getAttributeColor(
+                                mContext, R.attr.card_background)))
+                        .fitSystemWindow(R.bool.view_fitsystemwindow)
+                        .content(String.format(
+                                mContext.getResources().getString(mWallpapers.get(position).isFavorite() ?
+                                        R.string.wallpaper_favorite_added : R.string.wallpaper_favorite_removed),
+                                mWallpapers.get(position).getName()))
+                        .icon(mWallpapers.get(position).isFavorite() ?
+                                R.drawable.ic_toolbar_love : R.drawable.ic_toolbar_unlove)
+                        .build().show();
             }
         }
 

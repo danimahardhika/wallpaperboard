@@ -32,6 +32,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.danimahardhika.cafebar.CafeBar;
+import com.danimahardhika.cafebar.CafeBarTheme;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.adapters.WallpapersAdapter;
@@ -107,15 +108,15 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
         setContentView(R.layout.activity_wallpaper_preview);
         ButterKnife.bind(this);
         ViewHelper.setApplicationWindowColor(this);
-        ViewHelper.resetNavigationBarTranslucent(this,
-                getResources().getConfiguration().orientation);
+        ViewHelper.resetViewBottomMargin(mFab);
+        ColorHelper.setTransparentStatusBar(this,
+                ContextCompat.getColor(this, R.color.wallpaperStatusBar));
         mIsEnter = true;
 
         Toolbar toolbar = ButterKnife.findById(this, R.id.toolbar);
         TextView toolbarTitle = ButterKnife.findById(this, R.id.toolbar_title);
         TextView toolbarSubTitle = ButterKnife.findById(this, R.id.toolbar_subtitle);
-        ColorHelper.setTransparentStatusBar(this,
-                ContextCompat.getColor(this, R.color.wallpaperStatusBar));
+
         mColor = ColorHelper.getAttributeColor(this, R.attr.colorAccent);
         mProgress.getIndeterminateDrawable().setColorFilter(mColor, PorterDuff.Mode.SRC_IN);
 
@@ -159,8 +160,7 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
                     public void onTransitionEnd(Transition transition) {
                         if (mIsEnter) {
                             mIsEnter = false;
-                            Animator.startSlideDownAnimation(WallpaperBoardPreviewActivity.this,
-                                    toolbar, null);
+                            Animator.startSlideDownAnimation(toolbar, View.VISIBLE);
                             loadWallpaper(mUrl);
                         }
                     }
@@ -197,7 +197,7 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        ViewHelper.resetNavigationBarTranslucent(this, newConfig.orientation);
+        ViewHelper.resetViewBottomMargin(mFab);
     }
 
     @Override
@@ -249,11 +249,10 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
 
                 if (target.exists()) {
                     CafeBar.builder(this)
-                            .to(findViewById(R.id.rootview))
+                            .theme(new CafeBarTheme.Custom(ColorHelper.getAttributeColor(this, R.attr.card_background)))
                             .autoDismiss(false)
-                            .swipeToDismiss(false)
-                            .floating(true)
                             .maxLines(4)
+                            .fitSystemWindow(true)
                             .content(String.format(getResources().getString(R.string.wallpaper_download_exist),
                                     ("\"" +mName + FileHelper.IMAGE_EXTENSION+ "\"")))
                             .icon(R.drawable.ic_toolbar_download)
@@ -331,7 +330,7 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
 
                 int color = ColorHelper.getAttributeColor(
                         WallpaperBoardPreviewActivity.this, R.attr.main_background);
-                FrameLayout container = (FrameLayout) findViewById(R.id.container);
+                FrameLayout container = ButterKnife.findById(WallpaperBoardPreviewActivity.this, R.id.container);
                 ObjectAnimator colorFade = ObjectAnimator.ofObject(
                         container, "backgroundColor", new ArgbEvaluator(),
                         Color.TRANSPARENT, color);
@@ -353,9 +352,7 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
                         int color = palette.getVibrantColor(accent);
                         mColor = color;
                         int text = ColorHelper.getTitleTextColor(color);
-                        mFab.setBackgroundTintList(ColorHelper.getColorStateList(
-                                android.R.attr.state_pressed,
-                                color, ColorHelper.getDarkerColor(color, 0.9f)));
+                        mFab.setBackgroundTintList(ColorHelper.getColorStateList(color));
                         OnWallpaperLoaded(text);
                     });
                 }

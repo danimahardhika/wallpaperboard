@@ -18,6 +18,8 @@ import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.adapters.CreditsAdapter;
 import com.dm.wallpaper.board.items.Credit;
 import com.dm.wallpaper.board.utils.Extras;
+import com.dm.wallpaper.board.utils.LogUtil;
+
 import org.xmlpull.v1.XmlPullParser;
 
 import java.util.ArrayList;
@@ -46,6 +48,13 @@ import butterknife.ButterKnife;
 
 public class CreditsFragment extends DialogFragment {
 
+    @BindView(R2.id.listview)
+    ListView mListView;
+
+    private int mType;
+
+    private AsyncTask<Void, Void, Boolean> mGetCredits;
+
     private static final String TAG = "com.field.guide.dialog.credits";
 
     private static CreditsFragment newInstance(int type) {
@@ -68,13 +77,6 @@ public class CreditsFragment extends DialogFragment {
             dialog.show(ft, TAG);
         } catch (IllegalStateException | IllegalArgumentException ignored) {}
     }
-
-    @BindView(R2.id.listview)
-    ListView mListView;
-
-    private int mType;
-
-    private AsyncTask<Void, Void, Boolean> mGetCredits;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -163,7 +165,7 @@ public class CreditsFragment extends DialogFragment {
                         }
                         return true;
                     } catch (Exception e) {
-                        Log.d(Extras.LOG_TAG, Log.getStackTraceString(e));
+                        LogUtil.e(Log.getStackTraceString(e));
                         return false;
                     }
                 }
@@ -182,5 +184,4 @@ public class CreditsFragment extends DialogFragment {
             }
         }.execute();
     }
-
 }

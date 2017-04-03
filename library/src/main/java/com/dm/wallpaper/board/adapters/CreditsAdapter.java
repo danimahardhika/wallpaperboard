@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.items.Credit;
-import com.dm.wallpaper.board.utils.Extras;
+import com.dm.wallpaper.board.utils.LogUtil;
 
 import java.util.List;
 
@@ -85,7 +85,7 @@ public class CreditsAdapter extends BaseAdapter {
                 try {
                     mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(link)));
                 } catch (ActivityNotFoundException e) {
-                    Log.d(Extras.LOG_TAG, Log.getStackTraceString(e));
+                    LogUtil.e(Log.getStackTraceString(e));
                 }
             }
         });

@@ -15,7 +15,11 @@ import android.widget.LinearLayout;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.dm.wallpaper.board.R;
+import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.preferences.Preferences;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /*
  * Wallpaper Board
@@ -37,8 +41,18 @@ import com.dm.wallpaper.board.preferences.Preferences;
 
 public class WallpaperSettingsFragment extends DialogFragment implements View.OnClickListener {
 
+    @BindView(R2.id.enable_scroll_radio)
+    AppCompatRadioButton mEnableScrollRadio;
+    @BindView(R2.id.disable_scroll_radio)
+    AppCompatRadioButton mDisableScrollRadio;
+    @BindView(R2.id.enable_scroll)
+    LinearLayout mEnableScroll;
+    @BindView(R2.id.disable_scroll)
+    LinearLayout mDisableScroll;
+
     private static final String TAG = "com.dm.wallpaper.board.dialog.wallpaper.settings";
 
+    @NonNull
     private static WallpaperSettingsFragment newInstance() {
         return new WallpaperSettingsFragment();
     }
@@ -56,11 +70,6 @@ public class WallpaperSettingsFragment extends DialogFragment implements View.On
         } catch (IllegalStateException | IllegalArgumentException ignored) {}
     }
 
-    private AppCompatRadioButton mEnableScrollRadio;
-    private AppCompatRadioButton mDisableScrollRadio;
-    private LinearLayout mEnableScroll;
-    private LinearLayout mDisableScroll;
-
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -71,10 +80,7 @@ public class WallpaperSettingsFragment extends DialogFragment implements View.On
         MaterialDialog dialog = builder.build();
         dialog.show();
 
-        mEnableScrollRadio = (AppCompatRadioButton) dialog.findViewById(R.id.enable_scroll_radio);
-        mDisableScrollRadio = (AppCompatRadioButton) dialog.findViewById(R.id.disable_scroll_radio);
-        mEnableScroll = (LinearLayout) dialog.findViewById(R.id.enable_scroll);
-        mDisableScroll = (LinearLayout) dialog.findViewById(R.id.disable_scroll);
+        ButterKnife.bind(this, dialog);
         return dialog;
     }
 
@@ -108,5 +114,4 @@ public class WallpaperSettingsFragment extends DialogFragment implements View.On
         mEnableScrollRadio.setChecked(scroll);
         mDisableScrollRadio.setChecked(!scroll);
     }
-
 }

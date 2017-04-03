@@ -12,6 +12,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import com.dm.wallpaper.board.R;
+import com.dm.wallpaper.board.helpers.ContextHelper;
 
 /*
  * Wallpaper Board
@@ -44,26 +45,11 @@ public class Animator {
         view.startAnimation(alphaAnimation);
     }
 
-    public static void startSlideDownAnimation(@NonNull Context context, @NonNull View view, @Nullable View view2) {
-        Animation slideDown = AnimationUtils.loadAnimation(context, R.anim.slide_down_from_top);
-        slideDown.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                if (view2 != null) startAlphaAnimation(view2, 200, View.VISIBLE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-        view.startAnimation(slideDown);
-        view.setVisibility(View.VISIBLE);
+    public static void startSlideDownAnimation(@NonNull View view, int visibility) {
+        Context context = ContextHelper.getBaseContext(view);
+        Animation animation = AnimationUtils.loadAnimation(context, R.anim.slide_down_from_top);
+        view.startAnimation(animation);
+        view.setVisibility(visibility);
     }
 
     public static void showFab(@Nullable FloatingActionButton fab) {
@@ -82,5 +68,4 @@ public class Animator {
         fab.animate().setDuration(200).scaleX(1).scaleY(1).alpha(1)
                 .setInterpolator(new LinearOutSlowInInterpolator());
     }
-
 }

@@ -37,7 +37,7 @@ public class InAppBillingHelper implements BillingProcessor.IBillingHandler {
     @Override
     public void onProductPurchased(String productId, TransactionDetails details) {
         InAppBillingListener listener = (InAppBillingListener) mContext;
-        listener.OnInAppBillingConsume(productId);
+        listener.onInAppBillingConsume(productId);
     }
 
     @Override
@@ -49,13 +49,13 @@ public class InAppBillingHelper implements BillingProcessor.IBillingHandler {
     public void onBillingError(int errorCode, Throwable error) {
         if (errorCode == Constants.BILLING_ERROR_FAILED_TO_INITIALIZE_PURCHASE) {
             InAppBillingListener listener = (InAppBillingListener) mContext;
-            listener.OnInAppBillingInitialized(false);
+            listener.onInAppBillingInitialized(false);
         }
     }
 
     @Override
     public void onBillingInitialized() {
         InAppBillingListener listener = (InAppBillingListener) mContext;
-        listener.OnInAppBillingInitialized(true);
+        listener.onInAppBillingInitialized(true);
     }
 }

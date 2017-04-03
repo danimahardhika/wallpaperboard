@@ -6,15 +6,12 @@
     <attr name="ripple_color" format="color"/>
     <attr name="ripple_accent" format="color"/>
     <attr name="divider_list" format="color"/>
-    <attr name="fast_scroll" format="color"/>
 
-    <attr name="toolbar_color" format="color"/>
-    <attr name="toolbar_accent" format="color"/>
     <attr name="toolbar_icon" format="color"/>
-    <attr name="toolbar_hint" format="color"/>
 
-    <attr name="search_toolbar_color" format="color"/>
-    <attr name="search_toolbar_icon" format="color"/>
-    <attr name="search_toolbar_hint" format="color"/>
+    <declare-styleable name="HeaderView">
+        <attr name="widthRatio" format="integer"/>
+        <attr name="heightRatio" format="integer"/>
+    </declare-styleable>
 
 </resources>

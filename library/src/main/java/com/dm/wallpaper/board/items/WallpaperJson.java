@@ -26,19 +26,19 @@ import java.util.List;
 @JsonObject
 public class WallpaperJson {
 
-    @JsonField(name = "name")
+    @JsonField
     public String name;
 
-    @JsonField(name = "author")
+    @JsonField
     public String author;
 
-    @JsonField(name = "url")
+    @JsonField
     public String url;
 
-    @JsonField(name = "thumbUrl")
+    @JsonField
     public String thumbUrl;
 
-    @JsonField(name = "category")
+    @JsonField
     public String category;
 
     @JsonField(name = "Wallpapers")

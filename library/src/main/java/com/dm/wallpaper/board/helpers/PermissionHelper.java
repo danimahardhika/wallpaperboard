@@ -56,5 +56,4 @@ public class PermissionHelper {
     public static void showPermissionStorageDenied(@NonNull Context context) {
         Toast.makeText(context, R.string.permission_storage_denied, Toast.LENGTH_LONG).show();
     }
-
 }

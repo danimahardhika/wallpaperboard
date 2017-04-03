@@ -10,7 +10,7 @@ import android.util.Log;
 
 import com.dm.wallpaper.board.BuildConfig;
 import com.dm.wallpaper.board.R;
-import com.dm.wallpaper.board.utils.Extras;
+import com.dm.wallpaper.board.utils.LogUtil;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -53,7 +53,7 @@ public class CrashReportHelper {
 
             return fileDir.toString();
         } catch (Exception | OutOfMemoryError e) {
-            Log.d(Extras.LOG_TAG, Log.getStackTraceString(e));
+            LogUtil.e(Log.getStackTraceString(e));
         }
         return null;
     }
@@ -88,5 +88,4 @@ public class CrashReportHelper {
                 "\nApp Name : " +context.getResources().getString(R.string.app_name)
                 + "\n"+ getDeviceInfo(context);
     }
-
 }

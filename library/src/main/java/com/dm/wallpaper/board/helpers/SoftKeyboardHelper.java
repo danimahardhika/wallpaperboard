@@ -47,7 +47,7 @@ public class SoftKeyboardHelper {
         }
     }
 
-/*
+    /*
      * This code was taken from https://github.com/mikepenz/MaterialDrawer/issues/95#issuecomment-80519589
      */
 

@@ -15,12 +15,14 @@ import android.webkit.WebView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.dm.wallpaper.board.R;
-import com.dm.wallpaper.board.utils.Extras;
+import com.dm.wallpaper.board.R2;
+import com.dm.wallpaper.board.utils.LogUtil;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /*
@@ -43,6 +45,11 @@ import butterknife.ButterKnife;
 
 public class LicensesFragment extends DialogFragment {
 
+    @BindView(R2.id.webview)
+    WebView mWebView;
+
+    private AsyncTask<Void, Void, Boolean> mLoadLicenses;
+
     private static final String TAG = "com.dm.wallpaper.board.dialog.licenses";
 
     private static LicensesFragment newInstance() {
@@ -62,10 +69,6 @@ public class LicensesFragment extends DialogFragment {
         } catch (IllegalStateException | IllegalArgumentException ignored) {}
     }
 
-    private WebView mWebView;
-
-    private AsyncTask<Void, Void, Boolean> mLoadLicenses;
-
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -75,7 +78,7 @@ public class LicensesFragment extends DialogFragment {
         MaterialDialog dialog = builder.build();
         dialog.show();
 
-        mWebView = ButterKnife.findById(dialog, R.id.webview);
+        ButterKnife.bind(this, dialog);
         return dialog;
     }
 
@@ -120,7 +123,7 @@ public class LicensesFragment extends DialogFragment {
                         bufferedReader.close();
                         return true;
                     } catch (Exception e) {
-                        Log.d(Extras.LOG_TAG, Log.getStackTraceString(e));
+                        LogUtil.e(Log.getStackTraceString(e));
                         return false;
                     }
                 }
@@ -140,7 +143,6 @@ public class LicensesFragment extends DialogFragment {
 
         }.execute();
     }
-
 }
 
 

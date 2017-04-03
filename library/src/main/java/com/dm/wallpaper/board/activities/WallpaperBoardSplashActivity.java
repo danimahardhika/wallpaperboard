@@ -2,7 +2,6 @@ package com.dm.wallpaper.board.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,19 +9,15 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.dm.wallpaper.board.R;
-import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.helpers.ColorHelper;
-import com.dm.wallpaper.board.utils.Extras;
+import com.dm.wallpaper.board.utils.LogUtil;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -46,11 +41,9 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class WallpaperBoardSplashActivity extends AppCompatActivity {
 
-    @BindView(R2.id.progress)
-    ProgressBar mProgress;
-
     private Class<?> mMainActivity;
     private AsyncTask<Void, Void, Boolean> mCheckRszIo;
+    private AsyncTask<Void, Void, Boolean> mPrepareApp;
 
     @Deprecated
     public void initSplashActivity(@Nullable Bundle savedInstanceState, @NonNull Class<?> mainActivity, int duration) {
@@ -60,23 +53,14 @@ public class WallpaperBoardSplashActivity extends AppCompatActivity {
     public void initSplashActivity(@Nullable Bundle savedInstanceState, @NonNull Class<?> mainActivity) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        ButterKnife.bind(this);
         mMainActivity = mainActivity;
-
-        mProgress.getIndeterminateDrawable().setColorFilter(ColorHelper.getAttributeColor(
-                this, R.attr.colorAccent), PorterDuff.Mode.SRC_IN);
 
         int color = ContextCompat.getColor(this, R.color.splashColor);
         int titleColor = ColorHelper.getTitleTextColor(color);
         TextView splashTitle = ButterKnife.findById(this, R.id.splash_title);
-        splashTitle.setTextColor(ColorHelper.setColorAlpha(titleColor, 0.6f ));
+        splashTitle.setTextColor(ColorHelper.setColorAlpha(titleColor, 0.6f));
 
-        TextView splashLoading = ButterKnife.findById(this, R.id.splash_loading);
-        splashLoading.setTextColor(titleColor);
-        splashLoading.setText(String.format(
-                getResources().getString(R.string.splash_screen_loading),
-                getResources().getString(R.string.app_name)));
-
+        prepareApp();
         checkRszIo();
     }
 
@@ -86,21 +70,51 @@ public class WallpaperBoardSplashActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onDestroy() {
+    public void onBackPressed() {
         if (mCheckRszIo != null) mCheckRszIo.cancel(true);
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (mPrepareApp != null) mPrepareApp.cancel(true);
         super.onDestroy();
+    }
+
+    private void prepareApp() {
+        mPrepareApp = new AsyncTask<Void, Void, Boolean>() {
+            @Override
+            protected Boolean doInBackground(Void... voids) {
+                while (!isCancelled()) {
+                    try {
+                        Thread.sleep(500);
+                        return true;
+                    } catch (Exception e) {
+                        LogUtil.e(Log.getStackTraceString(e));
+                        return false;
+                    }
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean aBoolean) {
+                super.onPostExecute(aBoolean);
+                if (aBoolean) {
+                    mPrepareApp = null;
+
+                    startActivity(new Intent(WallpaperBoardSplashActivity.this, mMainActivity));
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    finish();
+                }
+            }
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private void checkRszIo() {
         mCheckRszIo = new AsyncTask<Void, Void, Boolean>() {
 
             final String rszio = "https://rsz.io/";
-
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                mProgress.setVisibility(View.VISIBLE);
-            }
 
             @Override
             protected Boolean doInBackground(Void... voids) {
@@ -114,7 +128,7 @@ public class WallpaperBoardSplashActivity extends AppCompatActivity {
                         int code = connection.getResponseCode();
                         return code == 200;
                     } catch (Exception e) {
-                        Log.d(Extras.LOG_TAG, Log.getStackTraceString(e));
+                        LogUtil.e(Log.getStackTraceString(e));
                         return false;
                     }
                 }
@@ -124,14 +138,11 @@ public class WallpaperBoardSplashActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(Boolean aBoolean) {
                 super.onPostExecute(aBoolean);
-                WallpaperBoardActivity.sRszIoAvailable = aBoolean;
-                Log.d(Extras.LOG_TAG, "rsz.io availability: " +WallpaperBoardActivity.sRszIoAvailable);
                 mCheckRszIo = null;
 
-                startActivity(new Intent(WallpaperBoardSplashActivity.this, mMainActivity));
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                finish();
+                WallpaperBoardActivity.sRszIoAvailable = aBoolean;
+                LogUtil.e("rsz.io availability: " +WallpaperBoardActivity.sRszIoAvailable);
             }
-        }.execute();
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 }

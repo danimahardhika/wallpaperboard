@@ -4,23 +4,20 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.TransitionDrawable;
 import android.os.Build;
-import android.support.annotation.AttrRes;
+import android.support.annotation.IntegerRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
@@ -32,7 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dm.wallpaper.board.R;
-import com.dm.wallpaper.board.utils.Extras;
+import com.dm.wallpaper.board.utils.LogUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 /*
@@ -55,13 +52,56 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class ViewHelper {
 
+    public static void setupToolbar(@NonNull Toolbar toolbar, boolean adjustHeight) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Context context = ContextHelper.getBaseContext(toolbar);
+            int statusBarSize = ViewHelper.getStatusBarHeight(context);
+            toolbar.setPadding(
+                    toolbar.getPaddingLeft(),
+                    toolbar.getPaddingTop() + statusBarSize,
+                    toolbar.getPaddingRight(),
+                    toolbar.getPaddingBottom()
+            );
+
+            if (adjustHeight) {
+                toolbar.getLayoutParams().height = getToolbarHeight(context) + statusBarSize;
+            }
+        }
+    }
+
+    public static int getToolbarHeight(@NonNull Context context) {
+        TypedValue typedValue = new TypedValue();
+        int[] actionBarSize = new int[] { R.attr.actionBarSize };
+        int indexOfAttrTextSize = 0;
+        TypedArray a = context.obtainStyledAttributes(typedValue.data, actionBarSize);
+        int size = a.getDimensionPixelSize(indexOfAttrTextSize, -1);
+        a.recycle();
+        return size;
+    }
+
     public static void resetSpanCount(@NonNull Context context, @NonNull RecyclerView recyclerView) {
         try {
             GridLayoutManager manager = (GridLayoutManager) recyclerView.getLayoutManager();
-            manager.setSpanCount(context.getResources().getInteger(R.integer.column_num));
+            manager.setSpanCount(context.getResources().getInteger(R.integer.wallpapers_column_count));
             manager.requestLayout();
         } catch (Exception e) {
-            Log.d(Extras.LOG_TAG, Log.getStackTraceString(e));
+            LogUtil.e(Log.getStackTraceString(e));
+        }
+    }
+
+    public static void resetSpanCount(@NonNull Context context, @NonNull RecyclerView recyclerView, @IntegerRes int res) {
+        try {
+            if (recyclerView.getLayoutManager() instanceof GridLayoutManager) {
+                GridLayoutManager manager = (GridLayoutManager) recyclerView.getLayoutManager();
+                manager.setSpanCount(context.getResources().getInteger(res));
+                manager.requestLayout();
+            } else if (recyclerView.getLayoutManager() instanceof StaggeredGridLayoutManager) {
+                StaggeredGridLayoutManager manager = (StaggeredGridLayoutManager) recyclerView.getLayoutManager();
+                manager.setSpanCount(context.getResources().getInteger(res));
+                manager.requestLayout();
+            }
+        } catch (Exception e) {
+            LogUtil.e(Log.getStackTraceString(e));
         }
     }
 
@@ -87,45 +127,73 @@ public class ViewHelper {
         }
     }
 
-    public static void resetNavigationBarBottomPadding(@NonNull Context context, @Nullable View view,
-                                                       int orientation) {
+    public static void resetViewBottomPadding(@Nullable View view, boolean scroll) {
+        if (view == null) return;
+
+        Context context = ContextHelper.getBaseContext(view);
+        int orientation = context.getResources().getConfiguration().orientation;
+
+        int left = view.getPaddingLeft();
+        int right = view.getPaddingRight();
+        int bottom = view.getPaddingBottom();
+        int top = view.getPaddingTop();
+        int navBar = 0;
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (view != null) {
-                int left = view.getPaddingLeft();
-                int right = view.getPaddingRight();
-                int bottom = view.getPaddingBottom();
-                int top = view.getPaddingTop();
-                int navBar = getNavigationBarHeight(context);
+            boolean tabletMode = context.getResources().getBoolean(R.bool.tablet_mode);
+            if (tabletMode || orientation == Configuration.ORIENTATION_PORTRAIT) {
+                navBar = getNavigationBarHeight(context);
+            }
 
-                if (bottom > navBar) bottom -= navBar;
-                boolean tabletMode = context.getResources().getBoolean(R.bool.tablet_mode);
-
-                if (tabletMode || orientation == Configuration.ORIENTATION_PORTRAIT) {
-                    view.setPadding(left, top, right, (bottom + navBar));
-                    return;
-                }
-
-                view.setPadding(left, top, right, bottom);
+            if (!scroll) {
+                navBar += ViewHelper.getStatusBarHeight(context);
             }
         }
+
+        if (bottom > navBar) bottom -= getNavigationBarHeight(context);
+        if (!scroll) {
+            navBar += ViewHelper.getToolbarHeight(context);
+        }
+        view.setPadding(left, top, right, (bottom + navBar));
     }
 
-    public static void disableAppBarDrag(@Nullable AppBarLayout appBar) {
-        if (appBar != null) {
-            if (ViewCompat.isLaidOut(appBar)) {
-                CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams)
-                        appBar.getLayoutParams();
-                AppBarLayout.Behavior behavior = (AppBarLayout.Behavior) params.getBehavior();
-                if (behavior != null) {
-                    behavior.setDragCallback(new AppBarLayout.Behavior.DragCallback() {
-                        @Override
-                        public boolean canDrag(@NonNull AppBarLayout appBarLayout) {
-                            return false;
-                        }
-                    });
-                }
+    public static void resetViewBottomMargin(@Nullable View view) {
+        if (view == null) return;
+
+        Context context = ContextHelper.getBaseContext(view);
+        int orientation = context.getResources().getConfiguration().orientation;
+
+        if (!(view.getLayoutParams() instanceof CoordinatorLayout.LayoutParams))
+            return;
+
+        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) view.getLayoutParams();
+        int left = params.leftMargin;
+        int right = params.rightMargin;
+        int bottom = params.bottomMargin;
+        int top = params.topMargin;
+        int bottomNavBar = 0;
+        int rightNavBar = 0;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            boolean tabletMode = context.getResources().getBoolean(R.bool.tablet_mode);
+            if (tabletMode || orientation == Configuration.ORIENTATION_PORTRAIT) {
+                bottomNavBar = getNavigationBarHeight(context);
+            } else {
+                rightNavBar = getNavigationBarHeight(context);
             }
         }
+
+        int navBar = getNavigationBarHeight(context);
+        if ((bottom > bottomNavBar) && ((bottom - navBar) > 0))
+            bottom -= navBar;
+        if ((right > rightNavBar) && ((right - navBar) > 0))
+            right -= navBar;
+
+        params.setMargins(left, top, (right + rightNavBar), (bottom + bottomNavBar));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            params.setMarginEnd((right + rightNavBar));
+        }
+        view.setLayoutParams(params);
     }
 
     public static int getStatusBarHeight(@NonNull Context context) {
@@ -183,7 +251,7 @@ public class ViewHelper {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             TypedValue typedValue = new TypedValue();
             Resources.Theme theme = context.getTheme();
-            theme.resolveAttribute(R.attr.toolbar_color, typedValue, true);
+            theme.resolveAttribute(R.attr.colorPrimary, typedValue, true);
             Bitmap bitmap = ImageLoader.getInstance().loadImageSync("drawable://"
                     +DrawableHelper.getResourceId(context, "icon"));
             ((AppCompatActivity) context).setTaskDescription(new ActivityManager.TaskDescription (
@@ -224,21 +292,4 @@ public class ViewHelper {
             }
         }
     }
-
-    public static void changeSearchViewActionModeColor(@NonNull Context context, @Nullable View view,
-                                                       @AttrRes int original, @AttrRes int target) {
-        if (view != null) {
-            CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) view;
-            int originalColor = ColorHelper.getAttributeColor(context, original);
-            int targetColor = ColorHelper.getAttributeColor(context, target);
-
-            ColorDrawable cd1 = new ColorDrawable(originalColor);
-            ColorDrawable cd2 = new ColorDrawable(targetColor);
-
-            TransitionDrawable td = new TransitionDrawable(new Drawable[]{cd1, cd2});
-            collapsingToolbar.setContentScrim(td);
-            td.startTransition(200);
-        }
-    }
-
 }

@@ -4,4 +4,9 @@
     <!-- Card -->
     <bool name="card_use_compat_padding">true</bool>
 
+    <bool name="tablet_mode">false</bool>
+
+    <!-- View -->
+    <bool name="view_fitsystemwindow">false</bool>
+
 </resources>

@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
 import com.dm.wallpaper.board.R;
+import com.dm.wallpaper.board.helpers.FileHelper;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -40,23 +41,24 @@ public class ImageConfig {
         L.writeLogs(false);
         L.writeDebugLogs(false);
         return new ImageLoaderConfiguration.Builder(context)
-                .diskCacheSize(200 * 1024 * 1024)
                 .threadPriority(Thread.NORM_PRIORITY - 2)
                 .threadPoolSize(4)
                 .tasksProcessingOrder(QueueProcessingType.FIFO)
+                .diskCacheSize(256 * FileHelper.MB)
                 .diskCache(new UnlimitedDiskCache(new File(
                         context.getCacheDir().toString() + "/uil-images")))
+                .memoryCacheSize(6 * FileHelper.MB)
                 .build();
     }
 
-    public static DisplayImageOptions getDefaultImageOptions(boolean cacheOnDisk) {
+    public static DisplayImageOptions getDefaultImageOptions() {
         DisplayImageOptions.Builder options = new DisplayImageOptions.Builder();
         options.delayBeforeLoading(10)
                 .resetViewBeforeLoading(true)
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .imageScaleType(ImageScaleType.EXACTLY)
                 .displayer(new FadeInBitmapDisplayer(700))
-                .cacheOnDisk(cacheOnDisk)
+                .cacheOnDisk(true)
                 .cacheInMemory(false);
         return options.build();
     }
@@ -84,6 +86,5 @@ public class ImageConfig {
         if (quality <= 0) quality = 1;
         return new ImageSize((50 * quality), (50 * quality));
     }
-
 }
 

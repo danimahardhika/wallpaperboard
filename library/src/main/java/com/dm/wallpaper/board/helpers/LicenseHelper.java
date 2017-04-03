@@ -5,13 +5,12 @@ import android.content.Context;
 import android.provider.Settings.Secure;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.preferences.Preferences;
-import com.dm.wallpaper.board.utils.Extras;
+import com.dm.wallpaper.board.utils.LogUtil;
 import com.google.android.vending.licensing.AESObfuscator;
 import com.google.android.vending.licensing.LicenseChecker;
 import com.google.android.vending.licensing.LicenseCheckerCallback;
@@ -41,6 +40,7 @@ public class LicenseHelper implements LicenseCheckerCallback {
     private final Context mContext;
     private MaterialDialog mDialog;
 
+    @NonNull
     public static LicenseHelper getLicenseChecker(@NonNull Context context) {
         return new LicenseHelper(context);
     }
@@ -61,7 +61,7 @@ public class LicenseHelper implements LicenseCheckerCallback {
             checker.checkAccess(this);
             getDialog().show();
         } else {
-            Log.d(Extras.LOG_TAG, "Unable to check license, random bytes is wrong!");
+            LogUtil.e("Unable to check license, random bytes is wrong!");
         }
     }
 
@@ -124,7 +124,7 @@ public class LicenseHelper implements LicenseCheckerCallback {
                 .content(message)
                 .positiveText(R.string.close)
                 .onPositive((dialog, which) -> {
-                    OnLicenseChecked(reason);
+                    onLicenseChecked(reason);
                     dialog.dismiss();
                 })
                 .cancelable(false)
@@ -143,7 +143,7 @@ public class LicenseHelper implements LicenseCheckerCallback {
                 .show();
     }
 
-    private void OnLicenseChecked(int reason) {
+    private void onLicenseChecked(int reason) {
         Preferences.getPreferences(mContext).setFirstRun(false);
         if (reason == Policy.LICENSED) {
             Preferences.getPreferences(mContext).setLicensed(true);

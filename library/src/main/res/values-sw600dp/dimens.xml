@@ -6,7 +6,8 @@
     <dimen name="splash_screen_text">16sp</dimen>
 
     <!-- About header image height -->
-    <dimen name="about_profile">110dp</dimen>
-    <dimen name="about_image_height">180dp</dimen>
+    <dimen name="about_profile">140dp</dimen>
+    <dimen name="about_profile_border">4dp</dimen>
+    <dimen name="about_profile_margin_top">-70dp</dimen>
 
 </resources>

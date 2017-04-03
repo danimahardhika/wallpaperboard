@@ -7,13 +7,12 @@ import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -27,7 +26,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.View;
 import android.webkit.URLUtil;
 import android.widget.ImageView;
@@ -57,6 +55,7 @@ import com.dm.wallpaper.board.receivers.WallpaperBoardReceiver;
 import com.dm.wallpaper.board.services.WallpaperBoardService;
 import com.dm.wallpaper.board.utils.Extras;
 import com.dm.wallpaper.board.utils.ImageConfig;
+import com.dm.wallpaper.board.utils.LogUtil;
 import com.dm.wallpaper.board.utils.listeners.InAppBillingListener;
 import com.dm.wallpaper.board.utils.listeners.SearchListener;
 import com.dm.wallpaper.board.utils.listeners.WallpaperBoardListener;
@@ -97,6 +96,8 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
     NavigationView mNavigationView;
     @BindView(R2.id.drawer_layout)
     DrawerLayout mDrawerLayout;
+    @BindView(R2.id.appbar)
+    AppBarLayout mAppBar;
 
     private BillingProcessor mBillingProcessor;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -119,9 +120,10 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wallpaper_board);
         ButterKnife.bind(this);
-        ViewHelper.setApplicationWindowColor(this);
+
         ViewHelper.resetNavigationBarTranslucent(this,
                 getResources().getConfiguration().orientation);
+        ColorHelper.setStatusBarIconColor(this);
         registerBroadcastReceiver();
 
         SoftKeyboardHelper softKeyboardHelper = new SoftKeyboardHelper(this,
@@ -133,34 +135,31 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
         mDonationProductsId = donationProductsId;
 
         Toolbar toolbar = ButterKnife.findById(this, R.id.toolbar);
-        AppBarLayout appBar = ButterKnife.findById(this, R.id.appbar);
         toolbar.setTitle("");
+
+        ViewHelper.setupToolbar(toolbar, true);
         setSupportActionBar(toolbar);
-        appBar.setExpanded(false);
 
         initNavigationView(toolbar);
         initNavigationViewHeader();
-        initTheme();
         initInAppBilling();
 
         mPosition = mLastPosition = 0;
         if (savedInstanceState != null) {
-            mPosition = mLastPosition = savedInstanceState.getInt("position", 0);
+            mPosition = mLastPosition = savedInstanceState.getInt(Extras.EXTRA_POSITION, 0);
         }
 
         setFragment(getFragment(mPosition));
-        checkWallpapers();
 
-        if (Preferences.getPreferences(this).isFirstRun()) {
-            if (isLicenseCheckerEnabled) {
-                LicenseHelper.getLicenseChecker(this).checkLicense(mLicenseKey, salt);
-                return;
-            }
+        if (Preferences.getPreferences(this).isFirstRun() && isLicenseCheckerEnabled) {
+            LicenseHelper.getLicenseChecker(this).checkLicense(mLicenseKey, salt);
+            return;
         }
 
-        if (isLicenseCheckerEnabled) {
-            if (!Preferences.getPreferences(this).isLicensed())
-                finish();
+        checkWallpapers();
+
+        if (isLicenseCheckerEnabled && !Preferences.getPreferences(this).isLicensed()) {
+            finish();
         }
     }
 
@@ -192,12 +191,6 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        ViewHelper.disableAppBarDrag(ButterKnife.findById(this, R.id.appbar));
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         resetNavigationView(newConfig.orientation);
@@ -213,6 +206,12 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
 
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawers();
+            return;
+        }
+
+        if (!mFragmentTag.equals(Extras.TAG_WALLPAPERS)) {
+            mPosition = mLastPosition = 0;
+            setFragment(getFragment(mPosition));
             return;
         }
         super.onBackPressed();
@@ -243,8 +242,19 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
     }
 
     @Override
-    public void OnWallpapersChecked(@Nullable Intent intent) {
+    public void onWallpapersChecked(@Nullable Intent intent) {
         if (intent != null) {
+            String packageName = intent.getStringExtra("packageName");
+            LogUtil.d("Broadcast received from service with packageName: " +packageName);
+
+            if (packageName == null)
+                return;
+
+            if (!packageName.equals(getPackageName())) {
+                LogUtil.d("Received broadcast from different packageName, expected: " +getPackageName());
+                return;
+            }
+
             int size = intent.getIntExtra(Extras.EXTRA_SIZE, 0);
             Database database = new Database(this);
             int offlineSize = database.getWallpapersCount();
@@ -279,18 +289,18 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
     }
 
     @Override
-    public void OnInAppBillingInitialized(boolean success) {
+    public void onInAppBillingInitialized(boolean success) {
         if (!success) mBillingProcessor = null;
     }
 
     @Override
-    public void OnInAppBillingSelected(InAppBilling product) {
+    public void onInAppBillingSelected(InAppBilling product) {
         if (mBillingProcessor == null) return;
         mBillingProcessor.purchase(this, product.getProductId());
     }
 
     @Override
-    public void OnInAppBillingConsume(String productId) {
+    public void onInAppBillingConsume(String productId) {
         if (mBillingProcessor == null) return;
         if (mBillingProcessor.consumePurchase(productId)) {
             new MaterialDialog.Builder(this)
@@ -302,26 +312,17 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
     }
 
     @Override
-    public void OnSearchExpanded(boolean expand) {
+    public void onSearchExpanded(boolean expand) {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout)
-                findViewById(R.id.collapsing_toolbar);
 
         if (expand) {
-            int color = ColorHelper.getAttributeColor(this, R.attr.search_toolbar_color);
-            ViewHelper.changeSearchViewActionModeColor(this,
-                    collapsingToolbar, R.attr.toolbar_color, R.attr.search_toolbar_color);
-            ColorHelper.setStatusBarColor(this, color);
-
-            int iconColor = ColorHelper.getAttributeColor(this, R.attr.search_toolbar_icon);
+            int icon = ColorHelper.getAttributeColor(this, R.attr.toolbar_icon);
             toolbar.setNavigationIcon(DrawableHelper.getTintedDrawable(
-                    this, R.drawable.ic_toolbar_back, iconColor));
+                    this, R.drawable.ic_toolbar_back, icon));
             toolbar.setNavigationOnClickListener(view -> onBackPressed());
         } else {
             SoftKeyboardHelper.closeKeyboard(this);
-            ColorHelper.setTransparentStatusBar(this, Color.TRANSPARENT);
-            collapsingToolbar.setContentScrim(new ColorDrawable(
-                    ColorHelper.getAttributeColor(this, R.attr.toolbar_color)));
+
             mDrawerToggle.setDrawerArrowDrawable(new DrawerArrowDrawable(this));
             toolbar.setNavigationOnClickListener(view ->
                     mDrawerLayout.openDrawer(GravityCompat.START));
@@ -367,6 +368,11 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
                 getResources().getBoolean(R.bool.enable_donation));
         mNavigationView.setItemTextColor(colorStateList);
         mNavigationView.setItemIconTintList(colorStateList);
+        Drawable background = ContextCompat.getDrawable(this,
+                Preferences.getPreferences(this).isDarkTheme() ?
+                        R.drawable.navigation_view_item_background_dark :
+                        R.drawable.navigation_view_item_background);
+        mNavigationView.setItemBackground(background);
         mNavigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
             if (id == R.id.navigation_view_wallpapers) mPosition = 0;
@@ -379,12 +385,6 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
             mDrawerLayout.closeDrawers();
             return true;
         });
-    }
-
-    private void initTheme() {
-        getWindow().getDecorView().setBackgroundColor(
-                ColorHelper.getAttributeColor(this, R.attr.main_background));
-        ColorHelper.setStatusBarIconColor(this);
     }
 
     private void initNavigationViewHeader() {
@@ -417,7 +417,7 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
         }
 
         ImageLoader.getInstance().displayImage(imageUrl, new ImageViewAware(image),
-                ImageConfig.getDefaultImageOptions(true), new ImageSize(720, 720), null, null);
+                ImageConfig.getDefaultImageOptions(), new ImageSize(720, 720), null, null);
     }
 
     private void initInAppBilling() {
@@ -448,7 +448,7 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
 
         int size = Preferences.getPreferences(this).getAvailableWallpapersCount();
         if (size > 0) {
-            OnWallpapersChecked(new Intent().putExtra(Extras.EXTRA_SIZE, size));
+            onWallpapersChecked(new Intent().putExtra(Extras.EXTRA_SIZE, size));
         }
     }
 
@@ -468,9 +468,11 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
         if (fragment == null) return;
         clearBackStack();
 
+        mAppBar.setExpanded(true);
+
         FragmentTransaction ft = mFragManager.beginTransaction().replace(
                 R.id.container, fragment, mFragmentTag);
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         try {
             ft.commit();
         } catch (Exception e) {
@@ -508,7 +510,7 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
     private void clearBackStack() {
         if (mFragManager.getBackStackEntryCount() > 0) {
             mFragManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            OnSearchExpanded(false);
+            onSearchExpanded(false);
         }
     }
 }

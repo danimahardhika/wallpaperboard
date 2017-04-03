@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="MissingPrefix"
-    android:id="@+id/container"
+    android:id="@+id/rootview"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -19,25 +19,6 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
 
-        <android.support.design.widget.CoordinatorLayout
-            android:id="@+id/rootview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true">
-
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab"
-                android:layout_width="@dimen/fab_size"
-                android:layout_height="@dimen/fab_size"
-                android:layout_gravity="bottom|end"
-                android:layout_marginRight="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginBottom="20dp"
-                android:visibility="gone"
-                app:backgroundTint="?attr/colorAccent" />
-
-        </android.support.design.widget.CoordinatorLayout>
-
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -49,8 +30,8 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/card_padding"
-                android:paddingBottom="@dimen/card_padding"
+                android:paddingTop="@dimen/content_margin"
+                android:paddingBottom="@dimen/content_margin"
                 android:orientation="vertical">
 
                 <TextView
@@ -59,9 +40,9 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:textColor="@android:color/white"
-                    android:singleLine="true"
+                    android:maxLines="1"
                     android:ellipsize="end"
-                    android:textSize="@dimen/text_toolbar_title"
+                    android:textSize="@dimen/text_content_title"
                     fontPath="fonts/Font-Medium.ttf"/>
 
                 <TextView
@@ -70,9 +51,9 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:textColor="@android:color/white"
-                    android:singleLine="true"
+                    android:maxLines="1"
                     android:ellipsize="end"
-                    android:textSize="@dimen/text_content_title"
+                    android:textSize="@dimen/text_content"
                     fontPath="fonts/Font-Regular.ttf"/>
 
             </LinearLayout>
@@ -89,4 +70,15 @@
         android:visibility="gone"
         style="?android:attr/progressBarStyleLarge"/>
 
-</FrameLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="@dimen/fab_size"
+        android:layout_height="@dimen/fab_size"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:visibility="gone"
+        app:backgroundTint="?attr/colorAccent" />
+
+</android.support.design.widget.CoordinatorLayout>

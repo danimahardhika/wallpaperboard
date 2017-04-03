@@ -20,10 +20,15 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.anjlab.android.iab.v3.BillingProcessor;
 import com.anjlab.android.iab.v3.SkuDetails;
 import com.dm.wallpaper.board.R;
+import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.adapters.InAppBillingAdapter;
 import com.dm.wallpaper.board.items.InAppBilling;
 import com.dm.wallpaper.board.utils.Extras;
+import com.dm.wallpaper.board.utils.LogUtil;
 import com.dm.wallpaper.board.utils.listeners.InAppBillingListener;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /*
  * Wallpaper Board
@@ -44,6 +49,17 @@ import com.dm.wallpaper.board.utils.listeners.InAppBillingListener;
  */
 
 public class InAppBillingFragment extends DialogFragment {
+
+    @BindView(R2.id.inapp_list)
+    ListView mListView;
+    @BindView(R2.id.progress)
+    ProgressBar mProgress;
+
+    private String mKey;
+    private String[] mProductsId;
+
+    private InAppBillingAdapter mAdapter;
+    private AsyncTask<Void, Void, Boolean> mLoadInAppProducts;
 
     private static BillingProcessor mBillingProcessor;
 
@@ -73,15 +89,6 @@ public class InAppBillingFragment extends DialogFragment {
         } catch (IllegalArgumentException | IllegalStateException ignored) {}
     }
 
-    private ListView mInAppList;
-    private ProgressBar mProgress;
-
-    private String mKey;
-    private String[] mProductsId;
-
-    private InAppBillingAdapter mAdapter;
-    private AsyncTask<Void, Void, Boolean> mLoadInAppProducts;
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,7 +108,7 @@ public class InAppBillingFragment extends DialogFragment {
                     if (mLoadInAppProducts == null) {
                         try {
                             InAppBillingListener listener = (InAppBillingListener) getActivity();
-                            listener.OnInAppBillingSelected(mAdapter.getSelectedProduct());
+                            listener.onInAppBillingSelected(mAdapter.getSelectedProduct());
                         } catch (Exception ignored) {}
                         dismiss();
                     }
@@ -112,8 +119,7 @@ public class InAppBillingFragment extends DialogFragment {
         dialog.show();
         setCancelable(false);
 
-        mInAppList = (ListView) dialog.findViewById(R.id.inapp_list);
-        mProgress = (ProgressBar) dialog.findViewById(R.id.progress);
+        ButterKnife.bind(this, dialog);
         return dialog;
     }
 
@@ -179,7 +185,7 @@ public class InAppBillingFragment extends DialogFragment {
                         }
                         return true;
                     } catch (Exception e) {
-                        Log.d(Extras.LOG_TAG, Log.getStackTraceString(e));
+                        LogUtil.e(Log.getStackTraceString(e));
                         return false;
                     }
                 }
@@ -192,7 +198,7 @@ public class InAppBillingFragment extends DialogFragment {
                 mProgress.setVisibility(View.GONE);
                 if (aBoolean) {
                     mAdapter = new InAppBillingAdapter(getActivity(), inAppBillings);
-                    mInAppList.setAdapter(mAdapter);
+                    mListView.setAdapter(mAdapter);
                 } else {
                     dismiss();
                     if (!isBillingNotReady)
@@ -204,5 +210,4 @@ public class InAppBillingFragment extends DialogFragment {
 
         }.execute();
     }
-
 }
