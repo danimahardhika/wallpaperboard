@@ -98,10 +98,10 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Vi
         }
 
         int color = ColorHelper.getAttributeColor(mContext, android.R.attr.textColorSecondary);
-        Drawable loading = DrawableHelper.getTintedDrawable(
+        Drawable loading = DrawableHelper.getDefaultImage(
                 mContext, R.drawable.ic_default_image_loading, color,
                 mContext.getResources().getDimensionPixelSize(R.dimen.default_image_padding));
-        Drawable failed = DrawableHelper.getTintedDrawable(
+        Drawable failed = DrawableHelper.getDefaultImage(
                 mContext, R.drawable.ic_default_image_failed, color,
                 mContext.getResources().getDimensionPixelSize(R.dimen.default_image_padding));
         mOptions = ImageConfig.getRawDefaultImageOptions();

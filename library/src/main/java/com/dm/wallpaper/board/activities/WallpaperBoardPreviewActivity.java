@@ -1,13 +1,10 @@
 package com.dm.wallpaper.board.activities;
 
-import android.animation.ArgbEvaluator;
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -26,7 +23,6 @@ import android.transition.Transition;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -326,16 +322,7 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
             public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
                 super.onLoadingFailed(imageUri, view, failReason);
                 int text = ColorHelper.getTitleTextColor(mColor);
-                OnWallpaperLoaded(text);
-
-                int color = ColorHelper.getAttributeColor(
-                        WallpaperBoardPreviewActivity.this, R.attr.main_background);
-                FrameLayout container = ButterKnife.findById(WallpaperBoardPreviewActivity.this, R.id.container);
-                ObjectAnimator colorFade = ObjectAnimator.ofObject(
-                        container, "backgroundColor", new ArgbEvaluator(),
-                        Color.TRANSPARENT, color);
-                colorFade.setDuration(1000);
-                colorFade.start();
+                onWallpaperLoaded(text);
             }
 
             @Override
@@ -353,14 +340,14 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
                         mColor = color;
                         int text = ColorHelper.getTitleTextColor(color);
                         mFab.setBackgroundTintList(ColorHelper.getColorStateList(color));
-                        OnWallpaperLoaded(text);
+                        onWallpaperLoaded(text);
                     });
                 }
             }
         });
     }
 
-    private void OnWallpaperLoaded(@ColorInt int textColor) {
+    private void onWallpaperLoaded(@ColorInt int textColor) {
         mAttacher = new PhotoViewAttacher(mWallpaper);
         mAttacher.setScaleType(ImageView.ScaleType.CENTER_CROP);
         mProgress.setVisibility(View.GONE);
