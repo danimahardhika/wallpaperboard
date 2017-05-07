@@ -97,11 +97,9 @@ public class ColorHelper {
     }
 
     private static boolean isLightToolbar(@NonNull Context context) {
-        int color = getAttributeColor(context, R.attr.colorPrimary);
-        int red = Color.red(color);
-        int green = Color.green(color);
-        int blue = Color.blue(color);
-        return red >= 192 && green >= 192 && blue >= 192;
+        int color = getAttributeColor(context, R.attr.colorPrimaryDark);
+        int title = getTitleTextColor(color);
+        return title < Color.WHITE;
     }
 
     public static void setStatusBarIconColor(@NonNull Context context) {
