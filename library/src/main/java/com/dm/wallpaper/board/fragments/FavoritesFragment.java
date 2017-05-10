@@ -13,13 +13,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.adapters.WallpapersAdapter;
 import com.dm.wallpaper.board.databases.Database;
+import com.dm.wallpaper.board.helpers.ColorHelper;
+import com.dm.wallpaper.board.helpers.DrawableHelper;
 import com.dm.wallpaper.board.helpers.ViewHelper;
 import com.dm.wallpaper.board.items.Wallpaper;
+import com.dm.wallpaper.board.preferences.Preferences;
 import com.dm.wallpaper.board.utils.LogUtil;
 import com.dm.wallpaper.board.utils.listeners.WallpaperListener;
 
@@ -53,6 +57,8 @@ public class FavoritesFragment extends Fragment implements WallpaperListener {
     RecyclerView mRecyclerView;
     @BindView(R2.id.swipe)
     SwipeRefreshLayout mSwipe;
+    @BindView(R2.id.favorite_empty)
+    ImageView mFavoriteEmpty;
 
     private AsyncTask<Void, Void, Boolean> mGetWallpapers;
 
@@ -61,6 +67,11 @@ public class FavoritesFragment extends Fragment implements WallpaperListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_wallpapers, container, false);
         ButterKnife.bind(this, view);
+
+        if (!Preferences.get(getActivity()).isShadowEnabled()) {
+            View shadow = ButterKnife.findById(view, R.id.shadow);
+            if (shadow != null) shadow.setVisibility(View.GONE);
+        }
         return view;
     }
 
@@ -131,6 +142,13 @@ public class FavoritesFragment extends Fragment implements WallpaperListener {
                 super.onPostExecute(aBoolean);
                 if (aBoolean) {
                     mRecyclerView.setAdapter(new WallpapersAdapter(getActivity(), wallpapers, true, false));
+
+                    if (mRecyclerView.getAdapter().getItemCount() == 0) {
+                        int color = ColorHelper.getAttributeColor(getActivity(), android.R.attr.textColorSecondary);
+                        mFavoriteEmpty.setImageDrawable(DrawableHelper.getTintedDrawable(
+                                getActivity(), R.drawable.ic_wallpaper_favorite_empty, ColorHelper.setColorAlpha(color, 0.7f)));
+                        mFavoriteEmpty.setVisibility(View.VISIBLE);
+                    }
                 }
                 mGetWallpapers = null;
             }

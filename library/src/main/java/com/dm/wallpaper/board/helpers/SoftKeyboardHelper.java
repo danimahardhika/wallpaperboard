@@ -29,6 +29,9 @@ import android.view.inputmethod.InputMethodManager;
 
 public class SoftKeyboardHelper {
 
+    private final View decorView;
+    private final View contentView;
+
     public static void closeKeyboard(@NonNull Context context) {
         InputMethodManager input = (InputMethodManager) context.getSystemService(
                 Context.INPUT_METHOD_SERVICE);
@@ -50,9 +53,6 @@ public class SoftKeyboardHelper {
     /*
      * This code was taken from https://github.com/mikepenz/MaterialDrawer/issues/95#issuecomment-80519589
      */
-
-    private final View decorView;
-    private final View contentView;
 
     public SoftKeyboardHelper(Activity act, View contentView) {
         this.decorView = act.getWindow().getDecorView();

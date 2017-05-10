@@ -39,8 +39,12 @@ public class PreferencesHelper {
     private static final String KEY_ROTATE_MINUTE = "rotate_minute";
     private static final String KEY_WIFI_ONLY = "wifi_only";
     private static final String KEY_WALLS_DIRECTORY = "wallpaper_directory";
-    private static final String KEY_SCROLL_WALLPAPER = "scroll_wallpaper";
     private static final String KEY_AVAILABLE_WALLPAPERS_COUNT = "available_wallpapers_count";
+    private static final String KEY_WALLPAPER_CROP = "wallpaper_crop";
+    private static final String KEY_APPLY_LOCKSCREEN = "apply_lockscreen";
+    private static final String KEY_WALLPAPERS_INTRO = "wallpapers_intro";
+    private static final String KEY_WALLPAPER_PREVIEW_INTRO = "wallpaper_preview_intro";
+    private static final String KEY_COLORED_WALLPAPERS_CARD = "colored_wallpapers_card";
 
     public PreferencesHelper(@NonNull Context context) {
         mContext = context;
@@ -75,6 +79,34 @@ public class PreferencesHelper {
         getSharedPreferences().edit().putBoolean(KEY_DARK_THEME, bool).apply();
     }
 
+    public boolean isColoredWallpapersCard() {
+        return getSharedPreferences().getBoolean(KEY_COLORED_WALLPAPERS_CARD, false);
+    }
+
+    public void setColoredWallpapersCard(boolean bool) {
+        getSharedPreferences().edit().putBoolean(KEY_COLORED_WALLPAPERS_CARD, bool).apply();
+    }
+
+    public boolean isShadowEnabled() {
+        return mContext.getResources().getBoolean(R.bool.enable_shadow);
+    }
+
+    public boolean isTimeToShowWallpapersIntro() {
+        return getSharedPreferences().getBoolean(KEY_WALLPAPERS_INTRO, true);
+    }
+
+    public void setTimeToShowWallpapersIntro(boolean bool) {
+        getSharedPreferences().edit().putBoolean(KEY_WALLPAPERS_INTRO, bool).apply();
+    }
+
+    public boolean isTimeToShowWallpaperPreviewIntro() {
+        return getSharedPreferences().getBoolean(KEY_WALLPAPER_PREVIEW_INTRO, true);
+    }
+
+    public void setTimeToShowWallpaperPreviewIntro(boolean bool) {
+        getSharedPreferences().edit().putBoolean(KEY_WALLPAPER_PREVIEW_INTRO, bool).apply();
+    }
+
     public void setRotateTime (int time) {
         getSharedPreferences().edit().putInt(KEY_ROTATE_TIME, time).apply();
     }
@@ -107,12 +139,20 @@ public class PreferencesHelper {
         return getSharedPreferences().getString(KEY_WALLS_DIRECTORY, "");
     }
 
-    public boolean isScrollWallpaper() {
-        return getSharedPreferences().getBoolean(KEY_SCROLL_WALLPAPER, true);
+    public boolean isWallpaperCrop() {
+        return getSharedPreferences().getBoolean(KEY_WALLPAPER_CROP, false);
     }
 
-    public void setScrollWallpaper(boolean bool) {
-        getSharedPreferences().edit().putBoolean(KEY_SCROLL_WALLPAPER, bool).apply();
+    public void setWallpaperCrop(boolean bool) {
+        getSharedPreferences().edit().putBoolean(KEY_WALLPAPER_CROP, bool).apply();
+    }
+
+    public boolean isApplyLockscreen() {
+        return getSharedPreferences().getBoolean(KEY_APPLY_LOCKSCREEN, false);
+    }
+
+    public void setApplyLockscreen(boolean bool) {
+        getSharedPreferences().edit().putBoolean(KEY_APPLY_LOCKSCREEN, bool).apply();
     }
 
     public int getAvailableWallpapersCount() {

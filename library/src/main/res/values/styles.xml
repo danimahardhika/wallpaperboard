@@ -122,14 +122,17 @@
         <item name="colorControlHighlight">?attr/ripple_color</item>
     </style>
 
-    <style name="AccentButtonStyle">
-        <item name="colorControlNormal">?android:attr/textColorSecondary</item>
-        <item name="colorControlHighlight">?attr/ripple_accent</item>
-    </style>
-
     <style name="CheckBoxStyle">
         <item name="colorControlNormal">?android:attr/textColorSecondary</item>
         <item name="colorControlActivated">?attr/colorAccent</item>
+    </style>
+
+    <style name="RippleStyle">
+        <item name="colorControlHighlight">?attr/ripple_color</item>
+    </style>
+
+    <style name="RippleAccentStyle">
+        <item name="colorControlHighlight">?attr/ripple_accent</item>
     </style>
 
 </resources>

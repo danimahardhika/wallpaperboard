@@ -86,6 +86,7 @@ public class RefreshDurationFragment extends DialogFragment implements View.OnCl
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
         builder.customView(R.layout.fragment_refresh_duration, true);
+        builder.typeface("Font-Medium.ttf", "Font-Regular.ttf");
         builder.title(R.string.muzei_refresh_duration);
         builder.positiveText(R.string.close);
 

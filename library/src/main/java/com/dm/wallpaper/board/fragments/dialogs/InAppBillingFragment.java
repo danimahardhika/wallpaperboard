@@ -101,6 +101,7 @@ public class InAppBillingFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
         builder.customView(R.layout.fragment_inappbilling, false)
+                .typeface("Font-Medium.ttf", "Font-Regular.ttf")
                 .title(R.string.navigation_view_donate)
                 .positiveText(R.string.donate)
                 .negativeText(R.string.close)
@@ -113,6 +114,7 @@ public class InAppBillingFragment extends DialogFragment {
                         dismiss();
                     }
                 });
+
         MaterialDialog dialog = builder.build();
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);

@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Default Image -->
+    <dimen name="default_image_padding">20dp</dimen>
+
+    <!-- Navigation View -->
+    <dimen name="navigation_view_width">320dp</dimen>
+
     <!-- Splash Screen -->
     <dimen name="splash_screen_logo">114dp</dimen>
     <dimen name="splash_screen_text">16sp</dimen>

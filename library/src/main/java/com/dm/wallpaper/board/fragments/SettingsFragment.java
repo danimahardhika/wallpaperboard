@@ -57,6 +57,11 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
         ButterKnife.bind(this, view);
+
+        if (!Preferences.get(getActivity()).isShadowEnabled()) {
+            View shadow = ButterKnife.findById(view, R.id.shadow);
+            if (shadow != null) shadow.setVisibility(View.GONE);
+        }
         return view;
     }
 
@@ -102,20 +107,32 @@ public class SettingsFragment extends Fragment {
         settings.add(new Setting(-1, "",
                 getActivity().getResources().getString(R.string.pref_theme_dark),
                 getActivity().getResources().getString(R.string.pref_theme_dark_desc),
-                "", Setting.Type.THEME, Preferences.getPreferences(getActivity()).isDarkTheme() ? 1 : 0));
+                "", Setting.Type.THEME, Preferences.get(getActivity()).isDarkTheme() ? 1 : 0));
 
         settings.add(new Setting(R.drawable.ic_toolbar_wallpapers,
                 getActivity().getResources().getString(R.string.pref_wallpaper_header),
                 "", "", "", Setting.Type.HEADER, -1));
 
         String directory = getActivity().getResources().getString(R.string.pref_wallpaper_location_desc);
-        if (Preferences.getPreferences(getActivity()).getWallsDirectory().length() > 0) {
-            directory = Preferences.getPreferences(getActivity()).getWallsDirectory() + File.separator;
+        if (Preferences.get(getActivity()).getWallsDirectory().length() > 0) {
+            directory = Preferences.get(getActivity()).getWallsDirectory() + File.separator;
         }
 
         settings.add(new Setting(-1, "",
                 getActivity().getResources().getString(R.string.pref_wallpaper_location),
                 directory, "", Setting.Type.WALLPAPER, -1));
+
+        settings.add(new Setting(R.drawable.ic_toolbar_others,
+                getActivity().getResources().getString(R.string.pref_others_header),
+                "", "", "", Setting.Type.HEADER, -1));
+
+        settings.add(new Setting(-1, "",
+                getActivity().getResources().getString(R.string.pref_others_colored_wallpaper_card),
+                "", "", Setting.Type.COLORED_CARD, Preferences.get(getActivity()).isColoredWallpapersCard() ? 1 : 0));
+
+        settings.add(new Setting(-1, "",
+                getActivity().getResources().getString(R.string.pref_others_reset_tutorial),
+                "", "", Setting.Type.RESET_TUTORIAL, -1));
 
         mRecyclerView.setAdapter(new SettingsAdapter(getActivity(), settings));
     }

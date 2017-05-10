@@ -115,7 +115,7 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
     public void initMainActivity(@Nullable Bundle savedInstanceState, boolean isLicenseCheckerEnabled,
                                  @NonNull byte[] salt, @NonNull String licenseKey,
                                  @NonNull String[] donationProductsId) {
-        super.setTheme(Preferences.getPreferences(this).isDarkTheme() ?
+        super.setTheme(Preferences.get(this).isDarkTheme() ?
                 R.style.AppThemeDark : R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wallpaper_board);
@@ -151,14 +151,14 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
 
         setFragment(getFragment(mPosition));
 
-        if (Preferences.getPreferences(this).isFirstRun() && isLicenseCheckerEnabled) {
+        if (Preferences.get(this).isFirstRun() && isLicenseCheckerEnabled) {
             LicenseHelper.getLicenseChecker(this).checkLicense(mLicenseKey, salt);
             return;
         }
 
         checkWallpapers();
 
-        if (isLicenseCheckerEnabled && !Preferences.getPreferences(this).isLicensed()) {
+        if (isLicenseCheckerEnabled && !Preferences.get(this).isLicensed()) {
             finish();
         }
     }
@@ -258,7 +258,7 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
             int size = intent.getIntExtra(Extras.EXTRA_SIZE, 0);
             Database database = new Database(this);
             int offlineSize = database.getWallpapersCount();
-            Preferences.getPreferences(this).setAvailableWallpapersCount(size);
+            Preferences.get(this).setAvailableWallpapersCount(size);
 
             if (size > offlineSize) {
                 int accent = ColorHelper.getAttributeColor(this, R.attr.colorAccent);
@@ -361,7 +361,7 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
         mDrawerLayout.setDrawerShadow(R.drawable.navigation_view_shadow, GravityCompat.START);
         mDrawerLayout.addDrawerListener(mDrawerToggle);
         ColorStateList colorStateList = ContextCompat.getColorStateList(this,
-                Preferences.getPreferences(this).isDarkTheme() ?
+                Preferences.get(this).isDarkTheme() ?
                         R.color.navigation_view_item_highlight_dark :
                         R.color.navigation_view_item_highlight);
         mNavigationView.getMenu().getItem(mNavigationView.getMenu().size() - 2).setVisible(
@@ -369,7 +369,7 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
         mNavigationView.setItemTextColor(colorStateList);
         mNavigationView.setItemIconTintList(colorStateList);
         Drawable background = ContextCompat.getDrawable(this,
-                Preferences.getPreferences(this).isDarkTheme() ?
+                Preferences.get(this).isDarkTheme() ?
                         R.drawable.navigation_view_item_background_dark :
                         R.drawable.navigation_view_item_background);
         mNavigationView.setItemBackground(background);
@@ -440,15 +440,17 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
     private void checkWallpapers() {
         int wallpapersCount = new Database(this).getWallpapersCount();
 
-        if (Preferences.getPreferences(this).isConnectedToNetwork() && (wallpapersCount > 0)) {
+        if (Preferences.get(this).isConnectedToNetwork() && (wallpapersCount > 0)) {
             Intent intent = new Intent(this, WallpaperBoardService.class);
             startService(intent);
             return;
         }
 
-        int size = Preferences.getPreferences(this).getAvailableWallpapersCount();
+        int size = Preferences.get(this).getAvailableWallpapersCount();
         if (size > 0) {
-            onWallpapersChecked(new Intent().putExtra(Extras.EXTRA_SIZE, size));
+            onWallpapersChecked(new Intent()
+                    .putExtra(Extras.EXTRA_SIZE, size)
+                    .putExtra(Extras.EXTRA_PACKAGE_NAME, getPackageName()));
         }
     }
 
@@ -472,7 +474,6 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
 
         FragmentTransaction ft = mFragManager.beginTransaction().replace(
                 R.id.container, fragment, mFragmentTag);
-        //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         try {
             ft.commit();
         } catch (Exception e) {

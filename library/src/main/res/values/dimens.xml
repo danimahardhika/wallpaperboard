@@ -4,6 +4,9 @@
     <dimen name="content_margin">16dp</dimen>
     <dimen name="content_padding">8dp</dimen>
 
+    <dimen name="content_item_list_margin_start">40dp</dimen>
+    <dimen name="content_item_list_padding_start">56dp</dimen>
+
     <dimen name="content_divider_size">1dp</dimen>
 
     <!-- Card Global -->
@@ -17,11 +20,14 @@
     <dimen name="card_elevation">2dp</dimen>
     <dimen name="card_corner_radius">0dp</dimen>
 
+    <!-- Navigation View -->
+    <dimen name="navigation_view_width">280dp</dimen>
+
     <!-- FAB -->
     <dimen name="fab_size">56dp</dimen>
 
     <!-- Default Image -->
-    <dimen name="default_image_padding">50dp</dimen>
+    <dimen name="default_image_padding">10dp</dimen>
 
     <!-- Toolbar -->
     <dimen name="toolbar_shadow">4dp</dimen>
@@ -32,6 +38,9 @@
 
     <!-- Button -->
     <dimen name="button_padding">10dp</dimen>
+
+    <!-- Icon -->
+    <dimen name="icon_size_medium">40dp</dimen>
 
     <!-- Text -->
     <dimen name="text_toolbar_title">20sp</dimen>
@@ -44,9 +53,6 @@
     <!-- Splash Screen -->
     <dimen name="splash_screen_logo">96dp</dimen>
     <dimen name="splash_screen_text">14sp</dimen>
-
-    <!-- Settings -->
-    <dimen name="settings_content_margin_start">40dp</dimen>
 
     <!-- About header image height -->
     <dimen name="about_profile">120dp</dimen>

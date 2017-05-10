@@ -6,6 +6,7 @@
     android:paddingBottom="@dimen/content_margin">
 
     <View
+        android:id="@+id/shadow"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_shadow"
         android:background="@drawable/toolbar_shadow"/>

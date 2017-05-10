@@ -89,6 +89,7 @@ public class CreditsFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
         builder.customView(R.layout.fragment_credits, false);
+        builder.typeface("Font-Medium.ttf", "Font-Regular.ttf");
         builder.title(getTitle(mType));
         builder.positiveText(R.string.close);
 
@@ -115,6 +116,8 @@ public class CreditsFragment extends DialogFragment {
         switch (type) {
             case Extras.TYPE_CONTRIBUTORS:
                 return getActivity().getResources().getString(R.string.about_contributors_title);
+            case Extras.TYPE_DASHBOARD_CONTRIBUTORS:
+                return getActivity().getResources().getString(R.string.about_dashboard_contributors);
             default:
                 return "";
         }
@@ -124,6 +127,8 @@ public class CreditsFragment extends DialogFragment {
         switch (type) {
             case Extras.TYPE_CONTRIBUTORS:
                 return R.xml.contributors;
+            case Extras.TYPE_DASHBOARD_CONTRIBUTORS:
+                return R.xml.dashboard_contributors;
             default:
                 return -1;
         }
@@ -151,14 +156,13 @@ public class CreditsFragment extends DialogFragment {
 
                         while (xpp.getEventType() != XmlPullParser.END_DOCUMENT) {
                             if (xpp.getEventType() == XmlPullParser.START_TAG) {
-                                if (mType == Extras.TYPE_CONTRIBUTORS) {
-                                    if (xpp.getName().equals("contributor")) {
-                                        Credit credit = new Credit(
-                                                xpp.getAttributeValue(null, "name"),
-                                                xpp.getAttributeValue(null, "contribution"),
-                                                xpp.getAttributeValue(null, "link"));
-                                        credits.add(credit);
-                                    }
+                                if (xpp.getName().equals("contributor")) {
+                                    Credit credit = new Credit(
+                                            xpp.getAttributeValue(null, "name"),
+                                            xpp.getAttributeValue(null, "contribution"),
+                                            xpp.getAttributeValue(null, "image"),
+                                            xpp.getAttributeValue(null, "link"));
+                                    credits.add(credit);
                                 }
                             }
                             xpp.next();
@@ -176,7 +180,7 @@ public class CreditsFragment extends DialogFragment {
             protected void onPostExecute(Boolean aBoolean) {
                 super.onPostExecute(aBoolean);
                 if (aBoolean) {
-                    mListView.setAdapter(new CreditsAdapter(getActivity(), credits));
+                    mListView.setAdapter(new CreditsAdapter(getActivity(), credits, mType));
                 } else {
                     dismiss();
                 }

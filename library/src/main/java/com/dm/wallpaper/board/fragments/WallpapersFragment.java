@@ -33,6 +33,7 @@ import com.dm.wallpaper.board.databases.Database;
 import com.dm.wallpaper.board.fragments.dialogs.FilterFragment;
 import com.dm.wallpaper.board.helpers.ColorHelper;
 import com.dm.wallpaper.board.helpers.DrawableHelper;
+import com.dm.wallpaper.board.helpers.TapIntroHelper;
 import com.dm.wallpaper.board.helpers.ViewHelper;
 import com.dm.wallpaper.board.items.Wallpaper;
 import com.dm.wallpaper.board.items.WallpaperJson;
@@ -90,6 +91,11 @@ public class WallpapersFragment extends Fragment implements WallpaperListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_wallpapers, container, false);
         ButterKnife.bind(this, view);
+
+        if (!Preferences.get(getActivity()).isShadowEnabled()) {
+            View shadow = ButterKnife.findById(view, R.id.shadow);
+            if (shadow != null) shadow.setVisibility(View.GONE);
+        }
         return view;
     }
 
@@ -189,7 +195,7 @@ public class WallpapersFragment extends Fragment implements WallpaperListener {
         int wallpapersCount = new Database(getActivity()).getWallpapersCount();
         if (wallpapersCount == 0) return;
 
-        if (Preferences.getPreferences(getActivity()).getAvailableWallpapersCount() > wallpapersCount) {
+        if (Preferences.get(getActivity()).getAvailableWallpapersCount() > wallpapersCount) {
             int color = ContextCompat.getColor(getActivity(), R.color.popupBubbleText);
             DrawMeButton popupBubble = (DrawMeButton) getActivity().findViewById(R.id.popup_bubble);
             popupBubble.setCompoundDrawablesWithIntrinsicBounds(DrawableHelper.getTintedDrawable(
@@ -274,7 +280,7 @@ public class WallpapersFragment extends Fragment implements WallpaperListener {
                                     database.deleteWallpapers(deleted);
                                     database.addWallpapers(newlyAdded);
 
-                                    Preferences.getPreferences(getActivity()).setAvailableWallpapersCount(
+                                    Preferences.get(getActivity()).setAvailableWallpapersCount(
                                             database.getWallpapersCount());
                                     wallpapers = database.getFilteredWallpapers();
                                     return true;
@@ -309,8 +315,15 @@ public class WallpapersFragment extends Fragment implements WallpaperListener {
                     mRecyclerView.setAdapter(mAdapter);
 
                     WallpaperBoardListener listener = (WallpaperBoardListener) getActivity();
-                    listener.onWallpapersChecked(new Intent().putExtra(Extras.EXTRA_SIZE,
-                            Preferences.getPreferences(getActivity()).getAvailableWallpapersCount()));
+                    listener.onWallpapersChecked(new Intent()
+                            .putExtra(Extras.EXTRA_SIZE, Preferences.get(getActivity()).getAvailableWallpapersCount())
+                            .putExtra(Extras.EXTRA_PACKAGE_NAME, getActivity().getPackageName()));
+
+                    try {
+                        TapIntroHelper.showWallpapersIntro(getActivity(), mRecyclerView);
+                    } catch (Exception e) {
+                        LogUtil.e(Log.getStackTraceString(e));
+                    }
                 } else {
                     Toast.makeText(getActivity(), R.string.connection_failed, Toast.LENGTH_LONG).show();
                 }

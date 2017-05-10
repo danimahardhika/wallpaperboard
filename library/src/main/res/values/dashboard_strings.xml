@@ -20,6 +20,28 @@
     <string name="clear">Clear</string>
     <string name="donate">Donate</string>
 
+    <!-- Tap Intro -->
+    <string name="tap_intro_wallpapers_navigation">Navigation drawer</string>
+    <string name="tap_intro_wallpapers_navigation_desc">Tap here or swipe from left edge of the screen to open navigation drawer</string>
+    <string name="tap_intro_wallpapers_search">Search</string>
+    <string name="tap_intro_wallpapers_search_desc">Tap here to search wallpaper</string>
+    <string name="tap_intro_wallpapers_filter">Filter wallpaper</string>
+    <string name="tap_intro_wallpapers_filter_desc">Tap here to filter wallpaper by category</string>
+    <string name="tap_intro_wallpapers_option">Wallpaper options</string>
+    <string name="tap_intro_wallpapers_option_desc">Tap and hold here to show wallpaper options, %s apply wallpaper.</string>
+    <string name="tap_intro_wallpapers_option_desc_download">download or</string>
+    <string name="tap_intro_wallpapers_preview">Preview wallpaper</string>
+    <string name="tap_intro_wallpapers_preview_desc">Tap here to preview full size of the wallpaper</string>
+    <string name="tap_intro_wallpapers_favorite">Favorite wallpaper</string>
+    <string name="tap_intro_wallpapers_favorite_desc">Tap here to mark wallpaper as favorite</string>
+    <string name="tap_intro_wallpaper_preview_settings">Wallpaper settings</string>
+    <string name="tap_intro_wallpaper_preview_settings_desc">Tap here to open wallpaper settings.
+        Enable set wallpaper as lockscreen background on Android Nougat or enable wallpaper crop.</string>
+    <string name="tap_intro_wallpaper_preview_save">Save wallpaper</string>
+    <string name="tap_intro_wallpaper_preview_save_desc">Tap here to download and save wallpaper to your device so you can use it later</string>
+    <string name="tap_intro_wallpaper_preview_apply">Apply wallpaper</string>
+    <string name="tap_intro_wallpaper_preview_apply_desc">Tap here to set wallpaper as homescreen background</string>
+
     <!-- Wallpapers -->
     <string name="wallpaper_new_added">New Wallpaper</string>
     <string name="wallpaper_filter">Filter by Category</string>
@@ -38,15 +60,14 @@
     <string name="wallpaper_apply_cancelled">Wallpaper apply cancelled</string>
     <string name="connection_failed">Unable to fetch data from server</string>
     <string name="wallpaper_apply">Set as Wallpaper</string>
-    <string name="wallpaper_apply_scroll">Wallpaper scroll will forced to enable if you apply from this option</string>
+    <string name="wallpaper_apply_crop">Wallpaper crop will be disabled if you apply from this option</string>
 
-    <string name="wallpaper_scroll_enable">Enable Wallpaper Scroll</string>
-    <string name="wallpaper_scroll_enable_desc">Dashboard will apply wallpaper based on original resolution
-        of the wallpaper. If your launcher support scrollable wallpaper, wallpaper will scroll when
-        you swipe left or right changing home screen.</string>
-    <string name="wallpaper_scroll_disable">Disable Wallpaper Scroll</string>
-    <string name="wallpaper_scroll_disable_desc">Dashboard will apply wallpaper based on current view of wallpaper.
-        Drag to left or right to adjust wallpaper. Pinch or double tap to zoom wallpaper.</string>
+    <string name="wallpaper_settings_crop">Wallpaper Crop</string>
+    <string name="wallpaper_settings_crop_desc">Enable wallpaper crop. Wallpaper will be cropped based on current view of wallpaper preview.
+        Pinch or double tap to zoom wallpaper.</string>
+    <string name="wallpaper_settings_lockscreen">Lockscreen Background</string>
+    <string name="wallpaper_settings_lockscreen_desc">Apply will set wallpaper as both homescreen and lockscreen background</string>
+    <string name="wallpaper_settings_lockscreen_not_available">Lockscreen background only available on Android Nougat</string>
 
     <string name="wallpaper_favorite_added">%s added to favorite</string>
     <string name="wallpaper_favorite_removed">%s removed from favorite</string>
@@ -92,6 +113,11 @@
     <string name="pref_wallpaper_location">Wallpaper Save Location</string>
     <string name="pref_wallpaper_location_desc">Try to download at least one wallpaper first</string>
 
+    <string name="pref_others_header">Others</string>
+    <string name="pref_others_colored_wallpaper_card">Colored Wallpaper Card</string>
+    <string name="pref_others_reset_tutorial">Reset Tutorial</string>
+    <string name="pref_others_reset_tutorial_reset">Tutorial Reset</string>
+
     <!-- Permission -->
     <string name="permission_storage_denied">Storage permission needed to save wallpaper</string>
 
@@ -118,16 +144,16 @@
 
     <!-- Please don't modify this -->
     <string name="about_dashboard">Wallpaper Board</string>
-    <string name="about_dashboard_dev">Wallpaper Board is open source wallpaper dashboard for
-        Android available at GitHub and free to use, developed by Dani Mahardhika.
-        \n\nCopyright © 2017</string>
+    <string name="about_dashboard_dev">Wallpaper Board is open source wallpaper dashboard licensed under Apache License 2.0 for
+        Android available at GitHub and free to use, developed by Dani Mahardhika.</string>
+    <string name="about_dashboard_contributors">Wallpaper Board Contributors</string>
     <string name="about_dashboard_dev_google_plus_title">Google+</string>
     <string name="about_dashboard_dev_google_plus_url">https://plus.google.com/u/1/+DaniMahardhika</string>
     <string name="about_dashboard_dev_github_title">GitHub</string>
     <string name="about_dashboard_dev_github_url">https://github.com/danimahardhika</string>
 
     <!-- Splash screen -->
-    <string name="splash_screen_title">Wallpaper Board</string>
+    <string name="splash_screen_title">WallpaperBoard</string>
 
     <!-- DrawerToggle -->
     <string name="txt_open">Open</string>

@@ -17,6 +17,7 @@ import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.adapters.AboutAdapter;
 import com.dm.wallpaper.board.helpers.ViewHelper;
+import com.dm.wallpaper.board.preferences.Preferences;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,6 +50,11 @@ public class AboutFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_about, container, false);
         ButterKnife.bind(this, view);
+
+        if (!Preferences.get(getActivity()).isShadowEnabled()) {
+            View shadow = ButterKnife.findById(view, R.id.shadow);
+            if (shadow != null) shadow.setVisibility(View.GONE);
+        }
         return view;
     }
 

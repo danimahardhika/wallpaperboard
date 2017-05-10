@@ -78,6 +78,7 @@ public class FilterFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
+        builder.typeface("Font-Medium.ttf", "Font-Regular.ttf");
         builder.title(mIsMuzei ? R.string.muzei_category : R.string.wallpaper_filter);
         builder.customView(R.layout.fragment_filter, false);
         MaterialDialog dialog = builder.build();

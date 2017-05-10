@@ -18,6 +18,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
@@ -291,5 +292,10 @@ public class ViewHelper {
                 searchIcon.setImageDrawable(null);
             }
         }
+    }
+
+    public static float intToDp(@NonNull Context context, int value) {
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        return value / ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
 }

@@ -19,7 +19,6 @@
             android:paddingTop="@dimen/card_margin_top"
             android:paddingStart="@dimen/card_margin_left"
             android:paddingLeft="@dimen/card_margin_left"
-            android:paddingBottom="@dimen/card_margin_bottom"
             android:clipToPadding="false"
             android:scrollbars="vertical"
             android:scrollbarThumbVertical="?attr/colorAccent"
@@ -63,7 +62,15 @@
         app:dm_shapeRadiusHalfHeight="true"
         fontPath="fonts/Font-Medium.ttf"/>
 
+    <ImageView
+        android:id="@+id/favorite_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter"
+        android:visibility="gone"/>
+
     <View
+        android:id="@+id/shadow"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_shadow"
         android:background="@drawable/toolbar_shadow" />

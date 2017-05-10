@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="MissingPrefix"
+    android:id="@+id/card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginRight="@dimen/content_padding"
@@ -30,7 +31,7 @@
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="@dimen/text_content_title"
             android:background="?attr/selectableItemBackground"
-            android:theme="@style/ButtonStyle"
+            android:theme="@style/RippleStyle"
             fontPath="fonts/Font-Medium.ttf"/>
 
     </LinearLayout>

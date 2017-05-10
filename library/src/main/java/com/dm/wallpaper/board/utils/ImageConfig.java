@@ -47,7 +47,7 @@ public class ImageConfig {
                 .diskCacheSize(256 * FileHelper.MB)
                 .diskCache(new UnlimitedDiskCache(new File(
                         context.getCacheDir().toString() + "/uil-images")))
-                .memoryCacheSize(6 * FileHelper.MB)
+                .memoryCacheSize(8 * FileHelper.MB)
                 .build();
     }
 

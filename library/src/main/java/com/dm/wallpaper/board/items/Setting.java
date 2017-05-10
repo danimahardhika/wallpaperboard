@@ -77,19 +77,11 @@ public class Setting {
     }
 
    public enum Type {
-       HEADER(0),
-       CACHE(1),
-       THEME(2),
-       WALLPAPER(3);
-
-       private final int mType;
-
-       Type(int type) {
-           mType = type;
-       }
-
-       public int getType() {
-           return mType;
-       }
+       HEADER,
+       CACHE,
+       THEME,
+       WALLPAPER,
+       COLORED_CARD,
+       RESET_TUTORIAL
    }
 }

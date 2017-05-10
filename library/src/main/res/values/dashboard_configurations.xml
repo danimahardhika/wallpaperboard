@@ -16,6 +16,11 @@
     <!-- Use dark theme as default theme -->
     <bool name="use_dark_theme">false</bool>
 
+    <!-- Enable or disable shadow
+    * Include:
+    * Toolbar, card, and list shadow -->
+    <bool name="enable_shadow">true</bool>
+
     <!-- CONFIG: MUZEI -->
 
     <!-- Muzei art source name -->
@@ -47,14 +52,15 @@
     * If disabled user only able to apply wallpaper from dashboard -->
     <bool name="enable_wallpaper_download">true</bool>
 
-    <!-- Auto generated color for wallpaper card -->
-    <bool name="card_wallpaper_auto_generated_color">false</bool>
-
     <!-- Wallpapers grid preview quality
     * Image quality when displaying wallpapers in grid
     * Higher value means higher quality, more RAM usage
     * Lower value means lower quality, minimal RAM usage -->
     <integer name="wallpaper_grid_preview_quality">4</integer>
+
+    <!-- Rounded corner wallpaper card
+    * NOTE: Only for Android Lollipop and above, automatically disabled on Android below Lollipop -->
+    <bool name="enable_wallpaper_card_rounded_corner">true</bool>
 
     <!-- CONFIG: NAVIGATION VIEW HEADER -->
 
@@ -74,9 +80,6 @@
     <!-- Navigation view header text
     * Leave empty if you don't want to show any text -->
     <string name="navigation_view_header_title">Wallpaper Board</string>
-
-    <!-- Navigation view width -->
-    <dimen name="navigation_view_width">300dp</dimen>
 
     <!-- CONFIG: ABOUT -->
 

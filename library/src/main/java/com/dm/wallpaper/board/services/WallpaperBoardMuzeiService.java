@@ -59,7 +59,7 @@ public abstract class WallpaperBoardMuzeiService extends RemoteMuzeiArtSource {
 
     public void tryUpdate(String wallpaperUrl) {
         try {
-            if (Preferences.getPreferences(this).isConnectedAsPreferred()) {
+            if (Preferences.get(this).isConnectedAsPreferred()) {
                 Wallpaper wallpaper = mMuzeiHelper.getRandomWallpaper(wallpaperUrl);
                 if (wallpaper != null) publishArtwork(wallpaper);
             }
@@ -67,7 +67,7 @@ public abstract class WallpaperBoardMuzeiService extends RemoteMuzeiArtSource {
     }
 
     private void publishArtwork(Wallpaper wallpaper) {
-        File file = new File(Preferences.getPreferences(this).getWallsDirectory()
+        File file = new File(Preferences.get(this).getWallsDirectory()
                 + wallpaper.getName() + FileHelper.IMAGE_EXTENSION);
         Uri uri = null;
         if (file.exists()) uri = FileHelper.getUriFromFile(this, getPackageName(), file);
@@ -80,7 +80,7 @@ public abstract class WallpaperBoardMuzeiService extends RemoteMuzeiArtSource {
                 .build());
 
         scheduleUpdate(System.currentTimeMillis() +
-                Preferences.getPreferences(this).getRotateTime());
+                Preferences.get(this).getRotateTime());
     }
 
 }

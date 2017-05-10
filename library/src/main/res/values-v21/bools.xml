@@ -4,7 +4,4 @@
     <!-- Card -->
     <bool name="card_use_compat_padding">false</bool>
 
-    <!-- View -->
-    <bool name="view_fitsystemwindow">true</bool>
-
 </resources>

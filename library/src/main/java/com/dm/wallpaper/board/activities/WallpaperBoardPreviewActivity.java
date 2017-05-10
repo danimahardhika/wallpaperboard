@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,6 +19,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,12 +37,14 @@ import com.dm.wallpaper.board.helpers.ColorHelper;
 import com.dm.wallpaper.board.helpers.DrawableHelper;
 import com.dm.wallpaper.board.helpers.FileHelper;
 import com.dm.wallpaper.board.helpers.PermissionHelper;
+import com.dm.wallpaper.board.helpers.TapIntroHelper;
 import com.dm.wallpaper.board.helpers.ViewHelper;
 import com.dm.wallpaper.board.helpers.WallpaperHelper;
 import com.dm.wallpaper.board.preferences.Preferences;
 import com.dm.wallpaper.board.utils.Animator;
 import com.dm.wallpaper.board.utils.Extras;
 import com.dm.wallpaper.board.utils.ImageConfig;
+import com.dm.wallpaper.board.utils.LogUtil;
 import com.kogitune.activitytransition.ActivityTransition;
 import com.kogitune.activitytransition.ExitActivityTransition;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -95,10 +97,11 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
     private String mAuthor;
     private int mColor;
     private boolean mIsEnter;
+    private boolean mIsResumed = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.setTheme(Preferences.getPreferences(this).isDarkTheme() ?
+        super.setTheme(Preferences.get(this).isDarkTheme() ?
                 R.style.WallpaperThemeDark : R.style.WallpaperTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wallpaper_preview);
@@ -120,6 +123,7 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
             mUrl = savedInstanceState.getString(Extras.EXTRA_URL);
             mName = savedInstanceState.getString(Extras.EXTRA_NAME);
             mAuthor = savedInstanceState.getString(Extras.EXTRA_AUTHOR);
+            mIsResumed = savedInstanceState.getBoolean(Extras.EXTRA_RESUMED);
         }
 
         Bundle bundle = getIntent().getExtras();
@@ -137,10 +141,13 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
 
         mFab.setOnClickListener(this);
 
-        mExitTransition = ActivityTransition.with(getIntent())
-                .to(this, mWallpaper, Extras.EXTRA_IMAGE)
-                .duration(300)
-                .start(savedInstanceState);
+        if (!mIsResumed) {
+            mExitTransition = ActivityTransition
+                    .with(getIntent())
+                    .to(this, mWallpaper, Extras.EXTRA_IMAGE)
+                    .duration(300)
+                    .start(savedInstanceState);
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && savedInstanceState == null) {
             Transition transition = getWindow().getSharedElementEnterTransition();
@@ -214,6 +221,7 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
         outState.putString(Extras.EXTRA_NAME, mName);
         outState.putString(Extras.EXTRA_AUTHOR, mAuthor);
         outState.putString(Extras.EXTRA_URL, mUrl);
+        outState.putBoolean(Extras.EXTRA_RESUMED, true);
         super.onSaveInstanceState(outState);
     }
 
@@ -228,7 +236,11 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
         WallpapersAdapter.sIsClickable = true;
         if (mHandler != null && mRunnable != null)
             mHandler.removeCallbacks(mRunnable);
-        if (mExitTransition != null) mExitTransition.exit(this);
+
+        if (mExitTransition != null) {
+            mExitTransition.exit(this);
+            return;
+        }
         super.onBackPressed();
     }
 
@@ -248,24 +260,23 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
                             .theme(new CafeBarTheme.Custom(ColorHelper.getAttributeColor(this, R.attr.card_background)))
                             .autoDismiss(false)
                             .maxLines(4)
-                            .fitSystemWindow(true)
+                            .fitSystemWindow()
+                            .typeface("Font-Regular.ttf", "Font-Bold.ttf")
                             .content(String.format(getResources().getString(R.string.wallpaper_download_exist),
                                     ("\"" +mName + FileHelper.IMAGE_EXTENSION+ "\"")))
                             .icon(R.drawable.ic_toolbar_download)
                             .positiveText(R.string.wallpaper_download_exist_replace)
                             .positiveColor(mColor)
-                            .positiveTypeface(Typeface.createFromAsset(getAssets(), "fonts/Font-Bold.ttf"))
                             .onPositive(cafeBar -> {
                                 WallpaperHelper.downloadWallpaper(this, mColor, mUrl, mName);
                                 cafeBar.dismiss();
                             })
                             .negativeText(R.string.wallpaper_download_exist_new)
-                            .negativeTypeface(Typeface.createFromAsset(getAssets(), "fonts/Font-Bold.ttf"))
                             .onNegative(cafeBar -> {
                                 WallpaperHelper.downloadWallpaper(this, mColor, mUrl, mName +"_"+ System.currentTimeMillis());
                                 cafeBar.dismiss();
                             })
-                            .build().show();
+                            .show();
                     return true;
                 }
 
@@ -328,7 +339,7 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                 super.onLoadingComplete(imageUri, view, loadedImage);
-                if (!Preferences.getPreferences(WallpaperBoardPreviewActivity.this).isScrollWallpaper()) {
+                if (!Preferences.get(WallpaperBoardPreviewActivity.this).isWallpaperCrop()) {
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                 }
 
@@ -353,9 +364,16 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
         mProgress.setVisibility(View.GONE);
         mRunnable = null;
         mHandler = null;
+        mIsResumed = false;
 
         mFab.setImageDrawable(DrawableHelper.getTintedDrawable(this,
                 R.drawable.ic_fab_apply, textColor));
         Animator.showFab(mFab);
+
+        try {
+            TapIntroHelper.showWallpaperPreviewIntro(this, mColor);
+        } catch (Exception e) {
+            LogUtil.e(Log.getStackTraceString(e));
+        }
     }
 }

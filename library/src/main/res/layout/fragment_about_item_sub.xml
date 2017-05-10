@@ -18,7 +18,7 @@
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="@dimen/text_content_title"
         android:background="?attr/selectableItemBackground"
-        android:theme="@style/ButtonStyle"
+        android:theme="@style/RippleStyle"
         fontPath="fonts/Font-Medium.ttf"/>
 
     <View

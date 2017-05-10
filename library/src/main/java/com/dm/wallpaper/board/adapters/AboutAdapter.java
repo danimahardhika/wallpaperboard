@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,10 +19,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dm.wallpaper.board.R;
+import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.fragments.dialogs.CreditsFragment;
 import com.dm.wallpaper.board.fragments.dialogs.LicensesFragment;
 import com.dm.wallpaper.board.helpers.ColorHelper;
 import com.dm.wallpaper.board.helpers.DrawableHelper;
+import com.dm.wallpaper.board.preferences.Preferences;
 import com.dm.wallpaper.board.utils.Extras;
 import com.dm.wallpaper.board.utils.ImageConfig;
 import com.dm.wallpaper.board.utils.LogUtil;
@@ -30,6 +33,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.sufficientlysecure.htmltextview.HtmlTextView;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /*
@@ -50,7 +54,7 @@ import butterknife.ButterKnife;
  * limitations under the License.
  */
 
-public class AboutAdapter extends RecyclerView.Adapter<AboutAdapter.ViewHolder> {
+public class AboutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final Context mContext;
 
@@ -60,15 +64,14 @@ public class AboutAdapter extends RecyclerView.Adapter<AboutAdapter.ViewHolder> 
     private final boolean mShowContributors;
 
     private static final int TYPE_HEADER = 0;
-    private static final int TYPE_SUBHEADER = 1;
-    private static final int TYPE_SUBFOOTER = 2;
-    private static final int TYPE_FOOTER = 3;
-    private static final int TYPE_BOTTOM_SHADOW = 4;
+    private static final int TYPE_CONTRIBUTORS = 1;
+    private static final int TYPE_FOOTER = 2;
+    private static final int TYPE_BOTTOM_SHADOW = 3;
 
     public AboutAdapter(@NonNull Context context, int spanCount) {
         mContext = context;
 
-        mItemCount = 3;
+        mItemCount = 2;
         mCardMode = (spanCount > 1);
         if (!mCardMode) {
             mItemCount += 1;
@@ -81,37 +84,40 @@ public class AboutAdapter extends RecyclerView.Adapter<AboutAdapter.ViewHolder> 
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = null;
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_HEADER) {
-            view = LayoutInflater.from(mContext).inflate(
+            View view = LayoutInflater.from(mContext).inflate(
                     R.layout.fragment_about_item_header, parent, false);
-        } else if (viewType == TYPE_SUBHEADER || viewType == TYPE_SUBFOOTER) {
-            view = LayoutInflater.from(mContext).inflate(
+            return new HeaderViewHolder(view);
+        } else if (viewType == TYPE_CONTRIBUTORS) {
+            View view = LayoutInflater.from(mContext).inflate(
                     R.layout.fragment_about_item_sub, parent, false);
+            return new ContributorsViewHolder(view);
         } else if (viewType == TYPE_FOOTER) {
-            view = LayoutInflater.from(mContext).inflate(
+            View view = LayoutInflater.from(mContext).inflate(
                     R.layout.fragment_about_item_footer, parent, false);
-        } else if (viewType == TYPE_BOTTOM_SHADOW) {
-            view = LayoutInflater.from(mContext).inflate(
-                    R.layout.fragment_settings_item_footer, parent, false);
+            return new FooterViewHolder(view);
         }
-        return new ViewHolder(view, viewType);
+
+        View view = LayoutInflater.from(mContext).inflate(
+                R.layout.fragment_settings_item_footer, parent, false);
+        return new ShadowViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        if (holder.holderId == TYPE_HEADER) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (holder.getItemViewType() == TYPE_HEADER) {
+            HeaderViewHolder headerViewHolder = (HeaderViewHolder) holder;
             String imageUri = mContext.getString(R.string.about_image);
 
             if (ColorHelper.isValidColor(imageUri)) {
-                holder.image.setBackgroundColor(Color.parseColor(imageUri));
+                headerViewHolder.image.setBackgroundColor(Color.parseColor(imageUri));
             } else if (!URLUtil.isValidUrl(imageUri)) {
                 imageUri = "drawable://" + DrawableHelper.getResourceId(mContext, imageUri);
-                ImageLoader.getInstance().displayImage(imageUri, holder.image,
+                ImageLoader.getInstance().displayImage(imageUri, headerViewHolder.image,
                         ImageConfig.getDefaultImageOptions());
             } else {
-                ImageLoader.getInstance().displayImage(imageUri, holder.image,
+                ImageLoader.getInstance().displayImage(imageUri, headerViewHolder.image,
                         ImageConfig.getDefaultImageOptions());
             }
 
@@ -120,7 +126,7 @@ public class AboutAdapter extends RecyclerView.Adapter<AboutAdapter.ViewHolder> 
                 profileUri = "drawable://" + DrawableHelper.getResourceId(mContext, profileUri);
             }
 
-            ImageLoader.getInstance().displayImage(profileUri, holder.profile,
+            ImageLoader.getInstance().displayImage(profileUri, headerViewHolder.profile,
                     ImageConfig.getDefaultImageOptions());
         }
     }
@@ -134,93 +140,58 @@ public class AboutAdapter extends RecyclerView.Adapter<AboutAdapter.ViewHolder> 
     public int getItemViewType(int position) {
         if (position == 0) return TYPE_HEADER;
         if (position == 1) {
-            if (mShowContributors) return TYPE_SUBHEADER;
-            else return TYPE_SUBFOOTER;
-        }
-
-        if (position == 2) {
-            if (mShowContributors) return TYPE_SUBFOOTER;
+            if (mShowContributors) return TYPE_CONTRIBUTORS;
             else return TYPE_FOOTER;
         }
 
-        if (position == 3 && mShowContributors) return TYPE_FOOTER;
+        if (position == 2 && mShowContributors)  return TYPE_FOOTER;
         return TYPE_BOTTOM_SHADOW;
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class HeaderViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private ImageView image;
-        private CircularImageView profile;
+        @BindView(R2.id.image)
+        ImageView image;
+        @BindView(R2.id.profile)
+        CircularImageView profile;
+        @BindView(R2.id.subtitle)
+        HtmlTextView subtitle;
+        @BindView(R2.id.email)
+        AppCompatButton email;
+        @BindView(R2.id.link1)
+        AppCompatButton link1;
+        @BindView(R2.id.link2)
+        AppCompatButton link2;
 
-        private int holderId;
-
-        public ViewHolder(View itemView, int viewType) {
+        HeaderViewHolder(View itemView) {
             super(itemView);
-            if (viewType == TYPE_HEADER) {
-                image = (ImageView) itemView.findViewById(R.id.image);
-                profile = (CircularImageView) itemView.findViewById(R.id.profile);
-                HtmlTextView subtitle = ButterKnife.findById(itemView, R.id.subtitle);
-                AppCompatButton email = ButterKnife.findById(itemView, R.id.email);
-                AppCompatButton link1 = ButterKnife.findById(itemView, R.id.link1);
-                AppCompatButton link2 = ButterKnife.findById(itemView, R.id.link2);
-                holderId = TYPE_HEADER;
+            ButterKnife.bind(this, itemView);
+            subtitle.setHtml(mContext.getResources().getString(R.string.about_desc));
 
-                subtitle.setHtml(mContext.getResources().getString(R.string.about_desc));
+            CardView card = ButterKnife.findById(itemView, R.id.card);
+            if (!Preferences.get(mContext).isShadowEnabled()) {
+                if (card != null) card.setCardElevation(0);
 
-                if (!mCardMode) {
-                    int primary = ColorHelper.getAttributeColor(mContext, R.attr.colorPrimary);
-
-                    int card = ColorHelper.getAttributeColor(mContext, R.attr.card_background);
-                    email.setTextColor(ColorHelper.getTitleTextColor(primary));
-                    link1.setTextColor(ColorHelper.getTitleTextColor(card));
-                    link2.setTextColor(ColorHelper.getTitleTextColor(card));
-                }
-
-                String emailText = mContext.getResources().getString(R.string.about_email);
-                if (emailText.length() == 0) email.setVisibility(View.GONE);
-                String link2Text = mContext.getResources().getString(R.string.about_link_2_url);
-                if (link2Text.length() == 0) link2.setVisibility(View.GONE);
-
-                email.setOnClickListener(this);
-                link1.setOnClickListener(this);
-                link2.setOnClickListener(this);
-            } else if (viewType == TYPE_SUBHEADER) {
-                TextView title = (TextView) itemView.findViewById(R.id.title);
-                holderId = TYPE_SUBHEADER;
-
-                int color = ColorHelper.getAttributeColor(mContext, android.R.attr.textColorPrimary);
-                title.setCompoundDrawablesWithIntrinsicBounds(DrawableHelper.getTintedDrawable(
-                        mContext, R.drawable.ic_toolbar_people, color), null, null, null);
-                title.setText(mContext.getResources().getString(R.string.about_contributors_title));
-
-                title.setOnClickListener(this);
-            } else if (viewType == TYPE_SUBFOOTER) {
-                TextView title = (TextView) itemView.findViewById(R.id.title);
-                holderId = TYPE_SUBFOOTER;
-
-                int color = ColorHelper.getAttributeColor(mContext, android.R.attr.textColorPrimary);
-                title.setCompoundDrawablesWithIntrinsicBounds(DrawableHelper.getTintedDrawable(
-                        mContext, R.drawable.ic_toolbar_licenses, color), null, null, null);
-                title.setText(mContext.getResources().getString(R.string.about_open_source_licenses));
-
-                title.setOnClickListener(this);
-            } else if (viewType == TYPE_FOOTER) {
-                AppCompatButton link2 = ButterKnife.findById(itemView, R.id.dev_google_plus);
-                AppCompatButton link1 = ButterKnife.findById(itemView, R.id.dev_github);
-                holderId = TYPE_FOOTER;
-
-                if (!mCardMode) {
-                    int primary = ColorHelper.getAttributeColor(mContext, R.attr.colorPrimary);
-                    int card = ColorHelper.getAttributeColor(mContext, R.attr.card_background);
-                    link1.setTextColor(ColorHelper.getTitleTextColor(primary));
-                    link2.setTextColor(ColorHelper.getTitleTextColor(card));
-                }
-
-                link1.setOnClickListener(this);
-                link2.setOnClickListener(this);
-            } else if (viewType == TYPE_BOTTOM_SHADOW) {
-                holderId = TYPE_BOTTOM_SHADOW;
+                profile.setShadowRadius(0f);
+                profile.setShadowColor(Color.TRANSPARENT);
             }
+
+            if (!mCardMode) {
+                int accent = ColorHelper.getAttributeColor(mContext, R.attr.colorAccent);
+                int cardColor = ColorHelper.getAttributeColor(mContext, R.attr.card_background);
+                email.setTextColor(ColorHelper.getTitleTextColor(accent));
+                link1.setTextColor(ColorHelper.getTitleTextColor(cardColor));
+                link2.setTextColor(ColorHelper.getTitleTextColor(cardColor));
+            }
+
+            String emailText = mContext.getResources().getString(R.string.about_email);
+            if (emailText.length() == 0) email.setVisibility(View.GONE);
+            String link2Text = mContext.getResources().getString(R.string.about_link_2_url);
+            if (link2Text.length() == 0) link2.setVisibility(View.GONE);
+
+            email.setOnClickListener(this);
+            link1.setOnClickListener(this);
+            link2.setOnClickListener(this);
         }
 
         @Override
@@ -241,15 +212,6 @@ public class AboutAdapter extends RecyclerView.Adapter<AboutAdapter.ViewHolder> 
                     LogUtil.e(Log.getStackTraceString(e));
                 }
                 return;
-            } else if (id == R.id.title) {
-                if (holderId == TYPE_SUBHEADER) {
-                    CreditsFragment.showCreditsDialog(
-                            ((AppCompatActivity) mContext).getSupportFragmentManager(),
-                            Extras.TYPE_CONTRIBUTORS);
-                } else if (holderId == TYPE_SUBFOOTER) {
-                    LicensesFragment.showLicensesDialog(((AppCompatActivity) mContext).getSupportFragmentManager());
-                }
-                return;
             }
 
             Intent intent = null;
@@ -259,10 +221,99 @@ public class AboutAdapter extends RecyclerView.Adapter<AboutAdapter.ViewHolder> 
             } else if (id == R.id.link2) {
                 intent = new Intent(Intent.ACTION_VIEW, Uri.parse(
                         mContext.getResources().getString(R.string.about_link_2_url)));
-            } else if (id == R.id.dev_google_plus) {
+            }
+
+            try {
+                mContext.startActivity(intent);
+            } catch (NullPointerException | ActivityNotFoundException e) {
+                LogUtil.e(Log.getStackTraceString(e));
+            }
+        }
+    }
+
+    class ContributorsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        ContributorsViewHolder(View itemView) {
+            super(itemView);
+            TextView title = ButterKnife.findById(itemView, R.id.title);
+
+            CardView card = (CardView) itemView.findViewById(R.id.card);
+            if (!Preferences.get(mContext).isShadowEnabled() && card != null) {
+                card.setCardElevation(0);
+            }
+
+            int color = ColorHelper.getAttributeColor(mContext, android.R.attr.textColorPrimary);
+            title.setCompoundDrawablesWithIntrinsicBounds(DrawableHelper.getTintedDrawable(
+                    mContext, R.drawable.ic_toolbar_people, color), null, null, null);
+            title.setText(mContext.getResources().getString(R.string.about_contributors_title));
+
+            title.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            CreditsFragment.showCreditsDialog(((AppCompatActivity) mContext).getSupportFragmentManager(),
+                    Extras.TYPE_CONTRIBUTORS);
+        }
+    }
+
+    class FooterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        @BindView(R2.id.about_dev_github)
+        AppCompatButton link1;
+        @BindView(R2.id.about_dev_google_plus)
+        AppCompatButton link2;
+        @BindView(R2.id.about_dashboard_licenses)
+        TextView licenses;
+        @BindView(R2.id.about_dashboard_contributors)
+        TextView contributors;
+
+        FooterViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+
+            CardView card = (CardView) itemView.findViewById(R.id.card);
+            if (!Preferences.get(mContext).isShadowEnabled() && card != null) {
+                card.setCardElevation(0);
+            }
+
+            int color = ColorHelper.getAttributeColor(mContext, android.R.attr.textColorPrimary);
+            TextView title = (TextView) itemView.findViewById(R.id.about_dashboard_title);
+            title.setCompoundDrawablesWithIntrinsicBounds(DrawableHelper.getTintedDrawable(
+                    mContext, R.drawable.ic_toolbar_dashboard, color), null, null, null);
+
+            if (!mCardMode) {
+                int accent = ColorHelper.getAttributeColor(mContext, R.attr.colorAccent);
+                int cardColor = ColorHelper.getAttributeColor(mContext, R.attr.card_background);
+                link1.setTextColor(ColorHelper.getTitleTextColor(accent));
+                link2.setTextColor(ColorHelper.getTitleTextColor(cardColor));
+            }
+
+            link1.setOnClickListener(this);
+            link2.setOnClickListener(this);
+            licenses.setOnClickListener(this);
+            contributors.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            int id = view.getId();
+            if (id == R.id.about_dashboard_licenses) {
+                LicensesFragment.showLicensesDialog(((AppCompatActivity) mContext).getSupportFragmentManager());
+                return;
+            }
+
+            if (id == R.id.about_dashboard_contributors) {
+                CreditsFragment.showCreditsDialog(((AppCompatActivity) mContext).getSupportFragmentManager(),
+                        Extras.TYPE_DASHBOARD_CONTRIBUTORS);
+                return;
+            }
+
+            Intent intent = null;
+            if (id == R.id.about_dev_google_plus) {
                 intent = new Intent(Intent.ACTION_VIEW, Uri.parse(mContext
                         .getResources().getString(R.string.about_dashboard_dev_google_plus_url)));
-            } else if (id == R.id.dev_github) {
+            } else if (id == R.id.about_dev_github) {
                 intent = new Intent(Intent.ACTION_VIEW, Uri.parse(mContext
                         .getResources().getString(R.string.about_dashboard_dev_github_url)));
             }
@@ -271,6 +322,20 @@ public class AboutAdapter extends RecyclerView.Adapter<AboutAdapter.ViewHolder> 
                 mContext.startActivity(intent);
             } catch (NullPointerException | ActivityNotFoundException e) {
                 LogUtil.e(Log.getStackTraceString(e));
+            }
+        }
+    }
+
+    class ShadowViewHolder extends RecyclerView.ViewHolder {
+
+        ShadowViewHolder(View itemView) {
+            super(itemView);
+            if (!Preferences.get(mContext).isShadowEnabled()) {
+                View shadow = ButterKnife.findById(itemView, R.id.shadow);
+                shadow.setVisibility(View.GONE);
+
+                View root = shadow.getRootView();
+                root.setPadding(0, 0, 0, 0);
             }
         }
     }

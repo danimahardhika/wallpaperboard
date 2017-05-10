@@ -73,7 +73,7 @@ public class WallpaperBoardMuzeiActivity extends AppCompatActivity implements Vi
     private boolean mIsMinute;
 
     public void initMuzeiActivity(@Nullable Bundle savedInstanceState, @NonNull Class<?> muzeiService) {
-        super.setTheme(Preferences.getPreferences(this).isDarkTheme() ?
+        super.setTheme(Preferences.get(this).isDarkTheme() ?
                 R.style.MuzeiThemeDark : R.style.MuzeiTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_muzei);
@@ -93,9 +93,9 @@ public class WallpaperBoardMuzeiActivity extends AppCompatActivity implements Vi
         setSupportActionBar(toolbar);
 
         mMuzeiService = muzeiService;
-        mIsMinute = Preferences.getPreferences(this).isRotateMinute();
+        mIsMinute = Preferences.get(this).isRotateMinute();
         mRotateTime = TimeHelper.convertMilliToMinute(
-                Preferences.getPreferences(this).getRotateTime());
+                Preferences.get(this).getRotateTime());
         if (!mIsMinute) mRotateTime = mRotateTime / 60;
 
         initRefreshDuration();
@@ -106,7 +106,7 @@ public class WallpaperBoardMuzeiActivity extends AppCompatActivity implements Vi
         mRefreshDuration.setOnClickListener(this);
         mSave.setOnClickListener(this);
 
-        mWifiOnlyCheck.setChecked(Preferences.getPreferences(this).isWifiOnly());
+        mWifiOnlyCheck.setChecked(Preferences.get(this).isWifiOnly());
     }
 
     @Override
@@ -133,9 +133,9 @@ public class WallpaperBoardMuzeiActivity extends AppCompatActivity implements Vi
             int rotateTime = TimeHelper.convertMinuteToMilli(mRotateTime);
             if (!mIsMinute) rotateTime = rotateTime * 60;
 
-            Preferences.getPreferences(this).setRotateMinute(mIsMinute);
-            Preferences.getPreferences(this).setRotateTime(rotateTime);
-            Preferences.getPreferences(this).setWifiOnly(mWifiOnlyCheck.isChecked());
+            Preferences.get(this).setRotateMinute(mIsMinute);
+            Preferences.get(this).setRotateTime(rotateTime);
+            Preferences.get(this).setWifiOnly(mWifiOnlyCheck.isChecked());
 
             Intent intent = new Intent(this, mMuzeiService);
             intent.putExtra("restart", true);
