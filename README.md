@@ -56,6 +56,12 @@ Take a look inside <a href="https://github.com/danimahardhika/wallpaperboard/wik
 # Support Development
 Support development by making donation through demo app at Google Play.
 
+# Wallpaper App Using Wallpaper Board
+Want your app listed here? Mention me at [Google Plus](https://plus.google.com/u/1/+DaniMahardhika).
+* [AMOLED mnml Wallpapers](https://play.google.com/store/apps/details?id=yasanq.amoledmnml.wallpapers)
+* [myWalls](https://play.google.com/store/apps/details?id=com.lc.mywalls)
+* [Drisian II](https://play.google.com/store/apps/details?id=com.darin.drisianii)
+
 # License
 ```
 Copyright (c) 2017 Dani Mahardhika
