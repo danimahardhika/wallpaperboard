@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <!-- View -->
-    <bool name="view_fitsystemwindow">true</bool>
-
-</resources>
