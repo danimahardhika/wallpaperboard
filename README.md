@@ -56,6 +56,9 @@ Take a look inside <a href="https://github.com/danimahardhika/wallpaperboard/wik
 # Support Development
 Support development by making donation through demo app at Google Play.
 
+# Translation
+Help translating Wallpaper Board to supports more languages [here](https://goo.gl/Mae5hc).
+
 # Wallpaper App Using Wallpaper Board
 Want your app listed here? Mention me at [Google Plus](https://plus.google.com/u/1/+DaniMahardhika).
 * [AMOLED mnml Wallpapers](https://play.google.com/store/apps/details?id=yasanq.amoledmnml.wallpapers)
