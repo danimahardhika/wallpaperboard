@@ -151,7 +151,7 @@
     <string name="about_dashboard_dev_github_url">https://github.com/danimahardhika</string>
 
     <!-- Splash screen -->
-    <string name="splash_screen_title">wWallpapers</string>
+    <string name="splash_screen_title">Wallpaper Board</string>
 
     <!-- DrawerToggle -->
     <string name="txt_open">Abrir</string>
