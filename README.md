@@ -35,9 +35,6 @@ dependencies {
 # How to Use
 Take a look inside <a href="https://github.com/danimahardhika/wallpaperboard/wiki" target="_blank">Wiki Site</a>.
 
-# Previews
-<img src="https://raw.githubusercontent.com/danimahardhika/wallpaperboard/master/arts/SS01.jpg" width="215"> <img src="https://raw.githubusercontent.com/danimahardhika/wallpaperboard/master/arts/SS02.jpg" width="215"> <img src="https://raw.githubusercontent.com/danimahardhika/wallpaperboard/master/arts/SS03.jpg" width="215"> <img src="https://raw.githubusercontent.com/danimahardhika/wallpaperboard/master/arts/SS04.jpg" width="215"> <img src="https://raw.githubusercontent.com/danimahardhika/wallpaperboard/master/arts/SS05.jpg" width="215"> <img src="https://raw.githubusercontent.com/danimahardhika/wallpaperboard/master/arts/SS06.jpg" width="215"> <img src="https://raw.githubusercontent.com/danimahardhika/wallpaperboard/master/arts/SS07.jpg" width="215"> <img src="https://raw.githubusercontent.com/danimahardhika/wallpaperboard/master/arts/SS08.jpg" width="215">
-
 # Features
 * License Checker
 * Cloud Based Wallpaper
