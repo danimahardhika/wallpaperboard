@@ -19,7 +19,6 @@ Add JitPack repository to root `build.gradle`
 ```Gradle
 allprojects {
     repositories {
-        //...
         maven { url "https://jitpack.io" }
     }
 }
@@ -27,8 +26,7 @@ allprojects {
 Add the dependency
 ```Gradle
 dependencies {
-    //...
-    compile 'com.github.danimahardhika:wallpaperboard:1.2.0'
+    compile 'com.github.danimahardhika:wallpaperboard:1.2.4'
 }
 ```
 
