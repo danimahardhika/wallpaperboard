@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.CardView;
@@ -21,6 +22,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.danimahardhika.android.helpers.animation.AnimationHelper;
+import com.danimahardhika.android.helpers.core.ColorHelper;
+import com.danimahardhika.android.helpers.core.DrawableHelper;
 import com.danimahardhika.cafebar.CafeBar;
 import com.danimahardhika.cafebar.CafeBarTheme;
 import com.dm.wallpaper.board.R;
@@ -31,8 +35,6 @@ import com.dm.wallpaper.board.fragments.FavoritesFragment;
 import com.dm.wallpaper.board.fragments.WallpaperSearchFragment;
 import com.dm.wallpaper.board.fragments.WallpapersFragment;
 import com.dm.wallpaper.board.fragments.dialogs.WallpaperOptionsFragment;
-import com.dm.wallpaper.board.helpers.ColorHelper;
-import com.dm.wallpaper.board.helpers.DrawableHelper;
 import com.dm.wallpaper.board.helpers.WallpaperHelper;
 import com.dm.wallpaper.board.items.Wallpaper;
 import com.dm.wallpaper.board.preferences.Preferences;
@@ -54,6 +56,8 @@ import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.dm.wallpaper.board.helpers.DrawableHelper.getDefaultImage;
 
 /*
  * Wallpaper Board
@@ -96,11 +100,9 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Vi
         }
 
         int color = ColorHelper.getAttributeColor(mContext, android.R.attr.textColorSecondary);
-        Drawable loading = DrawableHelper.getDefaultImage(
-                mContext, R.drawable.ic_default_image_loading, color,
+        Drawable loading = getDefaultImage(mContext, R.drawable.ic_default_image_loading, color,
                 mContext.getResources().getDimensionPixelSize(R.dimen.default_image_padding));
-        Drawable failed = DrawableHelper.getDefaultImage(
-                mContext, R.drawable.ic_default_image_failed, color,
+        Drawable failed = getDefaultImage(mContext, R.drawable.ic_default_image_failed, color,
                 mContext.getResources().getDimensionPixelSize(R.dimen.default_image_padding));
         mOptions = ImageConfig.getRawDefaultImageOptions();
         mOptions.resetViewBeforeLoading(true);
@@ -125,7 +127,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Vi
         holder.author.setText(mWallpapers.get(position).getAuthor());
 
         setFavorite(holder.favorite, ColorHelper.getAttributeColor(
-                mContext, android.R.attr.textColorPrimary), position);
+                mContext, android.R.attr.textColorPrimary), position, false);
 
         String url = WallpaperHelper.getThumbnailUrl(mContext,
                 mWallpapers.get(position).getUrl(),
@@ -162,7 +164,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Vi
                                     int text = ColorHelper.getTitleTextColor(color);
                                     holder.name.setTextColor(text);
                                     holder.author.setTextColor(text);
-                                    setFavorite(holder.favorite, text, holder.getAdapterPosition());
+                                    setFavorite(holder.favorite, text, holder.getAdapterPosition(), false);
                                 });
                             }
                         }
@@ -194,7 +196,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Vi
             super(itemView);
             ButterKnife.bind(this, itemView);
             if (!Preferences.get(mContext).isShadowEnabled()) {
-                card.setCardElevation(0);
+                card.setCardElevation(0f);
             }
 
             if (mContext.getResources().getBoolean(R.bool.enable_wallpaper_card_rounded_corner)) {
@@ -243,17 +245,18 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Vi
             } else if (id == R.id.favorite) {
                 if (position < 0 || position > mWallpapers.size()) return;
 
+                boolean isFavorite = mWallpapers.get(position).isFavorite();
+                Database database = new Database(mContext);
+                database.favoriteWallpaper(mWallpapers.get(position).getId(), !isFavorite);
+
                 if (mIsFavoriteMode) {
-                    Database database = new Database(mContext);
-                    database.favoriteWallpaper(mWallpapers.get(position).getId(),
-                            !mWallpapers.get(position).isFavorite());
                     mWallpapers.remove(position);
                     notifyItemRemoved(position);
                     return;
                 }
 
-                mWallpapers.get(position).setFavorite(!mWallpapers.get(position).isFavorite());
-                setFavorite(favorite, name.getCurrentTextColor(), position);
+                mWallpapers.get(position).setFavorite(!isFavorite);
+                setFavorite(favorite, name.getCurrentTextColor(), position, true);
 
                 CafeBar.builder(mContext)
                         .theme(new CafeBarTheme.Custom(ColorHelper.getAttributeColor(
@@ -291,7 +294,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Vi
         }
     }
 
-    private void setFavorite(@NonNull ImageView imageView, @ColorInt int color, int position) {
+    private void setFavorite(@NonNull ImageView imageView, @ColorInt int color, int position, boolean animate) {
         if (position < 0 || position > mWallpapers.size()) return;
 
         if (mIsFavoriteMode) {
@@ -301,13 +304,33 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Vi
             return;
         }
 
+        final int favoriteColor;
         boolean isFavorite = mWallpapers.get(position).isFavorite();
         if (!Preferences.get(mContext).isColoredWallpapersCard() && isFavorite)
-            color = ContextCompat.getColor(mContext, R.color.favoriteColor);
+            favoriteColor = ContextCompat.getColor(mContext, R.color.favoriteColor);
+        else favoriteColor = color;
+
+        if (animate) {
+            AnimationHelper.show(imageView)
+                    .interpolator(new LinearOutSlowInInterpolator())
+                    .callback(new AnimationHelper.Callback() {
+                        @Override
+                        public void onAnimationStart() {
+                            imageView.setImageDrawable(DrawableHelper.getTintedDrawable(mContext,
+                                    isFavorite ? R.drawable.ic_toolbar_love : R.drawable.ic_toolbar_unlove, favoriteColor));
+                        }
+
+                        @Override
+                        public void onAnimationEnd() {
+
+                        }
+                    })
+                    .start();
+            return;
+        }
+
         imageView.setImageDrawable(DrawableHelper.getTintedDrawable(mContext,
-                isFavorite ? R.drawable.ic_toolbar_love : R.drawable.ic_toolbar_unlove, color));
-        Database database = new Database(mContext);
-        database.favoriteWallpaper(mWallpapers.get(position).getId(), isFavorite);
+                isFavorite ? R.drawable.ic_toolbar_love : R.drawable.ic_toolbar_unlove, favoriteColor));
     }
 
     public void filter() {

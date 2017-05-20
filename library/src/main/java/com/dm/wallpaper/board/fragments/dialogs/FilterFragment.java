@@ -2,6 +2,7 @@ package com.dm.wallpaper.board.fragments.dialogs;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,6 +10,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.widget.ListView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -19,6 +21,7 @@ import com.dm.wallpaper.board.databases.Database;
 import com.dm.wallpaper.board.fragments.WallpapersFragment;
 import com.dm.wallpaper.board.items.Category;
 import com.dm.wallpaper.board.utils.Extras;
+import com.dm.wallpaper.board.utils.LogUtil;
 
 import java.util.List;
 
@@ -46,8 +49,9 @@ import butterknife.ButterKnife;
 public class FilterFragment extends DialogFragment {
 
     @BindView(R2.id.listview)
-    ListView listView;
+    ListView mListView;
 
+    private AsyncTask<Void, Void, Boolean> mGetCategories;
     private boolean mIsMuzei;
 
     private static final String MUZEI = "muzei";
@@ -97,8 +101,7 @@ public class FilterFragment extends DialogFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        List<Category> categories = new Database(getActivity()).getCategories();
-        listView.setAdapter(new FilterAdapter(getActivity(), categories, mIsMuzei));
+        getCategories();
     }
 
     @Override
@@ -112,6 +115,46 @@ public class FilterFragment extends DialogFragment {
         if (fragment != null) {
             fragment.filterWallpapers();
         }
+
+        if (mGetCategories != null) mGetCategories.cancel(true);
         super.onDismiss(dialog);
+    }
+
+    private void getCategories() {
+        mGetCategories = new AsyncTask<Void, Void, Boolean>() {
+
+            List<Category> categories;
+
+            @Override
+            protected Boolean doInBackground(Void... voids) {
+                while (!isCancelled()) {
+                    try {
+                        Thread.sleep(1);
+                        Database database = new Database(getActivity());
+                        categories = database.getCategories();
+                        for (Category category : categories) {
+                            int count = database.getCategoryCount(category.getName());
+                            category.setCount(count);
+                        }
+                        return true;
+                    } catch (Exception e) {
+                        LogUtil.e(Log.getStackTraceString(e));
+                        return false;
+                    }
+                }
+                return false;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean aBoolean) {
+                super.onPostExecute(aBoolean);
+                if (aBoolean) {
+                    mListView.setAdapter(new FilterAdapter(getActivity(), categories, mIsMuzei));
+                } else {
+                    dismiss();
+                }
+                mGetCategories = null;
+            }
+        }.execute();
     }
 }

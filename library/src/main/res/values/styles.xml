@@ -31,7 +31,6 @@
         <item name="card_background">@color/cardBackground</item>
         <item name="ripple_color">@color/rippleColor</item>
         <item name="ripple_accent">@color/rippleAccent</item>
-        <item name="divider_list">@color/dividerList</item>
 
         <item name="toolbar_icon">@color/toolbarIcon</item>
 
@@ -65,7 +64,6 @@
         <item name="card_background">@color/cardBackgroundDark</item>
         <item name="ripple_color">@color/rippleColorDark</item>
         <item name="ripple_accent">@color/rippleAccentDark</item>
-        <item name="divider_list">@color/dividerListDark</item>
 
         <item name="toolbar_icon">@color/toolbarIconDark</item>
 

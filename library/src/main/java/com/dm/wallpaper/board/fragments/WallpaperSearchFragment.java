@@ -21,17 +21,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.danimahardhika.android.helpers.core.ColorHelper;
+import com.danimahardhika.android.helpers.core.DrawableHelper;
+import com.danimahardhika.android.helpers.core.SoftKeyboardHelper;
+import com.danimahardhika.android.helpers.core.ViewHelper;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.adapters.WallpapersAdapter;
 import com.dm.wallpaper.board.databases.Database;
-import com.dm.wallpaper.board.helpers.ColorHelper;
-import com.dm.wallpaper.board.helpers.DrawableHelper;
-import com.dm.wallpaper.board.helpers.SoftKeyboardHelper;
-import com.dm.wallpaper.board.helpers.ViewHelper;
 import com.dm.wallpaper.board.items.Wallpaper;
 import com.dm.wallpaper.board.preferences.Preferences;
 import com.dm.wallpaper.board.utils.LogUtil;
@@ -42,6 +41,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.dm.wallpaper.board.helpers.ViewHelper.resetViewBottomPadding;
 
 /*
  * Wallpaper Board
@@ -92,7 +93,7 @@ public class WallpaperSearchFragment extends Fragment implements WallpaperListen
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
         ViewCompat.setNestedScrollingEnabled(mRecyclerView, false);
-        ViewHelper.resetViewBottomPadding(mRecyclerView, false);
+        resetViewBottomPadding(mRecyclerView, false);
         mSwipe.setEnabled(false);
 
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -121,18 +122,10 @@ public class WallpaperSearchFragment extends Fragment implements WallpaperListen
         mSearchView.setIconifiedByDefault(false);
         mSearchView.clearFocus();
 
-        ViewHelper.changeSearchViewTextColor(mSearchView, color,
-                ColorHelper.setColorAlpha(color, 0.6f));
-        View view = mSearchView.findViewById(android.support.v7.appcompat.R.id.search_plate);
-        if (view != null) view.setBackgroundColor(Color.TRANSPARENT);
-
-        ImageView closeIcon = (ImageView) mSearchView.findViewById(
-                android.support.v7.appcompat.R.id.search_close_btn);
-        if (closeIcon != null) closeIcon.setImageResource(R.drawable.ic_toolbar_close);
-
-        ImageView searchIcon = (ImageView) mSearchView.findViewById(
-                android.support.v7.appcompat.R.id.search_mag_icon);
-        ViewHelper.removeSearchViewSearchIcon(searchIcon);
+        ViewHelper.setSearchViewTextColor(mSearchView, color);
+        ViewHelper.setSearchViewBackgroundColor(mSearchView, Color.TRANSPARENT);
+        ViewHelper.setSearchViewCloseIcon(mSearchView, R.drawable.ic_toolbar_close);
+        ViewHelper.setSearchViewSearchIcon(mSearchView, null);
 
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
@@ -153,8 +146,9 @@ public class WallpaperSearchFragment extends Fragment implements WallpaperListen
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        ViewHelper.resetSpanCount(getActivity(), mRecyclerView);
-        ViewHelper.resetViewBottomPadding(mRecyclerView, false);
+        ViewHelper.resetSpanCount(mRecyclerView, getActivity().getResources().getInteger(
+                R.integer.wallpapers_column_count));
+        resetViewBottomPadding(mRecyclerView, true);
     }
 
     @Override

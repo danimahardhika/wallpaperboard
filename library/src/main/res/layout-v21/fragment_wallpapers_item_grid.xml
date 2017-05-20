@@ -7,11 +7,9 @@
     tools:ignore="MissingPrefix"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginRight="@dimen/card_margin_right"
-    android:layout_marginEnd="@dimen/card_margin_right"
-    android:layout_marginBottom="@dimen/card_margin_bottom"
+    android:layout_marginEnd="@dimen/card_margin"
+    android:layout_marginBottom="@dimen/card_margin"
     app:cardBackgroundColor="?attr/card_background"
-    app:cardElevation="@dimen/card_elevation"
     app:cardUseCompatPadding="@bool/card_use_compat_padding"
     app:cardCornerRadius="0dp">
 
@@ -44,9 +42,7 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/content_margin"
                 android:paddingBottom="@dimen/content_margin"
-                android:paddingLeft="@dimen/content_margin"
                 android:paddingStart="@dimen/content_margin"
-                android:paddingRight="8dp"
                 android:paddingEnd="8dp"
                 android:orientation="vertical">
 
@@ -78,9 +74,7 @@
                 android:layout_height="match_parent"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
-                android:paddingLeft="4dp"
                 android:paddingStart="4dp"
-                android:paddingRight="12dp"
                 android:paddingEnd="12dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:theme="@style/ButtonStyle"/>

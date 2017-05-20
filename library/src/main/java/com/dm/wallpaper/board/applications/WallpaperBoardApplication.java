@@ -6,6 +6,8 @@ import android.util.Patterns;
 
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.activities.WallpaperBoardCrashReport;
+import com.dm.wallpaper.board.helpers.LocaleHelper;
+import com.dm.wallpaper.board.preferences.Preferences;
 import com.dm.wallpaper.board.utils.ImageConfig;
 import com.dm.wallpaper.board.utils.LogUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -55,6 +57,13 @@ public class WallpaperBoardApplication extends Application {
             mHandler = Thread.getDefaultUncaughtExceptionHandler();
             Thread.setDefaultUncaughtExceptionHandler(this::handleUncaughtException);
         }
+
+        if (Preferences.get(this).isTimeToSetLanguagePreference()) {
+            Preferences.get(this).setLanguagePreference();
+            return;
+        }
+
+        LocaleHelper.setLocale(this);
     }
 
     private void handleUncaughtException(Thread thread, Throwable throwable) {

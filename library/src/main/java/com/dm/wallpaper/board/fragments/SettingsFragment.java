@@ -12,11 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.danimahardhika.android.helpers.core.FileHelper;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.adapters.SettingsAdapter;
-import com.dm.wallpaper.board.helpers.FileHelper;
+import com.dm.wallpaper.board.helpers.LocaleHelper;
 import com.dm.wallpaper.board.helpers.ViewHelper;
+import com.dm.wallpaper.board.items.Language;
 import com.dm.wallpaper.board.items.Setting;
 import com.dm.wallpaper.board.preferences.Preferences;
 
@@ -86,7 +88,7 @@ public class SettingsFragment extends Fragment {
     private void initSettings() {
         List<Setting> settings = new ArrayList<>();
 
-        double cache = (double) FileHelper.getCacheSize(getActivity().getCacheDir()) / FileHelper.MB;
+        double cache = (double) FileHelper.getDirectorySize(getActivity().getCacheDir()) / FileHelper.MB;
         NumberFormat formatter = new DecimalFormat("#0.00");
 
         settings.add(new Setting(R.drawable.ic_toolbar_storage,
@@ -121,6 +123,15 @@ public class SettingsFragment extends Fragment {
         settings.add(new Setting(-1, "",
                 getActivity().getResources().getString(R.string.pref_wallpaper_location),
                 directory, "", Setting.Type.WALLPAPER, -1));
+
+        settings.add(new Setting(R.drawable.ic_toolbar_language,
+                getActivity().getResources().getString(R.string.pref_language_header),
+                "", "", "", Setting.Type.HEADER, -1));
+
+        Language language = LocaleHelper.getCurrentLanguage(getActivity());
+        settings.add(new Setting(-1, "",
+                language.getName(),
+                "", "", Setting.Type.LANGUAGE, -1));
 
         settings.add(new Setting(R.drawable.ic_toolbar_others,
                 getActivity().getResources().getString(R.string.pref_others_header),

@@ -92,6 +92,24 @@
             android:theme="@style/RippleStyle"
             fontPath="fonts/Font-Regular.ttf"/>
 
+        <TextView
+            android:id="@+id/about_dashboard_translator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/content_margin"
+            android:paddingBottom="@dimen/content_margin"
+            android:paddingLeft="@dimen/content_item_list_padding_start"
+            android:paddingStart="@dimen/content_item_list_padding_start"
+            android:paddingEnd="@dimen/content_margin"
+            android:paddingRight="@dimen/content_margin"
+            android:gravity="center_vertical"
+            android:text="@string/about_dashboard_translator"
+            android:textSize="@dimen/text_content_title"
+            android:textColor="?android:attr/textColorPrimary"
+            android:background="?attr/selectableItemBackground"
+            android:theme="@style/RippleStyle"
+            fontPath="fonts/Font-Regular.ttf"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

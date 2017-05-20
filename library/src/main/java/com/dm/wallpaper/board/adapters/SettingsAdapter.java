@@ -14,11 +14,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.danimahardhika.android.helpers.core.ColorHelper;
+import com.danimahardhika.android.helpers.core.DrawableHelper;
+import com.danimahardhika.android.helpers.core.FileHelper;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
-import com.dm.wallpaper.board.helpers.ColorHelper;
-import com.dm.wallpaper.board.helpers.DrawableHelper;
-import com.dm.wallpaper.board.helpers.FileHelper;
+import com.dm.wallpaper.board.fragments.dialogs.LanguagesFragment;
 import com.dm.wallpaper.board.items.Setting;
 import com.dm.wallpaper.board.preferences.Preferences;
 import com.dm.wallpaper.board.utils.LogUtil;
@@ -180,9 +181,9 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                                 .onPositive((dialog, which) -> {
                                     try {
                                         File cache = mContext.getCacheDir();
-                                        FileHelper.clearCache(cache);
+                                        FileHelper.clearDirectory(cache);
 
-                                        double size = (double) FileHelper.getCacheSize(
+                                        double size = (double) FileHelper.getDirectorySize(
                                                 mContext.getCacheDir()) / FileHelper.MB;
                                         NumberFormat formatter = new DecimalFormat("#0.00");
 
@@ -202,6 +203,9 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     case THEME:
                         Preferences.get(mContext).setDarkTheme(!checkBox.isChecked());
                         ((AppCompatActivity) mContext).recreate();
+                        break;
+                    case LANGUAGE:
+                        LanguagesFragment.showLanguageChooser(((AppCompatActivity) mContext).getSupportFragmentManager());
                         break;
                     case COLORED_CARD:
                         Preferences.get(mContext).setColoredWallpapersCard(

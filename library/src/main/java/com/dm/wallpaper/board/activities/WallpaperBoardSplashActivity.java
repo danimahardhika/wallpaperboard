@@ -11,8 +11,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.danimahardhika.android.helpers.core.ColorHelper;
 import com.dm.wallpaper.board.R;
-import com.dm.wallpaper.board.helpers.ColorHelper;
+import com.dm.wallpaper.board.helpers.LocaleHelper;
 import com.dm.wallpaper.board.utils.LogUtil;
 
 import java.net.HttpURLConnection;
@@ -56,9 +57,8 @@ public class WallpaperBoardSplashActivity extends AppCompatActivity {
         mMainActivity = mainActivity;
 
         int color = ContextCompat.getColor(this, R.color.splashColor);
-        int titleColor = ColorHelper.getTitleTextColor(color);
         TextView splashTitle = ButterKnife.findById(this, R.id.splash_title);
-        splashTitle.setTextColor(ColorHelper.setColorAlpha(titleColor, 0.6f));
+        splashTitle.setTextColor(ColorHelper.getBodyTextColor(color));
 
         prepareApp();
         checkRszIo();
@@ -66,6 +66,7 @@ public class WallpaperBoardSplashActivity extends AppCompatActivity {
 
     @Override
     protected void attachBaseContext(Context newBase) {
+        LocaleHelper.setLocale(newBase);
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 

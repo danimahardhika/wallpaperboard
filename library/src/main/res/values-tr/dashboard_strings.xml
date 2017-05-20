@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Navigation View -->
+    <string name="navigation_view_wallpapers">Duvar Kağıtları</string>
+    <string name="navigation_view_favorites">Favoriler</string>
+    <string name="navigation_view_settings">Ayarlar</string>
+    <string name="navigation_view_about">Hakkında</string>
+    <string name="navigation_view_donate">Geliştiriciye Yardım Edin</string>
+    <!-- Menu -->
+    <string name="menu_search">Arama</string>
+    <string name="menu_filter">Süzgeç</string>
+    <string name="menu_save">Cihaza Kaydet</string>
+    <string name="menu_wallpaper_settings">Duvar Kağıdı Ayarları</string>
+    <!-- Dialog -->
+    <string name="open">Aç</string>
+    <!-- Tap Intro -->
+    <!-- Wallpapers -->
+    <string name="wallpaper_favorite_removed">%s favorilerden kaldırıldı</string>
+    <!-- Muzei -->
+    <string name="minute">Dakika</string>
+    <string name="hour">Saat</string>
+    <string name="muzei_settings">Muzei Ayarları</string>
+    <string name="muzei_settings_save">Kaydet</string>
+    <string name="muzei_settings_saved">Ayarlar Kaydedildi</string>
+    <string name="muzei_refresh_duration">Yenileme Süresi</string>
+    <string name="muzei_refresh_duration_desc">Her bir</string>
+    <string name="muzei_wifi_only">Sadece Wifi ile Yenile</string>
+    <string name="muzei_wifi_only_desc">Duvar kağıtlarını cihaz sadece wifi bağlantısı olduğunda yükle</string>
+    <string name="muzei_category">Kategori Seç</string>
+    <string name="muzei_category_desc">Sadece seçilen kategorilerden duvar kağıdı yükle</string>
+    <!-- About -->
+    <string name="about_contributors_title">Katkıda Bulunanlar</string>
+    <string name="about_open_source_licenses">Açık Kaynak Lisansları</string>
+    <!-- InAppBilling -->
+    <string name="billing_load_product_failed">Uygulama içi satın alma ürünleri yüklenemiyor</string>
+    <!-- Preferences -->
+    <string name="pref_data_header">Veri &amp; Önbellek</string>
+    <string name="pref_data_cache">Önbelleği Temizle</string>
+    <string name="pref_data_cache_desc">Cihazınızdan, bulut duvar kağıtları önizlemesi yüklendikten sonra oluşan görüntü önbelleğini silin</string>
+    <string name="pref_data_cache_size">Önbellek Boyutu: %s</string>
+    <string name="pref_data_cache_cleared">Önbellek Silindi</string>
+    <string name="pref_data_cache_clear_dialog">Önbelleği silmek istediğinize emin misiniz?</string>
+    <string name="pref_theme_header">Tema</string>
+    <string name="pref_theme_dark">Koyu Tema</string>
+    <string name="pref_theme_dark_desc">Açık ve koyu tema arası geçiş</string>
+    <string name="pref_wallpaper_header">Duvar Kağıdı</string>
+    <string name="pref_wallpaper_location">Duvar Kağıdı Kayıt Yeri</string>
+    <string name="pref_wallpaper_location_desc">En az bir tane duvar kağıdı indirin</string>
+    <string name="pref_others_header">Diğerleri</string>
+    <string name="pref_others_colored_wallpaper_card">Renkli Duvar Kağıdı Kartı</string>
+    <string name="pref_others_reset_tutorial">Öğretici Sıfırlandı</string>
+    <string name="pref_others_reset_tutorial_reset">Öğreticiyi Sıfırla</string>
+    <!-- Permission -->
+    <string name="permission_storage_denied">Duvar kağıdı kaydetmek için depolama izni gerekli</string>
+    <!-- Support Development -->
+    <string name="donation_success">Bağış yaptığınız için teşekkür ediyorum. İyi işler için kullanacağım.</string>
+    <!-- License -->
+    <string name="license_checking">Lisans kontrolü …</string>
+    <string name="license_check">Lisans Kontrolü</string>
+    <string name="license_check_success">Lisans kontrolü başarılı, uygulamayı Play Store\'dan indirdiğiniz için teşekkürler.</string>
+    <string name="license_check_failed">"Lisans kontrolü başarısız, uygulamayı Play Store\'dan indirmediğiniz için kullanma hakkınız yoktur. "</string>
+    <string name="license_check_retry">Lisans kontrolü şu anda yapılamıyor. Lütfen birkaç dakika sonra tekrar deneyin</string>
+    <!-- Search -->
+    <string name="search_result_empty">\"%s\" için hiçbir sonuç bulunamadı</string>
+    <!-- Crash Report -->
+    <string name="crash_report_message">Maalesef %s çöktü. Geliştiricinin sorunu düzeltmesine yardımcı olmak için aşağıdaki raporu gönderin seçeneğini seçin.</string>
+    <!-- Please don't modify this -->
+    <!-- DrawerToggle -->
+</resources>

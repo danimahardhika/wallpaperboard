@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="MissingPrefix"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
+    <com.dm.wallpaper.board.utils.views.HeaderView
         android:id="@+id/header_image"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/navigation_view_header_height"
-        android:scaleType="centerCrop"/>
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        app:widthRatio="4"
+        app:heightRatio="3"/>
 
     <LinearLayout
         android:id="@+id/header_title_container"

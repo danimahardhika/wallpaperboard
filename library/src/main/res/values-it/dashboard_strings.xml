@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Navigation View -->
+    <string name="navigation_view_wallpapers">Sfondi</string>
+    <string name="navigation_view_favorites">Preferiti</string>
+    <string name="navigation_view_settings">Impostazioni</string>
+    <string name="navigation_view_about">Informazioni</string>
+    <string name="navigation_view_donate">Supporta lo sviluppo</string>
+    <!-- Menu -->
+    <string name="menu_search">Cerca</string>
+    <string name="menu_filter">Filtra</string>
+    <string name="menu_save">Salva sul dispositivo</string>
+    <string name="menu_wallpaper_settings">Impostazioni Sfondi</string>
+    <!-- Dialog -->
+    <string name="open">Apri</string>
+    <string name="close">Chiudi</string>
+    <string name="clear">Cancella</string>
+    <string name="donate">Dona</string>
+    <!-- Tap Intro -->
+    <string name="tap_intro_wallpapers_navigation">Navigation Drawer</string>
+    <string name="tap_intro_wallpapers_navigation_desc">Tappa qui o fai uno swipe dal lato sinistro dello schermo per aprire il drawer</string>
+    <string name="tap_intro_wallpapers_search">Cerca</string>
+    <string name="tap_intro_wallpapers_search_desc">Tappa qui per cercare gli sfondi</string>
+    <string name="tap_intro_wallpapers_filter">Filtra sfondi</string>
+    <string name="tap_intro_wallpapers_filter_desc">Tappa qui per filtrare gli sfondi secondo la categoria</string>
+    <string name="tap_intro_wallpapers_option">Opzioni sfondi</string>
+    <!-- Wallpapers -->
+    <string name="wallpaper_favorite_removed">%s rimosso dai preferiti</string>
+    <!-- Muzei -->
+    <string name="minute">Minuti</string>
+    <string name="hour">Ora</string>
+    <string name="muzei_settings">Impostazioni Muzei</string>
+    <string name="muzei_settings_save">Salva</string>
+    <string name="muzei_settings_saved">Impostazioni Salvate</string>
+    <string name="muzei_refresh_duration">Tempo di aggiornamento</string>
+    <string name="muzei_refresh_duration_desc">Ogni</string>
+    <string name="muzei_wifi_only">Aggiorna solo da WiFi</string>
+    <string name="muzei_wifi_only_desc">Aggiorna gli sfondi solo se il dispositivo è connesso al wifi</string>
+    <string name="muzei_category">Seleziona Categorie</string>
+    <string name="muzei_category_desc">Carica gli sfondi solo dalle categorie selezionate</string>
+    <!-- About -->
+    <string name="about_contributors_title">Contributori</string>
+    <string name="about_open_source_licenses">Licenze Open Source</string>
+    <!-- InAppBilling -->
+    <string name="billing_load_product_failed">Impossibile caricare i prodotti acquistare InApp</string>
+    <!-- Preferences -->
+    <string name="pref_data_header">Dati &amp; Cache</string>
+    <string name="pref_data_cache">Cancella Cache</string>
+    <string name="pref_data_cache_desc">Rimuovi la cache di immagini dalla memoria creata dopo aver caricato le miniature di sfondo</string>
+    <string name="pref_data_cache_size">Dimensione Cache: %s</string>
+    <string name="pref_data_cache_cleared">Cache cancellata</string>
+    <string name="pref_data_cache_clear_dialog">Vuoi davvero cancellare la cache?</string>
+    <string name="pref_theme_header">Tema</string>
+    <string name="pref_theme_dark">Tema Scuro</string>
+    <string name="pref_theme_dark_desc">Cambia tema tra chiaro e scuro</string>
+    <string name="pref_wallpaper_header">Sfondo</string>
+    <string name="pref_wallpaper_location">Percorso di salvataggio sfondi</string>
+    <string name="pref_wallpaper_location_desc">Prova a scaricare almeno uno sfondo</string>
+    <string name="pref_others_header">Altri</string>
+    <string name="pref_others_colored_wallpaper_card">Scheda sfondi colorata</string>
+    <string name="pref_others_reset_tutorial">Resetta Tutorial</string>
+    <string name="pref_others_reset_tutorial_reset">Resetta Tutorial</string>
+    <!-- Permission -->
+    <string name="permission_storage_denied">Autorizzazione Archiviazione richiesta per salvare gli sfondi</string>
+    <!-- Support Development -->
+    <string name="donation_success">Grazie per la donazione. La userò per lo sviluppo dell\'app.</string>
+    <!-- License -->
+    <string name="license_checking">Controllando la licenza …</string>
+    <string name="license_check">Controlla Licenza</string>
+    <string name="license_check_success">Controllo della licenza riuscito, grazie per aver scaricato l\'applicazione dal Play Store.</string>
+    <string name="license_check_failed">Controllo della licenza fallito, non hai scaricato l\'applicazione dal Play Store.
+Non puoi usare l\'applicazione.</string>
+    <string name="license_check_retry">Impossibile controllare la licenza, per favore riprova tra qualche istant</string>
+    <!-- Search -->
+    <string name="search_result_empty">Nessun risultato trovato per \"%s\"</string>
+    <!-- Crash Report -->
+    <string name="crash_report">Segnalazione Crash</string>
+    <string name="crash_report_message">Sfortunatamente %s ha crashato. Scegli Invia Segnalazione per aiutare lo sviluppatore a risolvere il problema.</string>
+    <string name="crash_report_send">Invia Segnalazione</string>
+    <string name="email_client">Scegli Email Client</string>
+    <!-- Please don't modify this -->
+    <string name="about_dashboard_dev">Wallpaper Board è una dashboard di sfondi open source, con licenza Apache License 2.0 per
+Android disponibile su Github e gratis, sviluppata da Dani Mahardhika.</string>
+    <string name="about_dashboard_contributors">Contributori Wallpaper Board</string>
+    <!-- DrawerToggle -->
+    <string name="txt_open">Apri</string>
+</resources>

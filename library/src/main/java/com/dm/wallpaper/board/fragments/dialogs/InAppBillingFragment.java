@@ -50,7 +50,7 @@ import butterknife.ButterKnife;
 
 public class InAppBillingFragment extends DialogFragment {
 
-    @BindView(R2.id.inapp_list)
+    @BindView(R2.id.listview)
     ListView mListView;
     @BindView(R2.id.progress)
     ProgressBar mProgress;

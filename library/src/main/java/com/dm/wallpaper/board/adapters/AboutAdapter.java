@@ -18,12 +18,12 @@ import android.webkit.URLUtil;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.danimahardhika.android.helpers.core.ColorHelper;
+import com.danimahardhika.android.helpers.core.DrawableHelper;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.fragments.dialogs.CreditsFragment;
 import com.dm.wallpaper.board.fragments.dialogs.LicensesFragment;
-import com.dm.wallpaper.board.helpers.ColorHelper;
-import com.dm.wallpaper.board.helpers.DrawableHelper;
 import com.dm.wallpaper.board.preferences.Preferences;
 import com.dm.wallpaper.board.utils.Extras;
 import com.dm.wallpaper.board.utils.ImageConfig;
@@ -267,6 +267,8 @@ public class AboutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         TextView licenses;
         @BindView(R2.id.about_dashboard_contributors)
         TextView contributors;
+        @BindView(R2.id.about_dashboard_translator)
+        TextView translator;
 
         FooterViewHolder(View itemView) {
             super(itemView);
@@ -293,6 +295,7 @@ public class AboutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             link2.setOnClickListener(this);
             licenses.setOnClickListener(this);
             contributors.setOnClickListener(this);
+            translator.setOnClickListener(this);
         }
 
         @Override
@@ -306,6 +309,12 @@ public class AboutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             if (id == R.id.about_dashboard_contributors) {
                 CreditsFragment.showCreditsDialog(((AppCompatActivity) mContext).getSupportFragmentManager(),
                         Extras.TYPE_DASHBOARD_CONTRIBUTORS);
+                return;
+            }
+
+            if (id == R.id.about_dashboard_translator) {
+                CreditsFragment.showCreditsDialog(((AppCompatActivity) mContext).getSupportFragmentManager(),
+                        Extras.TYPE_DASHBOARD_TRANSLATOR);
                 return;
             }
 

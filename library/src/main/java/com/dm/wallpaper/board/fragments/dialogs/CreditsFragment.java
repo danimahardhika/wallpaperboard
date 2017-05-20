@@ -118,6 +118,8 @@ public class CreditsFragment extends DialogFragment {
                 return getActivity().getResources().getString(R.string.about_contributors_title);
             case Extras.TYPE_DASHBOARD_CONTRIBUTORS:
                 return getActivity().getResources().getString(R.string.about_dashboard_contributors);
+            case Extras.TYPE_DASHBOARD_TRANSLATOR:
+                return getActivity().getResources().getString(R.string.about_dashboard_translator);
             default:
                 return "";
         }
@@ -129,6 +131,8 @@ public class CreditsFragment extends DialogFragment {
                 return R.xml.contributors;
             case Extras.TYPE_DASHBOARD_CONTRIBUTORS:
                 return R.xml.dashboard_contributors;
+            case Extras.TYPE_DASHBOARD_TRANSLATOR:
+                return R.xml.dashboard_translator;
             default:
                 return -1;
         }
@@ -180,7 +184,7 @@ public class CreditsFragment extends DialogFragment {
             protected void onPostExecute(Boolean aBoolean) {
                 super.onPostExecute(aBoolean);
                 if (aBoolean) {
-                    mListView.setAdapter(new CreditsAdapter(getActivity(), credits, mType));
+                    mListView.setAdapter(new CreditsAdapter(getActivity(), credits));
                 } else {
                     dismiss();
                 }

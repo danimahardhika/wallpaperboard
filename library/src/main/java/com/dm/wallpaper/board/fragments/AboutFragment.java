@@ -13,10 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.danimahardhika.android.helpers.core.ViewHelper;
+import com.danimahardhika.android.helpers.core.WindowHelper;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.adapters.AboutAdapter;
-import com.dm.wallpaper.board.helpers.ViewHelper;
 import com.dm.wallpaper.board.preferences.Preferences;
 
 import butterknife.BindView;
@@ -77,7 +78,8 @@ public class AboutFragment extends Fragment {
         super.onConfigurationChanged(newConfig);
         resetRecyclerViewPadding(newConfig.orientation);
 
-        ViewHelper.resetSpanCount(getActivity(), mRecyclerView, R.integer.about_column_count);
+        ViewHelper.resetSpanCount(mRecyclerView, getActivity().getResources().getInteger(
+                R.integer.about_column_count));
 
         StaggeredGridLayoutManager manager = (StaggeredGridLayoutManager) mRecyclerView.getLayoutManager();
         mRecyclerView.setAdapter(new AboutAdapter(getActivity(), manager.getSpanCount()));
@@ -94,12 +96,12 @@ public class AboutFragment extends Fragment {
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            boolean tabletMode = getActivity().getResources().getBoolean(R.bool.tablet_mode);
+            boolean tabletMode = getActivity().getResources().getBoolean(R.bool.android_helpers_tablet_mode);
             if (tabletMode || orientation == Configuration.ORIENTATION_PORTRAIT) {
-                navBar = ViewHelper.getNavigationBarHeight(getActivity());
+                navBar = WindowHelper.getNavigationBarHeight(getActivity());
             }
 
-            navBar += ViewHelper.getStatusBarHeight(getContext());
+            navBar += WindowHelper.getStatusBarHeight(getContext());
         }
 
         navBar += ViewHelper.getToolbarHeight(getActivity());

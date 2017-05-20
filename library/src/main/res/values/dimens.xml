@@ -10,12 +10,7 @@
     <dimen name="content_divider_size">1dp</dimen>
 
     <!-- Card Global -->
-    <dimen name="card_margin_right">3dp</dimen>
-    <dimen name="card_margin_left">3dp</dimen>
-    <dimen name="card_margin_top">4dp</dimen>
-    <dimen name="card_margin_bottom">1dp</dimen>
-
-    <dimen name="card_padding_bottom">4dp</dimen>
+    <dimen name="card_margin">1dp</dimen>
 
     <dimen name="card_elevation">2dp</dimen>
     <dimen name="card_corner_radius">0dp</dimen>

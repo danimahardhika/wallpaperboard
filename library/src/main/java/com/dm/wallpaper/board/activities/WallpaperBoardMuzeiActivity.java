@@ -17,20 +17,23 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.danimahardhika.android.helpers.core.ColorHelper;
+import com.danimahardhika.android.helpers.core.DrawableHelper;
+import com.danimahardhika.android.helpers.core.TimeHelper;
+import com.danimahardhika.android.helpers.core.WindowHelper;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.fragments.dialogs.FilterFragment;
 import com.dm.wallpaper.board.fragments.dialogs.RefreshDurationFragment;
-import com.dm.wallpaper.board.helpers.ColorHelper;
-import com.dm.wallpaper.board.helpers.DrawableHelper;
-import com.dm.wallpaper.board.helpers.TimeHelper;
-import com.dm.wallpaper.board.helpers.ViewHelper;
+import com.dm.wallpaper.board.helpers.LocaleHelper;
 import com.dm.wallpaper.board.preferences.Preferences;
 import com.dm.wallpaper.board.utils.listeners.RefreshDurationListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
+import static com.dm.wallpaper.board.helpers.ViewHelper.resetViewBottomPadding;
 
 /*
  * Wallpaper Board
@@ -78,13 +81,13 @@ public class WallpaperBoardMuzeiActivity extends AppCompatActivity implements Vi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_muzei);
         ButterKnife.bind(this);
-        ViewHelper.setApplicationWindowColor(this);
+
         ViewCompat.setNestedScrollingEnabled(mScrollView, false);
-        ViewHelper.disableTranslucentNavigationBar(this);
-        ColorHelper.setStatusBarColor(this,
-                ColorHelper.getAttributeColor(this, R.attr.colorPrimary));
-        ColorHelper.setStatusBarIconColor(this);
+        WindowHelper.disableTranslucentNavigationBar(this);
+
         ColorHelper.setNavigationBarColor(this, ColorHelper.getDarkerColor(
+                ColorHelper.getAttributeColor(this, R.attr.colorAccent), 0.8f));
+        ColorHelper.setStatusBarColor(this, ColorHelper.getDarkerColor(
                 ColorHelper.getAttributeColor(this, R.attr.colorAccent), 0.8f));
 
         Toolbar toolbar = ButterKnife.findById(this, R.id.toolbar);
@@ -94,7 +97,7 @@ public class WallpaperBoardMuzeiActivity extends AppCompatActivity implements Vi
 
         mMuzeiService = muzeiService;
         mIsMinute = Preferences.get(this).isRotateMinute();
-        mRotateTime = TimeHelper.convertMilliToMinute(
+        mRotateTime = TimeHelper.milliToMinute(
                 Preferences.get(this).getRotateTime());
         if (!mIsMinute) mRotateTime = mRotateTime / 60;
 
@@ -111,13 +114,15 @@ public class WallpaperBoardMuzeiActivity extends AppCompatActivity implements Vi
 
     @Override
     protected void attachBaseContext(Context newBase) {
+        LocaleHelper.setLocale(newBase);
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        ViewHelper.resetViewBottomPadding(mScrollView, false);
+        resetViewBottomPadding(mScrollView, false);
+        LocaleHelper.setLocale(this);
     }
 
     @Override
@@ -130,7 +135,7 @@ public class WallpaperBoardMuzeiActivity extends AppCompatActivity implements Vi
         } else if (id == R.id.muzei_select_categories) {
             FilterFragment.showFilterDialog(getSupportFragmentManager(), true);
         } else if (id == R.id.muzei_save) {
-            int rotateTime = TimeHelper.convertMinuteToMilli(mRotateTime);
+            int rotateTime = TimeHelper.minuteToMilli(mRotateTime);
             if (!mIsMinute) rotateTime = rotateTime * 60;
 
             Preferences.get(this).setRotateMinute(mIsMinute);

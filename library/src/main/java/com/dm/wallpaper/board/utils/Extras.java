@@ -42,5 +42,6 @@ public class Extras {
 
     public static final int TYPE_CONTRIBUTORS = 1;
     public static final int TYPE_DASHBOARD_CONTRIBUTORS = 2;
+    public static final int TYPE_DASHBOARD_TRANSLATOR = 3;
 
 }

@@ -15,13 +15,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.danimahardhika.android.helpers.core.ColorHelper;
+import com.danimahardhika.android.helpers.core.DrawableHelper;
+import com.danimahardhika.android.helpers.core.ViewHelper;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.adapters.WallpapersAdapter;
 import com.dm.wallpaper.board.databases.Database;
-import com.dm.wallpaper.board.helpers.ColorHelper;
-import com.dm.wallpaper.board.helpers.DrawableHelper;
-import com.dm.wallpaper.board.helpers.ViewHelper;
 import com.dm.wallpaper.board.items.Wallpaper;
 import com.dm.wallpaper.board.preferences.Preferences;
 import com.dm.wallpaper.board.utils.LogUtil;
@@ -32,6 +32,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.dm.wallpaper.board.helpers.ViewHelper.resetViewBottomPadding;
 
 /*
  * Wallpaper Board
@@ -78,7 +80,7 @@ public class FavoritesFragment extends Fragment implements WallpaperListener {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ViewHelper.resetViewBottomPadding(mRecyclerView, true);
+        resetViewBottomPadding(mRecyclerView, true);
         mSwipe.setEnabled(false);
 
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -92,8 +94,9 @@ public class FavoritesFragment extends Fragment implements WallpaperListener {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        ViewHelper.resetSpanCount(getActivity(), mRecyclerView);
-        ViewHelper.resetViewBottomPadding(mRecyclerView, true);
+        ViewHelper.resetSpanCount(mRecyclerView, getActivity().getResources().getInteger(
+                R.integer.wallpapers_column_count));
+        resetViewBottomPadding(mRecyclerView, true);
     }
 
     @Override
@@ -144,9 +147,13 @@ public class FavoritesFragment extends Fragment implements WallpaperListener {
                     mRecyclerView.setAdapter(new WallpapersAdapter(getActivity(), wallpapers, true, false));
 
                     if (mRecyclerView.getAdapter().getItemCount() == 0) {
-                        int color = ColorHelper.getAttributeColor(getActivity(), android.R.attr.textColorSecondary);
-                        mFavoriteEmpty.setImageDrawable(DrawableHelper.getTintedDrawable(
-                                getActivity(), R.drawable.ic_wallpaper_favorite_empty, ColorHelper.setColorAlpha(color, 0.7f)));
+                        int color = ColorHelper.getAttributeColor(getActivity(),
+                                android.R.attr.textColorSecondary);
+
+                        mFavoriteEmpty.setImageDrawable(
+                                DrawableHelper.getTintedDrawable(getActivity(),
+                                        R.drawable.ic_wallpaper_favorite_empty,
+                                        ColorHelper.setColorAlpha(color, 0.7f)));
                         mFavoriteEmpty.setVisibility(View.VISIBLE);
                     }
                 }

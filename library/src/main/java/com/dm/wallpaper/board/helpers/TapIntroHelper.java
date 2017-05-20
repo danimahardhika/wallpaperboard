@@ -12,6 +12,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.danimahardhika.android.helpers.core.ColorHelper;
+import com.danimahardhika.android.helpers.core.UnitHelper;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.preferences.Preferences;
 import com.getkeepsafe.taptargetview.TapTarget;
@@ -96,7 +98,7 @@ public class TapIntroHelper {
 
                             View view = holder.itemView.findViewById(R.id.image);
                             if (view != null) {
-                                float targetRadius = ViewHelper.intToDp(context, view.getMeasuredWidth()) - 10f;
+                                float targetRadius = UnitHelper.toDp(context, (float) view.getMeasuredWidth()) - 10f;
 
                                 String desc = String.format(context.getResources().getString(R.string.tap_intro_wallpapers_option_desc),
                                         context.getResources().getBoolean(R.bool.enable_wallpaper_download) ?

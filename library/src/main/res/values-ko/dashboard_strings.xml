@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Navigation View -->
+    <string name="navigation_view_wallpapers">배경화면</string>
+    <string name="navigation_view_favorites">즐겨찾기</string>
+    <string name="navigation_view_settings">설정</string>
+    <string name="navigation_view_about">정보</string>
+    <string name="navigation_view_donate">개발 지원</string>
+    <!-- Menu -->
+    <string name="menu_search">검색</string>
+    <string name="menu_filter">필터</string>
+    <string name="menu_save">기기에 저장</string>
+    <string name="menu_wallpaper_settings">배경화면 설정</string>
+    <!-- Dialog -->
+    <string name="open">열기</string>
+    <string name="close">닫기</string>
+    <string name="clear">지우기</string>
+    <string name="donate">기부</string>
+    <!-- Tap Intro -->
+    <string name="tap_intro_wallpapers_navigation">내비게이션 서랍</string>
+    <string name="tap_intro_wallpapers_navigation_desc">내비게이션 서랍을 열려면 여기를 누르거나 화면의 왼쪽 가장자리를 미세요.</string>
+    <string name="tap_intro_wallpapers_search">검색</string>
+    <string name="tap_intro_wallpapers_search_desc">배경화면을 검색하려면 여기를 누르세요</string>
+    <string name="tap_intro_wallpapers_filter">배경화면 필터</string>
+    <string name="tap_intro_wallpapers_filter_desc">배경화면을 카테고리에 따라 필터링하려면 여기를 누르세요</string>
+    <string name="tap_intro_wallpapers_option">배경화면 옵션</string>
+    <string name="tap_intro_wallpapers_option_desc">%s 배경화면을 적용하는 옵션을 보려면 여기를 누르세요.</string>
+    <string name="tap_intro_wallpapers_option_desc_download">다운로드 또는</string>
+    <string name="tap_intro_wallpapers_preview">배경화면 미리보기</string>
+    <string name="tap_intro_wallpapers_preview_desc">원본 크기의 미리보기를 보려면 여기를 누르세요</string>
+    <string name="tap_intro_wallpapers_favorite">배경화면 즐겨찾기</string>
+    <string name="tap_intro_wallpapers_favorite_desc">배경화면을 즐겨찾기에 추가하려면 여기를 누르세요</string>
+    <string name="tap_intro_wallpaper_preview_settings">배경화면 설정</string>
+    <string name="tap_intro_wallpaper_preview_settings_desc">배경화면 설정을 열려면 여기를 누르세요.
+잠금화면 배경 (Android Nougat 이상) 이나 배경화면 크롭을 사용하도록 설정할 수 있습니다.</string>
+    <string name="tap_intro_wallpaper_preview_save">배경화면 저장</string>
+    <string name="tap_intro_wallpaper_preview_save_desc">배경화면을 나중에 사용할 수 있도록 기기에 저장하려면 여기를 누르세요</string>
+    <string name="tap_intro_wallpaper_preview_apply">배경화면 적용</string>
+    <string name="tap_intro_wallpaper_preview_apply_desc">배경화면을 홈 화면 배경으로 지정하려면 여기를 누르세요</string>
+    <!-- Wallpapers -->
+    <string name="wallpaper_new_added">새 배경화면</string>
+    <string name="wallpaper_filter">카테고리별로 필터</string>
+    <string name="wallpaper_downloading">배경화면을 다운로드하는 중…</string>
+    <string name="wallpaper_download_exist">%s 이름을 가진 배경화면이 이미 있습니다. 파일을 교체하시겠습니까?</string>
+    <string name="wallpaper_download_exist_replace">교체</string>
+    <string name="wallpaper_download_exist_new">새로 만들기</string>
+    <string name="wallpaper_download_failed">배경화면을 다운로드할 수 없습니다.</string>
+    <string name="wallpaper_download_cancelled">배경화면 다운로드가 취소되었습니다.</string>
+    <string name="wallpaper_downloaded">배경화면이 다음 경로에 저장되었습니다:</string>
+    <string name="wallpaper_loading">배경화면을 불러오는 중…</string>
+    <string name="wallpaper_applying">배경화면을 적용하는 중…</string>
+    <string name="wallpaper_applied">배경화면이 적용되었습니다.</string>
+    <string name="wallpaper_apply_failed">배경화면을 적용할 수 없습니다.</string>
+    <string name="wallpaper_apply_cancelled">배경화면 적용이 취소되었습니다.</string>
+    <string name="connection_failed">서버에서 데이터를 받아올 수 없습니다.</string>
+    <string name="wallpaper_apply">배경화면으로 지정</string>
+    <string name="wallpaper_apply_crop">이 옵션을 적용하면 배경화면 크롭이 비활성화됩니다.</string>
+    <string name="wallpaper_settings_crop">배경화면 크롭</string>
+    <string name="wallpaper_settings_crop_desc">배경화면 크롭을 사용합니다. 미리보기에 보이는 부분을 배경화면으로 적용합니다.
+핀치 인/아웃 또는 두 번 눌러 배경화면을 확대/축소하세요.</string>
+    <string name="wallpaper_settings_lockscreen">잠금화면 배경</string>
+    <string name="wallpaper_settings_lockscreen_desc">배경화면을 홈 화면과 잠금화면 둘 모두에 적용합니다.</string>
+    <string name="wallpaper_settings_lockscreen_not_available">잠금화면 배경은 Android Nougat에서만 사용할 수 있습니다.</string>
+    <string name="wallpaper_favorite_added">%s 배경화면이 즐겨찾기에 추가되었습니다.</string>
+    <string name="wallpaper_favorite_removed">%s 배경화면이 즐겨찾기에서 제거되었습니다.</string>
+    <!-- Muzei -->
+    <string name="minute">분</string>
+    <string name="hour">시간</string>
+    <string name="muzei_settings">Muzei 설정</string>
+    <string name="muzei_settings_save">저장</string>
+    <string name="muzei_settings_saved">설정이 저장되었습니다.</string>
+    <string name="muzei_refresh_duration">배경화면 교체 주기</string>
+    <string name="muzei_refresh_duration_desc">매</string>
+    <string name="muzei_wifi_only">Wi-Fi 연결 시에만 교체</string>
+    <string name="muzei_wifi_only_desc">기기가 Wi-Fi에 연결되어 있을 때만 배경화면을 교체합니다.</string>
+    <string name="muzei_category">카테고리 선택</string>
+    <string name="muzei_category_desc">선택한 카테고리에 해당되는 배경화면만 불러옵니다.</string>
+    <!-- About -->
+    <string name="about_contributors_title">기여자</string>
+    <string name="about_open_source_licenses">오픈 소스 라이선스</string>
+    <!-- InAppBilling -->
+    <string name="billing_load_product_failed">인앱 구매 상품을 불러올 수 없습니다.</string>
+    <!-- Preferences -->
+    <string name="pref_data_header">데이터 및 캐시</string>
+    <string name="pref_data_cache">캐시 삭제</string>
+    <string name="pref_data_cache_desc">배경화면 섬네일을 불러오는 과정에서
+저장소에 만들어진 이미지 캐시를 제거합니다.</string>
+    <string name="pref_data_cache_size">캐시 크기: %s</string>
+    <string name="pref_data_cache_cleared">캐시를 삭제했습니다.</string>
+    <string name="pref_data_cache_clear_dialog">정말 캐시를 삭제하시겠습니까?</string>
+    <string name="pref_theme_header">테마</string>
+    <string name="pref_theme_dark">어두운 테마</string>
+    <string name="pref_theme_dark_desc">어두운 테마 또는 밝은 테마를 선택합니다.</string>
+    <string name="pref_wallpaper_header">배경화면</string>
+    <string name="pref_wallpaper_location">배경화면 저장 위치</string>
+    <string name="pref_wallpaper_location_desc">먼저 배경화면을 하나 이상 다운로드하세요.</string>
+    <string name="pref_language_header">언어</string>
+    <string name="pref_others_header">기타</string>
+    <string name="pref_others_colored_wallpaper_card">배경화면 카드 색상 적용</string>
+    <string name="pref_others_reset_tutorial">튜토리얼 초기화</string>
+    <string name="pref_others_reset_tutorial_reset">튜토리얼 초기화</string>
+    <!-- Permission -->
+    <string name="permission_storage_denied">배경화면을 저장하려면 저장소 권한이 필요합니다.</string>
+    <!-- Support Development -->
+    <string name="donation_success">기부해 주셔서 감사합니다. 좋은 곳에 사용하겠습니다.</string>
+    <!-- License -->
+    <string name="license_checking">라이선스를 확인하는 중…</string>
+    <string name="license_check">라이선스 확인</string>
+    <string name="license_check_success">라이선스 확인에 성공했습니다. Play 스토어에서 앱을 다운로드해 주셔서 감사합니다.</string>
+    <string name="license_check_failed">라이선스 확인에 실패했습니다. Play 스토에서 다운로드한 앱이 아닙니다.
+이 앱을 사용하실 수 없습니다.</string>
+    <string name="license_check_retry">라이선스를 확인할 수 없습니다. 잠시 후에 다시 시도해 주세요.</string>
+    <!-- Search -->
+    <string name="search_result_empty">\"%s\" 에 대한 검색 결과가 없습니다.</string>
+    <!-- Crash Report -->
+    <string name="crash_report">오류 보고서</string>
+    <string name="crash_report_message">죄송합니다. %s 앱이 중지되었습니다. 개발자가 이 문제를 고치는 데 도움을 주려면 아래에서 보고서 전송을 선택하세요.</string>
+    <string name="crash_report_send">보고서 전송</string>
+    <string name="email_client">메일 클라이언트 선택</string>
+    <!-- Please don't modify this -->
+    <string name="about_dashboard">Wallpaper Board</string>
+    <string name="about_dashboard_dev">Wallpaper Board는 Dani Mahardhika가 개발한 Android의 무료 배경화면 대시보드 앱입니다.
+Apache License 2.0을 따르며 GitHub에 소스가 공개되어 있습니다.</string>
+    <string name="about_dashboard_contributors">Wallpaper Board 기여자</string>
+    <string name="about_dashboard_translator">Wallpaper Board 번역자</string>
+    <!-- DrawerToggle -->
+    <string name="txt_open">열기</string>
+    <string name="txt_close">닫기</string>
+</resources>

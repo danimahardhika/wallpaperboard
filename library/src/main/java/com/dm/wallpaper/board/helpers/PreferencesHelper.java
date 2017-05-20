@@ -7,6 +7,10 @@ import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 
 import com.dm.wallpaper.board.R;
+import com.dm.wallpaper.board.items.Language;
+
+import java.util.List;
+import java.util.Locale;
 
 /*
  * Wallpaper Board
@@ -45,6 +49,8 @@ public class PreferencesHelper {
     private static final String KEY_WALLPAPERS_INTRO = "wallpapers_intro";
     private static final String KEY_WALLPAPER_PREVIEW_INTRO = "wallpaper_preview_intro";
     private static final String KEY_COLORED_WALLPAPERS_CARD = "colored_wallpapers_card";
+    private static final String KEY_LANGUAGE_PREFERENCE = "language_preference";
+    private static final String KEY_CURRENT_LOCALE = "current_locale";
 
     public PreferencesHelper(@NonNull Context context) {
         mContext = context;
@@ -80,7 +86,7 @@ public class PreferencesHelper {
     }
 
     public boolean isColoredWallpapersCard() {
-        return getSharedPreferences().getBoolean(KEY_COLORED_WALLPAPERS_CARD, false);
+        return getSharedPreferences().getBoolean(KEY_COLORED_WALLPAPERS_CARD, true);
     }
 
     public void setColoredWallpapersCard(boolean bool) {
@@ -161,6 +167,54 @@ public class PreferencesHelper {
 
     public void setAvailableWallpapersCount(int count) {
         getSharedPreferences().edit().putInt(KEY_AVAILABLE_WALLPAPERS_COUNT, count).apply();
+    }
+
+    public Locale getCurrentLocale() {
+        String code = getSharedPreferences().getString(KEY_CURRENT_LOCALE, "en_US");
+        return LocaleHelper.getLocale(code);
+    }
+
+    public void setCurrentLocale(String code) {
+        getSharedPreferences().edit().putString(KEY_CURRENT_LOCALE, code).apply();
+    }
+
+    public boolean isTimeToSetLanguagePreference() {
+        return getSharedPreferences().getBoolean(KEY_LANGUAGE_PREFERENCE, true);
+    }
+
+    private void setTimeToSetLanguagePreference(boolean bool) {
+        getSharedPreferences().edit().putBoolean(KEY_LANGUAGE_PREFERENCE, bool).apply();
+    }
+
+    public void setLanguagePreference() {
+        Locale locale = Locale.getDefault();
+        List<Language> languages = LocaleHelper.getAvailableLanguages(mContext);
+
+        Locale currentLocale = null;
+        for (Language language : languages) {
+            Locale l = language.getLocale();
+            if (locale.toString().equals(l.toString())) {
+                currentLocale = l;
+                break;
+            }
+        }
+
+        if (currentLocale == null) {
+            for (Language language : languages) {
+                Locale l = language.getLocale();
+                if (locale.getLanguage().equals(l.getLanguage())) {
+                    currentLocale = l;
+                    break;
+                }
+            }
+        }
+
+        if (currentLocale != null) {
+            setCurrentLocale(currentLocale.toString());
+        }
+
+        LocaleHelper.setLocale(mContext);
+        setTimeToSetLanguagePreference(false);
     }
 
     public boolean isConnectedToNetwork() {

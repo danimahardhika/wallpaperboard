@@ -7,10 +7,11 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.danimahardhika.android.helpers.core.FileHelper;
+import com.danimahardhika.android.helpers.permission.PermissionHelper;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.helpers.CrashReportHelper;
-import com.dm.wallpaper.board.helpers.FileHelper;
-import com.dm.wallpaper.board.helpers.PermissionHelper;
+import com.dm.wallpaper.board.helpers.LocaleHelper;
 
 import java.io.File;
 
@@ -46,6 +47,8 @@ public class WallpaperBoardCrashReport extends AppCompatActivity {
                 return;
             }
 
+            LocaleHelper.setLocale(this);
+
             String stackTrace = bundle.getString(EXTRA_STACKTRACE);
             String deviceInfo = CrashReportHelper.getDeviceInfoForCrashReport(this);
 
@@ -80,7 +83,7 @@ public class WallpaperBoardCrashReport extends AppCompatActivity {
 
     private Intent prepareUri(String deviceInfo, String stackTrace, Intent intent) {
         String crashLog = CrashReportHelper.buildCrashLog(this, getCacheDir(), stackTrace);
-        boolean granted = PermissionHelper.isPermissionStorageGranted(this);
+        boolean granted = PermissionHelper.isStorageGranted(this);
         if (crashLog != null) {
             Uri uri = FileHelper.getUriFromFile(this, getPackageName(), new File(crashLog));
             if (uri != null) {
@@ -100,5 +103,4 @@ public class WallpaperBoardCrashReport extends AppCompatActivity {
         intent.putExtra(Intent.EXTRA_TEXT, deviceInfo + stackTrace);
         return intent;
     }
-
 }

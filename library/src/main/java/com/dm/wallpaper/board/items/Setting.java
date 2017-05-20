@@ -81,6 +81,7 @@ public class Setting {
        CACHE,
        THEME,
        WALLPAPER,
+       LANGUAGE,
        COLORED_CARD,
        RESET_TUTORIAL
    }

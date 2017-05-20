@@ -3,25 +3,30 @@ package com.dm.wallpaper.board.adapters;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v4.view.ViewCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.URLUtil;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.danimahardhika.android.helpers.core.ColorHelper;
+import com.danimahardhika.android.helpers.core.DrawableHelper;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.items.Credit;
-import com.dm.wallpaper.board.utils.Extras;
 import com.dm.wallpaper.board.utils.ImageConfig;
 import com.dm.wallpaper.board.utils.LogUtil;
-import com.mikhaellopez.circularimageview.CircularImageView;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
+import com.nostra13.universalimageloader.core.display.CircleBitmapDisplayer;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 
 import java.util.List;
@@ -51,12 +56,24 @@ public class CreditsAdapter extends BaseAdapter {
 
     private final Context mContext;
     private final List<Credit> mCredits;
-    private final int mType;
+    private final DisplayImageOptions.Builder mOptions;
 
-    public CreditsAdapter(@NonNull Context context, @NonNull List<Credit> credits, int type) {
+    public CreditsAdapter(@NonNull Context context, @NonNull List<Credit> credits) {
         mContext = context;
         mCredits = credits;
-        mType = type;
+
+        int color = ColorHelper.getAttributeColor(mContext, android.R.attr.textColorSecondary);
+        Drawable drawable = DrawableHelper.getTintedDrawable(
+                mContext, R.drawable.ic_toolbar_default_profile, color);
+
+        mOptions = ImageConfig.getRawDefaultImageOptions();
+        mOptions.resetViewBeforeLoading(true);
+        mOptions.cacheInMemory(true);
+        mOptions.cacheOnDisk(true);
+        mOptions.showImageForEmptyUri(drawable);
+        mOptions.showImageOnFail(drawable);
+        mOptions.showImageOnLoading(drawable);
+        mOptions.displayer(new CircleBitmapDisplayer());
     }
 
     @Override
@@ -105,14 +122,9 @@ public class CreditsAdapter extends BaseAdapter {
             holder.subtitle.setVisibility(View.VISIBLE);
         }
 
-        if (mType == Extras.TYPE_DASHBOARD_CONTRIBUTORS) {
-            holder.image.setVisibility(View.VISIBLE);
-            ImageLoader.getInstance().displayImage(credit.getImage(),
-                    new ImageViewAware(holder.image), ImageConfig.getDefaultImageOptions(),
-                    new ImageSize(144, 144), null, null);
-        } else if (mType == Extras.TYPE_CONTRIBUTORS) {
-            holder.image.setVisibility(View.GONE);
-        }
+        ImageLoader.getInstance().displayImage(credit.getImage(),
+                new ImageViewAware(holder.image), mOptions.build(),
+                new ImageSize(144, 144), null, null);
         return view;
     }
 
@@ -121,7 +133,7 @@ public class CreditsAdapter extends BaseAdapter {
         @BindView(R2.id.container)
         LinearLayout container;
         @BindView(R2.id.image)
-        CircularImageView image;
+        ImageView image;
         @BindView(R2.id.title)
         TextView title;
         @BindView(R2.id.subtitle)
@@ -129,6 +141,9 @@ public class CreditsAdapter extends BaseAdapter {
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
+            int color = ColorHelper.getAttributeColor(mContext, android.R.attr.textColorSecondary);
+            ViewCompat.setBackground(image, DrawableHelper.getTintedDrawable(
+                    mContext, R.drawable.ic_toolbar_circle, ColorHelper.setColorAlpha(color, 0.4f)));
         }
     }
 }

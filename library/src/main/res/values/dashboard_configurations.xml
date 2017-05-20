@@ -60,7 +60,7 @@
 
     <!-- Rounded corner wallpaper card
     * NOTE: Only for Android Lollipop and above, automatically disabled on Android below Lollipop -->
-    <bool name="enable_wallpaper_card_rounded_corner">true</bool>
+    <bool name="enable_wallpaper_card_rounded_corner">false</bool>
 
     <!-- CONFIG: NAVIGATION VIEW HEADER -->
 
@@ -73,13 +73,16 @@
     * ex: <string name="navigation_view_header">#000000</string> -->
     <string name="navigation_view_header">https://c.slashgear.com/wp-content/uploads/2015/08/AndroidMarshmallow_10.jpg</string>
 
-    <!-- Navigation view header height
-    * default: 200dp -->
-    <dimen name="navigation_view_header_height">200dp</dimen>
-
     <!-- Navigation view header text
     * Leave empty if you don't want to show any text -->
     <string name="navigation_view_header_title">Wallpaper Board</string>
+
+    <!-- Navigation view header style
+    * Available choices:
+    * mini
+    * normal
+    -->
+    <string name="navigation_view_header_style">normal</string>
 
     <!-- CONFIG: ABOUT -->
 

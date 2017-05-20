@@ -9,7 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.SparseArrayCompat;
 
-import com.dm.wallpaper.board.helpers.TimeHelper;
+import com.danimahardhika.android.helpers.core.TimeHelper;
 import com.dm.wallpaper.board.items.Category;
 import com.dm.wallpaper.board.items.Wallpaper;
 import com.dm.wallpaper.board.items.WallpaperJson;
@@ -131,7 +131,7 @@ public class Database extends SQLiteOpenHelper {
             values.put(KEY_URL, wallpapers.getWallpapers.get(i).url);
             values.put(KEY_THUMB_URL, wallpapers.getWallpapers.get(i).thumbUrl);
             values.put(KEY_CATEGORY, wallpapers.getWallpapers.get(i).category);
-            values.put(KEY_ADDED_ON, TimeHelper.getDateTime());
+            values.put(KEY_ADDED_ON, TimeHelper.getLongDateTime());
 
             db.insert(TABLE_WALLPAPERS, null, values);
         }
@@ -147,7 +147,7 @@ public class Database extends SQLiteOpenHelper {
             values.put(KEY_URL, wallpapers.get(i).getUrl());
             values.put(KEY_THUMB_URL, wallpapers.get(i).getThumbUrl());
             values.put(KEY_CATEGORY, wallpapers.get(i).getCategory());
-            values.put(KEY_ADDED_ON, TimeHelper.getDateTime());
+            values.put(KEY_ADDED_ON, TimeHelper.getLongDateTime());
 
             db.insert(TABLE_WALLPAPERS, null, values);
         }
@@ -205,13 +205,24 @@ public class Database extends SQLiteOpenHelper {
                         cursor.getString(1),
                         cursor.getString(2),
                         cursor.getInt(3) == 1,
-                        cursor.getInt(4) == 1);
+                        cursor.getInt(4) == 1,
+                        0);
                 categories.add(category);
             } while (cursor.moveToNext());
         }
         cursor.close();
         db.close();
         return categories;
+    }
+
+    public int getCategoryCount(String category) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_WALLPAPERS, null, "LOWER(" +KEY_CATEGORY+ ") LIKE ?",
+                new String[]{"%" +category.toLowerCase(Locale.getDefault())+ "%"}, null, null, null);
+        int count = cursor.getCount();
+        cursor.close();
+        db.close();
+        return count;
     }
 
     public List<Wallpaper> getFilteredWallpapers() {

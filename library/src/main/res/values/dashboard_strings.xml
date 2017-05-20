@@ -52,7 +52,6 @@
     <string name="wallpaper_download_failed">Unable to download wallpaper</string>
     <string name="wallpaper_download_cancelled">Wallpaper download cancelled</string>
     <string name="wallpaper_downloaded">Wallpaper downloaded to</string>
-    <string name="wallpaper_noapp">No application to open image</string>
     <string name="wallpaper_loading">Loading wallpaper …</string>
     <string name="wallpaper_applying">Applying wallpaper …</string>
     <string name="wallpaper_applied">Wallpaper applied</string>
@@ -113,6 +112,8 @@
     <string name="pref_wallpaper_location">Wallpaper Save Location</string>
     <string name="pref_wallpaper_location_desc">Try to download at least one wallpaper first</string>
 
+    <string name="pref_language_header">Language</string>
+
     <string name="pref_others_header">Others</string>
     <string name="pref_others_colored_wallpaper_card">Colored Wallpaper Card</string>
     <string name="pref_others_reset_tutorial">Reset Tutorial</string>
@@ -127,10 +128,9 @@
     <!-- License -->
     <string name="license_checking">Checking license …</string>
     <string name="license_check">License Check</string>
-    <string name="license_check_success">License check success, thank you for downloading app from Play Store.</string>
+    <string name="license_check_success">License check success, thank you for downloading the app from Play Store.</string>
     <string name="license_check_failed">License check failed, you didn\'t download this app from Play Store.
         You will not able to use the app.</string>
-    <string name="license_check_error">Unable to check license</string>
     <string name="license_check_retry">Unable to check license, please try again in a few moments</string>
 
     <!-- Search -->
@@ -147,13 +147,14 @@
     <string name="about_dashboard_dev">Wallpaper Board is open source wallpaper dashboard licensed under Apache License 2.0 for
         Android available at GitHub and free to use, developed by Dani Mahardhika.</string>
     <string name="about_dashboard_contributors">Wallpaper Board Contributors</string>
+    <string name="about_dashboard_translator">Wallpaper Board Translator</string>
     <string name="about_dashboard_dev_google_plus_title">Google+</string>
     <string name="about_dashboard_dev_google_plus_url">https://plus.google.com/u/1/+DaniMahardhika</string>
     <string name="about_dashboard_dev_github_title">GitHub</string>
     <string name="about_dashboard_dev_github_url">https://github.com/danimahardhika</string>
 
     <!-- Splash screen -->
-    <string name="splash_screen_title">WallpaperBoard</string>
+    <string name="splash_screen_title">Wallpaper Board</string>
 
     <!-- DrawerToggle -->
     <string name="txt_open">Open</string>

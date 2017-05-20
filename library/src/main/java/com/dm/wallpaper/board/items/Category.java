@@ -25,13 +25,15 @@ public class Category {
     private final String mThumbUrl;
     private boolean mIsSelected;
     private boolean mIsMuzeiSelected;
+    private int mCount;
 
-    public Category(int id, String name, String thumbUrl, boolean isSelected, boolean isMuzeiSelected) {
+    public Category(int id, String name, String thumbUrl, boolean isSelected, boolean isMuzeiSelected, int count) {
         mId = id;
         mName = name;
         mThumbUrl = thumbUrl;
         mIsSelected = isSelected;
         mIsMuzeiSelected = isMuzeiSelected;
+        mCount = count;
     }
 
     public int getId() {
@@ -60,5 +62,13 @@ public class Category {
 
     public void setMuzeiSelected(boolean isMuzeiSelected) {
         mIsMuzeiSelected = isMuzeiSelected;
+    }
+
+    public int getCount() {
+        return mCount;
+    }
+
+    public void setCount(int count) {
+        mCount = count;
     }
 }

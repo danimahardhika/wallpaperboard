@@ -1,6 +1,5 @@
 package com.dm.wallpaper.board.fragments;
 
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.PorterDuff;
 import android.os.AsyncTask;
@@ -11,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -26,21 +26,21 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.bluelinelabs.logansquare.LoganSquare;
+import com.danimahardhika.android.helpers.animation.AnimationHelper;
+import com.danimahardhika.android.helpers.core.ColorHelper;
+import com.danimahardhika.android.helpers.core.DrawableHelper;
+import com.danimahardhika.android.helpers.core.ListHelper;
+import com.danimahardhika.android.helpers.core.ViewHelper;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.adapters.WallpapersAdapter;
 import com.dm.wallpaper.board.databases.Database;
 import com.dm.wallpaper.board.fragments.dialogs.FilterFragment;
-import com.dm.wallpaper.board.helpers.ColorHelper;
-import com.dm.wallpaper.board.helpers.DrawableHelper;
 import com.dm.wallpaper.board.helpers.TapIntroHelper;
-import com.dm.wallpaper.board.helpers.ViewHelper;
 import com.dm.wallpaper.board.items.Wallpaper;
 import com.dm.wallpaper.board.items.WallpaperJson;
 import com.dm.wallpaper.board.preferences.Preferences;
-import com.dm.wallpaper.board.utils.Animator;
 import com.dm.wallpaper.board.utils.Extras;
-import com.dm.wallpaper.board.utils.ListUtils;
 import com.dm.wallpaper.board.utils.LogUtil;
 import com.dm.wallpaper.board.utils.listeners.SearchListener;
 import com.dm.wallpaper.board.utils.listeners.WallpaperBoardListener;
@@ -55,6 +55,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.dm.wallpaper.board.helpers.ViewHelper.resetViewBottomPadding;
 
 /*
  * Wallpaper Board
@@ -80,6 +82,8 @@ public class WallpapersFragment extends Fragment implements WallpaperListener {
     RecyclerView mRecyclerView;
     @BindView(R2.id.swipe)
     SwipeRefreshLayout mSwipe;
+    @BindView(R2.id.popup_bubble)
+    DrawMeButton mPopupBubble;
     @BindView(R2.id.progress)
     ProgressBar mProgress;
 
@@ -102,7 +106,8 @@ public class WallpapersFragment extends Fragment implements WallpaperListener {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ViewHelper.resetViewBottomPadding(mRecyclerView, true);
+        resetViewBottomPadding(mRecyclerView, true);
+        initPopupBubble();
 
         mProgress.getIndeterminateDrawable().setColorFilter(ColorHelper.getAttributeColor(
                 getActivity(), R.attr.colorAccent), PorterDuff.Mode.SRC_IN);
@@ -128,8 +133,9 @@ public class WallpapersFragment extends Fragment implements WallpaperListener {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        ViewHelper.resetSpanCount(getActivity(), mRecyclerView);
-        ViewHelper.resetViewBottomPadding(mRecyclerView, true);
+        ViewHelper.resetSpanCount(mRecyclerView, getActivity().getResources().getInteger(
+                R.integer.wallpapers_column_count));
+        resetViewBottomPadding(mRecyclerView, true);
     }
 
     @Override
@@ -192,20 +198,26 @@ public class WallpapersFragment extends Fragment implements WallpaperListener {
     }
 
     public void initPopupBubble() {
-        int wallpapersCount = new Database(getActivity()).getWallpapersCount();
-        if (wallpapersCount == 0) return;
+        int color = ContextCompat.getColor(getActivity(), R.color.popupBubbleText);
+        mPopupBubble.setCompoundDrawablesWithIntrinsicBounds(DrawableHelper.getTintedDrawable(
+                getActivity(), R.drawable.ic_toolbar_arrow_up, color), null, null, null);
+        mPopupBubble.setOnClickListener(view -> {
+            WallpaperBoardListener listener = (WallpaperBoardListener) getActivity();
+            listener.onWallpapersChecked(null);
 
-        if (Preferences.get(getActivity()).getAvailableWallpapersCount() > wallpapersCount) {
-            int color = ContextCompat.getColor(getActivity(), R.color.popupBubbleText);
-            DrawMeButton popupBubble = (DrawMeButton) getActivity().findViewById(R.id.popup_bubble);
-            popupBubble.setCompoundDrawablesWithIntrinsicBounds(DrawableHelper.getTintedDrawable(
-                    getActivity(), R.drawable.ic_toolbar_arrow_up, color), null, null, null);
-            popupBubble.setOnClickListener(view -> {
-                Animator.startAlphaAnimation(getActivity().findViewById(R.id.popup_bubble), 200, View.GONE);
-                getWallpapers(true);
-            });
-            Animator.startSlideDownAnimation(popupBubble, View.VISIBLE);
-        }
+            AnimationHelper.hide(getActivity().findViewById(R.id.popup_bubble))
+                    .duration(400)
+                    .start();
+
+            getWallpapers(true);
+        });
+    }
+
+    public void showPopupBubble() {
+        AnimationHelper.show(mPopupBubble)
+                .interpolator(new LinearOutSlowInInterpolator())
+                .duration(400)
+                .start();
     }
 
     public void filterWallpapers() {
@@ -227,12 +239,21 @@ public class WallpapersFragment extends Fragment implements WallpaperListener {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                if (!refreshing) mProgress.setVisibility(View.VISIBLE);
-                else mSwipe.setRefreshing(true);
+                if (refreshing) {
+                    mSwipe.setRefreshing(true);
+                    WallpaperBoardListener listener = (WallpaperBoardListener) getActivity();
+                    listener.onWallpapersChecked(null);
+                } else {
+                    mProgress.setVisibility(View.VISIBLE);
+                }
+
                 wallpapers = new ArrayList<>();
 
-                DrawMeButton popupBubble = (DrawMeButton) getActivity().findViewById(R.id.popup_bubble);
-                if (popupBubble.getVisibility() == View.VISIBLE) popupBubble.setVisibility(View.GONE);
+                if (mPopupBubble.getVisibility() == View.VISIBLE) {
+                    AnimationHelper.hide(mPopupBubble)
+                            .duration(400)
+                            .start();
+                }
             }
 
             @Override
@@ -269,11 +290,11 @@ public class WallpapersFragment extends Fragment implements WallpaperListener {
                                     }
 
                                     List<Wallpaper> intersection = (List<Wallpaper>)
-                                            ListUtils.intersect(newWallpapers, wallpapers);
+                                            ListHelper.intersect(newWallpapers, wallpapers);
                                     List<Wallpaper> deleted = (List<Wallpaper>)
-                                            ListUtils.difference(intersection, wallpapers);
+                                            ListHelper.difference(intersection, wallpapers);
                                     List<Wallpaper> newlyAdded = (List<Wallpaper>)
-                                            ListUtils.difference(intersection, newWallpapers);
+                                            ListHelper.difference(intersection, newWallpapers);
 
                                     database.deleteCategories();
                                     database.addCategories(wallpapersJson.getCategories);
@@ -313,11 +334,6 @@ public class WallpapersFragment extends Fragment implements WallpaperListener {
                     setHasOptionsMenu(true);
                     mAdapter = new WallpapersAdapter(getActivity(), wallpapers, false, false);
                     mRecyclerView.setAdapter(mAdapter);
-
-                    WallpaperBoardListener listener = (WallpaperBoardListener) getActivity();
-                    listener.onWallpapersChecked(new Intent()
-                            .putExtra(Extras.EXTRA_SIZE, Preferences.get(getActivity()).getAvailableWallpapersCount())
-                            .putExtra(Extras.EXTRA_PACKAGE_NAME, getActivity().getPackageName()));
 
                     try {
                         TapIntroHelper.showWallpapersIntro(getActivity(), mRecyclerView);

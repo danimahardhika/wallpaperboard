@@ -2,6 +2,7 @@ package com.dm.wallpaper.board.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,8 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.danimahardhika.android.helpers.core.ColorHelper;
+import com.danimahardhika.android.helpers.core.DrawableHelper;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.databases.Database;
@@ -75,22 +78,25 @@ public class FilterAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
 
-        holder.title.setText(mCategories.get(position).getName());
+        Category category = mCategories.get(position);
+        holder.title.setText(category.getName());
         holder.checkBox.setChecked(mIsMuzei ?
-                mCategories.get(position).isMuzeiSelected() :
-                mCategories.get(position).isSelected());
-        holder.container.setOnClickListener(view1 -> {
+                category.isMuzeiSelected() :
+                category.isSelected());
+        String count = category.getCount() > 99 ? "99+" : category.getCount() +"";
+        holder.counter.setText(count);
+        holder.container.setOnClickListener(v -> {
             Database database = new Database(mContext);
             if (mIsMuzei) {
-                database.selectCategoryForMuzei(mCategories.get(position).getId(),
-                        !mCategories.get(position).isMuzeiSelected());
-                mCategories.get(position).setMuzeiSelected(
-                        !mCategories.get(position).isMuzeiSelected());
+                database.selectCategoryForMuzei(category.getId(),
+                        !category.isMuzeiSelected());
+                category.setMuzeiSelected(
+                        !category.isMuzeiSelected());
             } else {
-                database.selectCategory(mCategories.get(position).getId(),
-                        !mCategories.get(position).isSelected());
+                database.selectCategory(category.getId(),
+                        !category.isSelected());
                 mCategories.get(position).setSelected(
-                        !mCategories.get(position).isSelected());
+                        !category.isSelected());
             }
 
             notifyDataSetChanged();
@@ -106,9 +112,15 @@ public class FilterAdapter extends BaseAdapter {
         AppCompatCheckBox checkBox;
         @BindView(R2.id.title)
         TextView title;
+        @BindView(R2.id.counter)
+        TextView counter;
 
         ViewHolder(@NonNull View view) {
             ButterKnife.bind(this, view);
+            int color = ColorHelper.getAttributeColor(mContext, android.R.attr.textColorPrimary);
+            ViewCompat.setBackground(counter, DrawableHelper.getTintedDrawable(
+                    mContext, R.drawable.ic_toolbar_circle, color));
+            counter.setTextColor(ColorHelper.getTitleTextColor(color));
         }
     }
 }

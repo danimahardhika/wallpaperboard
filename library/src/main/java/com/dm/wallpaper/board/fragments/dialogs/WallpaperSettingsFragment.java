@@ -114,12 +114,12 @@ public class WallpaperSettingsFragment extends DialogFragment implements View.On
 
     @Override
     public void onDismiss(DialogInterface dialog) {
-        super.onDismiss(dialog);
         if (Preferences.get(getActivity()).isWallpaperCrop()) {
             getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         } else {
             getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         }
+        super.onDismiss(dialog);
     }
 
     @Override

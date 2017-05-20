@@ -4,8 +4,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.dm.wallpaper.board.helpers.FileHelper;
+import com.danimahardhika.android.helpers.core.FileHelper;
 import com.dm.wallpaper.board.helpers.MuzeiHelper;
+import com.dm.wallpaper.board.helpers.WallpaperHelper;
 import com.dm.wallpaper.board.items.Wallpaper;
 import com.dm.wallpaper.board.preferences.Preferences;
 import com.google.android.apps.muzei.api.Artwork;
@@ -68,7 +69,7 @@ public abstract class WallpaperBoardMuzeiService extends RemoteMuzeiArtSource {
 
     private void publishArtwork(Wallpaper wallpaper) {
         File file = new File(Preferences.get(this).getWallsDirectory()
-                + wallpaper.getName() + FileHelper.IMAGE_EXTENSION);
+                + wallpaper.getName() + WallpaperHelper.IMAGE_EXTENSION);
         Uri uri = null;
         if (file.exists()) uri = FileHelper.getUriFromFile(this, getPackageName(), file);
         if (uri == null) uri = Uri.parse(wallpaper.getUrl());
@@ -82,5 +83,4 @@ public abstract class WallpaperBoardMuzeiService extends RemoteMuzeiArtSource {
         scheduleUpdate(System.currentTimeMillis() +
                 Preferences.get(this).getRotateTime());
     }
-
 }

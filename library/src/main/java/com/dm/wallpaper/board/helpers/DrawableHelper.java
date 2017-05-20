@@ -7,15 +7,15 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v7.widget.AppCompatDrawableManager;
 
+import com.danimahardhika.android.helpers.core.ColorHelper;
 import com.dm.wallpaper.board.R;
+
+import static com.danimahardhika.android.helpers.core.DrawableHelper.getTintedDrawable;
 
 /*
  * Wallpaper Board
@@ -37,34 +37,12 @@ import com.dm.wallpaper.board.R;
 
 public class DrawableHelper {
 
-    public static int getResourceId(@NonNull Context context, String resName) {
-        try {
-            return context.getResources().getIdentifier(
-                    resName, "drawable", context.getPackageName());
-        } catch (Exception ignored) {}
-        return -1;
-    }
-
     @Nullable
-    public static Drawable getTintedDrawable(@NonNull Context context, @DrawableRes int res, @ColorInt int color) {
-        try {
-            Drawable drawable = AppCompatDrawableManager.get().getDrawable(context, res);
-            drawable.setColorFilter(color, PorterDuff.Mode.SRC_IN);
-            return drawable.mutate();
-        } catch (OutOfMemoryError e) {
-            return null;
-        }
-    }
-
-    @Nullable
-    public static Drawable getDefaultImage(@NonNull Context context, @DrawableRes int res,
+    public static Drawable getDefaultImage(@NonNull Context context, @DrawableRes int resId,
                                            @ColorInt int color, int padding) {
         try {
-            Drawable drawable = AppCompatDrawableManager.get().getDrawable(context, res);
-            drawable.setColorFilter(color, PorterDuff.Mode.SRC_IN);
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-                drawable = (DrawableCompat.wrap(drawable)).mutate();
-            }
+            Drawable drawable = getTintedDrawable(context, resId, color);
+            if (drawable == null) return null;
 
             Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
                     drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
@@ -86,7 +64,7 @@ public class DrawableHelper {
                     (tintedCanvas.getWidth() - bitmap.getWidth())/2,
                     (tintedCanvas.getHeight() - bitmap.getHeight())/2, paint);
             return new BitmapDrawable(context.getResources(), tintedBitmap);
-        } catch (Exception | OutOfMemoryError e) {
+        } catch (OutOfMemoryError e) {
             return null;
         }
     }

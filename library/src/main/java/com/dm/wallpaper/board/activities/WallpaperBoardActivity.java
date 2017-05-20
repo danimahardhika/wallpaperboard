@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,12 +29,19 @@ import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.webkit.URLUtil;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.anjlab.android.iab.v3.BillingProcessor;
+import com.danimahardhika.android.helpers.core.ColorHelper;
+import com.danimahardhika.android.helpers.core.DrawableHelper;
+import com.danimahardhika.android.helpers.core.SoftKeyboardHelper;
+import com.danimahardhika.android.helpers.core.ViewHelper;
+import com.danimahardhika.android.helpers.core.WindowHelper;
+import com.danimahardhika.android.helpers.license.LicenseHelper;
+import com.danimahardhika.android.helpers.permission.PermissionCode;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.databases.Database;
@@ -42,13 +50,10 @@ import com.dm.wallpaper.board.fragments.FavoritesFragment;
 import com.dm.wallpaper.board.fragments.SettingsFragment;
 import com.dm.wallpaper.board.fragments.WallpapersFragment;
 import com.dm.wallpaper.board.fragments.dialogs.InAppBillingFragment;
-import com.dm.wallpaper.board.helpers.ColorHelper;
-import com.dm.wallpaper.board.helpers.DrawableHelper;
 import com.dm.wallpaper.board.helpers.InAppBillingHelper;
-import com.dm.wallpaper.board.helpers.LicenseHelper;
-import com.dm.wallpaper.board.helpers.PermissionHelper;
-import com.dm.wallpaper.board.helpers.SoftKeyboardHelper;
-import com.dm.wallpaper.board.helpers.ViewHelper;
+
+import com.dm.wallpaper.board.helpers.LicenseCallbackHelper;
+import com.dm.wallpaper.board.helpers.LocaleHelper;
 import com.dm.wallpaper.board.items.InAppBilling;
 import com.dm.wallpaper.board.preferences.Preferences;
 import com.dm.wallpaper.board.receivers.WallpaperBoardReceiver;
@@ -59,6 +64,7 @@ import com.dm.wallpaper.board.utils.LogUtil;
 import com.dm.wallpaper.board.utils.listeners.InAppBillingListener;
 import com.dm.wallpaper.board.utils.listeners.SearchListener;
 import com.dm.wallpaper.board.utils.listeners.WallpaperBoardListener;
+import com.dm.wallpaper.board.utils.views.HeaderView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
@@ -66,6 +72,8 @@ import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
+import static com.dm.wallpaper.board.helpers.ViewHelper.getNavigationViewHeaderStyle;
 
 /*
  * Wallpaper Board
@@ -103,6 +111,7 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
     private ActionBarDrawerToggle mDrawerToggle;
     private FragmentManager mFragManager;
     private WallpaperBoardReceiver mReceiver;
+    private LicenseHelper mLicenseHelper;
 
     private String mFragmentTag;
     private int mPosition, mLastPosition;
@@ -121,9 +130,8 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
         setContentView(R.layout.activity_wallpaper_board);
         ButterKnife.bind(this);
 
-        ViewHelper.resetNavigationBarTranslucent(this,
-                getResources().getConfiguration().orientation);
-        ColorHelper.setStatusBarIconColor(this);
+        WindowHelper.resetNavigationBarTranslucent(this,
+                WindowHelper.NavigationBarTranslucent.PORTRAIT_ONLY);
         registerBroadcastReceiver();
 
         SoftKeyboardHelper softKeyboardHelper = new SoftKeyboardHelper(this,
@@ -137,11 +145,12 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
         Toolbar toolbar = ButterKnife.findById(this, R.id.toolbar);
         toolbar.setTitle("");
 
-        ViewHelper.setupToolbar(toolbar, true);
         setSupportActionBar(toolbar);
+        ViewHelper.setupToolbar(toolbar);
 
         initNavigationView(toolbar);
         initNavigationViewHeader();
+        initAppBar();
         initInAppBilling();
 
         mPosition = mLastPosition = 0;
@@ -152,7 +161,8 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
         setFragment(getFragment(mPosition));
 
         if (Preferences.get(this).isFirstRun() && isLicenseCheckerEnabled) {
-            LicenseHelper.getLicenseChecker(this).checkLicense(mLicenseKey, salt);
+            mLicenseHelper = new LicenseHelper(this);
+            mLicenseHelper.run(mLicenseKey, salt, new LicenseCallbackHelper(this));
             return;
         }
 
@@ -165,6 +175,7 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
 
     @Override
     protected void attachBaseContext(Context newBase) {
+        LocaleHelper.setLocale(newBase);
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
@@ -186,6 +197,11 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
             mBillingProcessor.release();
             mBillingProcessor = null;
         }
+
+        if (mLicenseHelper != null) {
+            mLicenseHelper.destroy();
+        }
+
         if (mReceiver != null) unregisterReceiver(mReceiver);
         super.onDestroy();
     }
@@ -194,7 +210,8 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         resetNavigationView(newConfig.orientation);
-        ViewHelper.resetNavigationBarTranslucent(this, newConfig.orientation);
+        WindowHelper.resetNavigationBarTranslucent(this, WindowHelper.NavigationBarTranslucent.PORTRAIT_ONLY);
+        LocaleHelper.setLocale(this);
     }
 
     @Override
@@ -227,7 +244,7 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == PermissionHelper.PERMISSION_STORAGE) {
+        if (requestCode == PermissionCode.STORAGE) {
             if (grantResults.length > 0 &&
                     grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 WallpapersFragment fragment = (WallpapersFragment) mFragManager
@@ -236,7 +253,7 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
                     fragment.downloadWallpaper();
                 }
             } else {
-                PermissionHelper.showPermissionStorageDenied(this);
+                Toast.makeText(this, R.string.permission_storage_denied, Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -277,7 +294,7 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
                     if (mFragmentTag.equals(Extras.TAG_WALLPAPERS)) {
                         WallpapersFragment fragment = (WallpapersFragment)
                                 mFragManager.findFragmentByTag(Extras.TAG_WALLPAPERS);
-                        if (fragment != null) fragment.initPopupBubble();
+                        if (fragment != null) fragment.showPopupBubble();
                     }
                     return;
                 }
@@ -385,16 +402,20 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
             mDrawerLayout.closeDrawers();
             return true;
         });
+        ViewHelper.hideNavigationViewScrollBar(mNavigationView);
     }
 
     private void initNavigationViewHeader() {
         String imageUrl = getResources().getString(R.string.navigation_view_header);
         String titleText = getResources().getString(R.string.navigation_view_header_title);
         View header = mNavigationView.getHeaderView(0);
-        ImageView image = (ImageView) header.findViewById(R.id.header_image);
-        LinearLayout container = (LinearLayout) header.findViewById(R.id.header_title_container);
-        TextView title = (TextView )header.findViewById(R.id.header_title);
-        TextView version = (TextView) header.findViewById(R.id.header_version);
+        HeaderView image = ButterKnife.findById(header, R.id.header_image);
+        LinearLayout container = ButterKnife.findById(header, R.id.header_title_container);
+        TextView title = ButterKnife.findById(header, R.id.header_title);
+        TextView version = ButterKnife.findById(header, R.id.header_version);
+
+        Point point = getNavigationViewHeaderStyle(getResources().getString(R.string.navigation_view_header_style));
+        image.setRatio(point.x, point.y);
 
         if (titleText.length() == 0) {
             container.setVisibility(View.GONE);
@@ -428,6 +449,24 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
             mBillingProcessor = new BillingProcessor(this,
                     mLicenseKey, new InAppBillingHelper(this));
         }
+    }
+
+    private void initAppBar() {
+        mAppBar.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
+            int maxScroll = mAppBar.getTotalScrollRange();
+            float percentage = (float) Math.abs(verticalOffset) / (float) maxScroll;
+
+            if (percentage == 0f) {
+                ColorHelper.setupStatusBarIconColor(this);
+            } else if (percentage == 1f) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    View view = getWindow().getDecorView();
+                    if (view != null) {
+                        view.setSystemUiVisibility(0);
+                    }
+                }
+            }
+        });
     }
 
     private void registerBroadcastReceiver() {

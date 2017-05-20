@@ -5,7 +5,6 @@
     <attr name="card_background" format="color"/>
     <attr name="ripple_color" format="color"/>
     <attr name="ripple_accent" format="color"/>
-    <attr name="divider_list" format="color"/>
 
     <attr name="toolbar_icon" format="color"/>
 
