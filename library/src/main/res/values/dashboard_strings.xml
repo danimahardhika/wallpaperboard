@@ -8,6 +8,13 @@
     <string name="navigation_view_about">About</string>
     <string name="navigation_view_donate">Support Development</string>
 
+    <string name="navigation_view_share">Share App</string>
+    <string name="navigation_view_rate">Rate &amp; Review</string>
+
+    <!-- Share app -->
+    <string name="share_app_subject">Yo! Check out %s</string>
+    <string name="share_app_body">Check out %1$s, this wallpaper app is really cool! %2$s</string>
+
     <!-- Menu -->
     <string name="menu_search">Search</string>
     <string name="menu_filter">Filter</string>

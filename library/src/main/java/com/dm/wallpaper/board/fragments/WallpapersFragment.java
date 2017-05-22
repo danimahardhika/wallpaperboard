@@ -205,19 +205,22 @@ public class WallpapersFragment extends Fragment implements WallpaperListener {
             WallpaperBoardListener listener = (WallpaperBoardListener) getActivity();
             listener.onWallpapersChecked(null);
 
-            AnimationHelper.hide(getActivity().findViewById(R.id.popup_bubble))
-                    .duration(400)
-                    .start();
+            AnimationHelper.hide(getActivity().findViewById(R.id.popup_bubble)).start();
 
             getWallpapers(true);
         });
     }
 
     public void showPopupBubble() {
-        AnimationHelper.show(mPopupBubble)
-                .interpolator(new LinearOutSlowInInterpolator())
-                .duration(400)
-                .start();
+        int wallpapersCount = Database.getInstance(getActivity()).getWallpapersCount();
+        if (wallpapersCount == 0) return;
+        if (mPopupBubble.getVisibility() == View.VISIBLE) return;
+
+        if (Preferences.get(getActivity()).getAvailableWallpapersCount() > wallpapersCount) {
+            AnimationHelper.show(mPopupBubble)
+                    .interpolator(new LinearOutSlowInInterpolator())
+                    .start();
+        }
     }
 
     public void filterWallpapers() {
@@ -250,9 +253,7 @@ public class WallpapersFragment extends Fragment implements WallpaperListener {
                 wallpapers = new ArrayList<>();
 
                 if (mPopupBubble.getVisibility() == View.VISIBLE) {
-                    AnimationHelper.hide(mPopupBubble)
-                            .duration(400)
-                            .start();
+                    AnimationHelper.hide(mPopupBubble).start();
                 }
             }
 
@@ -261,7 +262,7 @@ public class WallpapersFragment extends Fragment implements WallpaperListener {
                 while (!isCancelled()) {
                     try {
                         Thread.sleep(1);
-                        Database database = new Database(getActivity());
+                        Database database = Database.getInstance(getActivity());
                         if (!refreshing && database.getWallpapersCount() > 0) {
                             wallpapers = database.getFilteredWallpapers();
                             return true;
@@ -344,6 +345,7 @@ public class WallpapersFragment extends Fragment implements WallpaperListener {
                     Toast.makeText(getActivity(), R.string.connection_failed, Toast.LENGTH_LONG).show();
                 }
                 mGetWallpapers = null;
+                showPopupBubble();
             }
         }.execute();
     }

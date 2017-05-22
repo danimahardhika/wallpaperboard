@@ -246,8 +246,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Vi
                 if (position < 0 || position > mWallpapers.size()) return;
 
                 boolean isFavorite = mWallpapers.get(position).isFavorite();
-                Database database = new Database(mContext);
-                database.favoriteWallpaper(mWallpapers.get(position).getId(), !isFavorite);
+                Database.getInstance(mContext).favoriteWallpaper(mWallpapers.get(position).getId(), !isFavorite);
 
                 if (mIsFavoriteMode) {
                     mWallpapers.remove(position);
@@ -334,8 +333,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Vi
     }
 
     public void filter() {
-        Database database = new Database(mContext);
-        mWallpapers = database.getFilteredWallpapers();
+        mWallpapers = Database.getInstance(mContext).getFilteredWallpapers();
         notifyDataSetChanged();
     }
 

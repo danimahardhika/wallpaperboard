@@ -6,6 +6,11 @@
     <string name="navigation_view_settings">Pengaturan</string>
     <string name="navigation_view_about">Tentang</string>
     <string name="navigation_view_donate">Dukung Pengembangan</string>
+    <string name="navigation_view_share">Bagikan</string>
+    <string name="navigation_view_rate">Berikan Penilaian</string>
+    <!-- Share app -->
+    <string name="share_app_subject">Yo! Lihat %s</string>
+    <string name="share_app_body">Lihat %1$s, aplikasi wallpaper ini sangat keren! %2$s</string>
     <!-- Menu -->
     <string name="menu_search">Pencarian</string>
     <string name="menu_filter">Filter</string>
@@ -119,6 +124,7 @@ Anda tidak dapat menggunakan aplikasi ini.</string>
     <string name="about_dashboard_dev">Wallpaper Board adalah open source wallpaper dasbor yang berlisensi dibawah Apache License 2.0 untuk Android tersedia pada GitHub dan gratis, dikembangkan oleh Dani Mahardhika.</string>
     <string name="about_dashboard_contributors">Kontributor Wallpaper Board</string>
     <string name="about_dashboard_translator">Penerjemah Wallpaper Board</string>
+    <!-- Splash screen -->
     <!-- DrawerToggle -->
     <string name="txt_open">Buka</string>
     <string name="txt_close">Tutup</string>

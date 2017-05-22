@@ -49,7 +49,7 @@ public class PreferencesHelper {
     private static final String KEY_WALLPAPERS_INTRO = "wallpapers_intro";
     private static final String KEY_WALLPAPER_PREVIEW_INTRO = "wallpaper_preview_intro";
     private static final String KEY_COLORED_WALLPAPERS_CARD = "colored_wallpapers_card";
-    private static final String KEY_LANGUAGE_PREFERENCE = "language_preference";
+    private static final String KEY_LANGUAGE_PREFERENCE = "language_preference2";
     private static final String KEY_CURRENT_LOCALE = "current_locale";
 
     public PreferencesHelper(@NonNull Context context) {
@@ -211,10 +211,9 @@ public class PreferencesHelper {
 
         if (currentLocale != null) {
             setCurrentLocale(currentLocale.toString());
+            LocaleHelper.setLocale(mContext);
+            setTimeToSetLanguagePreference(false);
         }
-
-        LocaleHelper.setLocale(mContext);
-        setTimeToSetLanguagePreference(false);
     }
 
     public boolean isConnectedToNetwork() {

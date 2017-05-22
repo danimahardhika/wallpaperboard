@@ -129,8 +129,7 @@ public class FavoritesFragment extends Fragment implements WallpaperListener {
                 while (!isCancelled()) {
                     try {
                         Thread.sleep(1);
-                        Database database = new Database(getActivity());
-                        wallpapers = database.getFavoriteWallpapers();
+                        wallpapers = Database.getInstance(getActivity()).getFavoriteWallpapers();
                         return true;
                     } catch (Exception e) {
                         LogUtil.e(Log.getStackTraceString(e));

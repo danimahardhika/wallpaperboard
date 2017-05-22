@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Navigation View -->
-    <string name="navigation_view_wallpapers">Wallpapers</string>
+    <string name="navigation_view_wallpapers">Fondos de Pantalla</string>
     <string name="navigation_view_favorites">Favoritos</string>
-    <string name="navigation_view_settings">Ajsustes</string>
+    <string name="navigation_view_settings">Ajustes</string>
     <string name="navigation_view_about">Acerca de</string>
     <string name="navigation_view_donate">Apoyar al Desarrollo</string>
     <!-- Menu -->
@@ -68,8 +68,8 @@
     <string name="pref_language_header">Idioma</string>
     <string name="pref_others_header">Otros</string>
     <string name="pref_others_colored_wallpaper_card">Tarjeta de wallpapers coloridos</string>
-    <string name="pref_others_reset_tutorial">Tutorial restablecido</string>
-    <string name="pref_others_reset_tutorial_reset">Restablecer tutorial</string>
+    <string name="pref_others_reset_tutorial">Restablecer tutorial</string>
+    <string name="pref_others_reset_tutorial_reset">Tutorial restablecido</string>
     <!-- Permission -->
     <string name="permission_storage_denied">Permisos de Almacenamiento necesarios para guardar los fondos de pantalla</string>
     <!-- Support Development -->

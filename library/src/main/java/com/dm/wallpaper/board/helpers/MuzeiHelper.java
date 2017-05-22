@@ -38,7 +38,7 @@ public class MuzeiHelper {
     private final Database mDatabase;
 
     public MuzeiHelper(@NonNull Context context) {
-        mDatabase = new Database(context);
+        mDatabase = Database.getInstance(context);
     }
 
     @Nullable
