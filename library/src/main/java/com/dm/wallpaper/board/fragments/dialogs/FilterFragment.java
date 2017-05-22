@@ -130,7 +130,7 @@ public class FilterFragment extends DialogFragment {
                 while (!isCancelled()) {
                     try {
                         Thread.sleep(1);
-                        Database database = Database.getInstance(getActivity());
+                        Database database = Database.get(getActivity());
                         categories = database.getCategories();
                         for (Category category : categories) {
                             int count = database.getCategoryCount(category.getName());

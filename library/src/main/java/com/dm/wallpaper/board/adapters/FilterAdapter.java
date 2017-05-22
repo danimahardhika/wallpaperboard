@@ -86,7 +86,7 @@ public class FilterAdapter extends BaseAdapter {
         String count = category.getCount() > 99 ? "99+" : category.getCount() +"";
         holder.counter.setText(count);
         holder.container.setOnClickListener(v -> {
-            Database database = Database.getInstance(mContext);
+            Database database = Database.get(mContext);
             if (mIsMuzei) {
                 database.selectCategoryForMuzei(category.getId(),
                         !category.isMuzeiSelected());

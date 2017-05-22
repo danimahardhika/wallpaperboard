@@ -273,7 +273,7 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
             }
 
             int size = intent.getIntExtra(Extras.EXTRA_SIZE, 0);
-            int offlineSize = Database.getInstance(this).getWallpapersCount();
+            int offlineSize = Database.get(this).getWallpapersCount();
             Preferences.get(this).setAvailableWallpapersCount(size);
 
             if (size > offlineSize) {
@@ -476,7 +476,7 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
     }
 
     private void checkWallpapers() {
-        int wallpapersCount = Database.getInstance(this).getWallpapersCount();
+        int wallpapersCount = Database.get(this).getWallpapersCount();
 
         if (Preferences.get(this).isConnectedToNetwork() && (wallpapersCount > 0)) {
             Intent intent = new Intent(this, WallpaperBoardService.class);

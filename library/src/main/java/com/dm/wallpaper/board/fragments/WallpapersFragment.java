@@ -212,7 +212,7 @@ public class WallpapersFragment extends Fragment implements WallpaperListener {
     }
 
     public void showPopupBubble() {
-        int wallpapersCount = Database.getInstance(getActivity()).getWallpapersCount();
+        int wallpapersCount = Database.get(getActivity()).getWallpapersCount();
         if (wallpapersCount == 0) return;
         if (mPopupBubble.getVisibility() == View.VISIBLE) return;
 
@@ -262,7 +262,7 @@ public class WallpapersFragment extends Fragment implements WallpaperListener {
                 while (!isCancelled()) {
                     try {
                         Thread.sleep(1);
-                        Database database = Database.getInstance(getActivity());
+                        Database database = Database.get(getActivity());
                         if (!refreshing && database.getWallpapersCount() > 0) {
                             wallpapers = database.getFilteredWallpapers();
                             return true;

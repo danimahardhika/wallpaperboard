@@ -196,7 +196,7 @@ public class WallpaperSearchFragment extends Fragment implements WallpaperListen
                 while (!isCancelled()) {
                     try {
                         Thread.sleep(1);
-                        wallpapers = Database.getInstance(getActivity()).getFilteredWallpapers();
+                        wallpapers = Database.get(getActivity()).getFilteredWallpapers();
                         return true;
                     } catch (Exception e) {
                         LogUtil.e(Log.getStackTraceString(e));
