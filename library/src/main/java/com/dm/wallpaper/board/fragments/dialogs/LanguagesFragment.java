@@ -17,6 +17,7 @@ import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.adapters.LanguagesAdapter;
 import com.dm.wallpaper.board.helpers.LocaleHelper;
+import com.dm.wallpaper.board.helpers.TypefaceHelper;
 import com.dm.wallpaper.board.items.Language;
 import com.dm.wallpaper.board.preferences.Preferences;
 import com.dm.wallpaper.board.utils.LogUtil;
@@ -78,7 +79,7 @@ public class LanguagesFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
         builder.customView(R.layout.fragment_languages, false);
-        builder.typeface("Font-Medium.ttf", "Font-Regular.ttf");
+        builder.typeface(TypefaceHelper.getMedium(getActivity()), TypefaceHelper.getRegular(getActivity()));
         builder.title(R.string.pref_language_header);
         MaterialDialog dialog = builder.build();
         dialog.show();

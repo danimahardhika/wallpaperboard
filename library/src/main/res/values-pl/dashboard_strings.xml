@@ -44,15 +44,15 @@
     <!-- Wallpapers -->
     <string name="wallpaper_new_added">Nowa tapeta</string>
     <string name="wallpaper_filter">Sortuj według kategorii</string>
-    <string name="wallpaper_downloading">Pobieranie tapety …</string>
+    <string name="wallpaper_downloading">Pobieranie tapety…</string>
     <string name="wallpaper_download_exist">Tapeta o podanej nazwie %s już istnieje, chcesz ją zastąpić?</string>
     <string name="wallpaper_download_exist_replace">Zastąp</string>
     <string name="wallpaper_download_exist_new">Utwórz nowy</string>
     <string name="wallpaper_download_failed">Nie można pobrać tapety</string>
     <string name="wallpaper_download_cancelled">Pobieranie tapety anulowane</string>
     <string name="wallpaper_downloaded">Tapeta pobrana do</string>
-    <string name="wallpaper_loading">Ładowanie tła …</string>
-    <string name="wallpaper_applying">Ustawianie tapety …</string>
+    <string name="wallpaper_loading">Ładowanie tła…</string>
+    <string name="wallpaper_applying">Ustawianie tapety…</string>
     <string name="wallpaper_applied">Tapeta ustawiona</string>
     <string name="wallpaper_apply_failed">Nie można ustawić tapety</string>
     <string name="wallpaper_apply_cancelled">Ustawianie tapety anulowane</string>
@@ -106,7 +106,7 @@
     <!-- Support Development -->
     <string name="donation_success">Dziękuję za dotację. Wykorzystam ją dobrze.</string>
     <!-- License -->
-    <string name="license_checking">Sprawdzanie licencji …</string>
+    <string name="license_checking">Sprawdzanie licencji…</string>
     <string name="license_check">Sprawdzanie licencji</string>
     <string name="license_check_success">Licencja poprawna, dziękuję za pobranie aplikacji z Google Play.</string>
     <string name="license_check_failed">Sprawdzenie licencji się nie powiodło. Aplikacja nie została pobrana z Google Play. Nie będziesz mógł z niej korzystać.</string>
@@ -123,6 +123,7 @@
     <string name="about_dashboard_dev">Wallpaper Board jest projektem typu open source, na licencji Apache 2.0 dla Android. Projekt dostępny na GitHub do darmowego użytku. Opracowane przez Dani Mahardhika.</string>
     <string name="about_dashboard_contributors">Autorzy Wallpaper Board</string>
     <string name="about_dashboard_translator">Tłumacze Wallpaper Board</string>
+    <string name="about_dashboard_dev_google_plus_url">https://plus.google.com/u/1/+DaniMahardhika</string>
     <!-- Splash screen -->
     <!-- DrawerToggle -->
     <string name="txt_open">Otwórz</string>

@@ -6,6 +6,11 @@
     <string name="navigation_view_settings">Impostazioni</string>
     <string name="navigation_view_about">Informazioni</string>
     <string name="navigation_view_donate">Supporta lo sviluppo</string>
+    <string name="navigation_view_share">Condividi App</string>
+    <string name="navigation_view_rate">Valuta e Recensisci</string>
+    <!-- Share app -->
+    <string name="share_app_subject">Yo! Dai un\'occhiata a %s</string>
+    <string name="share_app_body">Controlla %1$s, questa app di sfondi è fantastica! %2$s</string>
     <!-- Menu -->
     <string name="menu_search">Cerca</string>
     <string name="menu_filter">Filtra</string>
@@ -24,11 +29,48 @@
     <string name="tap_intro_wallpapers_filter">Filtra sfondi</string>
     <string name="tap_intro_wallpapers_filter_desc">Tappa qui per filtrare gli sfondi secondo la categoria</string>
     <string name="tap_intro_wallpapers_option">Opzioni sfondi</string>
+    <string name="tap_intro_wallpapers_option_desc">Tappa e tieni premuto qui per mostrare le opzioni, %s applicare gli sfondi.</string>
+    <string name="tap_intro_wallpapers_option_desc_download">scaricare o</string>
+    <string name="tap_intro_wallpapers_preview">Anteprima sfondi</string>
+    <string name="tap_intro_wallpapers_preview_desc">Tappa qui per vedere l\'anteprima degli sfondi ad alta risoluzione</string>
+    <string name="tap_intro_wallpapers_favorite">Sfondi preferiti</string>
+    <string name="tap_intro_wallpapers_favorite_desc">Tappa qui per salvare uno sfondo come preferito</string>
+    <string name="tap_intro_wallpaper_preview_settings">Impostazioni sfondo</string>
+    <string name="tap_intro_wallpaper_preview_settings_desc">Tappa qui per aprire le impostazioni degli sfondi. 
+Puoi abilitare Imposta sfondo nella lockscreen su Android Nougat o abilitare il ritaglio dello sfondo.</string>
+    <string name="tap_intro_wallpaper_preview_save">Salva sfondo</string>
+    <string name="tap_intro_wallpaper_preview_save_desc">Tappa qui per scaricare e salvare lo sfondo sul tuo dispositivo, per usarlo più tardi</string>
+    <string name="tap_intro_wallpaper_preview_apply">Applica sfondo</string>
+    <string name="tap_intro_wallpaper_preview_apply_desc">Tappa qui per impostarlo come sfondo della homescreen</string>
     <!-- Wallpapers -->
+    <string name="wallpaper_new_added">Nuovi Sfondi</string>
+    <string name="wallpaper_filter">Filtra per Categoria</string>
+    <string name="wallpaper_downloading">Download sfondo …</string>
+    <string name="wallpaper_download_exist">Lo sfondo con nome %s esiste già, vuoi sostituirlo?</string>
+    <string name="wallpaper_download_exist_replace">Sostituisci</string>
+    <string name="wallpaper_download_exist_new">Crea Nuovo</string>
+    <string name="wallpaper_download_failed">Impossibile scaricare lo sfondo</string>
+    <string name="wallpaper_download_cancelled">Download sfondo cancellato</string>
+    <string name="wallpaper_downloaded">Sfondo scaricato in</string>
+    <string name="wallpaper_loading">Caricamento sfondo …</string>
+    <string name="wallpaper_applying">Impostando lo sfondo …</string>
+    <string name="wallpaper_applied">Sfondo applicato</string>
+    <string name="wallpaper_apply_failed">Impossibile applicare lo sfondo</string>
+    <string name="wallpaper_apply_cancelled">Applicazione sfondo cancellata</string>
+    <string name="connection_failed">Impossibile ottenere i dati dal server</string>
+    <string name="wallpaper_apply">Imposta come sfondo</string>
+    <string name="wallpaper_apply_crop">Il ritaglio dello sfondo sarà disabilitato se lo applichi da questa opzione</string>
+    <string name="wallpaper_settings_crop">Ritaglio Sfondo</string>
+    <string name="wallpaper_settings_crop_desc">Abilita Ritaglio Sfondo. Lo sfondo sarà ritagliato in base alla posizione dell\'anteprima sfondi.
+Esegui un pinch o un doppio tocco per zoommare lo sfondo.</string>
+    <string name="wallpaper_settings_lockscreen">Sfondo Lockscreen</string>
+    <string name="wallpaper_settings_lockscreen_desc">Applica Sfondo imposterà lo sfondo nella homescreen e nella lockscreen</string>
+    <string name="wallpaper_settings_lockscreen_not_available">Sfondo lockscreen è disponibile solo per Android Nougat</string>
+    <string name="wallpaper_favorite_added">%s aggiunto ai preferiti</string>
     <string name="wallpaper_favorite_removed">%s rimosso dai preferiti</string>
     <!-- Muzei -->
     <string name="minute">Minuti</string>
-    <string name="hour">Ora</string>
+    <string name="hour">Ore</string>
     <string name="muzei_settings">Impostazioni Muzei</string>
     <string name="muzei_settings_save">Salva</string>
     <string name="muzei_settings_saved">Impostazioni Salvate</string>
@@ -42,7 +84,7 @@
     <string name="about_contributors_title">Contributori</string>
     <string name="about_open_source_licenses">Licenze Open Source</string>
     <!-- InAppBilling -->
-    <string name="billing_load_product_failed">Impossibile caricare i prodotti acquistare InApp</string>
+    <string name="billing_load_product_failed">Impossibile caricare gli acquisti InApp</string>
     <!-- Preferences -->
     <string name="pref_data_header">Dati &amp; Cache</string>
     <string name="pref_data_cache">Cancella Cache</string>
@@ -56,7 +98,8 @@
     <string name="pref_wallpaper_header">Sfondo</string>
     <string name="pref_wallpaper_location">Percorso di salvataggio sfondi</string>
     <string name="pref_wallpaper_location_desc">Prova a scaricare almeno uno sfondo</string>
-    <string name="pref_others_header">Altri</string>
+    <string name="pref_language_header">Lingua</string>
+    <string name="pref_others_header">Altro</string>
     <string name="pref_others_colored_wallpaper_card">Scheda sfondi colorata</string>
     <string name="pref_others_reset_tutorial">Resetta Tutorial</string>
     <string name="pref_others_reset_tutorial_reset">Resetta Tutorial</string>
@@ -70,7 +113,7 @@
     <string name="license_check_success">Controllo della licenza riuscito, grazie per aver scaricato l\'applicazione dal Play Store.</string>
     <string name="license_check_failed">Controllo della licenza fallito, non hai scaricato l\'applicazione dal Play Store.
 Non puoi usare l\'applicazione.</string>
-    <string name="license_check_retry">Impossibile controllare la licenza, per favore riprova tra qualche istant</string>
+    <string name="license_check_retry">Impossibile controllare la licenza, per favore riprova tra qualche istante</string>
     <!-- Search -->
     <string name="search_result_empty">Nessun risultato trovato per \"%s\"</string>
     <!-- Crash Report -->
@@ -79,9 +122,16 @@ Non puoi usare l\'applicazione.</string>
     <string name="crash_report_send">Invia Segnalazione</string>
     <string name="email_client">Scegli Email Client</string>
     <!-- Please don't modify this -->
+    <string name="about_dashboard">Wallpaper Board</string>
     <string name="about_dashboard_dev">Wallpaper Board è una dashboard di sfondi open source, con licenza Apache License 2.0 per
 Android disponibile su Github e gratis, sviluppata da Dani Mahardhika.</string>
     <string name="about_dashboard_contributors">Contributori Wallpaper Board</string>
+    <string name="about_dashboard_translator">Traduttori Wallpaper Board</string>
+    <string name="about_dashboard_dev_google_plus_url">https://plus.google.com/u/1/+DaniMahardhika</string>
+    <string name="about_dashboard_dev_github_url">https://github.com/danimahardhika</string>
+    <!-- Splash screen -->
+    <string name="splash_screen_title">WallpaperBoard</string>
     <!-- DrawerToggle -->
     <string name="txt_open">Apri</string>
+    <string name="txt_close">Chiudi</string>
 </resources>

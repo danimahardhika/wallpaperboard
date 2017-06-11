@@ -21,6 +21,7 @@ import com.danimahardhika.cafebar.CafeBar;
 import com.danimahardhika.cafebar.CafeBarTheme;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
+import com.dm.wallpaper.board.helpers.TypefaceHelper;
 import com.dm.wallpaper.board.helpers.WallpaperHelper;
 import com.dm.wallpaper.board.utils.Extras;
 
@@ -90,7 +91,7 @@ public class WallpaperOptionsFragment extends DialogFragment implements View.OnC
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
         builder.customView(R.layout.fragment_wallpaper_options, false);
-        builder.typeface("Font-Medium.ttf", "Font-Regular.ttf");
+        builder.typeface(TypefaceHelper.getMedium(getActivity()), TypefaceHelper.getRegular(getActivity()));
         MaterialDialog dialog = builder.build();
         dialog.show();
 
@@ -154,7 +155,7 @@ public class WallpaperOptionsFragment extends DialogFragment implements View.OnC
                             .autoDismiss(false)
                             .fitSystemWindow()
                             .maxLines(4)
-                            .typeface("Font-Regular.ttf", "Font-Bold.ttf")
+                            .typeface(TypefaceHelper.getRegular(context), TypefaceHelper.getBold(context))
                             .content(String.format(getResources().getString(R.string.wallpaper_download_exist),
                                     ("\"" +mName + WallpaperHelper.IMAGE_EXTENSION+ "\"")))
                             .icon(R.drawable.ic_toolbar_download)

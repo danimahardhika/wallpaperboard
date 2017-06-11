@@ -121,38 +121,32 @@
             android:paddingLeft="@dimen/content_margin"
             android:paddingStart="@dimen/content_margin">
 
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/about_dev_google_plus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/about_dashboard_dev_google_plus_title"
-                android:textSize="@dimen/text_content"
-                android:textColor="?attr/colorAccent"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:theme="@style/RippleAccentStyle"
-                android:background="?attr/selectableItemBackground"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                fontPath="fonts/Font-Medium.ttf"/>
-
-            <android.support.v7.widget.AppCompatButton
+            <ImageView
                 android:id="@+id/about_dev_github"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:maxLines="1"
-                android:text="@string/about_dashboard_dev_github_title"
-                android:textSize="@dimen/text_content"
-                android:textColor="?attr/colorAccent"
-                android:theme="@style/RippleAccentStyle"
-                android:background="?attr/selectableItemBackground"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                fontPath="fonts/Font-Medium.ttf"/>
+                android:padding="@dimen/content_padding"
+                android:scaleType="fitCenter"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:theme="@style/RippleStyle"/>
 
+            <ImageView
+                android:id="@+id/about_dev_google_plus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/content_padding"
+                android:scaleType="fitCenter"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:theme="@style/RippleStyle"/>
+
+            <ImageView
+                android:id="@+id/about_dev_instagram"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/content_padding"
+                android:scaleType="fitCenter"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:theme="@style/RippleStyle"/>
         </LinearLayout>
-
     </LinearLayout>
-
 </android.support.v7.widget.CardView>

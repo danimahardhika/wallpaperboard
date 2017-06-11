@@ -20,6 +20,7 @@ import com.danimahardhika.android.helpers.core.FileHelper;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.fragments.dialogs.LanguagesFragment;
+import com.dm.wallpaper.board.helpers.TypefaceHelper;
 import com.dm.wallpaper.board.items.Setting;
 import com.dm.wallpaper.board.preferences.Preferences;
 import com.dm.wallpaper.board.utils.LogUtil;
@@ -174,7 +175,7 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 switch (setting.getType()) {
                     case CACHE:
                         new MaterialDialog.Builder(mContext)
-                                .typeface("Font-Medium.ttf", "Font-Regular.ttf")
+                                .typeface(TypefaceHelper.getMedium(mContext), TypefaceHelper.getRegular(mContext))
                                 .content(R.string.pref_data_cache_clear_dialog)
                                 .positiveText(R.string.clear)
                                 .negativeText(android.R.string.cancel)

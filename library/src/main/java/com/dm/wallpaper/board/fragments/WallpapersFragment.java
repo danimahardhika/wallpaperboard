@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -197,10 +196,24 @@ public class WallpapersFragment extends Fragment implements WallpaperListener {
         mRecyclerView.scrollToPosition(position);
     }
 
+    public boolean scrollWallpapersToTop() {
+        if (mRecyclerView != null) {
+            if (!(mRecyclerView.getLayoutManager() instanceof GridLayoutManager)) return false;
+
+            GridLayoutManager manager = (GridLayoutManager) mRecyclerView.getLayoutManager();
+            int position = manager.findFirstVisibleItemPosition();
+            if (position > 0) {
+                mRecyclerView.smoothScrollToPosition(0);
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void initPopupBubble() {
-        int color = ContextCompat.getColor(getActivity(), R.color.popupBubbleText);
+        int color = ColorHelper.getAttributeColor(getActivity(), R.attr.colorAccent);
         mPopupBubble.setCompoundDrawablesWithIntrinsicBounds(DrawableHelper.getTintedDrawable(
-                getActivity(), R.drawable.ic_toolbar_arrow_up, color), null, null, null);
+                getActivity(), R.drawable.ic_toolbar_arrow_up, ColorHelper.getTitleTextColor(color)), null, null, null);
         mPopupBubble.setOnClickListener(view -> {
             WallpaperBoardListener listener = (WallpaperBoardListener) getActivity();
             listener.onWallpapersChecked(null);
@@ -299,6 +312,7 @@ public class WallpapersFragment extends Fragment implements WallpaperListener {
 
                                     database.deleteCategories();
                                     database.addCategories(wallpapersJson.getCategories);
+
                                     database.deleteWallpapers(deleted);
                                     database.addWallpapers(newlyAdded);
 

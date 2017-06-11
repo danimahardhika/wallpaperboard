@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Navigation View -->
+    <string name="navigation_view_wallpapers">Fonds d\'écrans</string>
+    <string name="navigation_view_favorites">Favoris</string>
+    <string name="navigation_view_settings">Paramètres</string>
+    <string name="navigation_view_about">A propos</string>
+    <string name="navigation_view_donate">Soutenir le développement</string>
+    <string name="navigation_view_share">Partager</string>
+    <string name="navigation_view_rate">Evaluer</string>
+    <!-- Share app -->
+    <string name="share_app_subject">Salut! Regarde %s</string>
+    <string name="share_app_body">Regarde %1$s, les fonds d\'écrans de cette application sont vraiment sympas! %2$s</string>
+    <!-- Menu -->
+    <string name="menu_search">Rechercher</string>
+    <string name="menu_filter">Filtres</string>
+    <string name="menu_save">Enregistrer sur l\'appareil</string>
+    <string name="menu_wallpaper_settings">Paramètres du fond d\'écran</string>
+    <!-- Dialog -->
+    <string name="open">Ouvrir</string>
+    <string name="close">Fermer</string>
+    <string name="clear">Effacer</string>
+    <string name="donate">Donation</string>
+    <!-- Tap Intro -->
+    <string name="tap_intro_wallpapers_navigation">Menu de navigation</string>
+    <string name="tap_intro_wallpapers_navigation_desc">Appuyer ici ou balayer vers la gauche de l\'écran pour ouvrir le menu de navigation.</string>
+    <string name="tap_intro_wallpapers_search">Rechercher</string>
+    <string name="tap_intro_wallpapers_search_desc">Appuyer ici pour rechercher un fond d\'écran</string>
+    <string name="tap_intro_wallpapers_filter">Filtrer les fonds d\'écrans</string>
+    <string name="tap_intro_wallpapers_filter_desc">Appuyer ici pour filtrer les fonds d\'écrans par catégories</string>
+    <string name="tap_intro_wallpapers_option">Options des fonds d\'écrans</string>
+    <string name="tap_intro_wallpapers_option_desc">Appuyer et maintenir ici pour voir les options des fonds d\'écrans, %s applique le fond d\'écran.</string>
+    <string name="tap_intro_wallpapers_option_desc_download">télécharger ou</string>
+    <string name="tap_intro_wallpapers_preview">Prévisualiser le fond d\'écran</string>
+    <string name="tap_intro_wallpapers_preview_desc">Appuyer ici pour prévisualiser le fond d\'écran en entier</string>
+    <string name="tap_intro_wallpapers_favorite">Fonds d\'écrans favoris</string>
+    <string name="tap_intro_wallpapers_favorite_desc">Appuyer ici pour marquer un fond d\'écran comme favori</string>
+    <string name="tap_intro_wallpaper_preview_settings">Paramètres des fonds d\'écrans</string>
+    <string name="tap_intro_wallpaper_preview_settings_desc">Appuyer ici pour ouvrir les paramètres des fonds d\'écrans.
+Activer l\'option qui permet de régler le fond d\'écran pour l\'écran de verrouillage sur Android Nougat ou activer la découpe du fond d\'écran .</string>
+    <string name="tap_intro_wallpaper_preview_save">Enregistrer le fond d\'écran</string>
+    <string name="tap_intro_wallpaper_preview_save_desc">Appuyer ici pour télécharger et enregistrer le fond d\'écran sur votre appareil ainsi vous pouvez l\'utiliser plus tard.</string>
+    <string name="tap_intro_wallpaper_preview_apply">Appliquer le fond d\'écran</string>
+    <string name="tap_intro_wallpaper_preview_apply_desc">Appuyer ici pour régler le fond d\'écran pour l\'écran d\'accueil</string>
+    <!-- Wallpapers -->
+    <string name="wallpaper_new_added">Nouveaux fonds d\'écrans</string>
+    <string name="wallpaper_filter">Filtrer par catégories</string>
+    <string name="wallpaper_downloading">Téléchargement du fond d\'écran …</string>
+    <string name="wallpaper_download_exist">Le fond d\'écran nommé %s existe déjà, voulez vous le remplacer?</string>
+    <string name="wallpaper_download_exist_replace">Remplacer</string>
+    <string name="wallpaper_download_exist_new">Créer un nouveau</string>
+    <string name="wallpaper_download_failed">Impossible de télécharger le fond d\'écran</string>
+    <string name="wallpaper_download_cancelled">Téléchargement du fond d\'écran annulé</string>
+    <string name="wallpaper_downloaded">Fond d\'écran téléchargé pour</string>
+    <string name="wallpaper_loading">Chargement du fond d\'écran …</string>
+    <string name="wallpaper_applying">Application du fond d\'écran …</string>
+    <string name="wallpaper_applied">Fond d\'écran appliqué</string>
+    <string name="wallpaper_apply_failed">Impossible d\'appliquer le fond d\'écran</string>
+    <string name="wallpaper_apply_cancelled">Application du fond d\'écran annulé</string>
+    <string name="connection_failed">Impossible d\'accéder aux données du serveur</string>
+    <string name="wallpaper_apply">Régler comme fond d\'écran</string>
+    <string name="wallpaper_apply_crop">Découper le fond d\'écran sera désactivé si vous appliquez à partir de cette option.</string>
+    <string name="wallpaper_settings_crop">Découper le fond d\'écran</string>
+    <string name="wallpaper_settings_crop_desc">Activer la découpe du fond d\'écran. Le fond d\'écran sera découpé d\'après la prévisualisation actuel.
+Pincer ou appuyer 2 fois pour zoomer sur le fond d\'écran.</string>
+    <string name="wallpaper_settings_lockscreen">Arrière-plan de l\'écran de verrouillage</string>
+    <string name="wallpaper_settings_lockscreen_desc">Appliquer réglera le fond d\'écran à l\'écran d\'accueil ainsi qu\'à l\'écran de verrouillage.</string>
+    <string name="wallpaper_settings_lockscreen_not_available">L\'écran de verrouillage est seulement disponible pour Android Nougat</string>
+    <string name="wallpaper_favorite_added">%s ajouté aux favoris</string>
+    <string name="wallpaper_favorite_removed">%s supprimé des favoris</string>
+    <!-- Muzei -->
+    <string name="minute">Minutes</string>
+    <string name="hour">Heures</string>
+    <string name="muzei_settings">Paramètres de Muzei</string>
+    <string name="muzei_settings_save">Enregistrer</string>
+    <string name="muzei_settings_saved">Paramètres enregistrés</string>
+    <string name="muzei_refresh_duration">Rafraîchir la durée</string>
+    <string name="muzei_refresh_duration_desc">Chaque</string>
+    <string name="muzei_wifi_only">Rafraîchir en Wifi uniquement</string>
+    <string name="muzei_wifi_only_desc">Charger le fond d\'écran seulement si l\'appareil est connecté en wifi</string>
+    <string name="muzei_category">Sélectionner les catégories</string>
+    <string name="muzei_category_desc">Charger les fonds d\'écrans seulement pour les catégories sélectionnées</string>
+    <!-- About -->
+    <string name="about_contributors_title">Contributeurs</string>
+    <string name="about_open_source_licenses">Licences Open Source</string>
+    <!-- InAppBilling -->
+    <string name="billing_load_product_failed">Impossible de charger les achats intégrés</string>
+    <!-- Preferences -->
+    <string name="pref_data_header">Données et Cache</string>
+    <string name="pref_data_cache">Supprimer le cache</string>
+    <string name="pref_data_cache_desc">Supprime les images en cache de votre mémoire créées après le chargement des miniatures des fonds d\'écrans</string>
+    <string name="pref_data_cache_size">Taille du cache: %s</string>
+    <string name="pref_data_cache_cleared">Cache supprimé</string>
+    <string name="pref_data_cache_clear_dialog">Voulez vous vraiment supprimer le cache?</string>
+    <string name="pref_theme_header">Thème</string>
+    <string name="pref_theme_dark">Thème sombre</string>
+    <string name="pref_theme_dark_desc">Changer entre le thème sombre et clair</string>
+    <string name="pref_wallpaper_header">Fonds d\'écrans</string>
+    <string name="pref_wallpaper_location">Adresse de sauvegarde des fonds d\'écrans</string>
+    <string name="pref_wallpaper_location_desc">Premièrement essayer de télécharger au moins un fond d\'écran</string>
+    <string name="pref_language_header">Langue</string>
+    <string name="pref_others_header">Autres</string>
+    <string name="pref_others_colored_wallpaper_card">Carte des fonds d\'écrans colorés</string>
+    <string name="pref_others_reset_tutorial">Réinitialiser le tutoriel</string>
+    <string name="pref_others_reset_tutorial_reset">Le tutoriel est réinitialisé</string>
+    <!-- Permission -->
+    <string name="permission_storage_denied">La permission de stocker est nécessaire pour sauvegarder le fond d\'écran</string>
+    <!-- Support Development -->
+    <string name="donation_success">Merci pour votre donation. Elle améliorera le développement.</string>
+    <!-- License -->
+    <string name="license_checking">Vérification de la licence …</string>
+    <string name="license_check">Licence vérifié</string>
+    <string name="license_check_success">Licence vérifié avec succès, merci d\'avoir téléchargé l\'application depuis le Play Store.</string>
+    <string name="license_check_failed">La vérification de la licence a échoué, vous n\'avez pas téléchargé l\'application depuis le Play Store.
+Vous ne serez pas en mesure d\'utiliser l\'application.</string>
+    <string name="license_check_retry">Impossible de vérifié la licence, merci d\'essayer à nouveau dans un petit moment</string>
+    <!-- Search -->
+    <string name="search_result_empty">Aucuns résultats trouvé pour \"%s\"</string>
+    <!-- Crash Report -->
+    <string name="crash_report">Rapport de crash</string>
+    <string name="crash_report_message">Malheureusement %s a cesser de fonctionner. Choisissez d\'envoyer un rapport ci-dessous pour aider le développeur a corriger ce problème.</string>
+    <string name="crash_report_send">Envoyer le rapport</string>
+    <string name="email_client">Choisir le client email</string>
+    <!-- Please don't modify this -->
+    <string name="about_dashboard">Wallpaper Board</string>
+    <string name="about_dashboard_dev">Wallpaper Board est un tableau de bord pour fonds d\'écrans open source licencié sous Apache Licence 2.0 pour
+ Android disponible sur GitHub et libre d\'utilisation, développer par Dani Mahardhika.</string>
+    <string name="about_dashboard_contributors">Contributeurs de Wallpaper Board</string>
+    <string name="about_dashboard_translator">Traducteurs de Wallpaper Board</string>
+    <!-- Splash screen -->
+    <!-- DrawerToggle -->
+    <string name="txt_open">Ouvrir</string>
+    <string name="txt_close">Fermer</string>
+</resources>

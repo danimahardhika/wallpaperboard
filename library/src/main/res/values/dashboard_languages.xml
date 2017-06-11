@@ -6,11 +6,13 @@
         <item>English (United Kingdom)</item>
         <item>Bahasa Indonesia</item>
         <item>Dutch</item>
+        <item>French</item>
         <item>Hindi</item>
         <item>Italian</item>
         <item>Korean</item>
         <item>Malayalam</item>
         <item>Polish</item>
+        <item>Russian</item>
         <item>Spanish</item>
         <item>Turkish</item>
     </string-array>
@@ -20,11 +22,13 @@
         <item>en_GB</item>
         <item>in_ID</item>
         <item>nl_NL</item>
+        <item>fr_FR</item>
         <item>hi_IN</item>
         <item>it_IT</item>
         <item>ko_KR</item>
         <item>ml_IN</item>
         <item>pl_PL</item>
+        <item>ru_RU</item>
         <item>es_ES</item>
         <item>tr_TR</item>
     </string-array>

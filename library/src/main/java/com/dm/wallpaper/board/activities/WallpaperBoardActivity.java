@@ -9,6 +9,7 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -156,6 +157,7 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
         mPosition = mLastPosition = 0;
         if (savedInstanceState != null) {
             mPosition = mLastPosition = savedInstanceState.getInt(Extras.EXTRA_POSITION, 0);
+            onSearchExpanded(false);
         }
 
         setFragment(getFragment(mPosition));
@@ -230,6 +232,16 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
             mPosition = mLastPosition = 0;
             setFragment(getFragment(mPosition));
             return;
+        }
+
+        if (mFragmentTag.equals(Extras.TAG_WALLPAPERS)) {
+            Fragment fragment = mFragManager.findFragmentByTag(Extras.TAG_WALLPAPERS);
+            if (fragment != null) {
+                if (fragment instanceof WallpapersFragment) {
+                    WallpapersFragment wallpapersFragment = (WallpapersFragment) fragment;
+                    if (wallpapersFragment.scrollWallpapersToTop()) return;
+                }
+            }
         }
         super.onBackPressed();
     }
@@ -396,6 +408,24 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
             else if (id == R.id.navigation_view_settings) mPosition = 2;
             else if (id == R.id.navigation_view_about) mPosition = 3;
             else if (id == R.id.navigation_view_donate) mPosition = 4;
+            else if (id == R.id.navigation_view_share) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_SUBJECT, getResources().getString(R.string.share_app_subject,
+                        getResources().getString(R.string.app_name)));
+                intent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.share_app_body,
+                        getResources().getString(R.string.app_name),
+                        "https://play.google.com/store/apps/details?id=" +getPackageName()));
+                startActivity(Intent.createChooser(intent, getResources().getString(R.string.email_client)));
+                return false;
+
+            } else if (id == R.id.navigation_view_rate) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(
+                        "https://play.google.com/store/apps/details?id=" +getPackageName()));
+                intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                startActivity(intent);
+                return false;
+            }
 
             item.setChecked(true);
             mDrawerLayout.closeDrawers();

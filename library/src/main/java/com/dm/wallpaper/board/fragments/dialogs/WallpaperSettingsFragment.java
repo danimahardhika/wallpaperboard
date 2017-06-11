@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
+import com.dm.wallpaper.board.helpers.TypefaceHelper;
 import com.dm.wallpaper.board.preferences.Preferences;
 
 import butterknife.BindView;
@@ -82,7 +83,7 @@ public class WallpaperSettingsFragment extends DialogFragment implements View.On
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
-        builder.typeface("Font-Medium.ttf", "Font-Regular.ttf");
+        builder.typeface(TypefaceHelper.getMedium(getActivity()), TypefaceHelper.getRegular(getActivity()));
         builder.title(R.string.menu_wallpaper_settings);
         builder.customView(R.layout.fragment_wallpaper_settings, false);
         builder.positiveText(R.string.close);

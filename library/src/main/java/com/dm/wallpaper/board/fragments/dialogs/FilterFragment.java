@@ -19,6 +19,7 @@ import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.adapters.FilterAdapter;
 import com.dm.wallpaper.board.databases.Database;
 import com.dm.wallpaper.board.fragments.WallpapersFragment;
+import com.dm.wallpaper.board.helpers.TypefaceHelper;
 import com.dm.wallpaper.board.items.Category;
 import com.dm.wallpaper.board.utils.Extras;
 import com.dm.wallpaper.board.utils.LogUtil;
@@ -82,7 +83,7 @@ public class FilterFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
-        builder.typeface("Font-Medium.ttf", "Font-Regular.ttf");
+        builder.typeface(TypefaceHelper.getMedium(getActivity()), TypefaceHelper.getRegular(getActivity()));
         builder.title(mIsMuzei ? R.string.muzei_category : R.string.wallpaper_filter);
         builder.customView(R.layout.fragment_filter, false);
         MaterialDialog dialog = builder.build();

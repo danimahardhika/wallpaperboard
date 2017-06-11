@@ -6,6 +6,11 @@
     <string name="navigation_view_settings">Ajustes</string>
     <string name="navigation_view_about">Acerca de</string>
     <string name="navigation_view_donate">Apoyar al Desarrollo</string>
+    <string name="navigation_view_share">Compartir la aplicación</string>
+    <string name="navigation_view_rate">Valorar y comentar</string>
+    <!-- Share app -->
+    <string name="share_app_subject">Hey! Checa esto %s</string>
+    <string name="share_app_body">Mira %1$s, esta aplicación de fondos de pantalla es realmente genial! %2$s</string>
     <!-- Menu -->
     <string name="menu_search">Buscar</string>
     <string name="menu_filter">Filtro</string>
@@ -31,6 +36,8 @@
     <string name="tap_intro_wallpapers_favorite">Fondos de Pantalla Favoritos</string>
     <string name="tap_intro_wallpapers_favorite_desc">Toque aquí para marcar el papel tapiz como Favorito</string>
     <string name="tap_intro_wallpaper_preview_settings">Ajustes de wallpaper</string>
+    <string name="tap_intro_wallpaper_preview_settings_desc">Presiona aquí para abrir la configuración del fondo de pantalla.
+Active el papel tapiz de conjunto como fondo de pantalla de bloqueo en Android Nougat o habilite el recorte de papel tapiz.</string>
     <string name="tap_intro_wallpaper_preview_save">Guardar papel tapiz</string>
     <!-- Wallpapers -->
     <string name="wallpaper_favorite_added">%s agregado a Favoritos</string>
@@ -92,6 +99,7 @@ No podras usar esta aplicación.</string>
     <string name="about_dashboard">Wallpaper Board</string>
     <string name="about_dashboard_dev">Wallpaper Board es de código abierto bajo licencia Apache 2.0, para Android, disponible en GitHub para uso gratuito, desarrollado por Dani Mahardhika.</string>
     <string name="about_dashboard_contributors">Contribuidores de Wallpaper Board</string>
+    <!-- Splash screen -->
     <!-- DrawerToggle -->
     <string name="txt_open">Abrir</string>
     <string name="txt_close">Cerrar</string>

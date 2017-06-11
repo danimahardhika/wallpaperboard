@@ -81,7 +81,8 @@ public class Wallpaper {
     public boolean equals(Object object) {
         boolean equals = false;
         if (object != null && object instanceof Wallpaper) {
-            equals = mUrl.equals(((Wallpaper) object).getUrl());
+            equals = mUrl.equals(((Wallpaper) object).getUrl()) &&
+                    mCategory.equals(((Wallpaper) object).getCategory());
         }
         return equals;
     }

@@ -155,10 +155,9 @@
         Android available at GitHub and free to use, developed by Dani Mahardhika.</string>
     <string name="about_dashboard_contributors">Wallpaper Board Contributors</string>
     <string name="about_dashboard_translator">Wallpaper Board Translator</string>
-    <string name="about_dashboard_dev_google_plus_title">Google+</string>
     <string name="about_dashboard_dev_google_plus_url">https://plus.google.com/u/1/+DaniMahardhika</string>
-    <string name="about_dashboard_dev_github_title">GitHub</string>
     <string name="about_dashboard_dev_github_url">https://github.com/danimahardhika</string>
+    <string name="about_dashboard_dev_instagram_url">https://www.instagram.com/_u/danimahardhika112/</string>
 
     <!-- Splash screen -->
     <string name="splash_screen_title">Wallpaper Board</string>

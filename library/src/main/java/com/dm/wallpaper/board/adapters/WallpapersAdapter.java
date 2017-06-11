@@ -35,6 +35,7 @@ import com.dm.wallpaper.board.fragments.FavoritesFragment;
 import com.dm.wallpaper.board.fragments.WallpaperSearchFragment;
 import com.dm.wallpaper.board.fragments.WallpapersFragment;
 import com.dm.wallpaper.board.fragments.dialogs.WallpaperOptionsFragment;
+import com.dm.wallpaper.board.helpers.TypefaceHelper;
 import com.dm.wallpaper.board.helpers.WallpaperHelper;
 import com.dm.wallpaper.board.items.Wallpaper;
 import com.dm.wallpaper.board.preferences.Preferences;
@@ -261,7 +262,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Vi
                         .theme(new CafeBarTheme.Custom(ColorHelper.getAttributeColor(
                                 mContext, R.attr.card_background)))
                         .fitSystemWindow()
-                        .typeface("Font-Regular.ttf", "Font-Bold.ttf")
+                        .typeface(TypefaceHelper.getRegular(mContext), TypefaceHelper.getBold(mContext))
                         .content(String.format(
                                 mContext.getResources().getString(mWallpapers.get(position).isFavorite() ?
                                         R.string.wallpaper_favorite_added : R.string.wallpaper_favorite_removed),

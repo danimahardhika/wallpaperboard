@@ -30,7 +30,6 @@
         <item name="main_background">@color/mainBackground</item>
         <item name="card_background">@color/cardBackground</item>
         <item name="ripple_color">@color/rippleColor</item>
-        <item name="ripple_accent">@color/rippleAccent</item>
 
         <item name="toolbar_icon">@color/toolbarIcon</item>
 
@@ -63,7 +62,6 @@
         <item name="main_background">@color/mainBackgroundDark</item>
         <item name="card_background">@color/cardBackgroundDark</item>
         <item name="ripple_color">@color/rippleColorDark</item>
-        <item name="ripple_accent">@color/rippleAccentDark</item>
 
         <item name="toolbar_icon">@color/toolbarIconDark</item>
 
@@ -128,9 +126,4 @@
     <style name="RippleStyle">
         <item name="colorControlHighlight">?attr/ripple_color</item>
     </style>
-
-    <style name="RippleAccentStyle">
-        <item name="colorControlHighlight">?attr/ripple_accent</item>
-    </style>
-
 </resources>

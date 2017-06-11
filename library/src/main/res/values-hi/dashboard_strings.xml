@@ -6,6 +6,11 @@
     <string name="navigation_view_settings">सेटिंग्स</string>
     <string name="navigation_view_about">ऐप के बारे में</string>
     <string name="navigation_view_donate">ऐप विकास मे सहयोग करें</string>
+    <string name="navigation_view_share">ऐप शेयर करें</string>
+    <string name="navigation_view_rate">रेट एवम रिव्यू</string>
+    <!-- Share app -->
+    <string name="share_app_subject">यो! चेक आउट %s</string>
+    <string name="share_app_body">चेक आउट %1$s, यह वॉलपेपर ऐप वास्तव में अच्छा है! %2$s</string>
     <!-- Menu -->
     <string name="menu_search">खोज</string>
     <string name="menu_filter">फिल्टर</string>
@@ -120,6 +125,10 @@
     <string name="about_dashboard_dev">"वॉलपेपर बोर्ड एक ओपन सोर्स वॉलपेपर डैशबोअर्ड है जो की एंड्रॉयड के लिए अपाचे लाइसेन्स 2.0 के अंतर्गत लाइसेन्स्ड है. ये गिटहब पर उपयोग के लिए मुफ़्त मे उपलब्ध है जो की दानी महरधिका द्वारा विकसित किया गया है. "</string>
     <string name="about_dashboard_contributors">वॉलपेपर बोर्ड योगदानकर्ता</string>
     <string name="about_dashboard_translator">वॉलपेपर बोर्ड अनुवादक</string>
+    <string name="about_dashboard_dev_google_plus_url">https://plus.google.com/u/1/+DaniMahardhika</string>
+    <string name="about_dashboard_dev_github_url">https://github.com/danimahardhika</string>
+    <!-- Splash screen -->
+    <string name="splash_screen_title">वॉलपेपर बोर्ड</string>
     <!-- DrawerToggle -->
     <string name="txt_open">खोलें</string>
     <string name="txt_close">बंद करें</string>

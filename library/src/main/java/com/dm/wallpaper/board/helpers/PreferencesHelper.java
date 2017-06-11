@@ -42,7 +42,7 @@ public class PreferencesHelper {
     private static final String KEY_ROTATE_TIME = "rotate_time";
     private static final String KEY_ROTATE_MINUTE = "rotate_minute";
     private static final String KEY_WIFI_ONLY = "wifi_only";
-    private static final String KEY_WALLS_DIRECTORY = "wallpaper_directory";
+    private static final String KEY_WALLS_DIRECTORY = "wallpaper_download_directory";
     private static final String KEY_AVAILABLE_WALLPAPERS_COUNT = "available_wallpapers_count";
     private static final String KEY_WALLPAPER_CROP = "wallpaper_crop";
     private static final String KEY_APPLY_LOCKSCREEN = "apply_lockscreen";

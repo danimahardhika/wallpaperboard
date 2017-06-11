@@ -22,6 +22,7 @@ import com.anjlab.android.iab.v3.SkuDetails;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.adapters.InAppBillingAdapter;
+import com.dm.wallpaper.board.helpers.TypefaceHelper;
 import com.dm.wallpaper.board.items.InAppBilling;
 import com.dm.wallpaper.board.utils.Extras;
 import com.dm.wallpaper.board.utils.LogUtil;
@@ -101,7 +102,7 @@ public class InAppBillingFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
         builder.customView(R.layout.fragment_inappbilling, false)
-                .typeface("Font-Medium.ttf", "Font-Regular.ttf")
+                .typeface(TypefaceHelper.getMedium(getActivity()), TypefaceHelper.getRegular(getActivity()))
                 .title(R.string.navigation_view_donate)
                 .positiveText(R.string.donate)
                 .negativeText(R.string.close)
