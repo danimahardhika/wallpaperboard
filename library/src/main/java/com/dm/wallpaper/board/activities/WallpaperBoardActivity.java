@@ -28,6 +28,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.URLUtil;
 import android.widget.LinearLayout;
@@ -392,8 +393,12 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
                 Preferences.get(this).isDarkTheme() ?
                         R.color.navigation_view_item_highlight_dark :
                         R.color.navigation_view_item_highlight);
-        mNavigationView.getMenu().getItem(mNavigationView.getMenu().size() - 2).setVisible(
-                getResources().getBoolean(R.bool.enable_donation));
+
+        MenuItem menuItem = mNavigationView.getMenu().findItem(R.id.navigation_view_donate);
+        if (menuItem != null) {
+            menuItem.setVisible(getResources().getBoolean(R.bool.enable_donation));
+        }
+
         mNavigationView.setItemTextColor(colorStateList);
         mNavigationView.setItemIconTintList(colorStateList);
         Drawable background = ContextCompat.getDrawable(this,
