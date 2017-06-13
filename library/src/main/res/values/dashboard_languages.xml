@@ -5,16 +5,16 @@
         <item>English</item>
         <item>English (United Kingdom)</item>
         <item>Bahasa Indonesia</item>
-        <item>Dutch</item>
-        <item>French</item>
-        <item>Hindi</item>
-        <item>Italian</item>
-        <item>Korean</item>
-        <item>Malayalam</item>
-        <item>Polish</item>
-        <item>Russian</item>
-        <item>Spanish</item>
-        <item>Turkish</item>
+        <item>Nederlands</item>
+        <item>Français</item>
+        <item>हिंदी</item>
+        <item>Italiano</item>
+        <item>한국어</item>
+        <item>മലയാളം</item>
+        <item>Polskie</item>
+        <item>Русский</item>
+        <item>Español</item>
+        <item>Türk</item>
     </string-array>
 
     <string-array name="languages_code">
