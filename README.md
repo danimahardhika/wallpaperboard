@@ -30,6 +30,13 @@ dependencies {
 }
 ```
 
+Or use a snapshot
+```Gradle
+dependecies {
+    compile 'com.github.danimahardhika:wallpaperboard:-SNAPSHOT'
+}
+````
+
 # How to Use
 Take a look inside <a href="https://github.com/danimahardhika/wallpaperboard/wiki" target="_blank">Wiki Site</a>.
 
