@@ -55,7 +55,7 @@
         android:layout_gravity="center_horizontal"
         android:drawablePadding="2dp"
         android:text="@string/wallpaper_new_added"
-        android:textSize="@dimen/text_content"
+        android:textSize="12sp"
         android:textAllCaps="false"
         android:visibility="gone"
         app:dm_backColor="?attr/colorAccent"
