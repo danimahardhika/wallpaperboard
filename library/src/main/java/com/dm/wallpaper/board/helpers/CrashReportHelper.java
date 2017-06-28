@@ -19,9 +19,9 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 
 /*
- * CandyBar - Material Dashboard
+ * Wallpaper Board
  *
- * Copyright (c) 2014-2016 Dani Mahardhika
+ * Copyright (c) 2017 Dani Mahardhika
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
