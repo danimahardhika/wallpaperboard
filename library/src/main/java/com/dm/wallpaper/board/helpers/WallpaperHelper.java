@@ -96,7 +96,7 @@ public class WallpaperHelper {
 
     private static String getRszIoThumbnailUrl(@NonNull Context context, String url) {
         String rszIoUrl = url.replaceFirst("https://|http://", "");
-        ImageSize imageSize = ImageConfig.getThumbnailSize();
+        ImageSize imageSize = ImageConfig.getThumbnailSize(context);
         return "https://rsz.io/" +rszIoUrl+ "?height=" +imageSize.getWidth();
     }
 
