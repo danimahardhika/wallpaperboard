@@ -10,6 +10,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.danimahardhika.android.helpers.core.FileHelper;
 import com.danimahardhika.android.helpers.permission.PermissionHelper;
 import com.dm.wallpaper.board.R;
+import com.dm.wallpaper.board.applications.WallpaperBoardApplication;
 import com.dm.wallpaper.board.helpers.CrashReportHelper;
 import com.dm.wallpaper.board.helpers.LocaleHelper;
 
@@ -49,6 +50,12 @@ public class WallpaperBoardCrashReport extends AppCompatActivity {
 
             LocaleHelper.setLocale(this);
 
+            final String email = WallpaperBoardApplication.getConfiguration().getCrashReportEmail();
+            if (email == null) {
+                finish();
+                return;
+            }
+
             String stackTrace = bundle.getString(EXTRA_STACKTRACE);
             String deviceInfo = CrashReportHelper.getDeviceInfoForCrashReport(this);
 
@@ -64,8 +71,7 @@ public class WallpaperBoardCrashReport extends AppCompatActivity {
                     .onPositive((dialog, which) -> {
                         Intent intent = new Intent(Intent.ACTION_SEND);
                         intent.setType("message/rfc822");
-                        intent.putExtra(Intent.EXTRA_EMAIL,
-                                new String[]{getResources().getString(R.string.dev_email)});
+                        intent.putExtra(Intent.EXTRA_EMAIL, email);
                         intent.putExtra(Intent.EXTRA_SUBJECT, "WallpaperBoard: Crash Report");
 
                         intent = prepareUri(deviceInfo, stackTrace, intent);
