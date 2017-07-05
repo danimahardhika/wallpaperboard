@@ -83,8 +83,7 @@ public class FilterAdapter extends BaseAdapter {
         holder.checkBox.setChecked(mIsMuzei ?
                 category.isMuzeiSelected() :
                 category.isSelected());
-        String count = category.getCount() > 99 ? "99+" : category.getCount() +"";
-        holder.counter.setText(count);
+        holder.counter.setText(category.getCategoryCount());
         holder.container.setOnClickListener(v -> {
             Database database = Database.get(mContext);
             if (mIsMuzei) {
@@ -122,5 +121,37 @@ public class FilterAdapter extends BaseAdapter {
                     mContext, R.drawable.ic_toolbar_circle, color));
             counter.setTextColor(ColorHelper.getTitleTextColor(color));
         }
+    }
+
+    public int getSelectedCount() {
+        int selected = 0;
+        for (Category category : mCategories) {
+            if (mIsMuzei) {
+                if (category.isMuzeiSelected()) {
+                    selected += 1;
+                }
+            } else {
+                if (category.isSelected()) {
+                    selected += 1;
+                }
+            }
+        }
+        return selected;
+    }
+
+    public boolean selectAll() {
+        boolean isAllSelected = getCount() == getSelectedCount();
+        Database database = Database.get(mContext);
+
+        for (Category category : mCategories) {
+            if (mIsMuzei) {
+                database.selectCategoryForMuzei(category.getId(), !isAllSelected);
+                category.setMuzeiSelected(!isAllSelected);
+            } else {
+                database.selectCategory(category.getId(), !isAllSelected);
+                category.setSelected(!isAllSelected);
+            }
+        }
+        return !isAllSelected;
     }
 }

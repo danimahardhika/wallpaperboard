@@ -2,13 +2,16 @@ package com.dm.wallpaper.board.applications;
 
 import android.app.Application;
 import android.content.Intent;
-import android.util.Patterns;
+import android.support.annotation.IntRange;
+import android.support.annotation.NonNull;
 
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.activities.WallpaperBoardCrashReport;
 import com.dm.wallpaper.board.helpers.LocaleHelper;
+import com.dm.wallpaper.board.helpers.UrlHelper;
 import com.dm.wallpaper.board.preferences.Preferences;
 import com.dm.wallpaper.board.utils.ImageConfig;
+import com.dm.wallpaper.board.utils.JsonStructure;
 import com.dm.wallpaper.board.utils.LogUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -38,10 +41,24 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 public class WallpaperBoardApplication extends Application {
 
+    private static Configuration mConfiguration;
     private Thread.UncaughtExceptionHandler mHandler;
 
+    public static Configuration getConfiguration() {
+        if (mConfiguration == null) {
+            mConfiguration = new Configuration();
+        }
+        return mConfiguration;
+    }
+
     public void initApplication() {
+        initApplication(new Configuration());
+    }
+
+    public void initApplication(@NonNull Configuration configuration) {
         super.onCreate();
+        mConfiguration = configuration;
+
         if (!ImageLoader.getInstance().isInited())
             ImageLoader.getInstance().init(ImageConfig.getImageLoaderConfiguration(this));
 
@@ -53,9 +70,24 @@ public class WallpaperBoardApplication extends Application {
         //Enable logging
         LogUtil.setLoggingEnabled(true);
 
-        if (Patterns.EMAIL_ADDRESS.matcher(getResources().getString(R.string.dev_email)).matches()) {
-            mHandler = Thread.getDefaultUncaughtExceptionHandler();
-            Thread.setDefaultUncaughtExceptionHandler(this::handleUncaughtException);
+        if (mConfiguration.mIsCrashReportEnabled) {
+            String[] urls = getResources().getStringArray(R.array.about_social_links);
+            boolean isContainsValidEmail = false;
+            for (String url : urls) {
+                if (UrlHelper.getType(url) == UrlHelper.Type.EMAIL) {
+                    isContainsValidEmail = true;
+                    mConfiguration.setCrashReportEmail(url);
+                    break;
+                }
+            }
+
+            if (isContainsValidEmail) {
+                mHandler = Thread.getDefaultUncaughtExceptionHandler();
+                Thread.setDefaultUncaughtExceptionHandler(this::handleUncaughtException);
+            } else {
+                mConfiguration.setCrashReportEnabled(false);
+                mConfiguration.setCrashReportEmail(null);
+            }
         }
 
         if (Preferences.get(this).isTimeToSetLanguagePreference()) {
@@ -93,5 +125,117 @@ public class WallpaperBoardApplication extends Application {
             }
         }
         System.exit(1);
+    }
+
+    public static class Configuration {
+
+        private NavigationIcon mNavigationIcon = NavigationIcon.DEFAULT;
+        private NavigationViewHeader mNavigationViewHeader = NavigationViewHeader.NORMAL;
+        private GridStyle mWallpapersGrid = GridStyle.FLAT;
+
+        private boolean mIsDashboardThemingEnabled = true;
+        private boolean mIsShadowEnabled = true;
+
+        private int mWallpaperGridPreviewQuality = 4;
+        private boolean mIsCrashReportEnabled = true;
+        private String mCrashReportEmail = null;
+
+        private JsonStructure mJsonStructure = new JsonStructure.Builder().build();
+
+        public Configuration setNavigationIcon(@NonNull NavigationIcon navigationIcon) {
+            mNavigationIcon = navigationIcon;
+            return this;
+        }
+
+        public Configuration setNavigationViewHeaderStyle(@NonNull NavigationViewHeader navigationViewHeader) {
+            mNavigationViewHeader = navigationViewHeader;
+            return this;
+        }
+
+        public Configuration setWallpapersGridStyle(@NonNull GridStyle gridStyle) {
+            mWallpapersGrid = gridStyle;
+            return this;
+        }
+
+        public Configuration setDashboardThemingEnabled(boolean dashboardThemingEnabled) {
+            mIsDashboardThemingEnabled = dashboardThemingEnabled;
+            return this;
+        }
+
+        public Configuration setWallpaperGridPreviewQuality(@IntRange (from = 1, to = 10) int quality) {
+            mWallpaperGridPreviewQuality = quality;
+            return this;
+        }
+
+        public Configuration setShadowEnabled(boolean shadowEnabled) {
+            mIsShadowEnabled = shadowEnabled;
+            return this;
+        }
+
+        public Configuration setCrashReportEnabled(boolean crashReportEnabled) {
+            mIsCrashReportEnabled = crashReportEnabled;
+            return this;
+        }
+
+        private Configuration setCrashReportEmail(String email) {
+            mCrashReportEmail = email;
+            return this;
+        }
+
+        public Configuration setJsonStructure(@NonNull JsonStructure jsonStructure) {
+            mJsonStructure = jsonStructure;
+            return this;
+        }
+
+        public NavigationIcon getNavigationIcon() {
+            return mNavigationIcon;
+        }
+
+        public NavigationViewHeader getNavigationViewHeader() {
+            return mNavigationViewHeader;
+        }
+
+        public GridStyle getWallpapersGrid() {
+            return mWallpapersGrid;
+        }
+
+        public boolean isDashboardThemingEnabled() {
+            return mIsDashboardThemingEnabled;
+        }
+
+        public int getWallpaperGridPreviewQuality() {
+            return mWallpaperGridPreviewQuality;
+        }
+
+        public boolean isShadowEnabled() {
+            return mIsShadowEnabled;
+        }
+
+        public  String getCrashReportEmail() {
+            return mCrashReportEmail;
+        }
+
+        public JsonStructure getJsonStructure() {
+            return mJsonStructure;
+        }
+    }
+
+    public enum NavigationIcon {
+        DEFAULT,
+        STYLE_1,
+        STYLE_2,
+        STYLE_3,
+        STYLE_4
+    }
+
+    public enum NavigationViewHeader {
+        NORMAL,
+        MINI,
+        NONE
+    }
+
+    public enum GridStyle {
+        CARD,
+        FLAT
     }
 }

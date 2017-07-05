@@ -142,7 +142,14 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
         }
 
         toolbarTitle.setText(mName);
-        toolbarSubTitle.setText(mAuthor);
+
+        if (mAuthor == null) {
+            toolbarSubTitle.setVisibility(View.GONE);
+        } else {
+            toolbarSubTitle.setText(mAuthor);
+            toolbarSubTitle.setVisibility(View.VISIBLE);
+        }
+
         toolbar.setTitle("");
         toolbar.setNavigationIcon(R.drawable.ic_toolbar_back);
         setSupportActionBar(toolbar);

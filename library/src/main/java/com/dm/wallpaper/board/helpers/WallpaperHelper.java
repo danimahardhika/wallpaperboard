@@ -30,7 +30,6 @@ import com.danimahardhika.cafebar.CafeBar;
 import com.danimahardhika.cafebar.CafeBarDuration;
 import com.danimahardhika.cafebar.CafeBarTheme;
 import com.dm.wallpaper.board.R;
-import com.dm.wallpaper.board.activities.WallpaperBoardActivity;
 import com.dm.wallpaper.board.preferences.Preferences;
 import com.dm.wallpaper.board.utils.ImageConfig;
 import com.dm.wallpaper.board.utils.LogUtil;
@@ -83,21 +82,6 @@ public class WallpaperHelper {
             return new File(context.getFilesDir().toString() +"/Pictures/"+
                     context.getResources().getString(R.string.app_name));
         }
-    }
-
-    public static String getThumbnailUrl(@NonNull Context context, String url, String thumbUrl) {
-        if (thumbUrl.equals(url) && WallpaperBoardActivity.sRszIoAvailable) {
-            if (thumbUrl.contains("drive.google.com"))
-                return thumbUrl;
-            return getRszIoThumbnailUrl(context, url);
-        }
-        return thumbUrl;
-    }
-
-    private static String getRszIoThumbnailUrl(@NonNull Context context, String url) {
-        String rszIoUrl = url.replaceFirst("https://|http://", "");
-        ImageSize imageSize = ImageConfig.getThumbnailSize(context);
-        return "https://rsz.io/" +rszIoUrl+ "?height=" +imageSize.getWidth();
     }
 
     private static String getWallpaperUri(@NonNull Context context, String url, String filename) {
@@ -544,12 +528,17 @@ public class WallpaperHelper {
 
                             LogUtil.d("generated bitmap: " +bitmap.getWidth() +" x "+ bitmap.getHeight());
 
-                            if (Preferences.get(context).isApplyLockscreen() &&
-                                    Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                manager.setBitmap(bitmap, null, true, WallpaperManager.FLAG_LOCK | WallpaperManager.FLAG_SYSTEM);
-                            } else {
-                                manager.setBitmap(bitmap);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                if (Preferences.get(context).isApplyLockscreen()) {
+                                    manager.setBitmap(bitmap, null, true, WallpaperManager.FLAG_LOCK | WallpaperManager.FLAG_SYSTEM);
+                                    return true;
+                                }
+
+                                manager.setBitmap(bitmap, null, true, WallpaperManager.FLAG_SYSTEM);
+                                return true;
                             }
+
+                            manager.setBitmap(bitmap);
                             return true;
                         }
                         return false;

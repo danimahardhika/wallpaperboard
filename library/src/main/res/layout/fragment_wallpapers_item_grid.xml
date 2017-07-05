@@ -7,11 +7,11 @@
     tools:ignore="MissingPrefix"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginRight="@dimen/card_margin"
-    android:layout_marginEnd="@dimen/card_margin"
+    android:layout_marginRight="@dimen/card_margin_right"
+    android:layout_marginEnd="@dimen/card_margin_right"
     app:cardBackgroundColor="?attr/card_background"
     app:cardUseCompatPadding="@bool/card_use_compat_padding"
-    app:cardCornerRadius="0dp">
+    app:cardCornerRadius="@dimen/card_corner_radius">
 
     <LinearLayout
         android:id="@+id/container"
@@ -44,8 +44,8 @@
                 android:paddingBottom="@dimen/content_margin"
                 android:paddingLeft="@dimen/content_margin"
                 android:paddingStart="@dimen/content_margin"
-                android:paddingRight="8dp"
-                android:paddingEnd="8dp"
+                android:paddingRight="@dimen/content_padding"
+                android:paddingEnd="@dimen/content_padding"
                 android:orientation="vertical">
 
                 <TextView
@@ -67,21 +67,15 @@
                     android:maxLines="1"
                     android:ellipsize="end"
                     fontPath="fonts/Font-Regular.ttf"/>
-
             </LinearLayout>
 
             <ImageView
                 android:id="@+id/favorite"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:padding="8dp"
-                android:layout_marginRight="@dimen/content_padding"
-                android:layout_marginEnd="@dimen/content_padding"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/content_margin"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:theme="@style/ButtonStyle"/>
-
         </LinearLayout>
-
     </LinearLayout>
-
 </android.support.v7.widget.CardView>

@@ -33,27 +33,32 @@ import com.danimahardhika.android.helpers.core.ViewHelper;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.adapters.WallpapersAdapter;
+import com.dm.wallpaper.board.applications.WallpaperBoardApplication;
 import com.dm.wallpaper.board.databases.Database;
 import com.dm.wallpaper.board.fragments.dialogs.FilterFragment;
+import com.dm.wallpaper.board.helpers.JsonHelper;
 import com.dm.wallpaper.board.helpers.TapIntroHelper;
 import com.dm.wallpaper.board.items.Wallpaper;
-import com.dm.wallpaper.board.items.WallpaperJson;
 import com.dm.wallpaper.board.preferences.Preferences;
 import com.dm.wallpaper.board.utils.Extras;
+import com.dm.wallpaper.board.utils.JsonStructure;
 import com.dm.wallpaper.board.utils.LogUtil;
 import com.dm.wallpaper.board.utils.listeners.SearchListener;
 import com.dm.wallpaper.board.utils.listeners.WallpaperBoardListener;
 import com.dm.wallpaper.board.utils.listeners.WallpaperListener;
 import com.rafakob.drawme.DrawMeButton;
 
+import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cz.msebera.android.httpclient.NameValuePair;
 
 import static com.dm.wallpaper.board.helpers.ViewHelper.resetViewBottomPadding;
 
@@ -105,7 +110,6 @@ public class WallpapersFragment extends Fragment implements WallpaperListener {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        resetViewBottomPadding(mRecyclerView, true);
         initPopupBubble();
 
         mProgress.getIndeterminateDrawable().setColorFilter(ColorHelper.getAttributeColor(
@@ -115,6 +119,13 @@ public class WallpapersFragment extends Fragment implements WallpaperListener {
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),
                 getActivity().getResources().getInteger(R.integer.wallpapers_column_count)));
         mRecyclerView.setHasFixedSize(false);
+
+        if (WallpaperBoardApplication.getConfiguration().getWallpapersGrid() ==
+                WallpaperBoardApplication.GridStyle.FLAT) {
+            int padding = getActivity().getResources().getDimensionPixelSize(R.dimen.card_margin);
+            mRecyclerView.setPadding(padding, padding, 0, 0);
+        }
+        resetViewBottomPadding(mRecyclerView, true);
 
         mSwipe.setColorSchemeColors(ColorHelper.getAttributeColor(
                 getActivity(), R.attr.colorAccent));
@@ -247,10 +258,10 @@ public class WallpapersFragment extends Fragment implements WallpaperListener {
     }
 
     private void getWallpapers(boolean refreshing) {
-        final String wallpaperUrl = getActivity().getResources().getString(R.string.wallpaper_json);
         mGetWallpapers = new AsyncTask<Void, Void, Boolean>() {
 
             List<Wallpaper> wallpapers;
+            Database database;
 
             @Override
             protected void onPreExecute() {
@@ -264,6 +275,7 @@ public class WallpapersFragment extends Fragment implements WallpaperListener {
                 }
 
                 wallpapers = new ArrayList<>();
+                database = Database.get(getActivity());
 
                 if (mPopupBubble.getVisibility() == View.VISIBLE) {
                     AnimationHelper.hide(mPopupBubble).start();
@@ -275,32 +287,73 @@ public class WallpapersFragment extends Fragment implements WallpaperListener {
                 while (!isCancelled()) {
                     try {
                         Thread.sleep(1);
-                        Database database = Database.get(getActivity());
                         if (!refreshing && database.getWallpapersCount() > 0) {
                             wallpapers = database.getFilteredWallpapers();
                             return true;
+                        }
+
+                        String wallpaperUrl = WallpaperBoardApplication.getConfiguration().getJsonStructure().jsonOutputUrl();
+                        if (wallpaperUrl == null) {
+                            wallpaperUrl = getActivity().getResources().getString(R.string.wallpaper_json);
                         }
 
                         URL url = new URL(wallpaperUrl);
                         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                         connection.setConnectTimeout(15000);
 
+                        if (WallpaperBoardApplication.getConfiguration().getJsonStructure().jsonOutputUrl() != null) {
+                            connection.setRequestMethod("POST");
+                            connection.setUseCaches(false);
+                            connection.setDoOutput(true);
+
+                            List<NameValuePair> values = WallpaperBoardApplication.getConfiguration()
+                                    .getJsonStructure().jsonOutputPost();
+                            if (values.size() > 0) {
+                                DataOutputStream dStream = new DataOutputStream(connection.getOutputStream());
+                                dStream.writeBytes(JsonHelper.getQuery(values));
+                                dStream.flush();
+                                dStream.close();
+                            }
+                        }
+
                         if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                             InputStream stream = connection.getInputStream();
-                            WallpaperJson wallpapersJson = LoganSquare.parse(stream, WallpaperJson.class);
+                            JsonStructure.CategoryStructure categoryStructure = WallpaperBoardApplication
+                                    .getConfiguration().getJsonStructure().categoryStructure();
+                            JsonStructure.WallpaperStructure wallpaperStructure = WallpaperBoardApplication
+                                    .getConfiguration().getJsonStructure().wallpaperStructure();
 
-                            if (wallpapersJson == null) return false;
+                            Map<String, List> map = LoganSquare.parseMap(stream, List.class);
+                            if (map == null) return false;
+
+                            List categoryList = map.get(categoryStructure.getArrayName());
+                            if (categoryList == null) {
+                                LogUtil.e("Json error: category array with name "
+                                        +categoryStructure.getArrayName() +" not found");
+                                return false;
+                            }
+
+                            if (categoryList.size() == 0) {
+                                LogUtil.e("Json error: make sure to add category correctly");
+                                return false;
+                            }
+
+                            List wallpaperList = map.get(wallpaperStructure.getArrayName());
+                            if (wallpaperList == null) {
+                                LogUtil.e("Json error: wallpaper array with name "
+                                        +wallpaperStructure.getArrayName() +" not found");
+                                return false;
+                            }
+
                             if (refreshing) {
                                 if (database.getWallpapersCount() > 0) {
                                     wallpapers = database.getWallpapers();
                                     List<Wallpaper> newWallpapers = new ArrayList<>();
-                                    for (WallpaperJson wallpaper : wallpapersJson.getWallpapers) {
-                                        newWallpapers.add(new Wallpaper(
-                                                wallpaper.name,
-                                                wallpaper.author,
-                                                wallpaper.thumbUrl,
-                                                wallpaper.url,
-                                                wallpaper.category));
+                                    for (int i = 0; i < wallpaperList.size(); i++) {
+                                        Wallpaper wallpaper = JsonHelper.getWallpaper(wallpaperList.get(i));
+                                        if (wallpaper != null) {
+                                            newWallpapers.add(wallpaper);
+                                        }
                                     }
 
                                     List<Wallpaper> intersection = (List<Wallpaper>)
@@ -311,7 +364,7 @@ public class WallpapersFragment extends Fragment implements WallpaperListener {
                                             ListHelper.difference(intersection, newWallpapers);
 
                                     database.deleteCategories();
-                                    database.addCategories(wallpapersJson.getCategories);
+                                    database.addCategories(categoryList);
 
                                     database.deleteWallpapers(deleted);
                                     database.addWallpapers(newlyAdded);
@@ -326,13 +379,14 @@ public class WallpapersFragment extends Fragment implements WallpaperListener {
                             if (database.getWallpapersCount() > 0)
                                 database.deleteWallpapers();
 
-                            database.addCategories(wallpapersJson.getCategories);
-                            database.addWallpapers(wallpapersJson);
+                            database.addCategories(categoryList);
+                            database.addWallpapers(wallpaperList);
                             wallpapers = database.getFilteredWallpapers();
                             return true;
                         }
                         return false;
                     } catch (Exception e) {
+                        database.close();
                         LogUtil.e(Log.getStackTraceString(e));
                         return false;
                     }

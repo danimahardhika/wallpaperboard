@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -46,12 +45,14 @@ import com.danimahardhika.android.helpers.license.LicenseHelper;
 import com.danimahardhika.android.helpers.permission.PermissionCode;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
+import com.dm.wallpaper.board.applications.WallpaperBoardApplication;
 import com.dm.wallpaper.board.databases.Database;
 import com.dm.wallpaper.board.fragments.AboutFragment;
 import com.dm.wallpaper.board.fragments.FavoritesFragment;
 import com.dm.wallpaper.board.fragments.SettingsFragment;
 import com.dm.wallpaper.board.fragments.WallpapersFragment;
 import com.dm.wallpaper.board.fragments.dialogs.InAppBillingFragment;
+import com.dm.wallpaper.board.helpers.ConfigurationHelper;
 import com.dm.wallpaper.board.helpers.InAppBillingHelper;
 
 import com.dm.wallpaper.board.helpers.LicenseCallbackHelper;
@@ -74,8 +75,6 @@ import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
-
-import static com.dm.wallpaper.board.helpers.ViewHelper.getNavigationViewHeaderStyle;
 
 /*
  * Wallpaper Board
@@ -120,8 +119,6 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
 
     private String mLicenseKey;
     private String[] mDonationProductsId;
-
-    public static boolean sRszIoAvailable;
 
     public void initMainActivity(@Nullable Bundle savedInstanceState, boolean isLicenseCheckerEnabled,
                                  @NonNull byte[] salt, @NonNull String licenseKey,
@@ -351,8 +348,13 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
             toolbar.setNavigationOnClickListener(view -> onBackPressed());
         } else {
             SoftKeyboardHelper.closeKeyboard(this);
+            if (WallpaperBoardApplication.getConfiguration().getNavigationIcon() == WallpaperBoardApplication.NavigationIcon.DEFAULT) {
+                mDrawerToggle.setDrawerArrowDrawable(new DrawerArrowDrawable(this));
+            } else {
+                toolbar.setNavigationIcon(ConfigurationHelper.getNavigationIcon(this,
+                        WallpaperBoardApplication.getConfiguration().getNavigationIcon()));
+            }
 
-            mDrawerToggle.setDrawerArrowDrawable(new DrawerArrowDrawable(this));
             toolbar.setNavigationOnClickListener(view ->
                     mDrawerLayout.openDrawer(GravityCompat.START));
         }
@@ -386,6 +388,20 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
                 }
             }
         };
+
+        mDrawerToggle.setDrawerIndicatorEnabled(false);
+        toolbar.setNavigationIcon(ConfigurationHelper.getNavigationIcon(this,
+                WallpaperBoardApplication.getConfiguration().getNavigationIcon()));
+        toolbar.setNavigationOnClickListener(view ->
+                mDrawerLayout.openDrawer(GravityCompat.START));
+
+        if (WallpaperBoardApplication.getConfiguration().getNavigationIcon() == WallpaperBoardApplication.NavigationIcon.DEFAULT) {
+            DrawerArrowDrawable drawerArrowDrawable = new DrawerArrowDrawable(this);
+            drawerArrowDrawable.setColor(ColorHelper.getAttributeColor(this, R.attr.toolbar_icon));
+            drawerArrowDrawable.setSpinEnabled(true);
+            mDrawerToggle.setDrawerArrowDrawable(drawerArrowDrawable);
+            mDrawerToggle.setDrawerIndicatorEnabled(true);
+        }
 
         mDrawerLayout.setDrawerShadow(R.drawable.navigation_view_shadow, GravityCompat.START);
         mDrawerLayout.addDrawerListener(mDrawerToggle);
@@ -440,16 +456,23 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
     }
 
     private void initNavigationViewHeader() {
+        if (WallpaperBoardApplication.getConfiguration().getNavigationViewHeader() == WallpaperBoardApplication.NavigationViewHeader.NONE) {
+            mNavigationView.removeHeaderView(mNavigationView.getHeaderView(0));
+            return;
+        }
+
         String imageUrl = getResources().getString(R.string.navigation_view_header);
         String titleText = getResources().getString(R.string.navigation_view_header_title);
         View header = mNavigationView.getHeaderView(0);
+
         HeaderView image = ButterKnife.findById(header, R.id.header_image);
         LinearLayout container = ButterKnife.findById(header, R.id.header_title_container);
         TextView title = ButterKnife.findById(header, R.id.header_title);
         TextView version = ButterKnife.findById(header, R.id.header_version);
 
-        Point point = getNavigationViewHeaderStyle(getResources().getString(R.string.navigation_view_header_style));
-        image.setRatio(point.x, point.y);
+        if (WallpaperBoardApplication.getConfiguration().getNavigationViewHeader() == WallpaperBoardApplication.NavigationViewHeader.MINI) {
+            image.setRatio(16, 9);
+        }
 
         if (titleText.length() == 0) {
             container.setVisibility(View.GONE);

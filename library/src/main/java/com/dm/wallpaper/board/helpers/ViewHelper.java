@@ -2,7 +2,6 @@ package com.dm.wallpaper.board.helpers;
 
 import android.content.Context;
 import android.content.res.Configuration;
-import android.graphics.Point;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
@@ -101,14 +100,5 @@ public class ViewHelper {
             params.setMarginEnd((right + rightNavBar));
         }
         view.setLayoutParams(params);
-    }
-
-    public static Point getNavigationViewHeaderStyle(String style) {
-        switch (style) {
-            case "mini":
-                return new Point(16, 9);
-            default:
-                return new Point(4, 3);
-        }
     }
 }

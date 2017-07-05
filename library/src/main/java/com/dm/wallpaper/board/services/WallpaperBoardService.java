@@ -7,14 +7,23 @@ import android.webkit.URLUtil;
 
 import com.bluelinelabs.logansquare.LoganSquare;
 import com.dm.wallpaper.board.R;
-import com.dm.wallpaper.board.items.WallpaperJson;
+import com.dm.wallpaper.board.applications.WallpaperBoardApplication;
+import com.dm.wallpaper.board.helpers.JsonHelper;
+import com.dm.wallpaper.board.items.Wallpaper;
 import com.dm.wallpaper.board.receivers.WallpaperBoardReceiver;
 import com.dm.wallpaper.board.utils.Extras;
+import com.dm.wallpaper.board.utils.JsonStructure;
 import com.dm.wallpaper.board.utils.LogUtil;
 
+import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import cz.msebera.android.httpclient.NameValuePair;
 
 /*
  * Wallpaper Board
@@ -45,23 +54,63 @@ public class WallpaperBoardService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         try {
-            String wallpaperUrl = getResources().getString(R.string.wallpaper_json);
+            String wallpaperUrl = WallpaperBoardApplication.getConfiguration().getJsonStructure().jsonOutputUrl();
+            if (wallpaperUrl == null) {
+                wallpaperUrl = getResources().getString(R.string.wallpaper_json);
+            }
             if (!URLUtil.isValidUrl(wallpaperUrl)) return;
 
             URL url = new URL(wallpaperUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setConnectTimeout(15000);
 
-            Intent broadcastIntent = new Intent();
-            broadcastIntent.setAction(WallpaperBoardReceiver.PROCESS_RESPONSE);
-            broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
+            if (WallpaperBoardApplication.getConfiguration().getJsonStructure().jsonOutputUrl() != null) {
+                connection.setRequestMethod("POST");
+                connection.setUseCaches(false);
+                connection.setDoOutput(true);
+
+                List<NameValuePair> values = WallpaperBoardApplication.getConfiguration()
+                        .getJsonStructure().jsonOutputPost();
+                if (values.size() > 0) {
+                    DataOutputStream dStream = new DataOutputStream(connection.getOutputStream());
+                    dStream.writeBytes(JsonHelper.getQuery(values));
+                    dStream.flush();
+                    dStream.close();
+                }
+            }
 
             if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 InputStream stream = connection.getInputStream();
-                WallpaperJson wallpapersJson = LoganSquare.parse(stream, WallpaperJson.class);
-                if (wallpapersJson == null) return;
+                Map<String, List> map = LoganSquare.parseMap(stream, List.class);
+                if (map == null) return;
 
-                int size = wallpapersJson.getWallpapers.size();
+                JsonStructure.WallpaperStructure wallpaperStructure = WallpaperBoardApplication
+                        .getConfiguration().getJsonStructure().wallpaperStructure();
+                List wallpaperList = map.get(wallpaperStructure.getArrayName());
+                if (wallpaperList == null) {
+                    LogUtil.e("Service: Json error: wallpaper array with name "
+                            +wallpaperStructure.getArrayName() +" not found");
+                    return;
+                }
+
+                List<Wallpaper> wallpapers = new ArrayList<>();
+                for (int i = 0; i < wallpaperList.size(); i++) {
+                    Wallpaper wallpaper = JsonHelper.getWallpaper(wallpaperList.get(i));
+                    if (wallpaper != null) {
+                        if (!wallpapers.contains(wallpaper)) {
+                            wallpapers.add(wallpaper);
+                        } else {
+                            LogUtil.e("Duplicate wallpaper found: " +wallpaper.getUrl());
+                        }
+                    }
+                }
+
+                int size = wallpapers.size();
+
+                Intent broadcastIntent = new Intent();
+                broadcastIntent.setAction(WallpaperBoardReceiver.PROCESS_RESPONSE);
+                broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
+
                 broadcastIntent.putExtra(Extras.EXTRA_PACKAGE_NAME, getPackageName());
                 broadcastIntent.putExtra(Extras.EXTRA_SIZE, size);
                 sendBroadcast(broadcastIntent);

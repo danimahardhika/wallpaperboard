@@ -7,6 +7,7 @@ import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 
 import com.dm.wallpaper.board.R;
+import com.dm.wallpaper.board.applications.WallpaperBoardApplication;
 import com.dm.wallpaper.board.items.Language;
 
 import java.util.List;
@@ -51,6 +52,7 @@ public class PreferencesHelper {
     private static final String KEY_COLORED_WALLPAPERS_CARD = "colored_wallpapers_card";
     private static final String KEY_LANGUAGE_PREFERENCE = "language_preference2";
     private static final String KEY_CURRENT_LOCALE = "current_locale";
+    private static final String KEY_AUTO_INCREMENT = "auto_increment";
 
     public PreferencesHelper(@NonNull Context context) {
         mContext = context;
@@ -77,8 +79,10 @@ public class PreferencesHelper {
     }
 
     public boolean isDarkTheme() {
-        return getSharedPreferences().getBoolean(KEY_DARK_THEME,
-                mContext.getResources().getBoolean(R.bool.use_dark_theme));
+        boolean useDarkTheme = mContext.getResources().getBoolean(R.bool.use_dark_theme);
+        boolean isThemingEnabled = WallpaperBoardApplication.getConfiguration().isDashboardThemingEnabled();
+        if (!isThemingEnabled) return useDarkTheme;
+        return getSharedPreferences().getBoolean(KEY_DARK_THEME, useDarkTheme);
     }
 
     public void setDarkTheme(boolean bool) {
@@ -94,7 +98,7 @@ public class PreferencesHelper {
     }
 
     public boolean isShadowEnabled() {
-        return mContext.getResources().getBoolean(R.bool.enable_shadow);
+        return WallpaperBoardApplication.getConfiguration().isShadowEnabled();
     }
 
     public boolean isTimeToShowWallpapersIntro() {
@@ -214,6 +218,14 @@ public class PreferencesHelper {
             LocaleHelper.setLocale(mContext);
             setTimeToSetLanguagePreference(false);
         }
+    }
+
+    public void setAutoIncrement(int value) {
+        getSharedPreferences().edit().putInt(KEY_AUTO_INCREMENT, value).apply();
+    }
+
+    public int getAutoIncrement() {
+        return getSharedPreferences().getInt(KEY_AUTO_INCREMENT, 0);
     }
 
     public boolean isConnectedToNetwork() {

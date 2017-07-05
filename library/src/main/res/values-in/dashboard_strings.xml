@@ -113,7 +113,7 @@
 Anda tidak dapat menggunakan aplikasi ini.</string>
     <string name="license_check_retry">Tidak dapat memeriksa lisensi, cobalah beberapa saat lagi.</string>
     <!-- Search -->
-    <string name="search_result_empty">Tidak ditemukan hasil untuk pencarian \"%s\"</string>
+    <string name="search_result_empty">Tidak menemukan hasil untuk pencarian \"%s\"</string>
     <!-- Crash Report -->
     <string name="crash_report">Laporan Masalah</string>
     <string name="crash_report_message">Sayangnya %s telah berhenti. Pilih kirim laporan di bawah ini untuk membantu pengembang memperbaiki masalahnya.</string>

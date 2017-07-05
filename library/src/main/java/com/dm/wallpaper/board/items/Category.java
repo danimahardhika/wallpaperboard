@@ -20,17 +20,19 @@ package com.dm.wallpaper.board.items;
 
 public class Category {
 
-    private final int mId;
-    private final String mName;
-    private final String mThumbUrl;
+    private int mId;
+    private String mName;
     private boolean mIsSelected;
     private boolean mIsMuzeiSelected;
     private int mCount;
 
-    public Category(int id, String name, String thumbUrl, boolean isSelected, boolean isMuzeiSelected, int count) {
+    public Category(String name) {
+        mName = name;
+    }
+
+    public Category(int id, String name, boolean isSelected, boolean isMuzeiSelected, int count) {
         mId = id;
         mName = name;
-        mThumbUrl = thumbUrl;
         mIsSelected = isSelected;
         mIsMuzeiSelected = isMuzeiSelected;
         mCount = count;
@@ -42,10 +44,6 @@ public class Category {
 
     public String getName() {
         return mName;
-    }
-
-    public String getThumbUrl() {
-        return mThumbUrl;
     }
 
     public boolean isSelected() {
@@ -70,5 +68,20 @@ public class Category {
 
     public void setCount(int count) {
         mCount = count;
+    }
+
+    public String getCategoryCount() {
+        if (mCount > 100 && mCount < 1000) {
+            return "99+";
+        } else if (mCount > 1000 && mCount < 10000) {
+            String string = String.valueOf(mCount);
+            int lastIndex = string.length() - 3;
+            if (lastIndex >= 0 && lastIndex < string.length()) {
+                return string.substring(0, lastIndex) + "K+";
+            }
+        } else if (mCount > 10000) {
+            return "9K+";
+        }
+        return String.valueOf(mCount);
     }
 }

@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
 import com.danimahardhika.android.helpers.core.FileHelper;
-import com.dm.wallpaper.board.R;
+import com.dm.wallpaper.board.applications.WallpaperBoardApplication;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -81,9 +81,8 @@ public class ImageConfig {
         return options;
     }
 
-    public static ImageSize getThumbnailSize(@NonNull Context context) {
-        int quality = context.getResources().getInteger(R.integer.wallpaper_grid_preview_quality);
-        if (quality <= 0) quality = 1;
+    public static ImageSize getThumbnailSize() {
+        int quality = WallpaperBoardApplication.getConfiguration().getWallpaperGridPreviewQuality();
         return new ImageSize((50 * quality), (50 * quality));
     }
 }

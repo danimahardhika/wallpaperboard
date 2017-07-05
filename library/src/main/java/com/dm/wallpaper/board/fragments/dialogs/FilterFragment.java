@@ -11,9 +11,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.danimahardhika.android.helpers.animation.AnimationHelper;
+import com.danimahardhika.android.helpers.core.ColorHelper;
+import com.danimahardhika.android.helpers.core.DrawableHelper;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.adapters.FilterAdapter;
@@ -47,12 +53,18 @@ import butterknife.ButterKnife;
  * limitations under the License.
  */
 
-public class FilterFragment extends DialogFragment {
+public class FilterFragment extends DialogFragment implements View.OnClickListener {
 
+    @BindView(R2.id.title)
+    TextView mTitle;
+    @BindView(R2.id.menu_select)
+    ImageView mMenuSelect;
     @BindView(R2.id.listview)
     ListView mListView;
 
+    private FilterAdapter mAdapter;
     private AsyncTask<Void, Void, Boolean> mGetCategories;
+    private AsyncTask<Void, Void, Boolean> mSelectAll;
     private boolean mIsMuzei;
 
     private static final String MUZEI = "muzei";
@@ -84,12 +96,13 @@ public class FilterFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
         builder.typeface(TypefaceHelper.getMedium(getActivity()), TypefaceHelper.getRegular(getActivity()));
-        builder.title(mIsMuzei ? R.string.muzei_category : R.string.wallpaper_filter);
         builder.customView(R.layout.fragment_filter, false);
         MaterialDialog dialog = builder.build();
         dialog.show();
 
         ButterKnife.bind(this, dialog);
+        mTitle.setText(mIsMuzei ? R.string.muzei_category : R.string.wallpaper_filter);
+        mMenuSelect.setOnClickListener(this);
         return dialog;
     }
 
@@ -118,7 +131,61 @@ public class FilterFragment extends DialogFragment {
         }
 
         if (mGetCategories != null) mGetCategories.cancel(true);
+        if (mSelectAll != null) mSelectAll.cancel(true);
         super.onDismiss(dialog);
+    }
+
+    @Override
+    public void onClick(View view) {
+        int id = view.getId();
+        if (id == R.id.menu_select) {
+            if (mSelectAll != null) return;
+
+            mSelectAll = new AsyncTask<Void, Void, Boolean>() {
+
+                boolean isAllSelected;
+
+                @Override
+                protected Boolean doInBackground(Void... voids) {
+                    while (!isCancelled()) {
+                        try {
+                            Thread.sleep(1);
+                            isAllSelected = mAdapter.selectAll();
+                            return true;
+                        } catch (Exception e) {
+                            LogUtil.e(Log.getStackTraceString(e));
+                            return false;
+                        }
+                    }
+                    return false;
+                }
+
+                @Override
+                protected void onPostExecute(Boolean aBoolean) {
+                    super.onPostExecute(aBoolean);
+                    mSelectAll = null;
+                    if (aBoolean) {
+                        int color = ColorHelper.getAttributeColor(getActivity(), android.R.attr.textColorPrimary);
+                        mMenuSelect.setImageDrawable(DrawableHelper.getTintedDrawable(
+                                getActivity(),
+                                isAllSelected ? R.drawable.ic_toolbar_select_all_selected : R.drawable.ic_toolbar_select_all,
+                                color));
+                        mAdapter.notifyDataSetChanged();
+                    }
+                }
+            }.execute();
+        }
+    }
+
+    private void initMenuSelect() {
+        int color = ColorHelper.getAttributeColor(getActivity(), android.R.attr.textColorPrimary);
+        boolean isAllSelected = mAdapter.getCount() == mAdapter.getSelectedCount();
+
+        mMenuSelect.setImageDrawable(DrawableHelper.getTintedDrawable(
+                getActivity(),
+                isAllSelected ? R.drawable.ic_toolbar_select_all_selected : R.drawable.ic_toolbar_select_all,
+                color));
+        AnimationHelper.show(mMenuSelect).start();
     }
 
     private void getCategories() {
@@ -150,7 +217,10 @@ public class FilterFragment extends DialogFragment {
             protected void onPostExecute(Boolean aBoolean) {
                 super.onPostExecute(aBoolean);
                 if (aBoolean) {
-                    mListView.setAdapter(new FilterAdapter(getActivity(), categories, mIsMuzei));
+                    mAdapter = new FilterAdapter(getActivity(), categories, mIsMuzei);
+                    mListView.setAdapter(mAdapter);
+
+                    initMenuSelect();
                 } else {
                     dismiss();
                 }

@@ -9,11 +9,14 @@ import android.database.sqlite.SQLiteStatement;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.SparseArrayCompat;
+import android.util.Log;
 
 import com.danimahardhika.android.helpers.core.TimeHelper;
+import com.dm.wallpaper.board.helpers.JsonHelper;
 import com.dm.wallpaper.board.items.Category;
 import com.dm.wallpaper.board.items.Wallpaper;
-import com.dm.wallpaper.board.items.WallpaperJson;
+import com.dm.wallpaper.board.preferences.Preferences;
+import com.dm.wallpaper.board.utils.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +43,7 @@ import java.util.Locale;
 public class Database extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "wallpaper_board_database";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     private static final String TABLE_WALLPAPERS = "wallpapers";
     private static final String TABLE_CATEGORIES = "categories";
@@ -56,6 +59,8 @@ public class Database extends SQLiteOpenHelper {
     private static final String KEY_MUZEI_SELECTED = "muzeiSelected";
     private static final String KEY_ADDED_ON = "addedOn";
 
+    private final Context mContext;
+
     @NonNull
     public static Database get(@NonNull Context context) {
         return new Database(context);
@@ -63,6 +68,7 @@ public class Database extends SQLiteOpenHelper {
 
     private Database(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        mContext = context;
     }
 
     @Override
@@ -70,20 +76,19 @@ public class Database extends SQLiteOpenHelper {
         String CREATE_TABLE_CATEGORY = "CREATE TABLE " +TABLE_CATEGORIES+ "(" +
                 KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
                 KEY_NAME + " TEXT NOT NULL," +
-                KEY_THUMB_URL + " TEXT, " +
                 KEY_SELECTED + " INTEGER DEFAULT 1," +
                 KEY_MUZEI_SELECTED + " INTEGER DEFAULT 1, " +
-                "UNIQUE (" +KEY_NAME+ ") ON CONFLICT REPLACE)";
+                "UNIQUE (" +KEY_NAME+ "))";
         String CREATE_TABLE_WALLPAPER = "CREATE TABLE IF NOT EXISTS " +TABLE_WALLPAPERS+ "(" +
                 KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
                 KEY_NAME+ " TEXT NOT NULL, " +
-                KEY_AUTHOR + " TEXT NOT NULL, " +
-                KEY_THUMB_URL + " TEXT NOT NULL, " +
+                KEY_AUTHOR + " TEXT, " +
                 KEY_URL + " TEXT NOT NULL, " +
+                KEY_THUMB_URL + " TEXT NOT NULL, " +
                 KEY_CATEGORY + " TEXT NOT NULL," +
                 KEY_FAVORITE + " INTEGER DEFAULT 0," +
                 KEY_ADDED_ON + " TEXT NOT NULL, " +
-                "UNIQUE (" +KEY_URL+ ") ON CONFLICT REPLACE)";
+                "UNIQUE (" +KEY_URL+ "))";
         db.execSQL(CREATE_TABLE_CATEGORY);
         db.execSQL(CREATE_TABLE_WALLPAPER);
     }
@@ -99,6 +104,7 @@ public class Database extends SQLiteOpenHelper {
     }
 
     private void resetDatabase(SQLiteDatabase db) {
+        Preferences.get(mContext).setAutoIncrement(0);
         Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE type=\'table\'", null);
         SparseArrayCompat<String> tables = new SparseArrayCompat<>();
         if (cursor.moveToFirst()) {
@@ -118,64 +124,79 @@ public class Database extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addCategories(List<WallpaperJson> categories) {
-        String query = "INSERT INTO " +TABLE_CATEGORIES+ " (" +KEY_NAME+ ","
-                +KEY_THUMB_URL+ ") VALUES (?,?);";
+    public void close() {
+        if (this.getWritableDatabase().isOpen()) {
+            try {
+                this.getWritableDatabase().close();
+                LogUtil.e("database forced to close");
+            } catch (Exception e) {
+                LogUtil.e(Log.getStackTraceString(e));
+            }
+        }
+    }
+
+    public void addCategories(List<?> list) {
+        String query = "INSERT OR IGNORE INTO " +TABLE_CATEGORIES+ " (" +KEY_NAME+ ") VALUES (?);";
         SQLiteDatabase db = this.getWritableDatabase();
         SQLiteStatement statement = db.compileStatement(query);
         db.beginTransaction();
 
-        for (int i = 0; i < categories.size(); i++) {
+        for (int i = 0; i < list.size(); i++) {
             statement.clearBindings();
-            statement.bindString(1, categories.get(i).name);
-            statement.bindString(2, categories.get(i).thumbUrl == null ?
-                    "" : categories.get(i).thumbUrl);
-            statement.execute();
+
+            Category category;
+            if (list.get(i) instanceof Category) {
+                category = (Category) list.get(i);
+            } else {
+                category = JsonHelper.getCategory(list.get(i));
+            }
+
+            if (category != null) {
+                statement.bindString(1, category.getName());
+                statement.execute();
+            }
         }
         db.setTransactionSuccessful();
         db.endTransaction();
         db.close();
     }
 
-    public void addWallpapers(@NonNull WallpaperJson wallpaper) {
-        String query = "INSERT INTO " +TABLE_WALLPAPERS+ " (" +KEY_NAME+ "," +KEY_AUTHOR+ "," +KEY_URL+ ","
+    public void addWallpapers(@NonNull List<?> list) {
+        String query = "INSERT OR IGNORE INTO " +TABLE_WALLPAPERS+ " (" +KEY_NAME+ "," +KEY_AUTHOR+ "," +KEY_URL+ ","
                 +KEY_THUMB_URL+ "," +KEY_CATEGORY+ "," +KEY_ADDED_ON+ ") VALUES (?,?,?,?,?,?);";
         SQLiteDatabase db = this.getWritableDatabase();
         SQLiteStatement statement = db.compileStatement(query);
         db.beginTransaction();
 
-        for (int i = 0; i < wallpaper.getWallpapers.size(); i++) {
+        for (int i = 0; i < list.size(); i++) {
             statement.clearBindings();
-            statement.bindString(1, wallpaper.getWallpapers.get(i).name);
-            statement.bindString(2, wallpaper.getWallpapers.get(i).author);
-            statement.bindString(3, wallpaper.getWallpapers.get(i).url);
-            statement.bindString(4, wallpaper.getWallpapers.get(i).thumbUrl == null ?
-                    wallpaper.getWallpapers.get(i).url : wallpaper.getWallpapers.get(i).thumbUrl);
-            statement.bindString(5, wallpaper.getWallpapers.get(i).category);
-            statement.bindString(6, TimeHelper.getLongDateTime());
-            statement.execute();
-        }
-        db.setTransactionSuccessful();
-        db.endTransaction();
-        db.close();
-    }
 
-    public void addWallpapers(@NonNull List<Wallpaper> wallpapers) {
-        String query = "INSERT INTO " +TABLE_WALLPAPERS+ " (" +KEY_NAME+ "," +KEY_AUTHOR+ "," +KEY_URL+ ","
-                +KEY_THUMB_URL+ "," +KEY_CATEGORY+ "," +KEY_ADDED_ON+ ") VALUES (?,?,?,?,?,?);";
-        SQLiteDatabase db = this.getWritableDatabase();
-        SQLiteStatement statement = db.compileStatement(query);
-        db.beginTransaction();
+            Wallpaper wallpaper;
+            if (list.get(i) instanceof Wallpaper) {
+                wallpaper = (Wallpaper) list.get(i);
+            } else {
+                wallpaper = JsonHelper.getWallpaper(list.get(i));
+            }
 
-        for (int i = 0; i < wallpapers.size(); i++) {
-            statement.clearBindings();
-            statement.bindString(1, wallpapers.get(i).getName());
-            statement.bindString(2, wallpapers.get(i).getAuthor());
-            statement.bindString(3, wallpapers.get(i).getUrl());
-            statement.bindString(4, wallpapers.get(i).getThumbUrl());
-            statement.bindString(5, wallpapers.get(i).getCategory());
-            statement.bindString(6, TimeHelper.getLongDateTime());
-            statement.execute();
+            if (wallpaper != null) {
+                if (wallpaper.getUrl() != null) {
+                    String name = JsonHelper.getGeneratedName(mContext, wallpaper.getName());
+
+                    statement.bindString(1, name);
+
+                    if (wallpaper.getAuthor() != null) {
+                        statement.bindString(2, wallpaper.getAuthor());
+                    } else {
+                        statement.bindNull(2);
+                    }
+
+                    statement.bindString(3, wallpaper.getUrl());
+                    statement.bindString(4, wallpaper.getThumbUrl());
+                    statement.bindString(5, wallpaper.getCategory());
+                    statement.bindString(6, TimeHelper.getLongDateTime());
+                    statement.execute();
+                }
+            }
         }
         db.setTransactionSuccessful();
         db.endTransaction();
@@ -231,9 +252,8 @@ public class Database extends SQLiteOpenHelper {
                 Category category = new Category(
                         cursor.getInt(0),
                         cursor.getString(1),
-                        cursor.getString(2),
+                        cursor.getInt(2) == 1,
                         cursor.getInt(3) == 1,
-                        cursor.getInt(4) == 1,
                         0);
                 categories.add(category);
             } while (cursor.moveToNext());

@@ -5,14 +5,18 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.bluelinelabs.logansquare.LoganSquare;
+import com.dm.wallpaper.board.applications.WallpaperBoardApplication;
 import com.dm.wallpaper.board.databases.Database;
 import com.dm.wallpaper.board.items.Wallpaper;
-import com.dm.wallpaper.board.items.WallpaperJson;
+import com.dm.wallpaper.board.utils.JsonStructure;
+import com.dm.wallpaper.board.utils.LogUtil;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /*
@@ -50,16 +54,21 @@ public class MuzeiHelper {
 
             if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 InputStream stream = new BufferedInputStream(connection.getInputStream());
-                WallpaperJson wallpapers = LoganSquare.parse(stream, WallpaperJson.class);
-                int size = wallpapers.getWallpapers.size();
-                if (size > 0) {
-                    int position = getRandomInt(size);
-                    return new Wallpaper(
-                            wallpapers.getWallpapers.get(position).name,
-                            wallpapers.getWallpapers.get(position).author,
-                            wallpapers.getWallpapers.get(position).thumbUrl,
-                            wallpapers.getWallpapers.get(position).url,
-                            wallpapers.getWallpapers.get(position).category);
+                Map<String, List> map = LoganSquare.parseMap(stream, List.class);
+                if (map == null) return null;
+
+                JsonStructure.WallpaperStructure wallpaperStructure = WallpaperBoardApplication
+                        .getConfiguration().getJsonStructure().wallpaperStructure();
+                List wallpaperList = map.get(wallpaperStructure.getArrayName());
+                if (wallpaperList == null) {
+                    LogUtil.e("Muzei: Json error: wallpaper array with name "
+                            +wallpaperStructure.getArrayName() +" not found");
+                    return null;
+                }
+
+                if (wallpaperList.size() > 0) {
+                    int position = getRandomInt(wallpaperList.size());
+                    return JsonHelper.getWallpaper(wallpaperList.get(position));
                 }
             }
             return null;

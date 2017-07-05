@@ -45,7 +45,6 @@
         android:layout_marginLeft="@dimen/content_padding"
         android:layout_marginStart="@dimen/content_padding"
         android:gravity="center"
-        android:textSize="@dimen/text_content"
+        android:textSize="12sp"
         fontPath="fonts/Font-Medium.ttf"/>
-
 </LinearLayout>
