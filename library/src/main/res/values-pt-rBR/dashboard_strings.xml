@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Navigation View -->
+    <string name="navigation_view_wallpapers">Papeis de parede</string>
+    <string name="navigation_view_favorites">Favoritos</string>
+    <string name="navigation_view_settings">Configurações</string>
+    <string name="navigation_view_about">Sobre</string>
+    <string name="navigation_view_donate">Suporte ao desenvolvimento</string>
+
+    <string name="navigation_view_share">Compartilhar</string>
+    <string name="navigation_view_rate">Envie seu papel de parede</string>
+
+    <!-- Share app -->
+    <string name="share_app_subject">Yo! Confira %s</string>
+    <string name="share_app_body">Confira %1$s,  este aplicativo de papel de parede é realmente legal! %2$s</string>
+
+    <!-- Menu -->
+    <string name="menu_search">Pesquisar</string>
+    <string name="menu_filter">Filtro</string>
+    <string name="menu_save">Salvar no dispositivo</string>
+    <string name="menu_wallpaper_settings">Configurações do papel de parede</string>
+
+    <!-- Dialog -->
+    <string name="open">Abrir</string>
+    <string name="close">Fechar</string>
+    <string name="clear">Limpar</string>
+    <string name="donate">Doar</string>
+
+    <!-- Tap Intro -->
+    <string name="tap_intro_wallpapers_navigation">Gaveta de navegação</string>
+    <string name="tap_intro_wallpapers_navigation_desc">Toque aqui ou deslize da borda esquerda da tela para abrir a gaveta de navegação</string>
+    <string name="tap_intro_wallpapers_search">Pesquisar</string>
+    <string name="tap_intro_wallpapers_search_desc">Toque aqui para pesquisar um papel de parede</string>
+    <string name="tap_intro_wallpapers_filter">Filtrar o papel de parede</string>
+    <string name="tap_intro_wallpapers_filter_desc">Clique aqui para filtrar o papel de parede por categorias</string>
+    <string name="tap_intro_wallpapers_option">Opçôes do papel de parede</string>
+    <string name="tap_intro_wallpapers_option_desc">Toque e segure aqui para mostrar as opções do papel de parede, %s aplicar o papel de parede.</string>
+    <string name="tap_intro_wallpapers_option_desc_download">Baixar ou</string>
+    <string name="tap_intro_wallpapers_preview">Visualizar o papel de parede</string>
+    <string name="tap_intro_wallpapers_preview_desc">Toque aqui para visualizar o tamanho completo do papel de parede</string>
+    <string name="tap_intro_wallpapers_favorite">Papel de parede favorito</string>
+    <string name="tap_intro_wallpapers_favorite_desc">Toque aqui para marcar o papel de parede como favorito</string>
+    <string name="tap_intro_wallpaper_preview_settings">Configurações do papel de parede</string>
+    <string name="tap_intro_wallpaper_preview_settings_desc">Toque aqui para abrir as configurações do papel de parede. Ative o papel de parede configurado como fundo da tela de bloqueio no Android Nougat ou ative o recorte do papel de parede.</string>
+    <string name="tap_intro_wallpaper_preview_save">Salvar o papel de parede</string>
+    <string name="tap_intro_wallpaper_preview_save_desc">Toque aqui para baixar e salvar o papel de parede em seu dispositivo para que você possa usá-lo mais tarde</string>
+    <string name="tap_intro_wallpaper_preview_apply">Aplicar o papel de parede</string>
+    <string name="tap_intro_wallpaper_preview_apply_desc">Toque aqui para configurar o papel de parede como tela inicial</string>
+
+    <!-- Wallpapers -->
+    <string name="wallpaper_new_added">Novo papel de parede</string>
+    <string name="wallpaper_filter">Filtrar por categorias</string>
+    <string name="wallpaper_downloading">Baixando o papel de parede …</string>
+    <string name="wallpaper_download_exist">O papel de parede com o nome %s  já existe, você deseja substituí-lo?</string>
+    <string name="wallpaper_download_exist_replace">Substituir</string>
+    <string name="wallpaper_download_exist_new">Crie um novo</string>
+    <string name="wallpaper_download_failed">Não é possível baixar o papel de parede</string>
+    <string name="wallpaper_download_cancelled">Download do papel de parede cancelado</string>
+    <string name="wallpaper_downloaded">Papel de parede baixado para</string>
+    <string name="wallpaper_loading">Carregando o papel de parede …</string>
+    <string name="wallpaper_applying">Aplicando o papel de parede …</string>
+    <string name="wallpaper_applied">Papel de parede aplicado</string>
+    <string name="wallpaper_apply_failed">Não é possível aplicar o papel de parede</string>
+    <string name="wallpaper_apply_cancelled">papel de parede cancelado</string>
+    <string name="connection_failed">Não é possível buscar dados do servidor</string>
+    <string name="wallpaper_apply">Definir como Papel de Parede</string>
+    <string name="wallpaper_apply_crop">A opção de cortar papel de parede será desativado se você aplicar a partir dessa opção</string>
+
+    <string name="wallpaper_settings_crop">Cortar papel de parede</string>
+    <string name="wallpaper_settings_crop_desc">Habilite a opção de cortar papel de parede. O papel de parede será cortado com base na visualização atual da pré-visualização do papel de parede.
+     Aperte ou toque duas vezes para ampliar o papel de parede.</string>
+    <string name="wallpaper_settings_lockscreen">Fundo da tela de bloqueio</string>
+    <string name="wallpaper_settings_lockscreen_desc">Aplicar irá definir o papel de parede como tela inicial e tela de bloqueio</string>
+    <string name="wallpaper_settings_lockscreen_not_available">Fundo da tela de bloqueio é disponível apenas em Android Nougat</string>
+
+    <string name="wallpaper_favorite_added">%s Adicionado aos favoritos</string>
+    <string name="wallpaper_favorite_removed">%s Removido dos favoritos</string>
+
+    <!-- Muzei -->
+    <string name="minute">Minuto</string>
+    <string name="hour">Hora</string>
+
+    <string name="muzei_settings">Configurações do Muzei</string>
+    <string name="muzei_settings_save">Salvar</string>
+    <string name="muzei_settings_saved">Configurações salvas</string>
+
+    <string name="muzei_refresh_duration">Duração de atualização</string>
+    <string name="muzei_refresh_duration_desc">Cada</string>
+
+    <string name="muzei_wifi_only">Atualizar apenas por Wifi</string>
+    <string name="muzei_wifi_only_desc">Carregar papel de parede apenas se o dispositivo estiver conectado ao wifi</string>
+
+    <string name="muzei_category">Selecionar categorias</string>
+    <string name="muzei_category_desc">Carregar o papel de parede apenas das categorias selecionadas</string>
+
+    <!-- About -->
+    <string name="about_contributors_title">Colaboradores</string>
+    <string name="about_open_source_licenses">Licenças de código aberto</string>
+
+    <!-- InAppBilling -->
+    <string name="billing_load_product_failed">Não é possível carregar produtos de compra de aplicativo</string>
+
+    <!-- Preferences -->
+    <string name="pref_data_header">Data &amp; Cache</string>
+    <string name="pref_data_cache">Limpar o cache</string>
+    <string name="pref_data_cache_desc">Remova o cache de imagem criado em sua memoria
+    Depois de carregar as miniaturas de papel de parede da nuvem</string>
+    <string name="pref_data_cache_size">Tamanho do cache: %s</string>
+    <string name="pref_data_cache_cleared">Cache apagado</string>
+    <string name="pref_data_cache_clear_dialog">Você realmente deseja limpar o cache?</string>
+
+    <string name="pref_wallpaper_header">Papel de parede</string>
+    <string name="pref_wallpaper_location">Local de salvamento do papel de parede</string>
+    <string name="pref_wallpaper_location_desc">Tente baixar pelo menos um papel de parede primeiro</string>
+
+    <string name="pref_language_header">Linguagem</string>
+
+    <string name="pref_others_header">Outros</string>
+    <string name="pref_others_colored_wallpaper_card">Cartão de papel de parede colorido</string>
+    <string name="pref_others_reset_tutorial">Resetar Tutorial</string>
+    <string name="pref_others_reset_tutorial_reset">Tutorial Resetado</string>
+
+    <!-- Permission -->
+    <string name="permission_storage_denied">Permissão de armazenamento é necessária para salvar o papel de parede</string>
+
+    <!-- Support Development -->
+    <string name="donation_success">Obrigado por fazer uma doação. Vou usá-lo para o bem.</string>
+
+    <!-- License -->
+    <string name="license_checking">Verificando licença …</string>
+    <string name="license_check">Verificar licença </string>
+    <string name="license_check_success">Licença de verificação de sucesso, obrigado por baixar o aplicativo da Play Store.</string>
+    <string name="license_check_failed">A verificação da licença falhou, você não baixou este app da  Play Store.
+        Você não poderá usar o app.</string>
+    <string name="license_check_retry">Não é possível verificar a licença, por favor tente novamente em alguns momentos
+ </string>
+
+    <!-- Search -->
+    <string name="search_result_empty">Nenhum resultado para \"%s\"</string>
+
+    <!-- Crash Report -->
+    <string name="crash_report">Relatório de Crash</string>
+    <string name="crash_report_message">Infelizmente %s foi parado. Escolha Enviar relatório abaixo para ajudar o desenvolvedor a corrigir o problema.</string>
+    <string name="crash_report_send">Enviar relatório</string>
+    <string name="email_client">Escolha o cliente de e-mail</string>
+
+    <!-- Please don't modify this -->
+    <string name="about_dashboard">Wallpaper Board</string>
+    <string name="about_dashboard_dev">O Wallpaper Board é um aplicativo de papel de parede de código aberto licenciado sob Apache License 2.0 para Android disponível no GitHub e gratuito para uso, desenvolvido por Dani Mahardika.</string>
+    <string name="about_dashboard_contributors">Wallpaper Board Colaboradores</string>
+    <string name="about_dashboard_translator">Wallpaper Board Tradutores</string>
+    <string name="about_dashboard_dev_google_plus_url">https://plus.google.com/u/1/+DaniMahardhika</string>
+    <string name="about_dashboard_dev_github_url">https://github.com/danimahardhika</string>
+    <string name="about_dashboard_dev_instagram_url">https://www.instagram.com/_u/danimahardhika112/</string>
+
+    <!-- Splash screen -->
+    <string name="splash_screen_title">Wallpaper Board</string>
+
+    <!-- DrawerToggle -->
+    <string name="txt_open">Aberto</string>
+    <string name="txt_close">Fechado</string>
+
+</resources>
