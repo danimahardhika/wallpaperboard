@@ -61,8 +61,8 @@ Aktiviere die Möglichkeit, dass das Bild als Sperrbildschirmhintergrund in Andr
     <string name="wallpaper_apply">Als Hintergrundbild festlegen</string>
     <string name="wallpaper_apply_crop">Das Zuschneiden des Hintergrundbilds wird deaktiviert, wenn du es über diese Option anwendest</string>
     <string name="wallpaper_settings_crop">Hintergrundbild zuschneiden</string>
-    <string name="wallpaper_settings_crop_desc">Hintergrundbild zuschneiden aktivieren. Das Hintergrundbild wird auf Basis der derzeitigen Hintergrund-Vorschau zugeschnitten.
-Pinche oder mach einen Doppelklick, um zu zoomen.</string>
+    <string name="wallpaper_settings_crop_desc">Hintergrundbild zuschneiden aktivieren. Der Hintergrund wird auf Basis der derzeitigen Hintergrundbild-Vorschau zugeschnitten.
+Ziehe mit zwei Fingern auseinander oder mach einen Doppelklick, um zu zoomen.</string>
     <string name="wallpaper_settings_lockscreen">Hintergrund des Sperrbildschirms</string>
     <string name="wallpaper_settings_lockscreen_desc">Die Anwendung wird das Hintergrundbild auf dem Startbildschirm und Sperrbildschirm festlegen</string>
     <string name="wallpaper_settings_lockscreen_not_available">Hintergrundbild auf dem Sperrbildschirm ist nur auf Android Nougat verfügbar</string>
@@ -101,7 +101,7 @@ von Miniaturansichten der Cloud-Hintergründe erstellt wurde</string>
     <string name="pref_wallpaper_location_desc">Versuche, zuerst ein Hintergrundbild herunterzuladen</string>
     <string name="pref_language_header">Sprache</string>
     <string name="pref_others_header">Weitere</string>
-    <string name="pref_others_colored_wallpaper_card">Eingefärbte Hintergrundbild-karte</string>
+    <string name="pref_others_colored_wallpaper_card">Eingefärbte Hintergrundbildkarte</string>
     <string name="pref_others_reset_tutorial">Tutorial zurücksetzen</string>
     <string name="pref_others_reset_tutorial_reset">Tutorial zurückgesetzt</string>
     <!-- Permission -->
@@ -109,7 +109,7 @@ von Miniaturansichten der Cloud-Hintergründe erstellt wurde</string>
     <!-- Support Development -->
     <string name="donation_success">Danke, dass du gespendet hast. Ich werde es klug verwenden.</string>
     <!-- License -->
-    <string name="license_checking">Lizenz wird überprüft ...</string>
+    <string name="license_checking">Lizenz wird überprüft …</string>
     <string name="license_check">Lizenzüberprüfung</string>
     <string name="license_check_success">Lizenzüberprüfung erfolgreich. Danke, dass du die App vom Play Store heruntergeladen hast.</string>
     <string name="license_check_failed">Lizenzüberprüfung fehlgeschlagen. Du hast die App nicht vom Play Store heruntergeladen.
