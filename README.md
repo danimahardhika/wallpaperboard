@@ -62,7 +62,7 @@ Take a look inside <a href="https://github.com/danimahardhika/wallpaperboard/wik
 # Support Development
 Support development by making donation through demo app at Google Play.
 
-# Support for the Dashboard or Suggestions
+# Support for Wallpaper Board or Suggestions
 [WallpaperBoard Community](https://goo.gl/R2RjwM)
 
 # Translation
@@ -78,7 +78,7 @@ Want your app listed here? Mention me at [Google Plus](https://plus.google.com/u
 
 # License
 ```
-Copyright © Dani Mahardhika
+Copyright (c) Dani Mahardhika
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
