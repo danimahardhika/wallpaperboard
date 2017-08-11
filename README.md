@@ -62,6 +62,9 @@ Take a look inside <a href="https://github.com/danimahardhika/wallpaperboard/wik
 # Support Development
 Support development by making donation through demo app at Google Play.
 
+# Support for Wallpaper Board or Suggestions
+[WallpaperBoard Community](https://goo.gl/R2RjwM)
+
 # Translation
 Help translating Wallpaper Board to supports more languages [here](https://goo.gl/Mae5hc).
 
@@ -71,10 +74,11 @@ Want your app listed here? Mention me at [Google Plus](https://plus.google.com/u
 * [myWalls](https://play.google.com/store/apps/details?id=com.lc.mywalls)
 * [NEVER SETTLE Wallpapers](https://play.google.com/store/apps/details?id=com.wilfredparmar.never.settle)
 * [Wallerta](https://play.google.com/store/apps/details?id=com.xorrisont.wallerta)
+* [Sulox](https://goo.gl/EcrGN9)
 
 # License
 ```
-Copyright (c) 2017 Dani Mahardhika
+Copyright (c) Dani Mahardhika
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
