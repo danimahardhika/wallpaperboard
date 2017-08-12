@@ -65,12 +65,16 @@ Support development by making donation through demo app at Google Play.
 # Translation
 Help translating Wallpaper Board to supports more languages [here](https://goo.gl/Mae5hc).
 
+# Need a Help?
+Join [WallpaperBoard community](https://goo.gl/R2RjwM) on Google+
+
 # Wallpaper App Using Wallpaper Board
 Want your app listed here? Mention me at [Google Plus](https://plus.google.com/u/1/+DaniMahardhika).
 * [AMOLED mnml Wallpapers](https://play.google.com/store/apps/details?id=yasanq.amoledmnml.wallpapers)
 * [myWalls](https://play.google.com/store/apps/details?id=com.lc.mywalls)
 * [NEVER SETTLE Wallpapers](https://play.google.com/store/apps/details?id=com.wilfredparmar.never.settle)
 * [Wallerta](https://play.google.com/store/apps/details?id=com.xorrisont.wallerta)
+* [Sulox](https://goo.gl/EcrGN9)
 
 # License
 ```
