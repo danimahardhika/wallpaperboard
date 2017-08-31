@@ -33,7 +33,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'me.tatarka:gradle-retrolambda:3.6.0'
+        classpath 'me.tatarka:gradle-retrolambda:3.7.0'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath 'com.jakewharton:butterknife-gradle-plugin:8.5.1'
     }
@@ -101,12 +101,13 @@ dependencies {
     compile 'com.github.danimahardhika:DrawMe:4a672e78fc'
     compile 'org.sufficientlysecure:html-textview:3.4'
     compile 'com.github.KeepSafe:TapTargetView:-SNAPSHOT'
+    compile 'com.sothree.slidinguppanel:library:3.3.1'
     
     compile 'com.github.danimahardhika:cafebar:1.1.5'
-    compile 'com.github.danimahardhika.android-helpers:core:0.0.5'
-    compile 'com.github.danimahardhika.android-helpers:animation:0.0.5'
-    compile 'com.github.danimahardhika.android-helpers:license:0.0.5'
-    compile 'com.github.danimahardhika.android-helpers:permission:0.0.5'
+    compile 'com.github.danimahardhika.android-helpers:core:0.0.6'
+    compile 'com.github.danimahardhika.android-helpers:animation:0.0.6'
+    compile 'com.github.danimahardhika.android-helpers:license:0.0.6'
+    compile 'com.github.danimahardhika.android-helpers:permission:0.0.6'
 }
 
 configurations.all {
