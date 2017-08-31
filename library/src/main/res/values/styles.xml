@@ -31,7 +31,13 @@
         <item name="card_background">@color/cardBackground</item>
         <item name="ripple_color">@color/rippleColor</item>
 
+        <item name="search_bar">@color/searchBar</item>
+        <item name="search_bar_icon">@color/searchBarIcon</item>
+
         <item name="toolbar_icon">@color/toolbarIcon</item>
+        <item name="tab_indicator">@color/tabIndicator</item>
+        <item name="tab_selected">@color/tabSelected</item>
+        <item name="tab">@color/tab</item>
 
         <item name="md_positive_color">@color/colorAccent</item>
         <item name="md_neutral_color">@color/primaryText</item>
@@ -63,7 +69,13 @@
         <item name="card_background">@color/cardBackgroundDark</item>
         <item name="ripple_color">@color/rippleColorDark</item>
 
+        <item name="search_bar">@color/searchBarDark</item>
+        <item name="search_bar_icon">@color/searchBarIconDark</item>
+
         <item name="toolbar_icon">@color/toolbarIconDark</item>
+        <item name="tab_indicator">@color/tabIndicatorDark</item>
+        <item name="tab_selected">@color/tabSelectedDark</item>
+        <item name="tab">@color/tabDark</item>
 
         <item name="md_background_color">@color/cardBackgroundDark</item>
         <item name="md_positive_color">@color/darkColorAccent</item>
@@ -91,6 +103,18 @@
     <style name="WallpaperThemeDark" parent="AppThemeDark">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <!-- Browser Theme -->
+    <style name="BrowserTheme" parent="AppTheme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/browserWindowBackground</item>
+    </style>
+
+    <!-- Browser Theme -->
+    <style name="BrowserThemeDark" parent="AppThemeDark">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/browserWindowBackground</item>
     </style>
 
     <!-- Muzei Theme -->
@@ -125,5 +149,9 @@
 
     <style name="RippleStyle">
         <item name="colorControlHighlight">?attr/ripple_color</item>
+    </style>
+
+    <style name="RippleStyleLight">
+        <item name="colorControlHighlight">#44FFFFFF</item>
     </style>
 </resources>

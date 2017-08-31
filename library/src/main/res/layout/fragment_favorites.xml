@@ -13,8 +13,21 @@
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingTop="@dimen/card_margin_top"
+        android:paddingStart="@dimen/card_margin_left"
+        android:paddingLeft="@dimen/card_margin_left"
         android:clipToPadding="false"
-        android:layout_below="@+id/toolbar"/>
+        android:scrollbars="vertical"
+        android:scrollbarThumbVertical="?attr/colorAccent"
+        android:scrollbarSize="4dp"
+        android:layout_below="@+id/toolbar" />
+
+    <ImageView
+        android:id="@+id/favorite_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter"
+        android:visibility="gone"/>
 
     <View
         android:id="@+id/shadow"

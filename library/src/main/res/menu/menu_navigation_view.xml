@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:id="@+id/main"
         android:checkableBehavior="single">
 
@@ -8,8 +7,7 @@
             android:id="@+id/navigation_view_wallpapers"
             android:checked="true"
             android:icon="@drawable/ic_drawer_wallpapers"
-            android:title="@string/navigation_view_wallpapers"
-            app:actionLayout="@layout/navigation_view_counter"/>
+            android:title="@string/navigation_view_wallpapers"/>
 
         <item
             android:id="@+id/navigation_view_favorites"

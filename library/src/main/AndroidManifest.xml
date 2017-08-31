@@ -39,12 +39,16 @@
             android:noHistory="true"
             android:theme="@style/Theme.AppCompat.Light.Dialog" />
 
+        <activity android:name=".activities.WallpaperBoardBrowserActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/BrowserTheme"
+            android:configChanges="orientation|keyboardHidden|screenSize"/>
+
         <activity android:name=".activities.WallpaperBoardPreviewActivity"
             android:launchMode="singleTop"
             android:theme="@style/WallpaperTheme"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
-
-        <service android:name=".services.WallpaperBoardService" />
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:resizeableActivity="false"/>
     </application>
 
 </manifest>

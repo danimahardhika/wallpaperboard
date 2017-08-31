@@ -10,60 +10,60 @@
     tools:openDrawer="start">
 
     <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/coordinator"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clipToPadding="false">
-
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/appbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/colorPrimaryDark"
-            app:elevation="0dp">
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:minHeight="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:layout_scrollFlags="scroll|enterAlways">
-
-                <TextView
-                    android:id="@+id/toolbar_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:textColor="?attr/toolbar_icon"
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    android:textSize="@dimen/text_toolbar_title"
-                    fontPath="fonts/Font-Medium.ttf"/>
-
-                <TextView
-                    android:id="@+id/toolbar_logo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:text="@string/toolbar_title"
-                    android:textColor="?attr/toolbar_icon"
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    android:textSize="@dimen/text_toolbar_title"
-                    android:visibility="gone"
-                    fontPath="fonts/Font-Logo.ttf"/>
-
-            </android.support.v7.widget.Toolbar>
-
-        </android.support.design.widget.AppBarLayout>
+        android:layout_height="wrap_content">
 
         <FrameLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+            android:layout_height="match_parent"/>
 
+        <android.support.v7.widget.CardView
+            android:id="@+id/search_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/content_padding"
+            android:theme="@style/RippleStyle"
+            android:foreground="?attr/selectableItemBackground"
+            app:cardCornerRadius="2dp"
+            app:cardUseCompatPadding="false"
+            app:cardElevation="@dimen/card_elevation"
+            app:cardBackgroundColor="?attr/search_bar">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:id="@+id/navigation"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:padding="12dp"
+                    android:theme="@style/RippleStyle"
+                    android:background="?attr/selectableItemBackgroundBorderless"/>
+
+                <TextView
+                    android:id="@+id/search_bar_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/content_margin"
+                    android:layout_marginLeft="@dimen/content_margin"
+                    android:text="@string/app_name"
+                    android:textSize="@dimen/text_content_title"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    fontPath="fonts/Font-Logo.ttf"/>
+
+                <ImageView
+                    android:id="@+id/search"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:padding="12dp"/>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
     </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.NavigationView
@@ -78,5 +78,4 @@
         app:itemIconTint="@color/navigation_view_item_highlight"
         app:itemTextColor="@color/navigation_view_item_highlight"
         app:menu="@menu/menu_navigation_view"/>
-
 </android.support.v4.widget.DrawerLayout>
