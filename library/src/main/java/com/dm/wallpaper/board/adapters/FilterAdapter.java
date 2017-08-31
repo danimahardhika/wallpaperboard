@@ -141,14 +141,12 @@ public class FilterAdapter extends BaseAdapter {
 
     public boolean selectAll() {
         boolean isAllSelected = getCount() == getSelectedCount();
-        Database database = Database.get(mContext);
-
         for (Category category : mCategories) {
             if (mIsMuzei) {
-                database.selectCategoryForMuzei(category.getId(), !isAllSelected);
+                Database.get(mContext).selectCategoryForMuzei(category.getId(), !isAllSelected);
                 category.setMuzeiSelected(!isAllSelected);
             } else {
-                database.selectCategory(category.getId(), !isAllSelected);
+                Database.get(mContext).selectCategory(category.getId(), !isAllSelected);
                 category.setSelected(!isAllSelected);
             }
         }

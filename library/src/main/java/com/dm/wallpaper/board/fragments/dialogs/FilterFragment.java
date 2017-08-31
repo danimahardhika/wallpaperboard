@@ -24,10 +24,8 @@ import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.adapters.FilterAdapter;
 import com.dm.wallpaper.board.databases.Database;
-import com.dm.wallpaper.board.fragments.WallpapersFragment;
 import com.dm.wallpaper.board.helpers.TypefaceHelper;
 import com.dm.wallpaper.board.items.Category;
-import com.dm.wallpaper.board.utils.Extras;
 import com.dm.wallpaper.board.utils.LogUtil;
 
 import java.util.List;
@@ -125,11 +123,6 @@ public class FilterFragment extends DialogFragment implements View.OnClickListen
         FragmentManager fm = getActivity().getSupportFragmentManager();
         if (fm == null) return;
 
-        WallpapersFragment fragment = (WallpapersFragment) fm.findFragmentByTag(Extras.TAG_WALLPAPERS);
-        if (fragment != null) {
-            fragment.filterWallpapers();
-        }
-
         if (mGetCategories != null) mGetCategories.cancel(true);
         if (mSelectAll != null) mSelectAll.cancel(true);
         super.onDismiss(dialog);
@@ -198,10 +191,9 @@ public class FilterFragment extends DialogFragment implements View.OnClickListen
                 while (!isCancelled()) {
                     try {
                         Thread.sleep(1);
-                        Database database = Database.get(getActivity());
-                        categories = database.getCategories();
+                        categories = Database.get(getActivity()).getCategories();
                         for (Category category : categories) {
-                            int count = database.getCategoryCount(category.getName());
+                            int count = Database.get(getActivity()).getCategoryCount(category.getName());
                             category.setCount(count);
                         }
                         return true;

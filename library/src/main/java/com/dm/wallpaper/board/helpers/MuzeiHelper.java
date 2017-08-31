@@ -39,15 +39,15 @@ import java.util.Random;
 
 public class MuzeiHelper {
 
-    private final Database mDatabase;
+    private final Context mContext;
 
     public MuzeiHelper(@NonNull Context context) {
-        mDatabase = Database.get(context);
+        mContext = context;
     }
 
     @Nullable
     public Wallpaper getRandomWallpaper(String wallpaperUrl) throws Exception {
-        if (mDatabase.getWallpapersCount() == 0) {
+        if (Database.get(mContext).getWallpapersCount() == 0) {
             URL url = new URL(wallpaperUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setConnectTimeout(15000);
@@ -58,8 +58,9 @@ public class MuzeiHelper {
                 if (map == null) return null;
 
                 JsonStructure.WallpaperStructure wallpaperStructure = WallpaperBoardApplication
-                        .getConfiguration().getJsonStructure().wallpaperStructure();
+                        .getConfiguration().getJsonStructure().getWallpaper();
                 List wallpaperList = map.get(wallpaperStructure.getArrayName());
+                stream.close();
                 if (wallpaperList == null) {
                     LogUtil.e("Muzei: Json error: wallpaper array with name "
                             +wallpaperStructure.getArrayName() +" not found");
@@ -73,7 +74,7 @@ public class MuzeiHelper {
             }
             return null;
         } else {
-            return mDatabase.getRandomWallpaper();
+            return Database.get(mContext).getRandomWallpaper();
         }
     }
 

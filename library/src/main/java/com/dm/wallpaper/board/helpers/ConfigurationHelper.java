@@ -3,7 +3,6 @@ package com.dm.wallpaper.board.helpers;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
-import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.applications.WallpaperBoardApplication;
@@ -30,12 +29,13 @@ import static com.danimahardhika.android.helpers.core.DrawableHelper.get;
 
 public class ConfigurationHelper {
 
+    @NonNull
     public static Drawable getNavigationIcon(@NonNull Context context, @NonNull WallpaperBoardApplication.NavigationIcon navigationIcon) {
         switch (navigationIcon) {
             case DEFAULT:
-                return new DrawerArrowDrawable(context);
-            case STYLE_1:
                 return get(context, R.drawable.ic_toolbar_navigation);
+            case STYLE_1:
+                return get(context, R.drawable.ic_toolbar_navigation_1);
             case STYLE_2:
                 return get(context, R.drawable.ic_toolbar_navigation_2);
             case STYLE_3:

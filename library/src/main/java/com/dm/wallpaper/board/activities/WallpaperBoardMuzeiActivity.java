@@ -88,7 +88,7 @@ public class WallpaperBoardMuzeiActivity extends AppCompatActivity implements Vi
         ColorHelper.setNavigationBarColor(this, ColorHelper.getDarkerColor(
                 ColorHelper.getAttributeColor(this, R.attr.colorAccent), 0.8f));
         ColorHelper.setStatusBarColor(this, ColorHelper.getDarkerColor(
-                ColorHelper.getAttributeColor(this, R.attr.colorAccent), 0.8f));
+                ColorHelper.getAttributeColor(this, R.attr.colorPrimary), 0.8f));
 
         Toolbar toolbar = ButterKnife.findById(this, R.id.toolbar);
         toolbar.setTitle("");

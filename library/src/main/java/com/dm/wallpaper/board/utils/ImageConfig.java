@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
 import com.danimahardhika.android.helpers.core.FileHelper;
-import com.dm.wallpaper.board.applications.WallpaperBoardApplication;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -68,7 +67,7 @@ public class ImageConfig {
         options.delayBeforeLoading(10)
                 .bitmapConfig(Bitmap.Config.ARGB_8888)
                 .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
-                .cacheOnDisk(false)
+                .cacheOnDisk(true)
                 .cacheInMemory(false);
         return options.build();
     }
@@ -82,8 +81,15 @@ public class ImageConfig {
     }
 
     public static ImageSize getThumbnailSize() {
-        int quality = WallpaperBoardApplication.getConfiguration().getWallpaperGridPreviewQuality();
-        return new ImageSize((50 * quality), (50 * quality));
+        return new ImageSize(300, 300);
+    }
+
+    public static ImageSize getBigThumbnailSize() {
+        return new ImageSize(600, 600);
+    }
+
+    public static ImageSize getPreviewSize() {
+        return new ImageSize(1200, 1200);
     }
 }
 

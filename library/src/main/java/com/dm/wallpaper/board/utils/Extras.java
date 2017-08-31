@@ -18,23 +18,22 @@ package com.dm.wallpaper.board.utils;
  * limitations under the License.
  */
 
-public class Extras {
+public abstract class Extras {
 
+    public static final String TAG_COLLECTION = "collection";
     public static final String TAG_WALLPAPERS = "wallpapers";
     public static final String TAG_WALLPAPER_SEARCH = "wallpaperSearch";
     public static final String TAG_FAVORITES = "favorites";
     public static final String TAG_SETTINGS = "settings";
     public static final String TAG_ABOUT = "about";
 
+    public static final String EXTRA_ID = "id";
     public static final String EXTRA_POSITION = "position";
-    public static final String EXTRA_URL = "url";
-    public static final String EXTRA_NAME = "name";
-    public static final String EXTRA_AUTHOR = "author";
     public static final String EXTRA_IMAGE = "image";
     public static final String EXTRA_RESUMED = "resumed";
-
-    public static final String EXTRA_SIZE = "size";
-    public static final String EXTRA_PACKAGE_NAME = "packageName";
+    public static final String EXTRA_FRAGMENT_ID = "fragmentId";
+    public static final String EXTRA_CATEGORY = "category";
+    public static final String EXTRA_COUNT = "count";
 
     public static final String EXTRA_KEY = "key";
     public static final String EXTRA_PRODUCT_ID = "productId";
@@ -43,5 +42,8 @@ public class Extras {
     public static final int TYPE_CONTRIBUTORS = 1;
     public static final int TYPE_DASHBOARD_CONTRIBUTORS = 2;
     public static final int TYPE_DASHBOARD_TRANSLATOR = 3;
+
+    public static final int ID_CATEGORY_WALLPAPERS = 0;
+    public static final int ID_WALLPAPER_SEARCH = 1;
 
 }

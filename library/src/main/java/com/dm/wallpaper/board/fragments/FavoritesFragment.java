@@ -5,15 +5,16 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.danimahardhika.android.helpers.core.ColorHelper;
 import com.danimahardhika.android.helpers.core.DrawableHelper;
@@ -23,10 +24,11 @@ import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.adapters.WallpapersAdapter;
 import com.dm.wallpaper.board.applications.WallpaperBoardApplication;
 import com.dm.wallpaper.board.databases.Database;
+import com.dm.wallpaper.board.helpers.ConfigurationHelper;
 import com.dm.wallpaper.board.items.Wallpaper;
 import com.dm.wallpaper.board.preferences.Preferences;
 import com.dm.wallpaper.board.utils.LogUtil;
-import com.dm.wallpaper.board.utils.listeners.WallpaperListener;
+import com.dm.wallpaper.board.utils.listeners.NavigationListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,21 +56,21 @@ import static com.dm.wallpaper.board.helpers.ViewHelper.resetViewBottomPadding;
  * limitations under the License.
  */
 
-public class FavoritesFragment extends Fragment implements WallpaperListener {
+public class FavoritesFragment extends Fragment {
 
     @BindView(R2.id.recyclerview)
     RecyclerView mRecyclerView;
-    @BindView(R2.id.swipe)
-    SwipeRefreshLayout mSwipe;
     @BindView(R2.id.favorite_empty)
     ImageView mFavoriteEmpty;
+    @BindView(R2.id.toolbar)
+    Toolbar mToolbar;
 
     private AsyncTask<Void, Void, Boolean> mGetWallpapers;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_wallpapers, container, false);
+        View view = inflater.inflate(R.layout.fragment_favorites, container, false);
         ButterKnife.bind(this, view);
 
         if (!Preferences.get(getActivity()).isShadowEnabled()) {
@@ -81,7 +83,22 @@ public class FavoritesFragment extends Fragment implements WallpaperListener {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mSwipe.setEnabled(false);
+        ViewHelper.setupToolbar(mToolbar);
+
+        TextView textView = ButterKnife.findById(getActivity(), R.id.title);
+        textView.setText(getActivity().getResources().getString(
+                R.string.navigation_view_favorites));
+        mToolbar.setTitle("");
+        mToolbar.setNavigationIcon(ConfigurationHelper.getNavigationIcon(getActivity(),
+                WallpaperBoardApplication.getConfiguration().getNavigationIcon()));
+        mToolbar.setNavigationOnClickListener(view -> {
+            try {
+                NavigationListener listener = (NavigationListener) getActivity();
+                listener.onNavigationIconClick();
+            } catch (IllegalStateException e) {
+                LogUtil.e("Parent activity must implements NavigationListener");
+            }
+        });
 
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),
@@ -110,14 +127,6 @@ public class FavoritesFragment extends Fragment implements WallpaperListener {
     public void onDestroy() {
         if (mGetWallpapers != null) mGetWallpapers.cancel(true);
         super.onDestroy();
-    }
-
-    @Override
-    public void onWallpaperSelected(int position) {
-        if (mRecyclerView == null) return;
-        if (position < 0 || position > mRecyclerView.getAdapter().getItemCount()) return;
-
-        mRecyclerView.scrollToPosition(position);
     }
 
     private void getWallpapers() {

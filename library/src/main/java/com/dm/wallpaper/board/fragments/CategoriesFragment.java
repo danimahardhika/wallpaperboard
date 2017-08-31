@@ -1,12 +1,10 @@
 package com.dm.wallpaper.board.fragments;
 
 import android.content.res.Configuration;
-import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,18 +12,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.danimahardhika.android.helpers.core.ColorHelper;
 import com.danimahardhika.android.helpers.core.ViewHelper;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
-import com.dm.wallpaper.board.adapters.WallpapersAdapter;
-import com.dm.wallpaper.board.applications.WallpaperBoardApplication;
+import com.dm.wallpaper.board.adapters.CategoriesAdapter;
 import com.dm.wallpaper.board.databases.Database;
-import com.dm.wallpaper.board.items.Wallpaper;
-import com.dm.wallpaper.board.preferences.Preferences;
-import com.dm.wallpaper.board.tasks.WallpapersLoaderTask;
+import com.dm.wallpaper.board.items.Category;
 import com.dm.wallpaper.board.utils.LogUtil;
 
 import java.util.List;
@@ -54,74 +47,64 @@ import static com.dm.wallpaper.board.helpers.ViewHelper.resetViewBottomPadding;
  * limitations under the License.
  */
 
-public class WallpapersFragment extends Fragment {
+public class CategoriesFragment extends Fragment {
 
     @BindView(R2.id.recyclerview)
     RecyclerView mRecyclerView;
-    @BindView(R2.id.swipe)
-    SwipeRefreshLayout mSwipe;
     @BindView(R2.id.progress)
     MaterialProgressBar mProgress;
 
-    private AsyncTask<Void, Void, Boolean> mAsyncTask;
+    private List<Category> mCategories;
+    private GridLayoutManager mManager;
+    private CategoriesAdapter mAdapter;
+    private AsyncTask mAsyncTask;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_wallpapers, container, false);
+        View view = inflater.inflate(R.layout.fragment_categories, container, false);
         ButterKnife.bind(this, view);
-
-        if (!Preferences.get(getActivity()).isShadowEnabled()) {
-            View shadow = ButterKnife.findById(view, R.id.shadow);
-            if (shadow != null) shadow.setVisibility(View.GONE);
-        }
         return view;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mProgress.getIndeterminateDrawable().setColorFilter(ColorHelper.getAttributeColor(
-                getActivity(), R.attr.colorAccent), PorterDuff.Mode.SRC_IN);
-
+        mManager = new GridLayoutManager(getActivity(),
+                getActivity().getResources().getInteger(R.integer.categories_column_count));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),
-                getActivity().getResources().getInteger(R.integer.wallpapers_column_count)));
+        mRecyclerView.setLayoutManager(mManager);
         mRecyclerView.setHasFixedSize(false);
 
-        if (WallpaperBoardApplication.getConfiguration().getWallpapersGrid() ==
-                WallpaperBoardApplication.GridStyle.FLAT) {
-            int padding = getActivity().getResources().getDimensionPixelSize(R.dimen.card_margin);
-            mRecyclerView.setPadding(padding, padding, 0, 0);
-        }
+        resetRecyclerViewPadding();
         resetViewBottomPadding(mRecyclerView, true);
 
-        mSwipe.setColorSchemeColors(ColorHelper.getAttributeColor(
-                getActivity(), R.attr.colorAccent));
-        mSwipe.setOnRefreshListener(() -> {
-            if (mAsyncTask != null) {
-                mSwipe.setRefreshing(false);
-                return;
-            }
-
-            WallpapersLoaderTask.start(getActivity());
-            mAsyncTask = new WallpapersTask().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-        });
-
         if (Database.get(getActivity()).getWallpapersCount() > 0) {
-            mAsyncTask = new WallpapersTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            mAsyncTask = new CategoriesLoaderTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             return;
         }
 
-        mAsyncTask = new WallpapersTask().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+        mAsyncTask = new CategoriesLoaderTask().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        ViewHelper.resetSpanCount(mRecyclerView, getActivity().getResources().getInteger(
-                R.integer.wallpapers_column_count));
+        if (mAsyncTask != null) return;
+        if (mAdapter == null) return;
+
+        int position = mManager.findFirstVisibleItemPosition();
+
+        int spanCount = getActivity().getResources().getInteger(
+                R.integer.categories_column_count);
+        ViewHelper.resetSpanCount(mRecyclerView, spanCount);
+        resetRecyclerViewPadding();
         resetViewBottomPadding(mRecyclerView, true);
+
+        mAdapter = new CategoriesAdapter(getActivity(), mCategories);
+        mRecyclerView.setAdapter(mAdapter);
+
+        mRecyclerView.scrollToPosition(position);
     }
 
     @Override
@@ -132,16 +115,24 @@ public class WallpapersFragment extends Fragment {
         super.onDestroy();
     }
 
-    private class WallpapersTask extends AsyncTask<Void, Void, Boolean> {
+    private void resetRecyclerViewPadding() {
+        int spanCount = getActivity().getResources().getInteger(
+                R.integer.categories_column_count);
+        if (spanCount == 1) {
+            mRecyclerView.setPadding(0, 0, 0, 0);
+        } else {
+            int paddingTop = getActivity().getResources().getDimensionPixelSize(R.dimen.card_margin_top);
+            int paddingLeft = getActivity().getResources().getDimensionPixelSize(R.dimen.card_margin_right);
+            mRecyclerView.setPadding(paddingLeft, paddingTop, 0, 0);
+        }
+    }
 
-        private List<Wallpaper> mWallpapers;
+    private class CategoriesLoaderTask extends AsyncTask<Void, Void, Boolean> {
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (!mSwipe.isRefreshing()) {
-                mProgress.setVisibility(View.VISIBLE);
-            }
+            mProgress.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -149,7 +140,7 @@ public class WallpapersFragment extends Fragment {
             while (!isCancelled()) {
                 try {
                     Thread.sleep(1);
-                    mWallpapers = Database.get(getActivity()).getWallpapers();
+                    mCategories = Database.get(getActivity()).getCategories();
                     return true;
                 } catch (Exception e) {
                     LogUtil.e(Log.getStackTraceString(e));
@@ -164,13 +155,10 @@ public class WallpapersFragment extends Fragment {
             super.onPostExecute(aBoolean);
             mAsyncTask = null;
 
-            mSwipe.setRefreshing(false);
             mProgress.setVisibility(View.GONE);
             if (aBoolean) {
-                WallpapersAdapter adapter = new WallpapersAdapter(getActivity(), mWallpapers, false, false);
-                mRecyclerView.setAdapter(adapter);
-            } else {
-                Toast.makeText(getActivity(), R.string.connection_failed, Toast.LENGTH_LONG).show();
+                mAdapter = new CategoriesAdapter(getActivity(), mCategories);
+                mRecyclerView.setAdapter(mAdapter);
             }
         }
     }

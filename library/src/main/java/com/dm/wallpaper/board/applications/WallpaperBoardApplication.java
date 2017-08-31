@@ -2,7 +2,6 @@ package com.dm.wallpaper.board.applications;
 
 import android.app.Application;
 import android.content.Intent;
-import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 
 import com.dm.wallpaper.board.R;
@@ -131,12 +130,12 @@ public class WallpaperBoardApplication extends Application {
 
         private NavigationIcon mNavigationIcon = NavigationIcon.DEFAULT;
         private NavigationViewHeader mNavigationViewHeader = NavigationViewHeader.NORMAL;
-        private GridStyle mWallpapersGrid = GridStyle.FLAT;
+        private GridStyle mWallpapersGrid = GridStyle.CARD;
 
         private boolean mIsDashboardThemingEnabled = true;
         private boolean mIsShadowEnabled = true;
+        private int mLatestWallpapersDisplayMax = 20;
 
-        private int mWallpaperGridPreviewQuality = 4;
         private boolean mIsCrashReportEnabled = true;
         private String mCrashReportEmail = null;
 
@@ -162,13 +161,13 @@ public class WallpaperBoardApplication extends Application {
             return this;
         }
 
-        public Configuration setWallpaperGridPreviewQuality(@IntRange (from = 1, to = 10) int quality) {
-            mWallpaperGridPreviewQuality = quality;
+        public Configuration setShadowEnabled(boolean shadowEnabled) {
+            mIsShadowEnabled = shadowEnabled;
             return this;
         }
 
-        public Configuration setShadowEnabled(boolean shadowEnabled) {
-            mIsShadowEnabled = shadowEnabled;
+        public Configuration setLatestWallpapersDisplayMax(int count) {
+            mLatestWallpapersDisplayMax = count;
             return this;
         }
 
@@ -203,12 +202,12 @@ public class WallpaperBoardApplication extends Application {
             return mIsDashboardThemingEnabled;
         }
 
-        public int getWallpaperGridPreviewQuality() {
-            return mWallpaperGridPreviewQuality;
-        }
-
         public boolean isShadowEnabled() {
             return mIsShadowEnabled;
+        }
+
+        public int getLatestWallpapersDisplayMax() {
+            return mLatestWallpapersDisplayMax;
         }
 
         public  String getCrashReportEmail() {

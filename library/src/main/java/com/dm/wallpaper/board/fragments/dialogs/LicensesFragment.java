@@ -124,6 +124,7 @@ public class LicensesFragment extends DialogFragment {
                             sb.append("\n");
                         }
                         bufferedReader.close();
+                        rawResource.close();
                         return true;
                     } catch (Exception e) {
                         LogUtil.e(Log.getStackTraceString(e));

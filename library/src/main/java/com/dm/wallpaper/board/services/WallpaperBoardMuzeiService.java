@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.danimahardhika.android.helpers.core.FileHelper;
+import com.danimahardhika.android.helpers.permission.PermissionHelper;
 import com.dm.wallpaper.board.helpers.MuzeiHelper;
 import com.dm.wallpaper.board.helpers.WallpaperHelper;
 import com.dm.wallpaper.board.items.Wallpaper;
@@ -68,10 +69,12 @@ public abstract class WallpaperBoardMuzeiService extends RemoteMuzeiArtSource {
     }
 
     private void publishArtwork(Wallpaper wallpaper) {
-        File file = new File(Preferences.get(this).getWallsDirectory()
-                + wallpaper.getName() + WallpaperHelper.IMAGE_EXTENSION);
+        String fileName = wallpaper.getName() +"."+ WallpaperHelper.getFormat(wallpaper.getMimeType());
+        File file = new File(WallpaperHelper.getDefaultWallpapersDirectory(this), fileName);
+
         Uri uri = null;
-        if (file.exists()) uri = FileHelper.getUriFromFile(this, getPackageName(), file);
+        if (file.exists() && PermissionHelper.isStorageGranted(this))
+            uri = FileHelper.getUriFromFile(this, getPackageName(), file);
         if (uri == null) uri = Uri.parse(wallpaper.getUrl());
 
         publishArtwork(new Artwork.Builder()

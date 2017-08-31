@@ -4,25 +4,30 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.danimahardhika.android.helpers.core.FileHelper;
+import com.danimahardhika.android.helpers.core.ViewHelper;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.adapters.SettingsAdapter;
+import com.dm.wallpaper.board.applications.WallpaperBoardApplication;
+import com.dm.wallpaper.board.helpers.ConfigurationHelper;
 import com.dm.wallpaper.board.helpers.LocaleHelper;
-import com.dm.wallpaper.board.helpers.ViewHelper;
+import com.dm.wallpaper.board.helpers.WallpaperHelper;
 import com.dm.wallpaper.board.items.Language;
 import com.dm.wallpaper.board.items.Setting;
 import com.dm.wallpaper.board.preferences.Preferences;
+import com.dm.wallpaper.board.utils.LogUtil;
+import com.dm.wallpaper.board.utils.listeners.NavigationListener;
 
-import java.io.File;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -30,6 +35,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.dm.wallpaper.board.helpers.ViewHelper.resetViewBottomPadding;
 
 /*
  * Wallpaper Board
@@ -53,6 +60,8 @@ public class SettingsFragment extends Fragment {
 
     @BindView(R2.id.recyclerview)
     RecyclerView mRecyclerView;
+    @BindView(R2.id.toolbar)
+    Toolbar mToolbar;
 
     @Nullable
     @Override
@@ -70,8 +79,23 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ViewCompat.setNestedScrollingEnabled(mRecyclerView, false);
-        ViewHelper.resetViewBottomPadding(mRecyclerView, false);
+        resetViewBottomPadding(mRecyclerView, true);
+        ViewHelper.setupToolbar(mToolbar);
+
+        TextView textView = ButterKnife.findById(getActivity(), R.id.title);
+        textView.setText(getActivity().getResources().getString(
+                R.string.navigation_view_settings));
+        mToolbar.setTitle("");
+        mToolbar.setNavigationIcon(ConfigurationHelper.getNavigationIcon(getActivity(),
+                WallpaperBoardApplication.getConfiguration().getNavigationIcon()));
+        mToolbar.setNavigationOnClickListener(view -> {
+            try {
+                NavigationListener listener = (NavigationListener) getActivity();
+                listener.onNavigationIconClick();
+            } catch (IllegalStateException e) {
+                LogUtil.e("Parent activity must implements NavigationListener");
+            }
+        });
 
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -82,7 +106,7 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        ViewHelper.resetViewBottomPadding(mRecyclerView, false);
+        resetViewBottomPadding(mRecyclerView, true);
     }
 
     private void initSettings() {
@@ -91,59 +115,67 @@ public class SettingsFragment extends Fragment {
         double cache = (double) FileHelper.getDirectorySize(getActivity().getCacheDir()) / FileHelper.MB;
         NumberFormat formatter = new DecimalFormat("#0.00");
 
-        settings.add(new Setting(R.drawable.ic_toolbar_storage,
-                getActivity().getResources().getString(R.string.pref_data_header),
-                "", "", "", Setting.Type.HEADER, -1));
+        settings.add(Setting.Builder(Setting.Type.HEADER)
+                .icon(R.drawable.ic_toolbar_storage)
+                .title(getActivity().getResources().getString(R.string.pref_data_header))
+                .build()
+        );
 
-        settings.add(new Setting(-1, "",
-                getActivity().getResources().getString(R.string.pref_data_cache),
-                getActivity().getResources().getString(R.string.pref_data_cache_desc),
-                String.format(getActivity().getResources().getString(R.string.pref_data_cache_size),
-                        formatter.format(cache) + " MB"),
-                Setting.Type.CACHE, -1));
+        settings.add(Setting.Builder(Setting.Type.CACHE)
+                .subtitle(getActivity().getResources().getString(R.string.pref_data_cache))
+                .content(getActivity().getResources().getString(R.string.pref_data_cache_desc))
+                .footer(String.format(getActivity().getResources().getString(R.string.pref_data_cache_size),
+                        formatter.format(cache) + " MB"))
+                .build()
+        );
 
-        settings.add(new Setting(R.drawable.ic_toolbar_theme,
-                getActivity().getResources().getString(R.string.pref_theme_header),
-                "", "", "", Setting.Type.HEADER, -1));
+        settings.add(Setting.Builder(Setting.Type.HEADER)
+                .icon(R.drawable.ic_toolbar_theme)
+                .title(getActivity().getResources().getString(R.string.pref_theme_header))
+                .build()
+        );
 
-        settings.add(new Setting(-1, "",
-                getActivity().getResources().getString(R.string.pref_theme_dark),
-                getActivity().getResources().getString(R.string.pref_theme_dark_desc),
-                "", Setting.Type.THEME, Preferences.get(getActivity()).isDarkTheme() ? 1 : 0));
+        settings.add(Setting.Builder(Setting.Type.THEME)
+                .subtitle(getActivity().getResources().getString(R.string.pref_theme_dark))
+                .content(getActivity().getResources().getString(R.string.pref_theme_dark_desc))
+                .checkboxState(Preferences.get(getActivity()).isDarkTheme() ? 1 : 0)
+                .build()
+        );
 
-        settings.add(new Setting(R.drawable.ic_toolbar_wallpapers,
-                getActivity().getResources().getString(R.string.pref_wallpaper_header),
-                "", "", "", Setting.Type.HEADER, -1));
+        settings.add(Setting.Builder(Setting.Type.HEADER)
+                .icon(R.drawable.ic_toolbar_wallpapers)
+                .title(getActivity().getResources().getString(R.string.pref_wallpaper_header))
+                .build()
+        );
 
-        String directory = getActivity().getResources().getString(R.string.pref_wallpaper_location_desc);
-        if (Preferences.get(getActivity()).getWallsDirectory().length() > 0) {
-            directory = Preferences.get(getActivity()).getWallsDirectory() + File.separator;
-        }
+        settings.add(Setting.Builder(Setting.Type.WALLPAPER)
+                .subtitle(getActivity().getResources().getString(R.string.pref_wallpaper_location))
+                .content(WallpaperHelper.getDefaultWallpapersDirectory(getActivity()).toString())
+                .build()
+        );
 
-        settings.add(new Setting(-1, "",
-                getActivity().getResources().getString(R.string.pref_wallpaper_location),
-                directory, "", Setting.Type.WALLPAPER, -1));
-
-        settings.add(new Setting(R.drawable.ic_toolbar_language,
-                getActivity().getResources().getString(R.string.pref_language_header),
-                "", "", "", Setting.Type.HEADER, -1));
+        settings.add(Setting.Builder(Setting.Type.HEADER)
+                .icon(R.drawable.ic_toolbar_language)
+                .title(getActivity().getResources().getString(R.string.pref_language_header))
+                .build()
+        );
 
         Language language = LocaleHelper.getCurrentLanguage(getActivity());
-        settings.add(new Setting(-1, "",
-                language.getName(),
-                "", "", Setting.Type.LANGUAGE, -1));
+        settings.add(Setting.Builder(Setting.Type.LANGUAGE)
+                .subtitle(language.getName())
+                .build()
+        );
 
-        settings.add(new Setting(R.drawable.ic_toolbar_others,
-                getActivity().getResources().getString(R.string.pref_others_header),
-                "", "", "", Setting.Type.HEADER, -1));
+        settings.add(Setting.Builder(Setting.Type.HEADER)
+                .icon(R.drawable.ic_toolbar_others)
+                .title(getActivity().getResources().getString(R.string.pref_others_header))
+                .build()
+        );
 
-        settings.add(new Setting(-1, "",
-                getActivity().getResources().getString(R.string.pref_others_colored_wallpaper_card),
-                "", "", Setting.Type.COLORED_CARD, Preferences.get(getActivity()).isColoredWallpapersCard() ? 1 : 0));
-
-        settings.add(new Setting(-1, "",
-                getActivity().getResources().getString(R.string.pref_others_reset_tutorial),
-                "", "", Setting.Type.RESET_TUTORIAL, -1));
+        settings.add(Setting.Builder(Setting.Type.RESET_TUTORIAL)
+                .subtitle(getActivity().getResources().getString(R.string.pref_others_reset_tutorial))
+                .build()
+        );
 
         mRecyclerView.setAdapter(new SettingsAdapter(getActivity(), settings));
     }

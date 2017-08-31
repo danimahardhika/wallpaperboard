@@ -37,52 +37,52 @@ public class JsonStructure {
     }
 
     @Nullable
-    public String jsonOutputUrl() {
-        return mBuilder.mJsonOutputUrl;
+    public String getUrl() {
+        return mBuilder.mUrl;
     }
 
     @NonNull
-    public List<NameValuePair> jsonOutputPost() {
+    public List<NameValuePair> getPosts() {
         return mBuilder.mValues;
     }
 
     @NonNull
-    public CategoryStructure categoryStructure() {
-        return mBuilder.mCategoryStructure;
+    public CategoryStructure getCategory() {
+        return mBuilder.mCategory;
     }
 
     @NonNull
-    public WallpaperStructure wallpaperStructure() {
-        return mBuilder.mWallpaperStructure;
+    public WallpaperStructure getWallpaper() {
+        return mBuilder.mWallpaper;
     }
 
     public static class Builder {
 
-        private String mJsonOutputUrl = null;
+        private String mUrl = null;
         private List<NameValuePair> mValues = new ArrayList<>();
 
-        private CategoryStructure mCategoryStructure = new CategoryStructure("Categories");
-        private WallpaperStructure mWallpaperStructure = new WallpaperStructure("Wallpapers");
+        private CategoryStructure mCategory = new CategoryStructure("Categories");
+        private WallpaperStructure mWallpaper = new WallpaperStructure("Wallpapers");
 
-        public Builder jsonOutputUrl(@Nullable String url) {
+        public Builder url(@Nullable String url) {
             if (url != null && URLUtil.isValidUrl(url)) {
-                mJsonOutputUrl = url;
+                mUrl = url;
             }
             return this;
         }
 
-        public Builder jsonOutputPost(@NonNull String tag, @NonNull String value) {
+        public Builder post(@NonNull String tag, @NonNull String value) {
             mValues.add(new BasicNameValuePair(tag, value));
             return this;
         }
 
-        public Builder categoryStructure(@NonNull CategoryStructure categoryStructure) {
-            mCategoryStructure = categoryStructure;
+        public Builder category(@NonNull CategoryStructure categoryStructure) {
+            mCategory = categoryStructure;
             return this;
         }
 
-        public Builder wallpaperStructure(@NonNull WallpaperStructure wallpaperStructure) {
-            mWallpaperStructure = wallpaperStructure;
+        public Builder wallpaper(@NonNull WallpaperStructure wallpaperStructure) {
+            mWallpaper = wallpaperStructure;
             return this;
         }
 

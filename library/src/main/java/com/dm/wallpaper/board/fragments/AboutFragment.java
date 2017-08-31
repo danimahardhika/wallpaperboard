@@ -5,20 +5,25 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.danimahardhika.android.helpers.core.ViewHelper;
 import com.danimahardhika.android.helpers.core.WindowHelper;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.adapters.AboutAdapter;
+import com.dm.wallpaper.board.applications.WallpaperBoardApplication;
+import com.dm.wallpaper.board.helpers.ConfigurationHelper;
 import com.dm.wallpaper.board.preferences.Preferences;
+import com.dm.wallpaper.board.utils.LogUtil;
+import com.dm.wallpaper.board.utils.listeners.NavigationListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,6 +50,8 @@ public class AboutFragment extends Fragment {
 
     @BindView(R2.id.recyclerview)
     RecyclerView mRecyclerView;
+    @BindView(R2.id.toolbar)
+    Toolbar mToolbar;
 
     @Nullable
     @Override
@@ -62,8 +69,23 @@ public class AboutFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ViewCompat.setNestedScrollingEnabled(mRecyclerView, false);
         resetRecyclerViewPadding(getActivity().getResources().getConfiguration().orientation);
+        ViewHelper.setupToolbar(mToolbar);
+
+        TextView textView = ButterKnife.findById(getActivity(), R.id.title);
+        textView.setText(getActivity().getResources().getString(
+                R.string.navigation_view_about));
+        mToolbar.setTitle("");
+        mToolbar.setNavigationIcon(ConfigurationHelper.getNavigationIcon(getActivity(),
+                WallpaperBoardApplication.getConfiguration().getNavigationIcon()));
+        mToolbar.setNavigationOnClickListener(view -> {
+            try {
+                NavigationListener listener = (NavigationListener) getActivity();
+                listener.onNavigationIconClick();
+            } catch (IllegalStateException e) {
+                LogUtil.e("Parent activity must implements NavigationListener");
+            }
+        });
 
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
@@ -100,11 +122,7 @@ public class AboutFragment extends Fragment {
             if (tabletMode || orientation == Configuration.ORIENTATION_PORTRAIT) {
                 navBar = WindowHelper.getNavigationBarHeight(getActivity());
             }
-
-            navBar += WindowHelper.getStatusBarHeight(getContext());
         }
-
-        navBar += ViewHelper.getToolbarHeight(getActivity());
         mRecyclerView.setPadding(padding, padding, 0, navBar);
     }
 }

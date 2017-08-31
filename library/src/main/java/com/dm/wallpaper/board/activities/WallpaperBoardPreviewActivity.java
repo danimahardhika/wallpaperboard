@@ -7,56 +7,69 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.transition.Transition;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.danimahardhika.android.helpers.animation.AnimationHelper;
 import com.danimahardhika.android.helpers.core.ColorHelper;
 import com.danimahardhika.android.helpers.core.DrawableHelper;
+import com.danimahardhika.android.helpers.core.ViewHelper;
+import com.danimahardhika.android.helpers.core.WindowHelper;
 import com.danimahardhika.android.helpers.permission.PermissionCode;
 import com.danimahardhika.android.helpers.permission.PermissionHelper;
-import com.danimahardhika.cafebar.CafeBar;
-import com.danimahardhika.cafebar.CafeBarTheme;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
+import com.dm.wallpaper.board.adapters.WallpaperDetailsAdapter;
 import com.dm.wallpaper.board.adapters.WallpapersAdapter;
-import com.dm.wallpaper.board.fragments.dialogs.WallpaperSettingsFragment;
+import com.dm.wallpaper.board.databases.Database;
 import com.dm.wallpaper.board.helpers.LocaleHelper;
 import com.dm.wallpaper.board.helpers.TapIntroHelper;
-import com.dm.wallpaper.board.helpers.TypefaceHelper;
-import com.dm.wallpaper.board.helpers.ViewHelper;
-import com.dm.wallpaper.board.helpers.WallpaperHelper;
+import com.dm.wallpaper.board.items.Category;
+import com.dm.wallpaper.board.items.ColorPalette;
+import com.dm.wallpaper.board.items.Wallpaper;
+import com.dm.wallpaper.board.items.WallpaperProperty;
 import com.dm.wallpaper.board.preferences.Preferences;
+import com.dm.wallpaper.board.tasks.WallpaperApplyTask;
+import com.dm.wallpaper.board.tasks.WallpaperPropertiesLoaderTask;
+import com.dm.wallpaper.board.tasks.WallpaperPaletteLoaderTask;
+import com.dm.wallpaper.board.utils.ApplyPopup;
 import com.dm.wallpaper.board.utils.Extras;
 import com.dm.wallpaper.board.utils.ImageConfig;
 import com.dm.wallpaper.board.utils.LogUtil;
+import com.dm.wallpaper.board.utils.Tooltip;
+import com.dm.wallpaper.board.utils.WallpaperDownloader;
 import com.kogitune.activitytransition.ActivityTransition;
 import com.kogitune.activitytransition.ExitActivityTransition;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -82,28 +95,47 @@ import uk.co.senab.photoview.PhotoViewAttacher;
  */
 
 public class WallpaperBoardPreviewActivity extends AppCompatActivity implements View.OnClickListener,
-        ActivityCompat.OnRequestPermissionsResultCallback {
+        ActivityCompat.OnRequestPermissionsResultCallback, SlidingUpPanelLayout.PanelSlideListener,
+        WallpaperPropertiesLoaderTask.Callback, WallpaperPaletteLoaderTask.Callback, View.OnLongClickListener {
 
     @BindView(R2.id.wallpaper)
-    ImageView mWallpaper;
-    @BindView(R2.id.fab)
-    FloatingActionButton mFab;
+    ImageView mImageView;
     @BindView(R2.id.progress)
     ProgressBar mProgress;
-    @BindView(R2.id.bottom_progress)
-    ProgressBar mBottomProgress;
+    @BindView(R2.id.back)
+    ImageView mBack;
+    @BindView(R2.id.bottom_panel)
+    RelativeLayout mBottomPanel;
+    @BindView(R2.id.name)
+    TextView mName;
+    @BindView(R2.id.author)
+    TextView mAuthor;
+    @BindView(R2.id.menu_preview)
+    ImageView mMenuPreview;
+    @BindView(R2.id.menu_save)
+    ImageView mMenuSave;
+    @BindView(R2.id.menu_apply)
+    ImageView mMenuApply;
+    @BindView(R2.id.recyclerview)
+    RecyclerView mRecyclerView;
+    @BindView(R2.id.sliding_layout)
+    SlidingUpPanelLayout mSlidingLayout;
 
     private Runnable mRunnable;
     private Handler mHandler;
     private PhotoViewAttacher mAttacher;
     private ExitActivityTransition mExitTransition;
+    private Tooltip mTooltip;
 
-    private String mUrl;
-    private String mName;
-    private String mAuthor;
-    private int mColor;
-    private boolean mIsEnter;
+    private Wallpaper mWallpaper;
+    private List<WallpaperProperty> mProperties;
+    private ColorPalette mPalette;
+    private List<Category> mCategories;
+
+    private boolean mIsEnter = true;
     private boolean mIsResumed = false;
+
+    private boolean mIsBottomPanelDragged = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -113,55 +145,65 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
         setContentView(R.layout.activity_wallpaper_preview);
         ButterKnife.bind(this);
 
-        ViewHelper.resetViewBottomMargin(mFab);
-        ColorHelper.setStatusBarColor(this, ColorHelper.get(this, R.color.wallpaperStatusBar), true);
-        mIsEnter = true;
-
-        Toolbar toolbar = ButterKnife.findById(this, R.id.toolbar);
-        TextView toolbarTitle = ButterKnife.findById(this, R.id.toolbar_title);
-        TextView toolbarSubTitle = ButterKnife.findById(this, R.id.toolbar_subtitle);
-
-        mColor = ColorHelper.getAttributeColor(this, R.attr.colorAccent);
         mProgress.getIndeterminateDrawable().setColorFilter(
                 Color.parseColor("#CCFFFFFF"), PorterDuff.Mode.SRC_IN);
-        mBottomProgress.getProgressDrawable().setColorFilter(
-                Color.parseColor("#EEFFFFFF"), PorterDuff.Mode.SRC_IN);
 
+        int id = -1;
         if (savedInstanceState != null) {
-            mUrl = savedInstanceState.getString(Extras.EXTRA_URL);
-            mName = savedInstanceState.getString(Extras.EXTRA_NAME);
-            mAuthor = savedInstanceState.getString(Extras.EXTRA_AUTHOR);
+            id = savedInstanceState.getInt(Extras.EXTRA_ID, -1);
             mIsResumed = savedInstanceState.getBoolean(Extras.EXTRA_RESUMED);
         }
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            mUrl = bundle.getString(Extras.EXTRA_URL);
-            mName = bundle.getString(Extras.EXTRA_NAME);
-            mAuthor = bundle.getString(Extras.EXTRA_AUTHOR);
+            id = bundle.getInt(Extras.EXTRA_ID, -1);
         }
 
-        toolbarTitle.setText(mName);
-
-        if (mAuthor == null) {
-            toolbarSubTitle.setVisibility(View.GONE);
-        } else {
-            toolbarSubTitle.setText(mAuthor);
-            toolbarSubTitle.setVisibility(View.VISIBLE);
+        mWallpaper = Database.get(this).getWallpaper(id);
+        if (mWallpaper == null) {
+            finish();
+            return;
         }
 
-        toolbar.setTitle("");
-        toolbar.setNavigationIcon(R.drawable.ic_toolbar_back);
-        setSupportActionBar(toolbar);
+        mProperties = WallpaperProperty.getWallpaperProperties(this, mWallpaper);
+        mPalette = new ColorPalette();
+        mCategories = Database.get(this).getWallpaperCategories(mWallpaper.getCategory());
 
-        mFab.setOnClickListener(this);
+        mBack.setImageDrawable(DrawableHelper.getTintedDrawable(
+                this, R.drawable.ic_toolbar_back, Color.WHITE));
+        mBack.setOnClickListener(this);
+
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setHasFixedSize(false);
+        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(
+                getResources().getInteger(R.integer.wallpaper_details_column_count),
+                StaggeredGridLayoutManager.VERTICAL));
+
+        mSlidingLayout.setDragView(mBottomPanel);
+        mSlidingLayout.setScrollableView(mRecyclerView);
+        mSlidingLayout.setCoveredFadeColor(Color.TRANSPARENT);
+        mSlidingLayout.addPanelSlideListener(this);
+        mSlidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+        resetBottomPadding();
+        initBottomPanel(Color.WHITE);
+
+        mRecyclerView.setAdapter(new WallpaperDetailsAdapter(this,
+                new ArrayList<>(), new ColorPalette(), new ArrayList<>()));
 
         if (!mIsResumed) {
             mExitTransition = ActivityTransition
                     .with(getIntent())
-                    .to(this, mWallpaper, Extras.EXTRA_IMAGE)
+                    .to(this, mImageView, Extras.EXTRA_IMAGE)
                     .duration(300)
                     .start(savedInstanceState);
+        }
+
+        if (mImageView.getDrawable() == null) {
+            int color = mWallpaper.getColor();
+            if (color == 0) {
+                color = ColorHelper.getAttributeColor(this, R.attr.card_background);
+            }
+            AnimationHelper.setBackgroundColor(mSlidingLayout, Color.TRANSPARENT, color).start();
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && savedInstanceState == null) {
@@ -178,12 +220,9 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
                     public void onTransitionEnd(Transition transition) {
                         if (mIsEnter) {
                             mIsEnter = false;
-                            AnimationHelper.slideDownIn(toolbar)
-                                    .duration(300)
-                                    .interpolator(new LinearOutSlowInInterpolator())
-                                    .start();
-
-                            loadWallpaper(mUrl);
+                            mSlidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                            mIsBottomPanelDragged = false;
+                            loadWallpaper(mWallpaper.getThumbUrl());
                         }
                     }
 
@@ -207,8 +246,9 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
         }
 
         mRunnable = () -> {
-            toolbar.setVisibility(View.VISIBLE);
-            loadWallpaper(mUrl);
+            mSlidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+            mIsBottomPanelDragged = false;
+            loadWallpaper(mWallpaper.getThumbUrl());
             mRunnable = null;
             mHandler = null;
         };
@@ -219,16 +259,16 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        ViewHelper.resetViewBottomMargin(mFab);
+        ViewHelper.resetSpanCount(mRecyclerView, getResources().getInteger(
+                R.integer.wallpaper_details_column_count));
+        if (mRecyclerView.getAdapter() != null) {
+            mRecyclerView.getAdapter().notifyDataSetChanged();
+        }
+        if (mTooltip != null) {
+            mTooltip.dismiss();
+        }
+        new Handler().postDelayed(this::resetBottomPadding, 200);
         LocaleHelper.setLocale(this);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_wallpaper_preview, menu);
-        MenuItem save = menu.findItem(R.id.menu_save);
-        save.setVisible(getResources().getBoolean(R.bool.enable_wallpaper_download));
-        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -239,21 +279,33 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putString(Extras.EXTRA_NAME, mName);
-        outState.putString(Extras.EXTRA_AUTHOR, mAuthor);
-        outState.putString(Extras.EXTRA_URL, mUrl);
+        if (mWallpaper != null) {
+            outState.putInt(Extras.EXTRA_ID, mWallpaper.getId());
+        }
+
         outState.putBoolean(Extras.EXTRA_RESUMED, true);
         super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onDestroy() {
+        ImageLoader.getInstance().cancelDisplayTask(mImageView);
         if (mAttacher != null) mAttacher.cleanup();
         super.onDestroy();
     }
 
     @Override
     public void onBackPressed() {
+        if (mSlidingLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED) {
+            mSlidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+            return;
+        }
+
+        if (mTooltip != null) {
+            mTooltip.dismiss();
+            mTooltip = null;
+        }
+
         WallpapersAdapter.sIsClickable = true;
         if (mHandler != null && mRunnable != null)
             mHandler.removeCallbacks(mRunnable);
@@ -266,60 +318,93 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
+    public void onClick(View view) {
+        int id = view.getId();
+        if (id == R.id.back) {
             onBackPressed();
-            return true;
+        } else if (id == R.id.menu_preview) {
+            if (mTooltip != null) {
+                mTooltip.dismiss();
+            }
+
+            loadWallpaper(mWallpaper.getUrl());
         } else if (id == R.id.menu_save) {
             if (PermissionHelper.isStorageGranted(this)) {
-                File target = new File(WallpaperHelper.getDefaultWallpapersDirectory(this).toString()
-                        + File.separator + mName + WallpaperHelper.IMAGE_EXTENSION);
-
-                if (target.exists()) {
-                    CafeBar.builder(this)
-                            .theme(new CafeBarTheme.Custom(ColorHelper.getAttributeColor(this, R.attr.card_background)))
-                            .autoDismiss(false)
-                            .maxLines(4)
-                            .fitSystemWindow()
-                            .typeface(TypefaceHelper.getRegular(this), TypefaceHelper.getBold(this))
-                            .content(String.format(getResources().getString(R.string.wallpaper_download_exist),
-                                    ("\"" +mName + WallpaperHelper.IMAGE_EXTENSION+ "\"")))
-                            .icon(R.drawable.ic_toolbar_download)
-                            .positiveText(R.string.wallpaper_download_exist_replace)
-                            .positiveColor(mColor)
-                            .onPositive(cafeBar -> {
-                                WallpaperHelper.downloadWallpaper(this, mColor, mUrl, mName);
-                                cafeBar.dismiss();
-                            })
-                            .negativeText(R.string.wallpaper_download_exist_new)
-                            .onNegative(cafeBar -> {
-                                WallpaperHelper.downloadWallpaper(this, mColor, mUrl, mName +"_"+ System.currentTimeMillis());
-                                cafeBar.dismiss();
-                            })
-                            .show();
-                    return true;
-                }
-
-                WallpaperHelper.downloadWallpaper(this, mColor, mUrl, mName);
-                return true;
+                WallpaperDownloader.prepare(this)
+                        .wallpaper(mWallpaper)
+                        .start();
+                return;
             }
 
             PermissionHelper.requestStorage(this);
-            return true;
-        } else if (id == R.id.menu_wallpaper_settings) {
-            WallpaperSettingsFragment.showWallpaperSettings(getSupportFragmentManager());
-            return true;
+        } else if (id == R.id.menu_apply) {
+            ApplyPopup popup = ApplyPopup.Builder(this)
+                    .to(view)
+                    .callback((applyPopup, position) -> {
+                        ApplyPopup.Item item = applyPopup.getItems().get(position);
+                        if (item.getType() == ApplyPopup.Type.WALLPAPER_CROP) {
+                            Preferences.get(this).setCropWallpaper(!item.getCheckboxValue());
+                            item.setCheckboxValue(Preferences.get(this).isCropWallpaper());
+
+                            applyPopup.updateItem(position, item);
+                            if (Preferences.get(WallpaperBoardPreviewActivity.this).isCropWallpaper()) {
+                                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                                return;
+                            }
+
+                            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+                            return;
+                        } else if (item.getType() == ApplyPopup.Type.LOCKSCREEN) {
+                            RectF rectF = null;
+                            if (Preferences.get(WallpaperBoardPreviewActivity.this).isCropWallpaper()) {
+                                if (mAttacher != null)
+                                    rectF = mAttacher.getDisplayRect();
+                            }
+
+                            WallpaperApplyTask.prepare(this)
+                                    .wallpaper(mWallpaper)
+                                    .to(WallpaperApplyTask.Apply.LOCKSCREEN)
+                                    .crop(rectF)
+                                    .start(AsyncTask.THREAD_POOL_EXECUTOR);
+                        } else if (item.getType() == ApplyPopup.Type.HOMESCREEN) {
+                            RectF rectF = null;
+                            if (Preferences.get(WallpaperBoardPreviewActivity.this).isCropWallpaper()) {
+                                if (mAttacher != null)
+                                    rectF = mAttacher.getDisplayRect();
+                            }
+
+                            WallpaperApplyTask.prepare(this)
+                                    .wallpaper(mWallpaper)
+                                    .to(WallpaperApplyTask.Apply.HOMESCREEN)
+                                    .crop(rectF)
+                                    .start(AsyncTask.THREAD_POOL_EXECUTOR);
+                        }
+
+                        applyPopup.dismiss();
+                    })
+                    .build();
+
+            popup.removeItem(popup.getItems().size() - 1);
+            popup.show();
         }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
-    public void onClick(View view) {
+    public boolean onLongClick(View view) {
         int id = view.getId();
-        if (id == R.id.fab) {
-            WallpaperHelper.applyWallpaper(this, mAttacher.getDisplayRect(), mColor, mUrl, mName);
+        int res = 0;
+        if (id == R.id.menu_apply) {
+            res = R.string.wallpaper_apply;
+        } else if (id == R.id.menu_save) {
+            res = R.string.wallpaper_save_to_device;
+        } else if (id == R.id.menu_preview) {
+            res = R.string.wallpaper_preview_full;
         }
+
+        if (res == 0) return false;
+
+        Toast.makeText(this, res, Toast.LENGTH_SHORT).show();
+        return true;
     }
 
     @Override
@@ -329,79 +414,266 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
         if (requestCode == PermissionCode.STORAGE) {
             if (grantResults.length > 0 &&
                     grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                WallpaperHelper.downloadWallpaper(this, mColor, mUrl, mName);
+                WallpaperDownloader.prepare(this)
+                        .wallpaper(mWallpaper)
+                        .start();
             } else {
                 Toast.makeText(this, R.string.permission_storage_denied, Toast.LENGTH_LONG).show();
             }
         }
     }
 
+    @Override
+    public void onPanelSlide(View panel, float slideOffset) {
+        if (slideOffset > 0.1f) {
+            if (mIsBottomPanelDragged) return;
+
+            mIsBottomPanelDragged = true;
+            int fromColor = ColorHelper.get(this, R.color.bottomPanelCollapsed);
+            int toColor = ColorHelper.getAttributeColor(this, R.attr.main_background);
+
+            if (mRecyclerView.getAdapter() != null) {
+                WallpaperDetailsAdapter adapter = (WallpaperDetailsAdapter) mRecyclerView.getAdapter();
+                adapter.setWallpaperProperties(mProperties);
+                adapter.setColorPalette(mPalette);
+                adapter.setCategories(mCategories);
+            }
+            AnimationHelper.setBackgroundColor(mBottomPanel, fromColor, toColor)
+                    .interpolator(new LinearOutSlowInInterpolator())
+                    .duration(400)
+                    .start();
+            mName.setVisibility(View.GONE);
+            mAuthor.setVisibility(View.GONE);
+            initBottomPanel(ColorHelper.getTitleTextColor(toColor));
+        } else if (slideOffset == 0f) {
+            if (!mIsBottomPanelDragged) return;
+
+            mIsBottomPanelDragged = false;
+            int fromColor = ColorHelper.getAttributeColor(this, R.attr.main_background);
+            int toColor = ColorHelper.get(this, R.color.bottomPanelCollapsed);
+
+            if (mRecyclerView.getAdapter() != null) {
+                WallpaperDetailsAdapter adapter = (WallpaperDetailsAdapter) mRecyclerView.getAdapter();
+                adapter.setWallpaperProperties(new ArrayList<>());
+                adapter.setColorPalette(new ColorPalette());
+                adapter.setCategories(new ArrayList<>());
+            }
+            AnimationHelper.setBackgroundColor(mBottomPanel, fromColor, toColor)
+                    .interpolator(new LinearOutSlowInInterpolator())
+                    .duration(400)
+                    .start();
+            mName.setVisibility(View.VISIBLE);
+            mAuthor.setVisibility(View.VISIBLE);
+            initBottomPanel(Color.WHITE);
+        }
+    }
+
+    @Override
+    public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState,
+                                    SlidingUpPanelLayout.PanelState newState) {
+        File file = ImageLoader.getInstance().getDiskCache().get(mWallpaper.getUrl());
+        if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED && mTooltip == null
+                && Preferences.get(this).isShowWallpaperTooltip() && !file.exists() &&
+                !Preferences.get(this).isTimeToShowWallpaperPreviewIntro()) {
+            mTooltip = Tooltip.Builder(this)
+                    .to(mMenuPreview)
+                    .content(R.string.wallpaper_tooltip_preview)
+                    .desc(R.string.wallpaper_tooltip_preview_icon_tap)
+                    .descIcon(R.drawable.ic_toolbar_preview_full)
+                    .visibleDontShowAgain(true)
+                    .cancelable(false)
+                    .buttonCallback(tooltip -> {
+                        Preferences.get(this).setShowWallpaperTooltip(!tooltip.getCheckboxState());
+                        tooltip.dismiss();
+                    })
+                    .build();
+            mTooltip.show();
+        }
+    }
+
+    @Override
+    public void onPropertiesReceived(Wallpaper wallpaper) {
+        if (wallpaper == null) return;
+
+        mWallpaper.setDimensions(wallpaper.getDimensions());
+        mWallpaper.setSize(wallpaper.getSize());
+        mWallpaper.setMimeType(wallpaper.getMimeType());
+
+        mProperties = WallpaperProperty.getWallpaperProperties(this, mWallpaper);
+        if (mRecyclerView.getAdapter() != null && mSlidingLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED) {
+            WallpaperDetailsAdapter adapter = (WallpaperDetailsAdapter) mRecyclerView.getAdapter();
+            adapter.setWallpaperProperties(mProperties);
+        }
+    }
+
+    @Override
+    public void onPaletteGenerated(ColorPalette palette) {
+        mPalette = palette;
+        if (mRecyclerView.getAdapter() != null && mSlidingLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED) {
+            WallpaperDetailsAdapter adapter = (WallpaperDetailsAdapter) mRecyclerView.getAdapter();
+            adapter.setColorPalette(mPalette);
+        }
+    }
+
+    private void initBottomPanel(int color) {
+        mName.setText(mWallpaper.getName());
+        mName.setTextColor(color);
+        mAuthor.setText(mWallpaper.getAuthor());
+        mAuthor.setTextColor(ColorHelper.setColorAlpha(color, 0.7f));
+
+        mMenuPreview.setImageDrawable(DrawableHelper.getTintedDrawable(
+                this, R.drawable.ic_toolbar_preview_full, color));
+        mMenuSave.setImageDrawable(DrawableHelper.getTintedDrawable(
+                this, R.drawable.ic_toolbar_download, color));
+        mMenuApply.setImageDrawable(DrawableHelper.getTintedDrawable(
+                this, R.drawable.ic_toolbar_apply_options, color));
+
+        if (getResources().getBoolean(R.bool.enable_wallpaper_download)) {
+            mMenuSave.setVisibility(View.VISIBLE);
+        }
+
+        mMenuPreview.setOnClickListener(this);
+        mMenuSave.setOnClickListener(this);
+        mMenuApply.setOnClickListener(this);
+        mMenuPreview.setOnLongClickListener(this);
+        mMenuSave.setOnLongClickListener(this);
+        mMenuApply.setOnLongClickListener(this);
+    }
+
+    private void resetBottomPadding() {
+        int navBar = WindowHelper.getNavigationBarHeight(this);
+        int bottomPanelHeight = getResources().getDimensionPixelSize(R.dimen.sliding_panel_height);
+        int marginTop = getResources().getDimensionPixelSize(R.dimen.icon_size_small) +
+                (getResources().getDimensionPixelSize(R.dimen.content_margin) * 2);
+        int paddingRight = navBar;
+        int paddingBottom = 0;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            marginTop += WindowHelper.getStatusBarHeight(this);
+
+            if (mBack.getLayoutParams() instanceof FrameLayout.LayoutParams) {
+                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) mBack.getLayoutParams();
+                params.topMargin = WindowHelper.getStatusBarHeight(this);
+            }
+
+            boolean tabletMode = getResources().getBoolean(R.bool.android_helpers_tablet_mode);
+            if (tabletMode && getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                int halfScreen = WindowHelper.getScreenSize(this).y / 2;
+                marginTop = halfScreen - marginTop;
+            }
+
+            if (tabletMode || getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                bottomPanelHeight += navBar;
+                paddingRight = 0;
+                paddingBottom = navBar;
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                if (isInMultiWindowMode()) {
+                    bottomPanelHeight = getResources().getDimensionPixelSize(R.dimen.sliding_panel_height);
+                    paddingBottom = 0;
+                }
+            }
+        }
+
+        mSlidingLayout.setPanelHeight(bottomPanelHeight);
+        mBottomPanel.setPadding(0, 0, paddingRight, 0);
+        mRecyclerView.setPadding(0, 0, 0, paddingBottom);
+
+        if (mBottomPanel.getLayoutParams() instanceof SlidingUpPanelLayout.LayoutParams) {
+            SlidingUpPanelLayout.LayoutParams params = (SlidingUpPanelLayout.LayoutParams)
+                    mBottomPanel.getLayoutParams();
+            params.topMargin = marginTop;
+        }
+    }
+
     private void loadWallpaper(String url) {
+        if (mAttacher != null) {
+            mAttacher.cleanup();
+            mAttacher = null;
+        }
+
+        File file = ImageLoader.getInstance().getDiskCache().get(mWallpaper.getUrl());
+        if (file.exists()) {
+            LogUtil.d("full size wallpaper available in cache: " +file.getName());
+            url = mWallpaper.getUrl();
+        }
+
+        WallpaperPropertiesLoaderTask.prepare(this)
+                .callback(this)
+                .wallpaper(mWallpaper)
+                .start(AsyncTask.THREAD_POOL_EXECUTOR);
+
         DisplayImageOptions.Builder options = ImageConfig.getRawDefaultImageOptions();
         options.cacheInMemory(false);
         options.cacheOnDisk(true);
 
         ImageLoader.getInstance().handleSlowNetwork(true);
-        ImageLoader.getInstance().displayImage(url, mWallpaper, options.build(), new SimpleImageLoadingListener() {
+        ImageLoader.getInstance().displayImage(url, mImageView, options.build(), new SimpleImageLoadingListener() {
 
             @Override
             public void onLoadingStarted(String imageUri, View view) {
                 super.onLoadingStarted(imageUri, view);
-                if (Preferences.get(WallpaperBoardPreviewActivity.this).isWallpaperCrop()) {
+                if (Preferences.get(WallpaperBoardPreviewActivity.this).isCropWallpaper()) {
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                 }
 
                 AnimationHelper.fade(mProgress).start();
-                AnimationHelper.fade(mBottomProgress).start();
             }
 
             @Override
             public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
                 super.onLoadingFailed(imageUri, view, failReason);
-                int text = ColorHelper.getTitleTextColor(mColor);
-                onWallpaperLoaded(text);
+                if (mWallpaper.getColor() == 0) {
+                    mWallpaper.setColor(ColorHelper.getAttributeColor(
+                            WallpaperBoardPreviewActivity.this, R.attr.colorAccent));
+                }
+
+                onWallpaperLoaded();
+                if (mImageView.getDrawable() != null) {
+                    Bitmap bitmap = ((BitmapDrawable) mImageView.getDrawable()).getBitmap();
+                    WallpaperPaletteLoaderTask.with(bitmap)
+                            .callback(WallpaperBoardPreviewActivity.this)
+                            .start();
+                }
             }
 
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                 super.onLoadingComplete(imageUri, view, loadedImage);
-                if (loadedImage != null) {
+                WallpaperPaletteLoaderTask.with(loadedImage)
+                        .callback(WallpaperBoardPreviewActivity.this)
+                        .start();
+
+                if (loadedImage != null && mWallpaper.getColor() == 0) {
                     Palette.from(loadedImage).generate(palette -> {
                         int accent = ColorHelper.getAttributeColor(
                                 WallpaperBoardPreviewActivity.this, R.attr.colorAccent);
                         int color = palette.getVibrantColor(accent);
-                        mColor = color;
-                        int text = ColorHelper.getTitleTextColor(color);
-                        mFab.setBackgroundTintList(ColorHelper.getColorStateList(color));
-                        onWallpaperLoaded(text);
+                        if (color == accent)
+                            color = palette.getMutedColor(accent);
+
+                        mWallpaper.setColor(color);
+                        Database.get(WallpaperBoardPreviewActivity.this).updateWallpaper(mWallpaper);
+
+                        onWallpaperLoaded();
                     });
+                    return;
                 }
+
+                onWallpaperLoaded();
             }
-        }, (imageUri, view, current, total) -> {
-            mBottomProgress.setMax(total);
-            mBottomProgress.setProgress(current);
-        });
+        }, null);
     }
 
-    private void onWallpaperLoaded(@ColorInt int textColor) {
-        mAttacher = new PhotoViewAttacher(mWallpaper);
+    private void onWallpaperLoaded() {
+        mAttacher = new PhotoViewAttacher(mImageView);
         mAttacher.setScaleType(ImageView.ScaleType.CENTER_CROP);
         AnimationHelper.fade(mProgress).start();
-        AnimationHelper.fade(mBottomProgress).start();
         mRunnable = null;
         mHandler = null;
         mIsResumed = false;
 
-        mFab.setImageDrawable(DrawableHelper.getTintedDrawable(this,
-                R.drawable.ic_fab_apply, textColor));
-        AnimationHelper.show(mFab)
-                .interpolator(new LinearOutSlowInInterpolator())
-                .start();
-
-        try {
-            TapIntroHelper.showWallpaperPreviewIntro(this, mColor);
-        } catch (Exception e) {
-            LogUtil.e(Log.getStackTraceString(e));
-        }
+        TapIntroHelper.showWallpaperPreviewIntro(this, mWallpaper.getColor());
     }
 }

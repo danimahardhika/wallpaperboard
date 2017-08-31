@@ -1,23 +1,24 @@
 package com.dm.wallpaper.board.helpers;
 
 import android.content.Context;
-import android.content.pm.ActivityInfo;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.util.Log;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.danimahardhika.android.helpers.core.ColorHelper;
-import com.danimahardhika.android.helpers.core.UnitHelper;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.preferences.Preferences;
+import com.dm.wallpaper.board.utils.LogUtil;
 import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetSequence;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+
+import butterknife.ButterKnife;
 
 /*
  * Wallpaper Board
@@ -39,48 +40,59 @@ import com.getkeepsafe.taptargetview.TapTargetSequence;
 
 public class TapIntroHelper {
 
-    public static void showWallpapersIntro(@NonNull Context context, @Nullable RecyclerView recyclerView) {
-        if (Preferences.get(context).isTimeToShowWallpapersIntro()) {
+    public static void showWallpaperPreviewIntro(@NonNull Context context, @ColorInt int color) {
+        if (Preferences.get(context).isTimeToShowWallpaperPreviewIntro()) {
             AppCompatActivity activity = (AppCompatActivity) context;
 
-            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-            Toolbar toolbar = (Toolbar) activity.findViewById(R.id.toolbar);
+            RelativeLayout rootView = (RelativeLayout) activity.findViewById(R.id.bottom_panel);
+            if (rootView == null) return;
 
             new Handler().postDelayed(() -> {
-                int primary = ColorHelper.getAttributeColor(context, R.attr.toolbar_icon);
-                int secondary = ColorHelper.setColorAlpha(primary, 0.7f);
+                try {
+                    int baseColor = color;
+                    if (baseColor == 0) {
+                        baseColor = ColorHelper.getAttributeColor(context, R.attr.colorAccent);
+                    }
 
-                TapTargetSequence tapTargetSequence = new TapTargetSequence(activity);
-                tapTargetSequence.continueOnCancel(true);
+                    int primary = ColorHelper.getTitleTextColor(baseColor);
+                    int secondary = ColorHelper.setColorAlpha(primary, 0.7f);
 
-                Typeface title = TypefaceHelper.getMedium(context);
-                Typeface description = TypefaceHelper.getRegular(context);
+                    TapTargetSequence tapTargetSequence = new TapTargetSequence(activity);
+                    tapTargetSequence.continueOnCancel(true);
 
-                if (toolbar != null) {
-                    TapTarget tapTarget = TapTarget.forToolbarNavigationIcon(toolbar,
-                            context.getResources().getString(R.string.tap_intro_wallpapers_navigation),
-                            context.getResources().getString(R.string.tap_intro_wallpapers_navigation_desc))
+                    Typeface title = TypefaceHelper.getMedium(context);
+                    Typeface description = TypefaceHelper.getRegular(context);
+
+                    ImageView apply = ButterKnife.findById(rootView, R.id.menu_apply);
+                    ImageView save = ButterKnife.findById(rootView, R.id.menu_save);
+                    ImageView preview = ButterKnife.findById(rootView, R.id.menu_preview);
+
+                    TapTarget tapTarget = TapTarget.forView(apply,
+                            context.getResources().getString(R.string.tap_intro_wallpaper_preview_apply),
+                            context.getResources().getString(R.string.tap_intro_wallpaper_preview_apply_desc))
                             .titleTextColorInt(primary)
                             .descriptionTextColorInt(secondary)
                             .targetCircleColorInt(primary)
-                            .drawShadow(Preferences.get(context).isShadowEnabled());
+                            .outerCircleColorInt(baseColor)
+                            .drawShadow(true);
 
-                    TapTarget tapTarget1 = TapTarget.forToolbarMenuItem(toolbar, R.id.menu_search,
-                            context.getResources().getString(R.string.tap_intro_wallpapers_search),
-                            context.getResources().getString(R.string.tap_intro_wallpapers_search_desc))
+                    TapTarget tapTarget1 = TapTarget.forView(save,
+                            context.getResources().getString(R.string.tap_intro_wallpaper_preview_save),
+                            context.getResources().getString(R.string.tap_intro_wallpaper_preview_save_desc))
                             .titleTextColorInt(primary)
                             .descriptionTextColorInt(secondary)
                             .targetCircleColorInt(primary)
-                            .drawShadow(Preferences.get(context).isShadowEnabled());
+                            .outerCircleColorInt(baseColor)
+                            .drawShadow(true);
 
-                    TapTarget tapTarget2 = TapTarget.forToolbarMenuItem(toolbar, R.id.menu_filter,
-                            context.getResources().getString(R.string.tap_intro_wallpapers_filter),
-                            context.getResources().getString(R.string.tap_intro_wallpapers_filter_desc))
+                    TapTarget tapTarget2 = TapTarget.forView(preview,
+                            context.getResources().getString(R.string.tap_intro_wallpaper_preview_full),
+                            context.getResources().getString(R.string.tap_intro_wallpaper_preview_full_desc))
                             .titleTextColorInt(primary)
                             .descriptionTextColorInt(secondary)
                             .targetCircleColorInt(primary)
-                            .drawShadow(Preferences.get(context).isShadowEnabled());
+                            .outerCircleColorInt(baseColor)
+                            .drawShadow(true);
 
                     if (title != null) {
                         tapTarget.titleTypeface(title);
@@ -95,87 +107,21 @@ public class TapIntroHelper {
                     }
 
                     tapTargetSequence.target(tapTarget);
-                    tapTargetSequence.target(tapTarget1);
-                    tapTargetSequence.target(tapTarget2);
-                }
-
-                if (recyclerView != null) {
-                    int position = 0;
-                    if (recyclerView.getAdapter() != null) {
-                        if (position < recyclerView.getAdapter().getItemCount()) {
-                            RecyclerView.ViewHolder holder = recyclerView.findViewHolderForAdapterPosition(position);
-                            if (holder == null) return;
-
-                            View view = holder.itemView.findViewById(R.id.image);
-                            if (view != null) {
-                                float targetRadius = UnitHelper.toDp(context, (float) view.getMeasuredWidth()) - 10f;
-
-                                String desc = String.format(context.getResources().getString(R.string.tap_intro_wallpapers_option_desc),
-                                        context.getResources().getBoolean(R.bool.enable_wallpaper_download) ?
-                                                context.getResources().getString(R.string.tap_intro_wallpapers_option_desc_download) : "");
-
-                                TapTarget tapTarget = TapTarget.forView(view,
-                                        context.getResources().getString(R.string.tap_intro_wallpapers_option),
-                                        desc)
-                                        .titleTextColorInt(primary)
-                                        .descriptionTextColorInt(secondary)
-                                        .targetCircleColorInt(primary)
-                                        .targetRadius((int) targetRadius)
-                                        .tintTarget(false)
-                                        .drawShadow(Preferences.get(context).isShadowEnabled());
-
-                                TapTarget tapTarget1 = TapTarget.forView(view,
-                                        context.getResources().getString(R.string.tap_intro_wallpapers_preview),
-                                        context.getResources().getString(R.string.tap_intro_wallpapers_preview_desc))
-                                        .titleTextColorInt(primary)
-                                        .descriptionTextColorInt(secondary)
-                                        .targetCircleColorInt(primary)
-                                        .targetRadius((int) targetRadius)
-                                        .tintTarget(false)
-                                        .drawShadow(Preferences.get(context).isShadowEnabled());
-
-                                if (title != null) {
-                                    tapTarget.titleTypeface(title);
-                                    tapTarget1.titleTypeface(title);
-                                }
-
-                                if (description != null) {
-                                    tapTarget.descriptionTypeface(description);
-                                    tapTarget1.descriptionTypeface(description);
-                                }
-
-                                tapTargetSequence.target(tapTarget);
-                                tapTargetSequence.target(tapTarget1);
-                            }
-
-                            View favorite = holder.itemView.findViewById(R.id.favorite);
-                            if (favorite != null) {
-                                TapTarget tapTarget = TapTarget.forView(favorite,
-                                        context.getResources().getString(R.string.tap_intro_wallpapers_favorite),
-                                        context.getResources().getString(R.string.tap_intro_wallpapers_favorite_desc))
-                                        .titleTextColorInt(primary)
-                                        .descriptionTextColorInt(secondary)
-                                        .targetCircleColorInt(primary)
-                                        .drawShadow(Preferences.get(context).isShadowEnabled());
-
-                                if (title != null) {
-                                    tapTarget.titleTypeface(title);
-                                }
-
-                                if (description != null) {
-                                    tapTarget.descriptionTypeface(description);
-                                }
-
-                                tapTargetSequence.target(tapTarget);
-                            }
-                        }
+                    if (context.getResources().getBoolean(R.bool.enable_wallpaper_download)) {
+                        tapTargetSequence.target(tapTarget1);
                     }
+                    tapTargetSequence.target(tapTarget2);
 
                     tapTargetSequence.listener(new TapTargetSequence.Listener() {
                         @Override
                         public void onSequenceFinish() {
-                            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
-                            Preferences.get(context).setTimeToShowWallpapersIntro(false);
+                            Preferences.get(context).setTimeToShowWallpaperPreviewIntro(false);
+
+                            SlidingUpPanelLayout panelLayout = ButterKnife.findById(activity, R.id.sliding_layout);
+                            if (panelLayout != null) {
+                                new Handler().postDelayed(() -> panelLayout.setPanelState(
+                                        SlidingUpPanelLayout.PanelState.EXPANDED), 300);
+                            }
                         }
 
                         @Override
@@ -189,109 +135,9 @@ public class TapIntroHelper {
                         }
                     });
                     tapTargetSequence.start();
+                } catch (Exception e) {
+                    LogUtil.e(Log.getStackTraceString(e));
                 }
-            }, 200);
-        }
-    }
-
-    public static void showWallpaperPreviewIntro(@NonNull Context context, @ColorInt int color) {
-        if (Preferences.get(context).isTimeToShowWallpaperPreviewIntro()) {
-            AppCompatActivity activity = (AppCompatActivity) context;
-
-            Toolbar toolbar = (Toolbar) activity.findViewById(R.id.toolbar);
-
-            new Handler().postDelayed(() -> {
-                int primary = ColorHelper.getTitleTextColor(color);
-                int secondary = ColorHelper.setColorAlpha(primary, 0.7f);
-
-                TapTargetSequence tapTargetSequence = new TapTargetSequence(activity);
-                tapTargetSequence.continueOnCancel(true);
-
-                Typeface title = TypefaceHelper.getMedium(context);
-                Typeface description = TypefaceHelper.getRegular(context);
-
-                if (toolbar != null) {
-                    TapTarget tapTarget = TapTarget.forToolbarMenuItem(toolbar, R.id.menu_wallpaper_settings,
-                            context.getResources().getString(R.string.tap_intro_wallpaper_preview_settings),
-                            context.getResources().getString(R.string.tap_intro_wallpaper_preview_settings_desc))
-                            .titleTextColorInt(primary)
-                            .descriptionTextColorInt(secondary)
-                            .targetCircleColorInt(primary)
-                            .outerCircleColorInt(color)
-                            .drawShadow(Preferences.get(context).isShadowEnabled());
-
-                    if (title != null) {
-                        tapTarget.titleTypeface(title);
-                    }
-
-                    if (description != null) {
-                        tapTarget.descriptionTypeface(description);
-                    }
-
-                    tapTargetSequence.target(tapTarget);
-
-                    if (context.getResources().getBoolean(R.bool.enable_wallpaper_download)) {
-                        TapTarget tapTarget1 = TapTarget.forToolbarMenuItem(toolbar, R.id.menu_save,
-                                context.getResources().getString(R.string.tap_intro_wallpaper_preview_save),
-                                context.getResources().getString(R.string.tap_intro_wallpaper_preview_save_desc))
-                                .titleTextColorInt(primary)
-                                .descriptionTextColorInt(secondary)
-                                .targetCircleColorInt(primary)
-                                .outerCircleColorInt(color)
-                                .drawShadow(Preferences.get(context).isShadowEnabled());
-
-                        if (title != null) {
-                            tapTarget1.titleTypeface(title);
-                        }
-
-                        if (description != null) {
-                            tapTarget1.descriptionTypeface(description);
-                        }
-
-                        tapTargetSequence.target(tapTarget1);
-                    }
-                }
-
-                View fab = activity.findViewById(R.id.fab);
-                if (fab != null) {
-                    TapTarget tapTarget = TapTarget.forView(fab,
-                            context.getResources().getString(R.string.tap_intro_wallpaper_preview_apply),
-                            context.getResources().getString(R.string.tap_intro_wallpaper_preview_apply_desc))
-                            .titleTextColorInt(primary)
-                            .descriptionTextColorInt(secondary)
-                            .targetCircleColorInt(primary)
-                            .outerCircleColorInt(color)
-                            .tintTarget(false)
-                            .drawShadow(Preferences.get(context).isShadowEnabled());
-
-                    if (title != null) {
-                        tapTarget.titleTypeface(title);
-                    }
-
-                    if (description != null) {
-                        tapTarget.descriptionTypeface(description);
-                    }
-
-                    tapTargetSequence.target(tapTarget);
-                }
-
-                tapTargetSequence.listener(new TapTargetSequence.Listener() {
-                    @Override
-                    public void onSequenceFinish() {
-                        Preferences.get(context).setTimeToShowWallpaperPreviewIntro(false);
-                    }
-
-                    @Override
-                    public void onSequenceStep(TapTarget tapTarget, boolean b) {
-
-                    }
-
-                    @Override
-                    public void onSequenceCanceled(TapTarget tapTarget) {
-
-                    }
-                });
-                tapTargetSequence.start();
             }, 100);
         }
     }

@@ -1,5 +1,7 @@
 package com.dm.wallpaper.board.items;
 
+import com.nostra13.universalimageloader.core.assist.ImageSize;
+
 /*
  * Wallpaper Board
  *
@@ -25,19 +27,14 @@ public class Wallpaper {
     private final String mAuthor;
     private final String mThumbUrl;
     private final String mUrl;
-    private String mCategory;
+    private final String mCategory;
+    private int mColor;
+    private String mMimeType;
+    private int mSize;
     private boolean mIsFavorite;
+    private ImageSize mDimensions;
 
-    public Wallpaper(int id, String name, String author, String url, String thumbUrl, boolean isFavorite) {
-        mId = id;
-        mName = name;
-        mAuthor = author;
-        mUrl = url;
-        mThumbUrl = thumbUrl;
-        mIsFavorite = isFavorite;
-    }
-
-    public Wallpaper(String name, String author, String url, String thumbUrl, String category) {
+    private Wallpaper(String name, String author, String url, String thumbUrl, String category) {
         mName = name;
         mAuthor = author;
         mUrl = url;
@@ -49,6 +46,10 @@ public class Wallpaper {
         return mId;
     }
 
+    public void setId(int id) {
+        mId = id;
+    }
+
     public String getName() {
         return mName;
     }
@@ -57,20 +58,52 @@ public class Wallpaper {
         return mAuthor;
     }
 
-    public String getThumbUrl() {
-        return mThumbUrl;
-    }
-
     public String getUrl() {
         return mUrl;
+    }
+
+    public String getThumbUrl() {
+        return mThumbUrl;
     }
 
     public String getCategory() {
         return mCategory;
     }
 
+    public int getColor() {
+        return mColor;
+    }
+
+    public String getMimeType() {
+        return mMimeType;
+    }
+
+    public int getSize() {
+        return mSize;
+    }
+
+    public ImageSize getDimensions() {
+        return mDimensions;
+    }
+
     public boolean isFavorite() {
         return mIsFavorite;
+    }
+
+    public void setColor(int color) {
+        mColor = color;
+    }
+
+    public void setMimeType(String mimeType) {
+        mMimeType = mimeType;
+    }
+
+    public void setSize(int size) {
+        mSize = size;
+    }
+
+    public void setDimensions(ImageSize dimensions) {
+        mDimensions = dimensions;
     }
 
     public void setFavorite(boolean isFavorite) {
@@ -85,5 +118,96 @@ public class Wallpaper {
                     mCategory.equals(((Wallpaper) object).getCategory());
         }
         return equals;
+    }
+
+    public static Builder Builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+
+        private int mId;
+        private String mName;
+        private String mAuthor;
+        private String mThumbUrl;
+        private String mUrl;
+        private String mCategory;
+        private int mColor;
+        private String mMimeType;
+        private int mSize;
+        private boolean mIsFavorite;
+        private ImageSize mDimensions;
+
+        private Builder() {
+            mId = -1;
+            mSize = 0;
+            mColor = 0;
+        }
+
+        public Builder id(int id) {
+            mId = id;
+            return this;
+        }
+
+        public Builder name(String name) {
+            mName = name;
+            return this;
+        }
+
+        public Builder author(String author) {
+            mAuthor = author;
+            return this;
+        }
+
+        public Builder url(String url) {
+            mUrl = url;
+            return this;
+        }
+
+        public Builder thumbUrl(String thumbUrl) {
+            mThumbUrl = thumbUrl;
+            return this;
+        }
+
+        public Builder category(String category) {
+            mCategory = category;
+            return this;
+        }
+
+        public Builder favorite(boolean isFavorite) {
+            mIsFavorite = isFavorite;
+            return this;
+        }
+
+        public Builder dimensions(ImageSize dimensions) {
+            mDimensions = dimensions;
+            return this;
+        }
+
+        public Builder mimeType(String mimeType) {
+            mMimeType = mimeType;
+            return this;
+        }
+
+        public Builder size(int size) {
+            mSize = size;
+            return this;
+        }
+
+        public Builder color(int color) {
+            mColor = color;
+            return this;
+        }
+
+        public Wallpaper build() {
+            Wallpaper wallpaper = new Wallpaper(mName, mAuthor, mUrl, mThumbUrl, mCategory);
+            wallpaper.setId(mId);
+            wallpaper.setDimensions(mDimensions);
+            wallpaper.setFavorite(mIsFavorite);
+            wallpaper.setMimeType(mMimeType);
+            wallpaper.setSize(mSize);
+            wallpaper.setColor(mColor);
+            return wallpaper;
+        }
     }
 }

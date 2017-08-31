@@ -2,14 +2,14 @@ package com.dm.wallpaper.board.fragments;
 
 import android.content.res.Configuration;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -26,18 +26,19 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 
-import com.danimahardhika.android.helpers.animation.AnimationHelper;
 import com.danimahardhika.android.helpers.core.ColorHelper;
 import com.danimahardhika.android.helpers.core.DrawableHelper;
-import com.danimahardhika.android.helpers.core.SoftKeyboardHelper;
 import com.danimahardhika.android.helpers.core.ViewHelper;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
+import com.dm.wallpaper.board.adapters.CategoriesAdapter;
 import com.dm.wallpaper.board.adapters.WallpapersAdapter;
+import com.dm.wallpaper.board.applications.WallpaperBoardApplication;
 import com.dm.wallpaper.board.databases.Database;
 import com.dm.wallpaper.board.items.Filter;
 import com.dm.wallpaper.board.items.Wallpaper;
 import com.dm.wallpaper.board.preferences.Preferences;
+import com.dm.wallpaper.board.utils.Extras;
 import com.dm.wallpaper.board.utils.LogUtil;
 
 import java.util.ArrayList;
@@ -66,39 +67,61 @@ import static com.dm.wallpaper.board.helpers.ViewHelper.resetViewBottomPadding;
  * limitations under the License.
  */
 
-public class WallpaperSearchFragment extends Fragment {
+public class CategoryWallpapersFragment extends Fragment {
 
-    @BindView(R2.id.recyclerview)
-    RecyclerView mRecyclerView;
-    @BindView(R2.id.search_result)
-    TextView mSearchResult;
+    @BindView(R2.id.appbar)
+    AppBarLayout mAppBar;
     @BindView(R2.id.toolbar)
     Toolbar mToolbar;
+    @BindView(R2.id.category)
+    TextView mCategory;
+    @BindView(R2.id.count)
+    TextView mCount;
+    @BindView(R2.id.search_result)
+    TextView mSearchResult;
+    @BindView(R2.id.recyclerview)
+    RecyclerView mRecyclerView;
+
+    private String mCategoryName;
+    private int mCategoryCount;
 
     private SearchView mSearchView;
     private WallpapersAdapter mAdapter;
     private AsyncTask<Void, Void, Boolean> mAsyncTask;
 
+    public static CategoryWallpapersFragment newInstance(String category, int count) {
+        CategoryWallpapersFragment fragment = new CategoryWallpapersFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(Extras.EXTRA_CATEGORY, category);
+        bundle.putInt(Extras.EXTRA_COUNT, count);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_wallpaper_search, container, false);
+        View view = inflater.inflate(R.layout.fragment_category_wallpapers, container, false);
         ButterKnife.bind(this, view);
 
         if (!Preferences.get(getActivity()).isShadowEnabled()) {
             View shadow = ButterKnife.findById(view, R.id.shadow);
             if (shadow != null) shadow.setVisibility(View.GONE);
         }
-
-        ViewHelper.setupToolbar(mToolbar);
         return view;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mCategoryName = getArguments().getString(Extras.EXTRA_CATEGORY);
+        mCategoryCount = getArguments().getInt(Extras.EXTRA_COUNT);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setHasOptionsMenu(true);
-        resetViewBottomPadding(mRecyclerView, true);
+        ViewHelper.setupToolbar(mToolbar);
 
         int color = ColorHelper.getAttributeColor(getActivity(), R.attr.toolbar_icon);
         mToolbar.setTitle("");
@@ -106,10 +129,31 @@ public class WallpaperSearchFragment extends Fragment {
                 getActivity(), R.drawable.ic_toolbar_back, color));
         ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
 
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mCategory.setText(mCategoryName);
+        String count = mCategoryCount +" "+
+                getActivity().getResources().getString(R.string.navigation_view_wallpapers);
+        mCount.setText(count);
+
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),
                 getActivity().getResources().getInteger(R.integer.wallpapers_column_count)));
-        mRecyclerView.setHasFixedSize(false);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setHasFixedSize(true);
+
+        if (WallpaperBoardApplication.getConfiguration().getWallpapersGrid() ==
+                WallpaperBoardApplication.GridStyle.FLAT) {
+            int padding = getActivity().getResources().getDimensionPixelSize(R.dimen.card_margin);
+            mRecyclerView.setPadding(padding, padding, 0, 0);
+        }
+        resetViewBottomPadding(mRecyclerView, true);
+
+        initAppBar();
+
+        color = ColorHelper.getAttributeColor(getActivity(), android.R.attr.textColorPrimary);
+        Drawable drawable = DrawableHelper.getTintedDrawable(
+                getActivity(), R.drawable.ic_toolbar_search, color);
+        mSearchResult.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null);
+
+        getWallpapers();
     }
 
     @Override
@@ -128,7 +172,7 @@ public class WallpaperSearchFragment extends Fragment {
 
         MenuItemCompat.expandActionView(search);
         mSearchView.setIconifiedByDefault(false);
-        mSearchView.requestFocus();
+        mSearchView.clearFocus();
 
         ViewHelper.setSearchViewTextColor(mSearchView, color);
         ViewHelper.setSearchViewBackgroundColor(mSearchView, Color.TRANSPARENT);
@@ -139,16 +183,13 @@ public class WallpaperSearchFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String string) {
-                if (string.length() == 0) {
-                    clearAdapter();
-                }
-                return false;
+                filterSearch(string);
+                return true;
             }
 
             @Override
             public boolean onQueryTextSubmit(String string) {
                 mSearchView.clearFocus();
-                getWallpapers(string);
                 return true;
             }
         });
@@ -175,34 +216,47 @@ public class WallpaperSearchFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        if (mAsyncTask != null) mAsyncTask.cancel(true);
+        CategoriesAdapter.sIsClickable = true;
+        if (mAsyncTask != null) {
+            mAsyncTask.cancel(true);
+        }
         super.onDestroy();
     }
 
-    public boolean isSearchQueryEmpty() {
-        return mSearchView.getQuery() == null || mSearchView.getQuery().length() == 0;
+    private void initAppBar() {
+        mAppBar.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
+            int maxScroll = mAppBar.getTotalScrollRange();
+            float percentage = (float) Math.abs(verticalOffset) / (float) maxScroll;
+
+            if (percentage == 0f) {
+                ColorHelper.setupStatusBarIconColor(getActivity());
+            } else if (percentage == 1f) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    View view = getActivity().getWindow().getDecorView();
+                    if (view != null) {
+                        view.setSystemUiVisibility(0);
+                    }
+                }
+            }
+        });
     }
 
-    public void filterSearch(String query) {
-        getWallpapers(query);
-    }
-
-    private void clearAdapter() {
-        if (mAdapter == null) return;
-
-        mAdapter.clearItems();
-        if (mSearchResult.getVisibility() == View.VISIBLE) {
-            AnimationHelper.fade(mSearchResult).start();
+    private void filterSearch(String query) {
+        try {
+            mAdapter.search(query);
+            if (mAdapter.getItemCount() == 0) {
+                String text = String.format(getActivity().getResources().getString(
+                        R.string.search_result_empty), query);
+                mSearchResult.setText(text);
+                mSearchResult.setVisibility(View.VISIBLE);
+            }
+            else mSearchResult.setVisibility(View.GONE);
+        } catch (Exception e) {
+            LogUtil.e(Log.getStackTraceString(e));
         }
-
-        AnimationHelper.setBackgroundColor(mRecyclerView,
-                ((ColorDrawable) mRecyclerView.getBackground()).getColor(),
-                Color.TRANSPARENT)
-                .interpolator(new LinearOutSlowInInterpolator())
-                .start();
     }
 
-    private void getWallpapers(String query) {
+    private void getWallpapers() {
         mAsyncTask = new AsyncTask<Void, Void, Boolean>() {
 
             List<Wallpaper> wallpapers;
@@ -218,14 +272,8 @@ public class WallpaperSearchFragment extends Fragment {
                 while (!isCancelled()) {
                     try {
                         Thread.sleep(1);
-                        if (query == null || query.length() == 0) {
-                            return false;
-                        }
-
                         Filter filter = new Filter();
-                        filter.add(Filter.Create(Filter.Column.NAME).setQuery(query));
-                        filter.add(Filter.Create(Filter.Column.AUTHOR).setQuery(query));
-                        filter.add(Filter.Create(Filter.Column.CATEGORY).setQuery(query));
+                        filter.add(Filter.Create(Filter.Column.CATEGORY).setQuery(mCategoryName));
 
                         wallpapers = Database.get(getActivity()).getFilteredWallpapers(filter);
                         return true;
@@ -243,47 +291,11 @@ public class WallpaperSearchFragment extends Fragment {
                 mAsyncTask = null;
 
                 if (aBoolean) {
-                    mAdapter = new WallpapersAdapter(getActivity(), wallpapers, false, false);
+                    setHasOptionsMenu(true);
+                    mAdapter = new WallpapersAdapter(getActivity(), wallpapers, false, true);
                     mRecyclerView.setAdapter(mAdapter);
-
-                    if (mAdapter.getItemCount() == 0) {
-                        Drawable drawable = DrawableHelper.getTintedDrawable(
-                                getActivity(), R.drawable.ic_toolbar_search, Color.WHITE);
-
-                        String text = String.format(getActivity().getResources().getString(
-                                R.string.search_result_empty), query);
-                        mSearchResult.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null);
-                        mSearchResult.setText(text);
-                        if (mSearchResult.getVisibility() == View.GONE) {
-                            AnimationHelper.fade(mSearchResult).start();
-                        }
-
-                        AnimationHelper.setBackgroundColor(mRecyclerView,
-                                ((ColorDrawable) mRecyclerView.getBackground()).getColor(),
-                                Color.TRANSPARENT)
-                                .interpolator(new LinearOutSlowInInterpolator())
-                                .start();
-                    } else {
-                        if (mSearchResult.getVisibility() == View.VISIBLE) {
-                            AnimationHelper.fade(mSearchResult).start();
-                        }
-
-                        AnimationHelper.setBackgroundColor(mRecyclerView,
-                                ((ColorDrawable) mRecyclerView.getBackground()).getColor(),
-                                ColorHelper.getAttributeColor(getActivity(), R.attr.main_background))
-                                .interpolator(new LinearOutSlowInInterpolator())
-                                .start();
-                    }
-                } else {
-                    if (query == null || query.length() == 0) {
-                        mSearchView.setQuery("", false);
-                        clearAdapter();
-
-                        mSearchView.requestFocus();
-                        SoftKeyboardHelper.openKeyboard(getActivity());
-                    }
                 }
             }
-        }.execute();
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 }

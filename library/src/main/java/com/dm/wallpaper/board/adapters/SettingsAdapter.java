@@ -208,14 +208,9 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     case LANGUAGE:
                         LanguagesFragment.showLanguageChooser(((AppCompatActivity) mContext).getSupportFragmentManager());
                         break;
-                    case COLORED_CARD:
-                        Preferences.get(mContext).setColoredWallpapersCard(
-                                !Preferences.get(mContext).isColoredWallpapersCard());
-                        checkBox.setChecked(Preferences.get(mContext).isColoredWallpapersCard());
-                        break;
                     case RESET_TUTORIAL:
-                        Preferences.get(mContext).setTimeToShowWallpapersIntro(true);
                         Preferences.get(mContext).setTimeToShowWallpaperPreviewIntro(true);
+                        Preferences.get(mContext).setShowWallpaperTooltip(true);
 
                         Toast.makeText(mContext, R.string.pref_others_reset_tutorial_reset, Toast.LENGTH_LONG).show();
                         break;
