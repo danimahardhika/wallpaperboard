@@ -57,15 +57,16 @@ public class JsonHelper {
     public static Wallpaper getWallpaper(@NonNull Object object) {
         if (object instanceof Map) {
             JsonStructure jsonStructure = WallpaperBoardApplication.getConfiguration().getJsonStructure();
-            JsonStructure.WallpaperStructure wallpaperStructure = jsonStructure.wallpaperStructure();
+            JsonStructure.WallpaperStructure wallpaperStructure = jsonStructure.getWallpaper();
 
             Map map = (Map) object;
-            return new Wallpaper(
-                    (String) map.get(wallpaperStructure.getName()),
-                    (String) map.get(wallpaperStructure.getAuthor()),
-                    (String) map.get(wallpaperStructure.getUrl()),
-                    getThumbUrl(map),
-                    (String) map.get(wallpaperStructure.getCategory()));
+            return Wallpaper.Builder()
+                    .name((String) map.get(wallpaperStructure.getName()))
+                    .author((String) map.get(wallpaperStructure.getAuthor()))
+                    .url((String) map.get(wallpaperStructure.getUrl()))
+                    .thumbUrl(getThumbUrl(map))
+                    .category((String) map.get(wallpaperStructure.getCategory()))
+                    .build();
         }
         return null;
     }
@@ -74,10 +75,12 @@ public class JsonHelper {
     public static Category getCategory(@NonNull Object object) {
         if (object instanceof Map) {
             JsonStructure jsonStructure = WallpaperBoardApplication.getConfiguration().getJsonStructure();
-            JsonStructure.CategoryStructure categoryStructure = jsonStructure.categoryStructure();
+            JsonStructure.CategoryStructure categoryStructure = jsonStructure.getCategory();
 
             Map map = (Map) object;
-            return new Category((String) map.get(categoryStructure.getName()));
+            return Category.Builder()
+                    .name((String) map.get(categoryStructure.getName()))
+                    .build();
         }
         return null;
     }
@@ -94,7 +97,7 @@ public class JsonHelper {
 
     public static String getThumbUrl(@NonNull Map map) {
         JsonStructure jsonStructure = WallpaperBoardApplication.getConfiguration().getJsonStructure();
-        JsonStructure.WallpaperStructure wallpaperStructure = jsonStructure.wallpaperStructure();
+        JsonStructure.WallpaperStructure wallpaperStructure = jsonStructure.getWallpaper();
 
         String url = (String) map.get(wallpaperStructure.getUrl());
         if (wallpaperStructure.getThumbUrl() == null) return url;
