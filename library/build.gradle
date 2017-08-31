@@ -98,7 +98,6 @@ dependencies {
     compile 'com.anjlab.android.iab.v3:library:1.0.40'
     compile 'com.github.chrisbanes:PhotoView:1.3.1'
     compile 'com.google.android.apps.muzei:muzei-api:2.0'
-    compile 'com.github.danimahardhika:DrawMe:4a672e78fc'
     compile 'org.sufficientlysecure:html-textview:3.4'
     compile 'com.github.KeepSafe:TapTargetView:-SNAPSHOT'
     compile 'com.sothree.slidinguppanel:library:3.3.1'
