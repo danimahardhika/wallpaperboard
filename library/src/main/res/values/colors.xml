@@ -21,13 +21,6 @@
     <color name="searchBarIcon">#6E6E6E</color>
     <color name="searchBarIconDark">#6E6E6E</color>
 
-    <color name="tabIndicator">#20AC6B</color>
-    <color name="tabIndicatorDark">#20AC6B</color>
-    <color name="tabSelected">#20AC6B</color>
-    <color name="tabSelectedDark">#20AC6B</color>
-    <color name="tab">#6E6E6E</color>
-    <color name="tabDark">#E9FFFFFF</color>
-
     <!-- Navigation View -->
     <color name="navigationViewTitle">#FFFFFF</color>
     <color name="navigationViewTitleBack">#55000000</color>
