@@ -403,15 +403,17 @@ public class Database extends SQLiteOpenHelper {
         for (String string : strings) {
             String s = string.toLowerCase(Locale.getDefault());
             String query = "SELECT categories.id, categories.name, " +
-                    "(SELECT wallpapers.thumbUrl FROM wallpapers WHERE LOWER(wallpapers.category) LIKE ? ORDER BY RANDOM() LIMIT 1) AS thumbUrl " +
+                    "(SELECT wallpapers.thumbUrl FROM wallpapers WHERE LOWER(wallpapers.category) LIKE ? ORDER BY RANDOM() LIMIT 1) AS thumbUrl, " +
+                    "(SELECT COUNT(*) FROM wallpapers WHERE LOWER(wallpapers.category) LIKE ?) AS count " +
                     "FROM categories WHERE LOWER(categories.name) = ? LIMIT 1";
-            Cursor cursor = mDatabase.mSQLiteDatabase.rawQuery(query, new String[]{"%" +s+ "%", s});
+            Cursor cursor = mDatabase.mSQLiteDatabase.rawQuery(query, new String[]{"%" +s+ "%", "%" +s+ "%", s});
             if (cursor.moveToFirst()) {
                 do {
                     Category c = Category.Builder()
                             .id(cursor.getInt(cursor.getColumnIndex(KEY_ID)))
                             .name(cursor.getString(cursor.getColumnIndex(KEY_NAME)))
                             .thumbUrl(cursor.getString(2))
+                            .count(cursor.getInt(cursor.getColumnIndex("count")))
                             .build();
                     categories.add(c);
                 } while (cursor.moveToNext());

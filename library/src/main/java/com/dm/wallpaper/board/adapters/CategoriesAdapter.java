@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
@@ -184,8 +183,8 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
             intent.putExtra(Extras.EXTRA_COUNT, mCategories.get(position).getCount());
 
             mContext.startActivity(intent);
-            ((AppCompatActivity) mContext).overridePendingTransition(
-                    android.R.anim.fade_in, android.R.anim.fade_out);
+            //((AppCompatActivity) mContext).overridePendingTransition(
+                    //android.R.anim.fade_in, android.R.anim.fade_out);
         }
     }
 }

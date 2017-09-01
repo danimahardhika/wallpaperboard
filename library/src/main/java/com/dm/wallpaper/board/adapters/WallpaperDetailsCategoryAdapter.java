@@ -3,6 +3,7 @@ package com.dm.wallpaper.board.adapters;
 import android.animation.AnimatorInflater;
 import android.animation.StateListAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
@@ -15,7 +16,9 @@ import android.widget.TextView;
 
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
+import com.dm.wallpaper.board.activities.WallpaperBoardBrowserActivity;
 import com.dm.wallpaper.board.items.Category;
+import com.dm.wallpaper.board.utils.Extras;
 import com.dm.wallpaper.board.utils.ImageConfig;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -110,7 +113,15 @@ public class WallpaperDetailsCategoryAdapter extends RecyclerView.Adapter<Wallpa
 
         @Override
         public void onClick(View view) {
+            int position = getAdapterPosition();
+            if (position < 0 || position > mCategories.size()) return;
 
+            Intent intent = new Intent(mContext, WallpaperBoardBrowserActivity.class);
+            intent.putExtra(Extras.EXTRA_FRAGMENT_ID, Extras.ID_CATEGORY_WALLPAPERS);
+            intent.putExtra(Extras.EXTRA_CATEGORY, mCategories.get(position).getName());
+            intent.putExtra(Extras.EXTRA_COUNT, mCategories.get(position).getCount());
+
+            mContext.startActivity(intent);
         }
     }
 }

@@ -117,10 +117,13 @@ public class WallpaperBoardBrowserActivity extends AppCompatActivity {
                     return;
                 }
             }
+
+            super.onBackPressed();
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            return;
         }
 
         super.onBackPressed();
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
     private void setFragment() {
