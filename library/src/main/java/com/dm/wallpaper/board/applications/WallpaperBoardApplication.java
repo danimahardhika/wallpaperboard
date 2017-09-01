@@ -2,6 +2,7 @@ package com.dm.wallpaper.board.applications;
 
 import android.app.Application;
 import android.content.Intent;
+import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 
 import com.dm.wallpaper.board.R;
@@ -166,8 +167,14 @@ public class WallpaperBoardApplication extends Application {
             return this;
         }
 
-        public Configuration setLatestWallpapersDisplayMax(int count) {
-            mLatestWallpapersDisplayMax = count;
+        public Configuration setLatestWallpapersDisplayMax(@IntRange (from = 10, to = 50) int count) {
+            int finalCount = count;
+            if (finalCount < 10) {
+                finalCount = 10;
+            } else if (finalCount > 50) {
+                finalCount = 50;
+            }
+            mLatestWallpapersDisplayMax = finalCount;
             return this;
         }
 
