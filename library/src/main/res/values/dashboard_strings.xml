@@ -19,11 +19,16 @@
     <string name="menu_search">Search</string>
     <string name="menu_filter">Filter</string>
     <string name="menu_save">Save to Device</string>
-    <string name="menu_wallpaper_settings">Wallpaper Settings</string>
 
     <string name="menu_wallpaper_crop">Crop Wallpaper</string>
     <string name="menu_apply_homescreen">Homescren</string>
     <string name="menu_apply_lockscreen">Lockscreen</string>
+
+    <string name="menu_sort">Sort by</string>
+    <string name="menu_sort_latest">Latest</string>
+    <string name="menu_sort_oldest">Oldest</string>
+    <string name="menu_sort_name">Name</string>
+    <string name="menu_sort_random">Random</string>
 
     <!-- Dialog -->
     <string name="open">Open</string>
@@ -58,7 +63,6 @@
     <string name="tap_intro_wallpaper_preview_full_desc">Tap here to preview the wallpaper with original size</string>
 
     <!-- Wallpapers -->
-    <string name="wallpaper_new_added">New Wallpaper</string>
     <string name="wallpaper_filter">Filter by Category</string>
     <string name="wallpaper_already_downloaded">Wallpaper already downloaded</string>
     <string name="wallpaper_downloading">Downloading wallpaper …</string>
@@ -135,12 +139,10 @@
 
     <string name="pref_wallpaper_header">Wallpaper</string>
     <string name="pref_wallpaper_location">Wallpaper Save Location</string>
-    <string name="pref_wallpaper_location_desc">Try to download at least one wallpaper first</string>
 
     <string name="pref_language_header">Language</string>
 
     <string name="pref_others_header">Others</string>
-    <string name="pref_others_colored_wallpaper_card">Colored Wallpaper Card</string>
     <string name="pref_others_reset_tutorial">Reset Tutorial</string>
     <string name="pref_others_reset_tutorial_reset">Tutorial Reset</string>
 
