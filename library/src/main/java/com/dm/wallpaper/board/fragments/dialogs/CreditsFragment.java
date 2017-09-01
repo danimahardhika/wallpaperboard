@@ -191,6 +191,6 @@ public class CreditsFragment extends DialogFragment {
                 }
                 mGetCredits = null;
             }
-        }.execute();
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 }

@@ -211,6 +211,6 @@ public class InAppBillingFragment extends DialogFragment {
                 mLoadInAppProducts = null;
             }
 
-        }.execute();
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 }

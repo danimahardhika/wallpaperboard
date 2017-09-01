@@ -149,6 +149,6 @@ public class LanguagesFragment extends DialogFragment {
                 }
                 mGetLanguages = null;
             }
-        }.execute();
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 }

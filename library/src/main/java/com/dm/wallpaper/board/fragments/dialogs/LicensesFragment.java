@@ -146,7 +146,7 @@ public class LicensesFragment extends DialogFragment {
                 mLoadLicenses = null;
             }
 
-        }.execute();
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 }
 
