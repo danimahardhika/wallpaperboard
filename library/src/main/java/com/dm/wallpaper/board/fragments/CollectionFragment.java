@@ -22,8 +22,10 @@ import com.danimahardhika.android.helpers.core.ViewHelper;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.items.Collection;
+import com.dm.wallpaper.board.utils.Extras;
 import com.dm.wallpaper.board.utils.LogUtil;
 import com.dm.wallpaper.board.utils.listeners.AppBarListener;
+import com.dm.wallpaper.board.utils.listeners.TabListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +76,13 @@ public class CollectionFragment extends Fragment {
             public void onTabSelected(TabLayout.Tab tab) {
                 mPager.setCurrentItem(tab.getPosition());
                 tab.setIcon(mAdapter.getIcon(tab.getPosition(), true));
+
+                try {
+                    TabListener listener = (TabListener) getActivity();
+                    listener.onTabScroll(mAdapter.get(tab.getPosition()).getTag());
+                } catch (IllegalStateException e) {
+                    LogUtil.e("Parent activity must implements TabListener");
+                }
             }
 
             @Override
@@ -103,16 +112,27 @@ public class CollectionFragment extends Fragment {
                 tab.setIcon(mAdapter.getIcon(i, i == 0));
             }
         }
+
+        try {
+            TabListener listener = (TabListener) getActivity();
+            listener.onTabScroll(mAdapter.get(0).getTag());
+        } catch (IllegalStateException e) {
+            LogUtil.e("Parent activity must implements TabListener");
+        }
     }
 
     private void initViewPager() {
         List<Collection> collection = new ArrayList<>();
-        collection.add(new Collection(R.drawable.ic_collection_latest, new LatestFragment()));
-        collection.add(new Collection(R.drawable.ic_collection_wallpapers, new WallpapersFragment()));
-        collection.add(new Collection(R.drawable.ic_collection_categories, new CategoriesFragment()));
+        collection.add(new Collection(R.drawable.ic_collection_latest,
+                new LatestFragment(), Extras.TAG_LATEST));
+        collection.add(new Collection(R.drawable.ic_collection_wallpapers,
+                new WallpapersFragment(), Extras.TAG_WALLPAPERS));
+        collection.add(new Collection(R.drawable.ic_collection_categories,
+                new CategoriesFragment(), Extras.TAG_CATEGORIES));
 
         mAdapter = new CollectionPagerAdapter(getChildFragmentManager(), collection);
         mPager.setAdapter(mAdapter);
+        mPager.setOffscreenPageLimit(2);
     }
 
     private void initAppBar() {
@@ -140,6 +160,18 @@ public class CollectionFragment extends Fragment {
         });
     }
 
+    public void refreshWallpapers() {
+        if (mAdapter == null) return;
+
+        int index = 1;
+        if (index > mAdapter.getCount()) return;
+        Fragment fragment = mAdapter.getItem(index);
+        if (fragment != null && fragment instanceof WallpapersFragment) {
+            WallpapersFragment f = (WallpapersFragment) fragment;
+            f.getWallpapers();
+        }
+    }
+
     private class CollectionPagerAdapter extends FragmentStatePagerAdapter {
 
         private final List<Collection> mCollection;
@@ -157,6 +189,10 @@ public class CollectionFragment extends Fragment {
         @Override
         public int getCount() {
             return mCollection.size();
+        }
+
+        Collection get(int position) {
+            return mCollection.get(position);
         }
 
         Drawable getIcon(int position, boolean selected) {
