@@ -3,7 +3,9 @@ package com.dm.wallpaper.board.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatCheckBox;
@@ -57,10 +59,15 @@ public class Popup {
 
         int width = getMeasuredWidth(builder.mContext);
         mPopupWindow.setWidth(width);
-        Drawable drawable = mPopupWindow.getBackground();
-        if (drawable != null) {
-            drawable.setColorFilter(ColorHelper.getAttributeColor(
-                    builder.mContext, R.attr.card_background), PorterDuff.Mode.SRC_IN);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Drawable drawable = mPopupWindow.getBackground();
+            if (drawable != null) {
+                drawable.setColorFilter(ColorHelper.getAttributeColor(
+                        builder.mContext, R.attr.card_background), PorterDuff.Mode.SRC_IN);
+            }
+        } else {
+            mPopupWindow.setBackgroundDrawable(new ColorDrawable(
+                    ColorHelper.getAttributeColor(builder.mContext, R.attr.card_background)));
         }
 
         mPopupWindow.setAnchorView(builder.mTo);
@@ -117,26 +124,27 @@ public class Popup {
         }
 
         int padding = context.getResources().getDimensionPixelSize(R.dimen.content_margin);
-        int iconSize = context.getResources().getDimensionPixelSize(R.dimen.icon_size_medium);
+        int iconSize = context.getResources().getDimensionPixelSize(R.dimen.icon_size_small);
         TextView textView = new TextView(context);
         textView.setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        textView.setPadding(padding + iconSize + padding, 0, padding, 0);
         textView.setTypeface(TypefaceHelper.getRegular(context));
         textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources()
                 .getDimension(R.dimen.text_content_subtitle));
+        textView.setPadding(padding + iconSize + padding, 0, padding, 0);
         textView.setText(longestText);
 
         int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(metrics.widthPixels, View.MeasureSpec.AT_MOST);
         int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         textView.measure(widthMeasureSpec, heightMeasureSpec);
 
-        if (textView.getMeasuredWidth() <= minWidth) {
+        int measuredWidth = textView.getMeasuredWidth() + padding;
+        if (measuredWidth <= minWidth) {
             return minWidth;
         }
 
-        if (textView.getMeasuredWidth() >= minWidth && textView.getMeasuredWidth() <= maxWidth) {
-            return textView.getMeasuredWidth();
+        if (measuredWidth >= minWidth && measuredWidth <= maxWidth) {
+            return measuredWidth;
         }
         return maxWidth;
     }

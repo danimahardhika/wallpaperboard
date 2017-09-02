@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -55,10 +56,15 @@ public class Tooltip {
 
         mPopupWindow = new ListPopupWindow(mBuilder.mContext);
         mPopupWindow.setWidth(getMeasuredWidth(builder.mContext));
-        Drawable drawable = mPopupWindow.getBackground();
-        if (drawable != null) {
-            drawable.setColorFilter(ColorHelper.getAttributeColor(
-                    builder.mContext, R.attr.card_background), PorterDuff.Mode.SRC_IN);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Drawable drawable = mPopupWindow.getBackground();
+            if (drawable != null) {
+                drawable.setColorFilter(ColorHelper.getAttributeColor(
+                        builder.mContext, R.attr.card_background), PorterDuff.Mode.SRC_IN);
+            }
+        } else {
+            mPopupWindow.setBackgroundDrawable(new ColorDrawable(
+                    ColorHelper.getAttributeColor(builder.mContext, R.attr.card_background)));
         }
 
         mPopupWindow.setWidth(getMeasuredWidth(mBuilder.mContext));
@@ -104,12 +110,13 @@ public class Tooltip {
         int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         textView.measure(widthMeasureSpec, heightMeasureSpec);
 
-        if (textView.getMeasuredWidth() <= minWidth) {
+        int measuredWidth = textView.getMeasuredWidth() + padding;
+        if (measuredWidth <= minWidth) {
             return minWidth;
         }
 
-        if (textView.getMeasuredWidth() >= minWidth && textView.getMeasuredWidth() <= maxWidth) {
-            return textView.getMeasuredWidth();
+        if (measuredWidth >= minWidth && measuredWidth <= maxWidth) {
+            return measuredWidth;
         }
         return maxWidth;
     }
