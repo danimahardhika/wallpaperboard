@@ -87,9 +87,5 @@ public class ImageConfig {
     public static ImageSize getBigThumbnailSize() {
         return new ImageSize(600, 600);
     }
-
-    public static ImageSize getPreviewSize() {
-        return new ImageSize(1200, 1200);
-    }
 }
 
