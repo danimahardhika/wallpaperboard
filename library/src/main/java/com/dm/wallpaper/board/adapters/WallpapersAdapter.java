@@ -35,10 +35,11 @@ import com.dm.wallpaper.board.activities.WallpaperBoardPreviewActivity;
 import com.dm.wallpaper.board.applications.WallpaperBoardApplication;
 import com.dm.wallpaper.board.databases.Database;
 import com.dm.wallpaper.board.helpers.TypefaceHelper;
+import com.dm.wallpaper.board.items.PopupItem;
 import com.dm.wallpaper.board.items.Wallpaper;
 import com.dm.wallpaper.board.preferences.Preferences;
 import com.dm.wallpaper.board.tasks.WallpaperApplyTask;
-import com.dm.wallpaper.board.utils.ApplyPopup;
+import com.dm.wallpaper.board.utils.Popup;
 import com.dm.wallpaper.board.utils.Extras;
 import com.dm.wallpaper.board.utils.ImageConfig;
 import com.dm.wallpaper.board.utils.WallpaperDownloader;
@@ -301,28 +302,29 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Vi
                     return false;
                 }
 
-                ApplyPopup popup = ApplyPopup.Builder(mContext)
+                Popup popup = Popup.Builder(mContext)
                         .to(favorite)
+                        .list(PopupItem.getApplyItems(mContext))
                         .callback((applyPopup, i) -> {
-                            ApplyPopup.Item item = applyPopup.getItems().get(i);
-                            if (item.getType() == ApplyPopup.Type.WALLPAPER_CROP) {
+                            PopupItem item = applyPopup.getItems().get(i);
+                            if (item.getType() == PopupItem.Type.WALLPAPER_CROP) {
                                 Preferences.get(mContext).setCropWallpaper(!item.getCheckboxValue());
                                 item.setCheckboxValue(Preferences.get(mContext).isCropWallpaper());
 
                                 applyPopup.updateItem(i, item);
                                 return;
-                            } else if (item.getType() == ApplyPopup.Type.LOCKSCREEN) {
+                            } else if (item.getType() == PopupItem.Type.LOCKSCREEN) {
                                 WallpaperApplyTask.prepare(mContext)
                                         .wallpaper(mWallpapers.get(position))
                                         .to(WallpaperApplyTask.Apply.LOCKSCREEN)
                                         .start(AsyncTask.THREAD_POOL_EXECUTOR);
-                            } else if (item.getType() == ApplyPopup.Type.HOMESCREEN) {
+                            } else if (item.getType() == PopupItem.Type.HOMESCREEN) {
                                 WallpaperApplyTask.prepare(mContext)
                                         .wallpaper(mWallpapers.get(position))
                                         .to(WallpaperApplyTask.Apply.HOMESCREEN)
                                         .start(AsyncTask.THREAD_POOL_EXECUTOR);
 
-                            } else if (item.getType() == ApplyPopup.Type.DOWNLOAD) {
+                            } else if (item.getType() == PopupItem.Type.DOWNLOAD) {
                                 if (PermissionHelper.isStorageGranted(mContext)) {
                                     WallpaperDownloader.prepare(mContext)
                                             .wallpaper(mWallpapers.get(position))
@@ -373,6 +375,15 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Vi
 
         imageView.setImageDrawable(DrawableHelper.getTintedDrawable(mContext,
                 isFavorite ? R.drawable.ic_toolbar_love : R.drawable.ic_toolbar_unlove, color));
+    }
+
+    public void setWallpapers(@NonNull List<Wallpaper> wallpapers) {
+        mWallpapers = wallpapers;
+        notifyDataSetChanged();
+    }
+
+    public List<Wallpaper> getWallpapers() {
+        return mWallpapers;
     }
 
     public void clearItems() {

@@ -62,13 +62,16 @@ import com.dm.wallpaper.board.helpers.InAppBillingHelper;
 import com.dm.wallpaper.board.helpers.LicenseCallbackHelper;
 import com.dm.wallpaper.board.helpers.LocaleHelper;
 import com.dm.wallpaper.board.items.InAppBilling;
+import com.dm.wallpaper.board.items.PopupItem;
 import com.dm.wallpaper.board.preferences.Preferences;
 import com.dm.wallpaper.board.tasks.WallpapersLoaderTask;
 import com.dm.wallpaper.board.utils.Extras;
 import com.dm.wallpaper.board.utils.ImageConfig;
+import com.dm.wallpaper.board.utils.Popup;
 import com.dm.wallpaper.board.utils.listeners.AppBarListener;
 import com.dm.wallpaper.board.utils.listeners.InAppBillingListener;
 import com.dm.wallpaper.board.utils.listeners.NavigationListener;
+import com.dm.wallpaper.board.utils.listeners.TabListener;
 import com.dm.wallpaper.board.utils.views.HeaderView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
@@ -97,12 +100,14 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  */
 
 public class WallpaperBoardActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback,
-        InAppBillingListener, AppBarListener, NavigationListener {
+        InAppBillingListener, AppBarListener, NavigationListener, TabListener {
 
     @BindView(R2.id.search_bar)
     CardView mSearchBar;
     @BindView(R2.id.navigation)
     ImageView mNavigation;
+    @BindView(R2.id.sort)
+    ImageView mMenuSort;
     @BindView(R2.id.navigation_view)
     NavigationView mNavigationView;
     @BindView(R2.id.drawer_layout)
@@ -304,6 +309,19 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
     }
 
     @Override
+    public void onTabScroll(String tag) {
+        if (tag.equals(Extras.TAG_LATEST) || tag.equals(Extras.TAG_CATEGORIES)) {
+            if (mMenuSort.getVisibility() == View.VISIBLE) {
+                AnimationHelper.hide(mMenuSort).start();
+            }
+        } else if (tag.equals(Extras.TAG_WALLPAPERS)) {
+            if (mMenuSort.getVisibility() == View.GONE) {
+                AnimationHelper.show(mMenuSort).start();
+            }
+        }
+    }
+
+    @Override
     public void onInAppBillingInitialized(boolean success) {
         if (!success) mBillingProcessor = null;
     }
@@ -360,6 +378,29 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
 
             startActivity(intent);
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        });
+
+        mMenuSort.setImageDrawable(DrawableHelper.getTintedDrawable(
+                this, R.drawable.ic_toolbar_sort, color));
+        mMenuSort.setOnClickListener(view -> {
+            Popup.Builder(this)
+                    .to(mMenuSort)
+                    .list(PopupItem.getSortItems(this, true))
+                    .callback((popup, position) -> {
+                        Preferences.get(WallpaperBoardActivity.this)
+                                .setSortBy(popup.getItems().get(position).getType());
+
+                        if (mFragmentTag.equals(Extras.TAG_COLLECTION)) {
+                            Fragment fragment = mFragManager.findFragmentByTag(Extras.TAG_COLLECTION);
+                            if (fragment != null && fragment instanceof CollectionFragment) {
+                                CollectionFragment f = (CollectionFragment) fragment;
+                                f.refreshWallpapers();
+                            }
+                        }
+
+                        popup.dismiss();
+                    })
+                    .show();
         });
     }
 

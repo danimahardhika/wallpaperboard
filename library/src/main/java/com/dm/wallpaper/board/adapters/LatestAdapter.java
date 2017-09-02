@@ -35,10 +35,11 @@ import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.activities.WallpaperBoardPreviewActivity;
 import com.dm.wallpaper.board.databases.Database;
 import com.dm.wallpaper.board.helpers.TypefaceHelper;
+import com.dm.wallpaper.board.items.PopupItem;
 import com.dm.wallpaper.board.items.Wallpaper;
 import com.dm.wallpaper.board.preferences.Preferences;
 import com.dm.wallpaper.board.tasks.WallpaperApplyTask;
-import com.dm.wallpaper.board.utils.ApplyPopup;
+import com.dm.wallpaper.board.utils.Popup;
 import com.dm.wallpaper.board.utils.Extras;
 import com.dm.wallpaper.board.utils.ImageConfig;
 import com.dm.wallpaper.board.utils.WallpaperDownloader;
@@ -257,22 +258,23 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.ViewHolder
 
                 PermissionHelper.requestStorage(mContext);
             } else if (id == R.id.apply) {
-                ApplyPopup popup = ApplyPopup.Builder(mContext)
+                Popup popup = Popup.Builder(mContext)
                         .to(apply)
+                        .list(PopupItem.getApplyItems(mContext))
                         .callback((applyPopup, i) -> {
-                            ApplyPopup.Item item = applyPopup.getItems().get(i);
-                            if (item.getType() == ApplyPopup.Type.WALLPAPER_CROP) {
+                            PopupItem item = applyPopup.getItems().get(i);
+                            if (item.getType() == PopupItem.Type.WALLPAPER_CROP) {
                                 Preferences.get(mContext).setCropWallpaper(!item.getCheckboxValue());
                                 item.setCheckboxValue(Preferences.get(mContext).isCropWallpaper());
 
                                 applyPopup.updateItem(i, item);
                                 return;
-                            } else if (item.getType() == ApplyPopup.Type.LOCKSCREEN) {
+                            } else if (item.getType() == PopupItem.Type.LOCKSCREEN) {
                                 WallpaperApplyTask.prepare(mContext)
                                         .wallpaper(mWallpapers.get(position))
                                         .to(WallpaperApplyTask.Apply.LOCKSCREEN)
                                         .start(AsyncTask.THREAD_POOL_EXECUTOR);
-                            } else if (item.getType() == ApplyPopup.Type.HOMESCREEN) {
+                            } else if (item.getType() == PopupItem.Type.HOMESCREEN) {
                                 WallpaperApplyTask.prepare(mContext)
                                         .wallpaper(mWallpapers.get(position))
                                         .to(WallpaperApplyTask.Apply.HOMESCREEN)

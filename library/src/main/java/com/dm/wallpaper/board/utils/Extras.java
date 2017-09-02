@@ -22,6 +22,8 @@ public abstract class Extras {
 
     public static final String TAG_COLLECTION = "collection";
     public static final String TAG_WALLPAPERS = "wallpapers";
+    public static final String TAG_LATEST = "latest";
+    public static final String TAG_CATEGORIES = "categories";
     public static final String TAG_WALLPAPER_SEARCH = "wallpaperSearch";
     public static final String TAG_FAVORITES = "favorites";
     public static final String TAG_SETTINGS = "settings";

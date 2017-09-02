@@ -28,26 +28,24 @@ public class Wallpaper {
     private final String mThumbUrl;
     private final String mUrl;
     private final String mCategory;
+    private final String mAddedOn;
     private int mColor;
     private String mMimeType;
     private int mSize;
     private boolean mIsFavorite;
     private ImageSize mDimensions;
 
-    private Wallpaper(String name, String author, String url, String thumbUrl, String category) {
+    private Wallpaper(String name, String author, String url, String thumbUrl, String category, String addedOn) {
         mName = name;
         mAuthor = author;
         mUrl = url;
         mThumbUrl = thumbUrl;
         mCategory = category;
+        mAddedOn = addedOn;
     }
 
     public int getId() {
         return mId;
-    }
-
-    public void setId(int id) {
-        mId = id;
     }
 
     public String getName() {
@@ -70,6 +68,10 @@ public class Wallpaper {
         return mCategory;
     }
 
+    public String getAddedOn() {
+        return mAddedOn;
+    }
+
     public int getColor() {
         return mColor;
     }
@@ -88,6 +90,10 @@ public class Wallpaper {
 
     public boolean isFavorite() {
         return mIsFavorite;
+    }
+
+    public void setId(int id) {
+        mId = id;
     }
 
     public void setColor(int color) {
@@ -132,6 +138,7 @@ public class Wallpaper {
         private String mThumbUrl;
         private String mUrl;
         private String mCategory;
+        private String mAddedOn;
         private int mColor;
         private String mMimeType;
         private int mSize;
@@ -174,6 +181,11 @@ public class Wallpaper {
             return this;
         }
 
+        public Builder addedOn(String addedOn) {
+            mAddedOn = addedOn;
+            return this;
+        }
+
         public Builder favorite(boolean isFavorite) {
             mIsFavorite = isFavorite;
             return this;
@@ -200,7 +212,7 @@ public class Wallpaper {
         }
 
         public Wallpaper build() {
-            Wallpaper wallpaper = new Wallpaper(mName, mAuthor, mUrl, mThumbUrl, mCategory);
+            Wallpaper wallpaper = new Wallpaper(mName, mAuthor, mUrl, mThumbUrl, mCategory, mAddedOn);
             wallpaper.setId(mId);
             wallpaper.setDimensions(mDimensions);
             wallpaper.setFavorite(mIsFavorite);

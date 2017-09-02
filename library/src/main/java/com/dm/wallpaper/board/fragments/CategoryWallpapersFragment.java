@@ -36,12 +36,16 @@ import com.dm.wallpaper.board.adapters.WallpapersAdapter;
 import com.dm.wallpaper.board.applications.WallpaperBoardApplication;
 import com.dm.wallpaper.board.databases.Database;
 import com.dm.wallpaper.board.items.Filter;
+import com.dm.wallpaper.board.items.PopupItem;
 import com.dm.wallpaper.board.items.Wallpaper;
 import com.dm.wallpaper.board.preferences.Preferences;
+import com.dm.wallpaper.board.utils.AlphanumComparator;
 import com.dm.wallpaper.board.utils.Extras;
 import com.dm.wallpaper.board.utils.LogUtil;
+import com.dm.wallpaper.board.utils.Popup;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -159,20 +163,14 @@ public class CategoryWallpapersFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_wallpaper_search, menu);
+        inflater.inflate(R.menu.menu_wallpaper_search_sort, menu);
         MenuItem search = menu.findItem(R.id.menu_search);
         int color = ColorHelper.getAttributeColor(getActivity(), R.attr.toolbar_icon);
-        search.setIcon(DrawableHelper.getTintedDrawable(getActivity(),
-                R.drawable.ic_toolbar_search, color));
 
         mSearchView = (SearchView) MenuItemCompat.getActionView(search);
         mSearchView.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI | EditorInfo.IME_ACTION_SEARCH);
         mSearchView.setQueryHint(getActivity().getResources().getString(R.string.menu_search));
         mSearchView.setMaxWidth(Integer.MAX_VALUE);
-
-        MenuItemCompat.expandActionView(search);
-        mSearchView.setIconifiedByDefault(false);
-        mSearchView.clearFocus();
 
         ViewHelper.setSearchViewTextColor(mSearchView, color);
         ViewHelper.setSearchViewBackgroundColor(mSearchView, Color.TRANSPARENT);
@@ -201,6 +199,22 @@ public class CategoryWallpapersFragment extends Fragment {
         if (id == android.R.id.home) {
             getActivity().finish();
             getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            return true;
+        } else if (id == R.id.menu_sort) {
+            View menuSort = mToolbar.findViewById(R.id.menu_sort);
+            if (menuSort == null) return false;
+
+            Popup.Builder(getActivity())
+                    .to(menuSort)
+                    .list(PopupItem.getSortItems(getActivity(), false))
+                    .callback((popup, position) -> {
+                        popup.dismiss();
+                        mSearchView.clearFocus();
+
+                        if (mAsyncTask != null) return;
+                        sort(popup.getItems().get(position).getType());
+                    })
+                    .show();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -298,4 +312,76 @@ public class CategoryWallpapersFragment extends Fragment {
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
-}
+
+    private void sort(PopupItem.Type type) {
+        mAsyncTask = new AsyncTask<Void, Void, Boolean>() {
+
+            List<Wallpaper> wallpapers;
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                if (mAdapter != null) wallpapers = mAdapter.getWallpapers();
+            }
+
+            @Override
+            protected Boolean doInBackground(Void... voids) {
+                while (!isCancelled()) {
+                    try {
+                        Thread.sleep(1);
+                        if (type == PopupItem.Type.SORT_LATEST) {
+                            Collections.sort(wallpapers, Collections.reverseOrder(new AlphanumComparator() {
+
+                                @Override
+                                public int compare(Object o1, Object o2) {
+                                    String s1 = ((Wallpaper) o1).getAddedOn();
+                                    String s2 = ((Wallpaper) o2).getAddedOn();
+                                    return super.compare(s1, s2);
+                                }
+                            }));
+                        } else if (type == PopupItem.Type.SORT_OLDEST) {
+                            Collections.sort(wallpapers, new AlphanumComparator() {
+
+                                @Override
+                                public int compare(Object o1, Object o2) {
+                                    String s1 = ((Wallpaper) o1).getAddedOn();
+                                    String s2 = ((Wallpaper) o2).getAddedOn();
+                                    return super.compare(s1, s2);
+                                }
+                            });
+                        } else if (type == PopupItem.Type.SORT_RANDOM) {
+                            Collections.shuffle(wallpapers);
+                        } else {
+                            Collections.sort(wallpapers, new AlphanumComparator() {
+
+                                @Override
+                                public int compare(Object o1, Object o2) {
+                                    String s1 = ((Wallpaper) o1).getName();
+                                    String s2 = ((Wallpaper) o2).getName();
+                                    return super.compare(s1, s2);
+                                }
+                            });
+                        }
+                        return true;
+                    } catch (Exception e) {
+                        LogUtil.e(Log.getStackTraceString(e));
+                        return false;
+                    }
+                }
+                return false;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean aBoolean) {
+                super.onPostExecute(aBoolean);
+                mAsyncTask = null;
+
+                if (aBoolean) {
+                    if (mAdapter != null) {
+                        mAdapter.setWallpapers(wallpapers);
+                    }
+                }
+            }
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+ }

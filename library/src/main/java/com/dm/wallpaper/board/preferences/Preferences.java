@@ -10,6 +10,7 @@ import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.applications.WallpaperBoardApplication;
 import com.dm.wallpaper.board.helpers.LocaleHelper;
 import com.dm.wallpaper.board.items.Language;
+import com.dm.wallpaper.board.items.PopupItem;
 
 import java.util.List;
 import java.util.Locale;
@@ -51,6 +52,7 @@ public class Preferences {
     private static final String KEY_CURRENT_LOCALE = "current_locale";
     private static final String KEY_AUTO_INCREMENT = "auto_increment";
     private static final String KEY_WALLPAPER_TOOLTIP = "wallpaper_tooltip";
+    private static final String KEY_SORT_BY = "sort_by";
 
     private Preferences(@NonNull Context context) {
         mContext = context;
@@ -215,6 +217,39 @@ public class Preferences {
 
     public int getAutoIncrement() {
         return getSharedPreferences().getInt(KEY_AUTO_INCREMENT, 0);
+    }
+
+    public void setSortBy(PopupItem.Type type) {
+        getSharedPreferences().edit().putInt(KEY_SORT_BY, getSortByOrder(type)).apply();
+    }
+
+    public int getSortByOrder(PopupItem.Type type) {
+        switch (type) {
+            case SORT_LATEST:
+                return 0;
+            case SORT_OLDEST:
+                return 1;
+            case SORT_NAME:
+                return 2;
+            case SORT_RANDOM:
+                return 3;
+            default:
+                return 2;
+        }
+    }
+
+    public PopupItem.Type getSortBy(){
+        int sort = getSharedPreferences().getInt(KEY_SORT_BY, 2);
+        if (sort == 0) {
+            return PopupItem.Type.SORT_LATEST;
+        } else if (sort == 1) {
+            return PopupItem.Type.SORT_OLDEST;
+        } else if (sort == 2) {
+            return PopupItem.Type.SORT_NAME;
+        } else if (sort == 3) {
+            return PopupItem.Type.SORT_RANDOM;
+        }
+        return PopupItem.Type.SORT_NAME;
     }
 
     public boolean isConnectedToNetwork() {

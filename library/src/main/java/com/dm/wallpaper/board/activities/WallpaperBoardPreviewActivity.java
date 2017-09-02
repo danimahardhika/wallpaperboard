@@ -47,13 +47,14 @@ import com.dm.wallpaper.board.helpers.LocaleHelper;
 import com.dm.wallpaper.board.helpers.TapIntroHelper;
 import com.dm.wallpaper.board.items.Category;
 import com.dm.wallpaper.board.items.ColorPalette;
+import com.dm.wallpaper.board.items.PopupItem;
 import com.dm.wallpaper.board.items.Wallpaper;
 import com.dm.wallpaper.board.items.WallpaperProperty;
 import com.dm.wallpaper.board.preferences.Preferences;
 import com.dm.wallpaper.board.tasks.WallpaperApplyTask;
 import com.dm.wallpaper.board.tasks.WallpaperPropertiesLoaderTask;
 import com.dm.wallpaper.board.tasks.WallpaperPaletteLoaderTask;
-import com.dm.wallpaper.board.utils.ApplyPopup;
+import com.dm.wallpaper.board.utils.Popup;
 import com.dm.wallpaper.board.utils.Extras;
 import com.dm.wallpaper.board.utils.ImageConfig;
 import com.dm.wallpaper.board.utils.LogUtil;
@@ -338,11 +339,12 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
 
             PermissionHelper.requestStorage(this);
         } else if (id == R.id.menu_apply) {
-            ApplyPopup popup = ApplyPopup.Builder(this)
+            Popup popup = Popup.Builder(this)
                     .to(view)
+                    .list(PopupItem.getApplyItems(this))
                     .callback((applyPopup, position) -> {
-                        ApplyPopup.Item item = applyPopup.getItems().get(position);
-                        if (item.getType() == ApplyPopup.Type.WALLPAPER_CROP) {
+                        PopupItem item = applyPopup.getItems().get(position);
+                        if (item.getType() == PopupItem.Type.WALLPAPER_CROP) {
                             Preferences.get(this).setCropWallpaper(!item.getCheckboxValue());
                             item.setCheckboxValue(Preferences.get(this).isCropWallpaper());
 
@@ -354,7 +356,7 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
 
                             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
                             return;
-                        } else if (item.getType() == ApplyPopup.Type.LOCKSCREEN) {
+                        } else if (item.getType() == PopupItem.Type.LOCKSCREEN) {
                             RectF rectF = null;
                             if (Preferences.get(WallpaperBoardPreviewActivity.this).isCropWallpaper()) {
                                 if (mAttacher != null)
@@ -366,7 +368,7 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
                                     .to(WallpaperApplyTask.Apply.LOCKSCREEN)
                                     .crop(rectF)
                                     .start(AsyncTask.THREAD_POOL_EXECUTOR);
-                        } else if (item.getType() == ApplyPopup.Type.HOMESCREEN) {
+                        } else if (item.getType() == PopupItem.Type.HOMESCREEN) {
                             RectF rectF = null;
                             if (Preferences.get(WallpaperBoardPreviewActivity.this).isCropWallpaper()) {
                                 if (mAttacher != null)

@@ -17,6 +17,7 @@ import com.dm.wallpaper.board.applications.WallpaperBoardApplication;
 import com.dm.wallpaper.board.helpers.JsonHelper;
 import com.dm.wallpaper.board.items.Category;
 import com.dm.wallpaper.board.items.Filter;
+import com.dm.wallpaper.board.items.PopupItem;
 import com.dm.wallpaper.board.items.Wallpaper;
 import com.dm.wallpaper.board.preferences.Preferences;
 import com.dm.wallpaper.board.utils.AlphanumComparator;
@@ -63,7 +64,7 @@ public class Database extends SQLiteOpenHelper {
     private static final String KEY_WIDTH = "width";
     private static final String KEY_HEIGHT = "height";
 
-    public static final String KEY_NAME= "name";
+    public static final String KEY_NAME = "name";
     public static final String KEY_AUTHOR = "author";
     public static final String KEY_CATEGORY = "category";
 
@@ -512,6 +513,7 @@ public class Database extends SQLiteOpenHelper {
                         .url(cursor.getString(cursor.getColumnIndex(KEY_URL)))
                         .thumbUrl(cursor.getString(cursor.getColumnIndex(KEY_THUMB_URL)))
                         .category(cursor.getString(cursor.getColumnIndex(KEY_CATEGORY)))
+                        .addedOn(cursor.getString(cursor.getColumnIndex(KEY_ADDED_ON)))
                         .favorite(cursor.getInt(cursor.getColumnIndex(KEY_FAVORITE)) == 1)
                         .color(cursor.getInt(cursor.getColumnIndex(KEY_COLOR)))
                         .build();
@@ -540,7 +542,7 @@ public class Database extends SQLiteOpenHelper {
 
         List<Wallpaper> wallpapers = new ArrayList<>();
         Cursor cursor = mDatabase.mSQLiteDatabase.query(TABLE_WALLPAPERS,
-                null, null, null, null, null, KEY_NAME);
+                null, null, null, null, null, getSortBy(Preferences.get(mContext).getSortBy()));
         if (cursor.moveToFirst()) {
             do {
                 int colorIndex = cursor.getColumnIndex(KEY_COLOR);
@@ -561,15 +563,17 @@ public class Database extends SQLiteOpenHelper {
         }
         cursor.close();
 
-        Collections.sort(wallpapers, new AlphanumComparator() {
+        if (Preferences.get(mContext).getSortBy() == PopupItem.Type.SORT_NAME) {
+            Collections.sort(wallpapers, new AlphanumComparator() {
 
-            @Override
-            public int compare(Object o1, Object o2) {
-                String s1 = ((Wallpaper) o1).getName();
-                String s2 = ((Wallpaper) o2).getName();
-                return super.compare(s1, s2);
-            }
-        });
+                @Override
+                public int compare(Object o1, Object o2) {
+                    String s1 = ((Wallpaper) o1).getName();
+                    String s2 = ((Wallpaper) o2).getName();
+                    return super.compare(s1, s2);
+                }
+            });
+        }
         return wallpapers;
     }
 
@@ -671,7 +675,7 @@ public class Database extends SQLiteOpenHelper {
 
         List<Wallpaper> wallpapers = new ArrayList<>();
         Cursor cursor = mDatabase.mSQLiteDatabase.query(TABLE_WALLPAPERS, null, KEY_FAVORITE +" = ?",
-                new String[]{"1"}, null, null, KEY_ADDED_ON+ " DESC, " +KEY_ID);
+                new String[]{"1"}, null, null, KEY_NAME +", "+ KEY_ID);
         if (cursor.moveToFirst()) {
             do {
                 Wallpaper wallpaper = Wallpaper.Builder()
@@ -688,15 +692,17 @@ public class Database extends SQLiteOpenHelper {
         }
         cursor.close();
 
-        Collections.sort(wallpapers, new AlphanumComparator() {
+        if (Preferences.get(mContext).getSortBy() == PopupItem.Type.SORT_NAME) {
+            Collections.sort(wallpapers, new AlphanumComparator() {
 
-            @Override
-            public int compare(Object o1, Object o2) {
-                String s1 = ((Wallpaper) o1).getName();
-                String s2 = ((Wallpaper) o2).getName();
-                return super.compare(s1, s2);
-            }
-        });
+                @Override
+                public int compare(Object o1, Object o2) {
+                    String s1 = ((Wallpaper) o1).getName();
+                    String s2 = ((Wallpaper) o2).getName();
+                    return super.compare(s1, s2);
+                }
+            });
+        }
         return wallpapers;
     }
 
@@ -730,5 +736,20 @@ public class Database extends SQLiteOpenHelper {
 
         mDatabase.mSQLiteDatabase.delete("SQLITE_SEQUENCE", "NAME = ?", new String[]{TABLE_CATEGORIES});
         mDatabase.mSQLiteDatabase.delete(TABLE_CATEGORIES, null, null);
+    }
+
+    private String getSortBy(PopupItem.Type type) {
+        switch (type) {
+            case SORT_LATEST:
+                return KEY_ADDED_ON +" DESC, "+ KEY_ID;
+            case SORT_OLDEST:
+                return KEY_ADDED_ON +", "+ KEY_ID +" DESC";
+            case SORT_NAME:
+                return KEY_NAME;
+            case SORT_RANDOM:
+                return "RANDOM()";
+            default:
+                return KEY_ADDED_ON +" DESC, "+ KEY_ID;
+        }
     }
 }
