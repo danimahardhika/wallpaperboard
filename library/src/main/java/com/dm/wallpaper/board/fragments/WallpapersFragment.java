@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.danimahardhika.android.helpers.core.ColorHelper;
 import com.danimahardhika.android.helpers.core.ViewHelper;
@@ -173,8 +172,6 @@ public class WallpapersFragment extends Fragment {
             if (aBoolean) {
                 WallpapersAdapter adapter = new WallpapersAdapter(getActivity(), mWallpapers, false, false);
                 mRecyclerView.setAdapter(adapter);
-            } else {
-                Toast.makeText(getActivity(), R.string.connection_failed, Toast.LENGTH_LONG).show();
             }
         }
     }
