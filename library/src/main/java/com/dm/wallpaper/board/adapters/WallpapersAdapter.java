@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.ColorInt;
@@ -59,8 +58,6 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.dm.wallpaper.board.helpers.DrawableHelper.getDefaultImage;
-
 /*
  * Wallpaper Board
  *
@@ -100,18 +97,10 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Vi
             mWallpapersAll.addAll(mWallpapers);
         }
 
-        int color = ColorHelper.getAttributeColor(mContext, android.R.attr.textColorSecondary);
-        Drawable loading = getDefaultImage(mContext, R.drawable.ic_default_image_loading, color,
-                mContext.getResources().getDimensionPixelSize(R.dimen.default_image_padding));
-        Drawable failed = getDefaultImage(mContext, R.drawable.ic_default_image_failed, color,
-                mContext.getResources().getDimensionPixelSize(R.dimen.default_image_padding));
         mOptions = ImageConfig.getRawDefaultImageOptions();
         mOptions.resetViewBeforeLoading(true);
         mOptions.cacheInMemory(true);
         mOptions.cacheOnDisk(true);
-        //mOptions.showImageForEmptyUri(failed);
-        //mOptions.showImageOnFail(failed);
-        //mOptions.showImageOnLoading(loading);
         mOptions.displayer(new FadeInBitmapDisplayer(700));
     }
 
