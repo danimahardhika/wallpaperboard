@@ -174,6 +174,6 @@ public class FavoritesFragment extends Fragment {
                 }
                 mGetWallpapers = null;
             }
-        }.execute();
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 }
