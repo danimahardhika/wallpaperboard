@@ -15,12 +15,20 @@
     <string name="menu_search">Rechercher</string>
     <string name="menu_filter">Filtres</string>
     <string name="menu_save">Enregistrer sur l\'appareil</string>
-    <string name="menu_wallpaper_settings">Paramètres du fond d\'écran</string>
+    <string name="menu_wallpaper_crop">Rogner le fond d\'écran</string>
+    <string name="menu_apply_homescreen">Ecran d\'accueil</string>
+    <string name="menu_apply_lockscreen">Ecran de verrouillage</string>
+    <string name="menu_sort">Trier par</string>
+    <string name="menu_sort_latest">Le(s) plus récent(s)</string>
+    <string name="menu_sort_oldest">Le(s) plus ancien(s)</string>
+    <string name="menu_sort_name">Nom</string>
+    <string name="menu_sort_random">Aléatoire</string>
     <!-- Dialog -->
     <string name="open">Ouvrir</string>
     <string name="close">Fermer</string>
     <string name="clear">Effacer</string>
     <string name="donate">Donation</string>
+    <string name="copy">Copier</string>
     <!-- Tap Intro -->
     <string name="tap_intro_wallpapers_navigation">Menu de navigation</string>
     <string name="tap_intro_wallpapers_navigation_desc">Appuyer ici ou balayer vers la gauche de l\'écran pour ouvrir le menu de navigation.</string>
@@ -42,32 +50,39 @@ Activer l\'option qui permet de régler le fond d\'écran pour l\'écran de verr
     <string name="tap_intro_wallpaper_preview_save_desc">Appuyer ici pour télécharger et enregistrer le fond d\'écran sur votre appareil ainsi vous pouvez l\'utiliser plus tard.</string>
     <string name="tap_intro_wallpaper_preview_apply">Appliquer le fond d\'écran</string>
     <string name="tap_intro_wallpaper_preview_apply_desc">Appuyer ici pour régler le fond d\'écran pour l\'écran d\'accueil</string>
+    <string name="tap_intro_wallpaper_preview_full">Fond d\'écran en taille réelle</string>
+    <string name="tap_intro_wallpaper_preview_full_desc">Appuyez ici pour prévisualiser le fond d\'écran en taille réelle</string>
     <!-- Wallpapers -->
-    <string name="wallpaper_new_added">Nouveaux fonds d\'écrans</string>
     <string name="wallpaper_filter">Filtrer par catégories</string>
+    <string name="wallpaper_already_downloaded">Fond d\'écran déjà téléchargé</string>
     <string name="wallpaper_downloading">Téléchargement du fond d\'écran …</string>
-    <string name="wallpaper_download_exist">Le fond d\'écran nommé %s existe déjà, voulez vous le remplacer?</string>
-    <string name="wallpaper_download_exist_replace">Remplacer</string>
-    <string name="wallpaper_download_exist_new">Créer un nouveau</string>
     <string name="wallpaper_download_failed">Impossible de télécharger le fond d\'écran</string>
-    <string name="wallpaper_download_cancelled">Téléchargement du fond d\'écran annulé</string>
-    <string name="wallpaper_downloaded">Fond d\'écran téléchargé pour</string>
     <string name="wallpaper_loading">Chargement du fond d\'écran …</string>
     <string name="wallpaper_applying">Application du fond d\'écran …</string>
     <string name="wallpaper_applied">Fond d\'écran appliqué</string>
     <string name="wallpaper_apply_failed">Impossible d\'appliquer le fond d\'écran</string>
     <string name="wallpaper_apply_cancelled">Application du fond d\'écran annulé</string>
-    <string name="connection_failed">Impossible d\'accéder aux données du serveur</string>
-    <string name="wallpaper_apply">Régler comme fond d\'écran</string>
-    <string name="wallpaper_apply_crop">Découper le fond d\'écran sera désactivé si vous appliquez à partir de cette option.</string>
-    <string name="wallpaper_settings_crop">Découper le fond d\'écran</string>
-    <string name="wallpaper_settings_crop_desc">Activer la découpe du fond d\'écran. Le fond d\'écran sera découpé d\'après la prévisualisation actuel.
-Pincer ou appuyer 2 fois pour zoomer sur le fond d\'écran.</string>
-    <string name="wallpaper_settings_lockscreen">Arrière-plan de l\'écran de verrouillage</string>
-    <string name="wallpaper_settings_lockscreen_desc">Appliquer réglera le fond d\'écran à l\'écran d\'accueil ainsi qu\'à l\'écran de verrouillage.</string>
-    <string name="wallpaper_settings_lockscreen_not_available">L\'écran de verrouillage est seulement disponible pour Android Nougat</string>
     <string name="wallpaper_favorite_added">%s ajouté aux favoris</string>
     <string name="wallpaper_favorite_removed">%s supprimé des favoris</string>
+    <string name="connection_failed">Impossible d\'accéder aux données du serveur</string>
+    <string name="wallpapers_loader_failed">Impossible de vérifier les nouveaux fonds d\'écran</string>
+    <string name="wallpaper_preview_full">Prévisualiser le fond d\'écran en taille réelle</string>
+    <string name="wallpaper_apply">Appliquer le fond d\'écran</string>
+    <string name="wallpaper_save_to_device">Enregistrer le fond d\'écran</string>
+    <!-- Wallpaper Tooltips -->
+    <string name="wallpaper_tooltip_preview">Vous êtes en train de prévisualiser le fond d\'écran dans une basse résolution,
+ce qui peut le rendre flou et pixelisé.</string>
+    <string name="wallpaper_tooltip_preview_icon_tap">Appuyer sur cette icône pour prévisualiser le fond d\'écran en taille réelle</string>
+    <string name="wallpaper_tooltip_dont_show">Ne plus afficher</string>
+    <!-- Wallpaper Property -->
+    <string name="wallpaper_property_name">Nom: %s</string>
+    <string name="wallpaper_property_author">Auteur: %s</string>
+    <string name="wallpaper_property_dimensions">Dimensions: %s</string>
+    <string name="wallpaper_property_format">Format: %s</string>
+    <string name="wallpaper_property_size">Taille: %s</string>
+    <string name="wallpaper_property_palette">Palette de couleurs</string>
+    <string name="wallpaper_property_color">Couleur: %s</string>
+    <string name="wallpaper_property_category">Catégorie</string>
     <!-- Muzei -->
     <string name="minute">Minutes</string>
     <string name="hour">Heures</string>
@@ -97,10 +112,8 @@ Pincer ou appuyer 2 fois pour zoomer sur le fond d\'écran.</string>
     <string name="pref_theme_dark_desc">Changer entre le thème sombre et clair</string>
     <string name="pref_wallpaper_header">Fonds d\'écrans</string>
     <string name="pref_wallpaper_location">Adresse de sauvegarde des fonds d\'écrans</string>
-    <string name="pref_wallpaper_location_desc">Premièrement essayer de télécharger au moins un fond d\'écran</string>
     <string name="pref_language_header">Langue</string>
     <string name="pref_others_header">Autres</string>
-    <string name="pref_others_colored_wallpaper_card">Carte des fonds d\'écrans colorés</string>
     <string name="pref_others_reset_tutorial">Réinitialiser le tutoriel</string>
     <string name="pref_others_reset_tutorial_reset">Le tutoriel est réinitialisé</string>
     <!-- Permission -->
@@ -127,8 +140,26 @@ Vous ne serez pas en mesure d\'utiliser l\'application.</string>
  Android disponible sur GitHub et libre d\'utilisation, développer par Dani Mahardhika.</string>
     <string name="about_dashboard_contributors">Contributeurs de Wallpaper Board</string>
     <string name="about_dashboard_translator">Traducteurs de Wallpaper Board</string>
+    <string name="about_dashboard_dev_instagram_url">https://www.instagram.com/_u/danimahardhika112/</string>
     <!-- Splash screen -->
     <!-- DrawerToggle -->
     <string name="txt_open">Ouvrir</string>
     <string name="txt_close">Fermer</string>
+    <string name="menu_wallpaper_settings">Paramètres du fond d\'écran</string>
+    <!-- Wallpapers -->
+    <string name="wallpaper_new_added">Nouveaux fonds d\'écrans</string>
+    <string name="wallpaper_download_exist">Le fond d\'écran nommé %s existe déjà, voulez vous le remplacer?</string>
+    <string name="wallpaper_download_exist_replace">Remplacer</string>
+    <string name="wallpaper_download_exist_new">Créer un nouveau</string>
+    <string name="wallpaper_download_cancelled">Téléchargement du fond d\'écran annulé</string>
+    <string name="wallpaper_downloaded">Fond d\'écran téléchargé pour</string>
+    <string name="wallpaper_apply_crop">Découper le fond d\'écran sera désactivé si vous appliquez à partir de cette option.</string>
+    <string name="wallpaper_settings_crop">Découper le fond d\'écran</string>
+    <string name="wallpaper_settings_crop_desc">Activer la découpe du fond d\'écran. Le fond d\'écran sera découpé d\'après la prévisualisation actuel.
+Pincer ou appuyer 2 fois pour zoomer sur le fond d\'écran.</string>
+    <string name="wallpaper_settings_lockscreen">Arrière-plan de l\'écran de verrouillage</string>
+    <string name="wallpaper_settings_lockscreen_desc">Appliquer réglera le fond d\'écran à l\'écran d\'accueil ainsi qu\'à l\'écran de verrouillage.</string>
+    <string name="wallpaper_settings_lockscreen_not_available">L\'écran de verrouillage est seulement disponible pour Android Nougat</string>
+    <string name="pref_wallpaper_location_desc">Premièrement essayer de télécharger au moins un fond d\'écran</string>
+    <string name="pref_others_colored_wallpaper_card">Carte des fonds d\'écrans colorés</string>
 </resources>

@@ -10,25 +10,33 @@
     <string name="navigation_view_rate">Avaliar</string>
     <!-- Share app -->
     <string name="share_app_subject">Ei ! Dê uma olhada %s</string>
-    <string name="share_app_body">Dê uma olhada %1$s, esse aplicativo de wallpaper é demais! %2$s</string>
+    <string name="share_app_body">Dê uma olhada %1$s, esse aplicativo de papel de parede é demais! %2$s</string>
     <!-- Menu -->
     <string name="menu_search">Procurar</string>
     <string name="menu_filter">Filtrar</string>
     <string name="menu_save">Salvar no Aparelho</string>
-    <string name="menu_wallpaper_settings">Configurações de wallpaper</string>
+    <string name="menu_wallpaper_crop">Cortar papel de parede</string>
+    <string name="menu_apply_homescreen">Tela inicial</string>
+    <string name="menu_apply_lockscreen">Tela de bloqueio</string>
+    <string name="menu_sort">Classificar por</string>
+    <string name="menu_sort_latest">Mais recente</string>
+    <string name="menu_sort_oldest">Mais antigo</string>
+    <string name="menu_sort_name">Nome</string>
+    <string name="menu_sort_random">Aleatório</string>
     <!-- Dialog -->
     <string name="open">Abrir</string>
     <string name="close">Fechar</string>
     <string name="clear">Limpar</string>
     <string name="donate">Doar</string>
+    <string name="copy">Copiar</string>
     <!-- Tap Intro -->
     <string name="tap_intro_wallpapers_navigation">Menu de navegação</string>
     <string name="tap_intro_wallpapers_navigation_desc">Toque aqui ou passe o dedo a partir da esquerda para abrir o menu de navegação</string>
     <string name="tap_intro_wallpapers_search">Procurar</string>
-    <string name="tap_intro_wallpapers_search_desc">Toque aqui para procurar um wallpaper</string>
-    <string name="tap_intro_wallpapers_filter">Filtrar wallpaper</string>
-    <string name="tap_intro_wallpapers_filter_desc">Toque aqui para filtrar wallpaper por categoria</string>
-    <string name="tap_intro_wallpapers_option">Opções de wallpaper</string>
+    <string name="tap_intro_wallpapers_search_desc">Toque aqui para procurar um papel de parede</string>
+    <string name="tap_intro_wallpapers_filter">Filtrar papel de parede</string>
+    <string name="tap_intro_wallpapers_filter_desc">Toque aqui para filtrar papel de parede por categoria</string>
+    <string name="tap_intro_wallpapers_option">Opções de papel de parede</string>
     <string name="tap_intro_wallpapers_option_desc">Toque aqui e mantenha para visualizar as opções de papel de parede, %s aplicar papel de parede</string>
     <string name="tap_intro_wallpapers_option_desc_download">baixar ou</string>
     <string name="tap_intro_wallpapers_preview">Prévia do papel de parede</string>
@@ -42,32 +50,38 @@ Ative o papel de parede como o fundo de tela de bloqueio no Android Nougat ou pe
     <string name="tap_intro_wallpaper_preview_save_desc">Toque aqui para baixar e salvar o papel de parede no seu aparelho a fim de usá-lo posteriormente</string>
     <string name="tap_intro_wallpaper_preview_apply">Aplicar o papel de parede</string>
     <string name="tap_intro_wallpaper_preview_apply_desc">Toque aqui para definir papel de parede como fundo de tela inicial</string>
+    <string name="tap_intro_wallpaper_preview_full">Papel de parede com tamanho original</string>
+    <string name="tap_intro_wallpaper_preview_full_desc">Toque aqui para visualizar o papel de parede com tamanho original</string>
     <!-- Wallpapers -->
-    <string name="wallpaper_new_added">Novo papel de parede</string>
     <string name="wallpaper_filter">Filtrar por Categoria</string>
+    <string name="wallpaper_already_downloaded">Papel de parede baixado</string>
     <string name="wallpaper_downloading">Baixando papel de parede …</string>
-    <string name="wallpaper_download_exist">Papel de parede com nome %s já existe. Você quer substituir ?</string>
-    <string name="wallpaper_download_exist_replace">Substituir</string>
-    <string name="wallpaper_download_exist_new">Criar novo</string>
     <string name="wallpaper_download_failed">Incapaz de baixar o papel de parede</string>
-    <string name="wallpaper_download_cancelled">Download do papel de parede cancelado</string>
-    <string name="wallpaper_downloaded">Papel de parede baixado em</string>
     <string name="wallpaper_loading">Carregando papel de parede …</string>
     <string name="wallpaper_applying">Aplicando papel de parede …</string>
     <string name="wallpaper_applied">Papel de parede aplicado</string>
     <string name="wallpaper_apply_failed">Incapaz de aplicar o papel de parede</string>
     <string name="wallpaper_apply_cancelled">Aplicação do papel de parede cancelada</string>
-    <string name="connection_failed">Incapaz de buscar dados do servidor</string>
-    <string name="wallpaper_apply">Definir como papel de parede</string>
-    <string name="wallpaper_apply_crop">O corte do papel de parede será desativado se aplicada esta opção</string>
-    <string name="wallpaper_settings_crop">Cortar papel de parede</string>
-    <string name="wallpaper_settings_crop_desc">Habilitar o corte de papel de parede. O papel de parede será cortado com base na presente visualização do papel de parede. 
-Aperte ou toque duas vezes para ampliar o papel de parede.</string>
-    <string name="wallpaper_settings_lockscreen">Fundo da tela de bloqueio</string>
-    <string name="wallpaper_settings_lockscreen_desc">Aplicar definirá o papel de parede como fundo da tela inicial e da tela de bloqueio</string>
-    <string name="wallpaper_settings_lockscreen_not_available">Fundo da tela de bloqueio somente disponível no Android Nougat</string>
     <string name="wallpaper_favorite_added">%s adicionado aos favoritos</string>
     <string name="wallpaper_favorite_removed">%s removido dos favoritos</string>
+    <string name="connection_failed">Incapaz de buscar dados do servidor</string>
+    <string name="wallpapers_loader_failed">Incapaz de consultar novos papéis de parede</string>
+    <string name="wallpaper_preview_full">Visualizar papel de parede com tamanho original</string>
+    <string name="wallpaper_apply">Aplicar papel de parede</string>
+    <string name="wallpaper_save_to_device">Salvar papel de parede</string>
+    <!-- Wallpaper Tooltips -->
+    <string name="wallpaper_tooltip_preview">Você está visualizando o papel de parede com resolução reduzida, podendo parecer desfocado ou borrado.</string>
+    <string name="wallpaper_tooltip_preview_icon_tap">Toque neste ícone para visualizar o papel de parede com tamanho original.</string>
+    <string name="wallpaper_tooltip_dont_show">Não mostre de novo</string>
+    <!-- Wallpaper Property -->
+    <string name="wallpaper_property_name">Nome: %s</string>
+    <string name="wallpaper_property_author">Autor: %s</string>
+    <string name="wallpaper_property_dimensions">Dimensões: %s</string>
+    <string name="wallpaper_property_format">Formato: %s</string>
+    <string name="wallpaper_property_size">Tamanho: %s</string>
+    <string name="wallpaper_property_palette">Paleta de Cores</string>
+    <string name="wallpaper_property_color">Cor: %s</string>
+    <string name="wallpaper_property_category">Categoria</string>
     <!-- Muzei -->
     <string name="minute">Minuto</string>
     <string name="hour">Hora</string>
@@ -97,10 +111,8 @@ Aperte ou toque duas vezes para ampliar o papel de parede.</string>
     <string name="pref_theme_dark_desc">Trocar entre o tema claro ou escuro</string>
     <string name="pref_wallpaper_header">Papel de parede</string>
     <string name="pref_wallpaper_location">Salvar local do papel de parede</string>
-    <string name="pref_wallpaper_location_desc">Tente baixar ao menos um papel de parede inicialmente</string>
     <string name="pref_language_header">Idioma</string>
     <string name="pref_others_header">Outros</string>
-    <string name="pref_others_colored_wallpaper_card">Cartão do papel de parede colorido</string>
     <string name="pref_others_reset_tutorial">Reinicializar Tutorial</string>
     <string name="pref_others_reset_tutorial_reset">Tutorial  reinicializado</string>
     <!-- Permission -->
@@ -123,11 +135,29 @@ Você não será capaz de usar o app.</string>
     <string name="email_client">Escolha o cliente do Email</string>
     <!-- Please don't modify this -->
     <string name="about_dashboard">Wallpaper Board</string>
-    <string name="about_dashboard_dev">Wallpaper Board é um painel de controle para papel de parede feito com código-fonte aberto licenciado sob Apache License 2.0 para Android disponível no GitHub and livre para uso, desenvolvida por Dani Mahardhika.</string>
+    <string name="about_dashboard_dev">Wallpaper Board é um painel de controle para papel de parede feito com código-fonte aberto licenciado sob Apache License 2.0 para Android disponível no GitHub e livre para uso, desenvolvida por Dani Mahardhika.</string>
     <string name="about_dashboard_contributors">Colaboradores do Wallpaper Board</string>
     <string name="about_dashboard_translator">Tradutor do Wallpaper Board</string>
+    <string name="about_dashboard_dev_instagram_url">https://www.instagram.com/_u/danimahardhika112/</string>
     <!-- Splash screen -->
     <!-- DrawerToggle -->
     <string name="txt_open">Abrir</string>
     <string name="txt_close">Fechar</string>
+    <string name="menu_wallpaper_settings">Configurações de papel de parede</string>
+    <!-- Wallpapers -->
+    <string name="wallpaper_new_added">Novo papel de parede</string>
+    <string name="wallpaper_download_exist">Papel de parede com nome %s já existe. Você quer substituir ?</string>
+    <string name="wallpaper_download_exist_replace">Substituir</string>
+    <string name="wallpaper_download_exist_new">Criar novo</string>
+    <string name="wallpaper_download_cancelled">Download do papel de parede cancelado</string>
+    <string name="wallpaper_downloaded">Papel de parede baixado em</string>
+    <string name="wallpaper_apply_crop">O corte do papel de parede será desativado se aplicada esta opção</string>
+    <string name="wallpaper_settings_crop">Cortar papel de parede</string>
+    <string name="wallpaper_settings_crop_desc">Habilitar o corte de papel de parede. O papel de parede será cortado com base na presente visualização do papel de parede. 
+Aperte ou toque duas vezes para ampliar o papel de parede.</string>
+    <string name="wallpaper_settings_lockscreen">Fundo da tela de bloqueio</string>
+    <string name="wallpaper_settings_lockscreen_desc">Aplicar definirá o papel de parede como fundo da tela inicial e da tela de bloqueio</string>
+    <string name="wallpaper_settings_lockscreen_not_available">Fundo da tela de bloqueio somente disponível no Android Nougat</string>
+    <string name="pref_wallpaper_location_desc">Tente baixar ao menos um papel de parede inicialmente</string>
+    <string name="pref_others_colored_wallpaper_card">Cartão do papel de parede colorido</string>
 </resources>

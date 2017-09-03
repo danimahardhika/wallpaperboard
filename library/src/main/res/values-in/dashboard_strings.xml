@@ -15,12 +15,20 @@
     <string name="menu_search">Pencarian</string>
     <string name="menu_filter">Filter</string>
     <string name="menu_save">Simpan ke Perangkat</string>
-    <string name="menu_wallpaper_settings">Pengaturan Wallpaper</string>
+    <string name="menu_wallpaper_crop">Potong Wallpaper</string>
+    <string name="menu_apply_homescreen">Tampilan depan</string>
+    <string name="menu_apply_lockscreen">Layar kunci</string>
+    <string name="menu_sort">Urut berdasarkan</string>
+    <string name="menu_sort_latest">Terbaru</string>
+    <string name="menu_sort_oldest">Tertua</string>
+    <string name="menu_sort_name">Nama</string>
+    <string name="menu_sort_random">Acak</string>
     <!-- Dialog -->
     <string name="open">Buka</string>
     <string name="close">Tutup</string>
     <string name="clear">Bersihkan</string>
     <string name="donate">Donasi</string>
+    <string name="copy">Salin</string>
     <!-- Tap Intro -->
     <string name="tap_intro_wallpapers_navigation">Navigation drawer</string>
     <string name="tap_intro_wallpapers_navigation_desc">Sentuh di sini atau geser dari tepi kiri layar untuk membuka navigation drawer</string>
@@ -41,31 +49,36 @@
     <string name="tap_intro_wallpaper_preview_save_desc">Sentuh di sini untuk mengunduh dan menyimpan wallpaper ke penyimpanan perangkat</string>
     <string name="tap_intro_wallpaper_preview_apply">Terapkan wallpaper</string>
     <string name="tap_intro_wallpaper_preview_apply_desc">Sentuh di sini untuk menetapkan wallpaper sebagai latar belakang tampilan depan</string>
+    <string name="tap_intro_wallpaper_preview_full">Wallpaper dengan ukuran asli</string>
+    <string name="tap_intro_wallpaper_preview_full_desc">Sentuh di sini untuk melakukan pratinjau wallpaper dengan ukuran asli</string>
     <!-- Wallpapers -->
-    <string name="wallpaper_new_added">Wallpaper Baru</string>
     <string name="wallpaper_filter">Filter berdasarkan Kategori</string>
+    <string name="wallpaper_already_downloaded">Wallpaper telah diunduh</string>
     <string name="wallpaper_downloading">Mengunduh wallpaper …</string>
-    <string name="wallpaper_download_exist">Wallpaper dengan nama %s telah ada, apakah anda ingin menggantinya?</string>
-    <string name="wallpaper_download_exist_replace">Ganti</string>
-    <string name="wallpaper_download_exist_new">Buat Baru</string>
     <string name="wallpaper_download_failed">Tidak dapat mengunduh wallpaper</string>
-    <string name="wallpaper_download_cancelled">Unduh wallpaper dibatalkan</string>
-    <string name="wallpaper_downloaded">Wallpaper telah diunduh ke</string>
     <string name="wallpaper_loading">Memuat wallpaper …</string>
     <string name="wallpaper_applying">Menerapkan wallpaper …</string>
     <string name="wallpaper_applied">Wallpaper diterapkan</string>
     <string name="wallpaper_apply_failed">Tidak dapat menerapkan wallpaper</string>
     <string name="wallpaper_apply_cancelled">Menerapkan wallpaper dibatalkan</string>
-    <string name="connection_failed">Tidak dapat mengambil data dari server</string>
-    <string name="wallpaper_apply">Tetapkan sebagai Wallpaper</string>
-    <string name="wallpaper_apply_crop">Potong wallpaper akan dinonaktifkan jika anda menerapkan wallpaper dari pilihan ini</string>
-    <string name="wallpaper_settings_crop">Potong Wallpaper</string>
-    <string name="wallpaper_settings_crop_desc">Mengaktifkan potong wallpaper. Wallpaper akan dipotong berdasarkan tampilan pada layar dari pratinjau wallpaper. Cubit atau ketuk dua kali untuk memperbesar atau memperkecil wallpaper.</string>
-    <string name="wallpaper_settings_lockscreen">Latar Belakang Layar Kunci</string>
-    <string name="wallpaper_settings_lockscreen_desc">Terapkan wallpaper akan menetapkan wallpaper sebagai latar belakang dari layar depan dan layar kunci</string>
-    <string name="wallpaper_settings_lockscreen_not_available">Latar belakang layar kunci hanya terdapat pada Android Nougat</string>
     <string name="wallpaper_favorite_added">%s ditambahkan ke favorit</string>
     <string name="wallpaper_favorite_removed">%s telah dihapus dari favorit</string>
+    <string name="connection_failed">Tidak dapat mengambil data dari server</string>
+    <string name="wallpapers_loader_failed">Tidak dapat memeriksa wallpaper baru</string>
+    <string name="wallpaper_preview_full">Pratinjau wallpaper dengan ukuran asli</string>
+    <string name="wallpaper_apply">Terapkan Wallpaper</string>
+    <string name="wallpaper_save_to_device">Simpan wallpaper</string>
+    <!-- Wallpaper Tooltips -->
+    <string name="wallpaper_tooltip_preview">Saat ini Anda melihat pratinjau wallpaper dengan resolusi lebih kecil, yang mungkin terlihat buram dan bergerigi.</string>
+    <string name="wallpaper_tooltip_preview_icon_tap">Sentuh icon ini untuk melakukan pratinjau wallpaper dengan ukuran asli</string>
+    <string name="wallpaper_tooltip_dont_show">Jangan tampilkan lagi</string>
+    <!-- Wallpaper Property -->
+    <string name="wallpaper_property_name">Nama: %s</string>
+    <string name="wallpaper_property_dimensions">Resolusi: %s</string>
+    <string name="wallpaper_property_size">Ukuran: %s</string>
+    <string name="wallpaper_property_palette">Palet Warna</string>
+    <string name="wallpaper_property_color">Warna: %s</string>
+    <string name="wallpaper_property_category">Kategori</string>
     <!-- Muzei -->
     <string name="minute">Menit</string>
     <string name="hour">Jam</string>
@@ -94,11 +107,12 @@
     <string name="pref_theme_dark">Tema Gelap</string>
     <string name="pref_theme_dark_desc">Beralih dari tema gelap atau terang</string>
     <string name="pref_wallpaper_header">Wallpaper</string>
+    <string name="pref_wallpaper_high_quality_preview">Kualitas Pratinjau Wallpaper</string>
+    <string name="pref_wallpaper_high_quality_preview_low">Kualitas Rendah</string>
+    <string name="pref_wallpaper_high_quality_preview_high">Kualitas Tinggi</string>
     <string name="pref_wallpaper_location">Lokasi Simpan Wallpaper</string>
-    <string name="pref_wallpaper_location_desc">Cobalah mengunduh setidaknya satu wallpaper terlebih dahulu</string>
     <string name="pref_language_header">Bahasa</string>
     <string name="pref_others_header">Lainnya</string>
-    <string name="pref_others_colored_wallpaper_card">Kartu Wallpaper Berwarna</string>
     <string name="pref_others_reset_tutorial">Reset Tutorial</string>
     <string name="pref_others_reset_tutorial_reset">Tutorial Direset</string>
     <!-- Permission -->
@@ -113,7 +127,7 @@
 Anda tidak dapat menggunakan aplikasi ini.</string>
     <string name="license_check_retry">Tidak dapat memeriksa lisensi, cobalah beberapa saat lagi.</string>
     <!-- Search -->
-    <string name="search_result_empty">Tidak menemukan hasil untuk pencarian \"%s\"</string>
+    <string name="search_result_empty">Tidak ditemukan hasil untuk pencarian \"%s\"</string>
     <!-- Crash Report -->
     <string name="crash_report">Laporan Masalah</string>
     <string name="crash_report_message">Sayangnya %s telah berhenti. Pilih kirim laporan di bawah ini untuk membantu pengembang memperbaiki masalahnya.</string>
@@ -128,4 +142,20 @@ Anda tidak dapat menggunakan aplikasi ini.</string>
     <!-- DrawerToggle -->
     <string name="txt_open">Buka</string>
     <string name="txt_close">Tutup</string>
+    <string name="menu_wallpaper_settings">Pengaturan Wallpaper</string>
+    <!-- Wallpapers -->
+    <string name="wallpaper_new_added">Wallpaper Baru</string>
+    <string name="wallpaper_download_exist">Wallpaper dengan nama %s telah ada, apakah anda ingin menggantinya?</string>
+    <string name="wallpaper_download_exist_replace">Ganti</string>
+    <string name="wallpaper_download_exist_new">Buat Baru</string>
+    <string name="wallpaper_download_cancelled">Unduh wallpaper dibatalkan</string>
+    <string name="wallpaper_downloaded">Wallpaper telah diunduh ke</string>
+    <string name="wallpaper_apply_crop">Potong wallpaper akan dinonaktifkan jika anda menerapkan wallpaper dari pilihan ini</string>
+    <string name="wallpaper_settings_crop">Potong Wallpaper</string>
+    <string name="wallpaper_settings_crop_desc">Mengaktifkan potong wallpaper. Wallpaper akan dipotong berdasarkan tampilan pada layar dari pratinjau wallpaper. Cubit atau ketuk dua kali untuk memperbesar atau memperkecil wallpaper.</string>
+    <string name="wallpaper_settings_lockscreen">Latar Belakang Layar Kunci</string>
+    <string name="wallpaper_settings_lockscreen_desc">Terapkan wallpaper akan menetapkan wallpaper sebagai latar belakang dari layar depan dan layar kunci</string>
+    <string name="wallpaper_settings_lockscreen_not_available">Latar belakang layar kunci hanya terdapat pada Android Nougat</string>
+    <string name="pref_wallpaper_location_desc">Cobalah mengunduh setidaknya satu wallpaper terlebih dahulu</string>
+    <string name="pref_others_colored_wallpaper_card">Kartu Wallpaper Berwarna</string>
 </resources>
