@@ -85,6 +85,7 @@ public class SettingsFragment extends Fragment {
         TextView textView = ButterKnife.findById(getActivity(), R.id.title);
         textView.setText(getActivity().getResources().getString(
                 R.string.navigation_view_settings));
+
         mToolbar.setTitle("");
         mToolbar.setNavigationIcon(ConfigurationHelper.getNavigationIcon(getActivity(),
                 WallpaperBoardApplication.getConfiguration().getNavigationIcon()));
@@ -145,6 +146,14 @@ public class SettingsFragment extends Fragment {
         settings.add(Setting.Builder(Setting.Type.HEADER)
                 .icon(R.drawable.ic_toolbar_wallpapers)
                 .title(getActivity().getResources().getString(R.string.pref_wallpaper_header))
+                .build()
+        );
+
+        settings.add(Setting.Builder(Setting.Type.PREVIEW_QUALITY)
+                .subtitle(getActivity().getResources().getString(R.string.pref_wallpaper_high_quality_preview))
+                .content(Preferences.get(getActivity()).isHighQualityPreviewEnabled() ?
+                        getActivity().getResources().getString(R.string.pref_wallpaper_high_quality_preview_high) :
+                        getActivity().getResources().getString(R.string.pref_wallpaper_high_quality_preview_low))
                 .build()
         );
 

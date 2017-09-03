@@ -27,7 +27,7 @@ public class Setting {
     private final int mIcon;
     private final String mTitle;
     private final String mSubtitle;
-    private final String mContent;
+    private String mContent;
     private String mFooter;
     private final Type mType;
     private final int mCheckState;
@@ -70,6 +70,10 @@ public class Setting {
 
     public int getCheckState() {
         return mCheckState;
+    }
+
+    public void setContent(String content) {
+        mContent = content;
     }
 
     public void setFooter(String footer) {
@@ -136,11 +140,12 @@ public class Setting {
     }
 
     public enum Type {
-       HEADER,
-       CACHE,
-       THEME,
-       WALLPAPER,
-       LANGUAGE,
-       RESET_TUTORIAL
+        HEADER,
+        CACHE,
+        THEME,
+        WALLPAPER,
+        PREVIEW_QUALITY,
+        LANGUAGE,
+        RESET_TUTORIAL
     }
 }

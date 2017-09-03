@@ -138,6 +138,9 @@
     <string name="pref_theme_dark_desc">Switch between dark or light theme</string>
 
     <string name="pref_wallpaper_header">Wallpaper</string>
+    <string name="pref_wallpaper_high_quality_preview">Wallpaper Preview Quality</string>
+    <string name="pref_wallpaper_high_quality_preview_low">Low Quality</string>
+    <string name="pref_wallpaper_high_quality_preview_high">High Quality</string>
     <string name="pref_wallpaper_location">Wallpaper Save Location</string>
 
     <string name="pref_language_header">Language</string>

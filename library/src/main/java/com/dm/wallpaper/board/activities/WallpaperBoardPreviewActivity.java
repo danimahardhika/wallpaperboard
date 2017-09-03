@@ -474,9 +474,12 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
     public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState,
                                     SlidingUpPanelLayout.PanelState newState) {
         File file = ImageLoader.getInstance().getDiskCache().get(mWallpaper.getUrl());
-        if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED && mTooltip == null
-                && Preferences.get(this).isShowWallpaperTooltip() && !file.exists() &&
-                !Preferences.get(this).isTimeToShowWallpaperPreviewIntro()) {
+        if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED &&
+                mTooltip == null
+                && Preferences.get(this).isShowWallpaperTooltip() &&
+                !file.exists() &&
+                !Preferences.get(this).isTimeToShowWallpaperPreviewIntro() &&
+                !Preferences.get(this).isHighQualityPreviewEnabled()) {
             mTooltip = Tooltip.Builder(this)
                     .to(mMenuPreview)
                     .content(R.string.wallpaper_tooltip_preview)
@@ -595,9 +598,12 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
             mAttacher = null;
         }
 
+        boolean highQualityPreview = Preferences.get(this).isHighQualityPreviewEnabled();
         File file = ImageLoader.getInstance().getDiskCache().get(mWallpaper.getUrl());
-        if (file.exists()) {
-            LogUtil.d("full size wallpaper available in cache: " +file.getName());
+        if (file.exists() || highQualityPreview) {
+            if (file.exists()) {
+                LogUtil.d("full size wallpaper available in cache: " +file.getName());
+            }
             url = mWallpaper.getUrl();
         }
 

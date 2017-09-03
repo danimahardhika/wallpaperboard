@@ -205,6 +205,25 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         Preferences.get(mContext).setDarkTheme(!checkBox.isChecked());
                         ((AppCompatActivity) mContext).recreate();
                         break;
+                    case PREVIEW_QUALITY:
+                        String[] strings = new String[] {
+                                mContext.getResources().getString(R.string.pref_wallpaper_high_quality_preview_low),
+                                mContext.getResources().getString(R.string.pref_wallpaper_high_quality_preview_high)
+                        };
+
+                        new MaterialDialog.Builder(mContext)
+                                .typeface(TypefaceHelper.getMedium(mContext), TypefaceHelper.getRegular(mContext))
+                                .title(R.string.pref_wallpaper_high_quality_preview)
+                                .items((CharSequence[]) strings)
+                                .itemsCallbackSingleChoice(Preferences.get(mContext).isHighQualityPreviewEnabled() ? 1 : 0,
+                                        (dialog, itemView1, which, text) -> {
+                                            Preferences.get(mContext).setHighQualityPreviewEnabled(which == 1);
+                                            setting.setContent(strings[which]);
+                                            notifyItemChanged(position);
+                                            return true;
+                                        })
+                                .show();
+                        break;
                     case LANGUAGE:
                         LanguagesFragment.showLanguageChooser(((AppCompatActivity) mContext).getSupportFragmentManager());
                         break;

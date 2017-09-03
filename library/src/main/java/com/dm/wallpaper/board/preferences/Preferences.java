@@ -53,6 +53,7 @@ public class Preferences {
     private static final String KEY_AUTO_INCREMENT = "auto_increment";
     private static final String KEY_WALLPAPER_TOOLTIP = "wallpaper_tooltip";
     private static final String KEY_SORT_BY = "sort_by";
+    private static final String KEY_HIGH_QUALITY_PREVIEW = "high_quality_preview";
 
     private Preferences(@NonNull Context context) {
         mContext = context;
@@ -162,6 +163,15 @@ public class Preferences {
 
     public void setShowWallpaperTooltip(boolean bool) {
         getSharedPreferences().edit().putBoolean(KEY_WALLPAPER_TOOLTIP, bool).apply();
+    }
+
+    public boolean isHighQualityPreviewEnabled() {
+        return getSharedPreferences().getBoolean(KEY_HIGH_QUALITY_PREVIEW,
+                WallpaperBoardApplication.getConfiguration().isHighQualityPreviewEnabled());
+    }
+
+    public void setHighQualityPreviewEnabled(boolean bool) {
+        getSharedPreferences().edit().putBoolean(KEY_HIGH_QUALITY_PREVIEW, bool).apply();
     }
 
     public Locale getCurrentLocale() {

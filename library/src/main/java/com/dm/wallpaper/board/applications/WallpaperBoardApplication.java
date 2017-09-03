@@ -133,6 +133,7 @@ public class WallpaperBoardApplication extends Application {
         private NavigationViewHeader mNavigationViewHeader = NavigationViewHeader.NORMAL;
         private GridStyle mWallpapersGrid = GridStyle.CARD;
 
+        private boolean mIsHighQualityPreviewEnabled = false;
         private boolean mIsDashboardThemingEnabled = true;
         private boolean mIsShadowEnabled = true;
         private int mLatestWallpapersDisplayMax = 20;
@@ -178,6 +179,11 @@ public class WallpaperBoardApplication extends Application {
             return this;
         }
 
+        public Configuration setHighQualityPreviewEnabled(boolean highQualityPreviewEnabled) {
+            mIsHighQualityPreviewEnabled = highQualityPreviewEnabled;
+            return this;
+        }
+
         public Configuration setCrashReportEnabled(boolean crashReportEnabled) {
             mIsCrashReportEnabled = crashReportEnabled;
             return this;
@@ -215,6 +221,10 @@ public class WallpaperBoardApplication extends Application {
 
         public int getLatestWallpapersDisplayMax() {
             return mLatestWallpapersDisplayMax;
+        }
+
+        public boolean isHighQualityPreviewEnabled() {
+            return mIsHighQualityPreviewEnabled;
         }
 
         public  String getCrashReportEmail() {
