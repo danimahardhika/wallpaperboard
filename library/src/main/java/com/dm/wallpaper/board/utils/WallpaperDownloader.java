@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.util.Log;
+import android.webkit.URLUtil;
 
 import com.danimahardhika.android.helpers.core.ColorHelper;
 import com.danimahardhika.android.helpers.core.FileHelper;
@@ -89,6 +91,11 @@ public class WallpaperDownloader {
             return;
         }
 
+        if (!URLUtil.isValidUrl(mWallpaper.getUrl())) {
+            LogUtil.e("Download: wallpaper url is not valid");
+            return;
+        }
+
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(mWallpaper.getUrl()));
         request.setMimeType(mWallpaper.getMimeType());
         request.setTitle(fileName);
@@ -99,7 +106,13 @@ public class WallpaperDownloader {
         request.setDestinationUri(Uri.fromFile(target));
 
         DownloadManager downloadManager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
-        downloadManager.enqueue(request);
+
+        try {
+            downloadManager.enqueue(request);
+        } catch (IllegalArgumentException e) {
+            LogUtil.e(Log.getStackTraceString(e));
+            return;
+        }
 
         showCafeBar(R.string.wallpaper_downloading);
     }
