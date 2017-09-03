@@ -1,7 +1,6 @@
 package com.dm.wallpaper.board.fragments;
 
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -150,12 +149,7 @@ public class CollectionFragment extends Fragment {
             if (percentage == 0f) {
                 ColorHelper.setupStatusBarIconColor(getActivity());
             } else if (percentage == 1f) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    View view = getActivity().getWindow().getDecorView();
-                    if (view != null) {
-                        view.setSystemUiVisibility(0);
-                    }
-                }
+                ColorHelper.setupStatusBarIconColor(getActivity(), false);
             }
         });
     }

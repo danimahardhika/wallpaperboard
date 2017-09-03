@@ -432,12 +432,7 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    View view = getWindow().getDecorView();
-                    if (view != null) {
-                        view.setSystemUiVisibility(0);
-                    }
-                }
+                ColorHelper.setupStatusBarIconColor(WallpaperBoardActivity.this, false);
             }
 
             @Override
