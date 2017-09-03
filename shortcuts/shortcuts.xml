@@ -56,7 +56,7 @@
 
             <extra
                 android:name="position"
-                android:value="value" />
+                android:value="1" />
         </intent>
 
         <categories android:name="android.shortcut.conversation" />
