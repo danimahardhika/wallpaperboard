@@ -607,6 +607,15 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
             url = mWallpaper.getUrl();
         }
 
+        if (!file.exists() && highQualityPreview) {
+            if (mImageView.getDrawable() != null) {
+                Bitmap bitmap = ((BitmapDrawable) mImageView.getDrawable()).getBitmap();
+                WallpaperPaletteLoaderTask.with(bitmap)
+                        .callback(WallpaperBoardPreviewActivity.this)
+                        .start();
+            }
+        }
+
         WallpaperPropertiesLoaderTask.prepare(this)
                 .callback(this)
                 .wallpaper(mWallpaper)
