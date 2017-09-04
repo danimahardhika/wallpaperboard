@@ -107,9 +107,11 @@ public class CreditsFragment extends DialogFragment {
     }
 
     @Override
-    public void onDestroyView() {
-        if (mGetCredits != null) mGetCredits.cancel(true);
-        super.onDestroyView();
+    public void onDestroy() {
+        if (mGetCredits != null) {
+            mGetCredits.cancel(true);
+        }
+        super.onDestroy();
     }
 
     @NonNull

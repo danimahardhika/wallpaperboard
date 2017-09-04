@@ -117,14 +117,24 @@ public class FilterFragment extends DialogFragment implements View.OnClickListen
     }
 
     @Override
+    public void onDestroy() {
+        if (mGetCategories != null) {
+            mGetCategories.cancel(true);
+        }
+        if (mSelectAll != null) {
+            mSelectAll.cancel(true);
+        }
+        super.onDestroy();
+    }
+
+    @Override
     public void onDismiss(DialogInterface dialog) {
         if (getActivity() == null) return;
 
         FragmentManager fm = getActivity().getSupportFragmentManager();
         if (fm == null) return;
 
-        if (mGetCategories != null) mGetCategories.cancel(true);
-        if (mSelectAll != null) mSelectAll.cancel(true);
+
         super.onDismiss(dialog);
     }
 
