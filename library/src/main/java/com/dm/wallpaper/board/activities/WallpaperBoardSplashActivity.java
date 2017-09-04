@@ -97,6 +97,6 @@ public class WallpaperBoardSplashActivity extends AppCompatActivity {
                     finish();
                 }
             }
-        }.execute();
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 }
