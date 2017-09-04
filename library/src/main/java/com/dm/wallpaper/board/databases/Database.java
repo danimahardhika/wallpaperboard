@@ -170,7 +170,7 @@ public class Database extends SQLiteOpenHelper {
                 mDatabase.mSQLiteDatabase = mDatabase.getWritableDatabase();
             }
             return mDatabase.mSQLiteDatabase.isOpen();
-        } catch (SQLiteException e) {
+        } catch (SQLiteException | NullPointerException e) {
             LogUtil.e(Log.getStackTraceString(e));
             return false;
         }
@@ -189,7 +189,7 @@ public class Database extends SQLiteOpenHelper {
             }
             mDatabase.mSQLiteDatabase.close();
             return true;
-        } catch (SQLiteException e) {
+        } catch (SQLiteException | NullPointerException e) {
             LogUtil.e(Log.getStackTraceString(e));
             return false;
         }
