@@ -1,7 +1,6 @@
 package com.dm.wallpaper.board.fragments.dialogs;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -125,17 +124,6 @@ public class FilterFragment extends DialogFragment implements View.OnClickListen
             mSelectAll.cancel(true);
         }
         super.onDestroy();
-    }
-
-    @Override
-    public void onDismiss(DialogInterface dialog) {
-        if (getActivity() == null) return;
-
-        FragmentManager fm = getActivity().getSupportFragmentManager();
-        if (fm == null) return;
-
-
-        super.onDismiss(dialog);
     }
 
     @Override
