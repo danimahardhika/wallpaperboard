@@ -127,8 +127,6 @@
     <string name="about_dashboard_translator">वॉलपेपर बोर्ड अनुवादक</string>
     <string name="about_dashboard_dev_google_plus_url">https://plus.google.com/u/1/+DaniMahardhika</string>
     <string name="about_dashboard_dev_github_url">https://github.com/danimahardhika</string>
-    <!-- Splash screen -->
-    <string name="splash_screen_title">वॉलपेपर बोर्ड</string>
     <!-- DrawerToggle -->
     <string name="txt_open">खोलें</string>
     <string name="txt_close">बंद करें</string>

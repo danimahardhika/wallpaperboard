@@ -129,8 +129,6 @@ Android disponibile su Github e gratis, sviluppata da Dani Mahardhika.</string>
     <string name="about_dashboard_translator">Traduttori Wallpaper Board</string>
     <string name="about_dashboard_dev_google_plus_url">https://plus.google.com/u/1/+DaniMahardhika</string>
     <string name="about_dashboard_dev_github_url">https://github.com/danimahardhika</string>
-    <!-- Splash screen -->
-    <string name="splash_screen_title">WallpaperBoard</string>
     <!-- DrawerToggle -->
     <string name="txt_open">Apri</string>
     <string name="txt_close">Chiudi</string>
