@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -339,7 +340,18 @@ public class WallpaperApplyTask extends AsyncTask<Void, Void, Boolean> implement
     @Override
     protected void onPostExecute(Boolean aBoolean) {
         super.onPostExecute(aBoolean);
-        mDialog.dismiss();
+        if (mContext == null) {
+            return;
+        }
+
+        if (((AppCompatActivity) mContext).isFinishing()) {
+            return;
+        }
+
+        if (mDialog != null && mDialog.isShowing()) {
+            mDialog.dismiss();
+        }
+
         if (aBoolean) {
             CafeBar.builder(mContext)
                     .theme(new CafeBarTheme.Custom(ColorHelper.getAttributeColor(
