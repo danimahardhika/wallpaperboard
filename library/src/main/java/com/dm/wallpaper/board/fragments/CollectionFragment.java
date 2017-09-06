@@ -131,7 +131,6 @@ public class CollectionFragment extends Fragment {
 
         mAdapter = new CollectionPagerAdapter(getChildFragmentManager(), collection);
         mPager.setAdapter(mAdapter);
-        mPager.setOffscreenPageLimit(2);
     }
 
     private void initAppBar() {
