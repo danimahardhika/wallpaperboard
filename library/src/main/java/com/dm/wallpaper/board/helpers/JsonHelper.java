@@ -1,13 +1,11 @@
 package com.dm.wallpaper.board.helpers;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.dm.wallpaper.board.applications.WallpaperBoardApplication;
 import com.dm.wallpaper.board.items.Category;
 import com.dm.wallpaper.board.items.Wallpaper;
-import com.dm.wallpaper.board.preferences.Preferences;
 import com.dm.wallpaper.board.utils.JsonStructure;
 
 import java.io.UnsupportedEncodingException;
@@ -83,16 +81,6 @@ public class JsonHelper {
                     .build();
         }
         return null;
-    }
-
-    public static String getGeneratedName(@NonNull Context context, @Nullable String name) {
-        if (name == null) {
-            String generatedName = "Wallpaper " +Preferences.get(context).getAutoIncrement();
-            Preferences.get(context).setAutoIncrement(
-                    Preferences.get(context).getAutoIncrement() + 1);
-            return generatedName;
-        }
-        return name;
     }
 
     public static String getThumbUrl(@NonNull Map map) {

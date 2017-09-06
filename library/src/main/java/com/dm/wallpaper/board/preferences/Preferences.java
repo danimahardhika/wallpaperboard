@@ -50,7 +50,6 @@ public class Preferences {
     private static final String KEY_WALLPAPER_PREVIEW_INTRO = "wallpaper_preview_intro";
     private static final String KEY_LANGUAGE_PREFERENCE = "language_preference";
     private static final String KEY_CURRENT_LOCALE = "current_locale";
-    private static final String KEY_AUTO_INCREMENT = "auto_increment";
     private static final String KEY_WALLPAPER_TOOLTIP = "wallpaper_tooltip";
     private static final String KEY_SORT_BY = "sort_by";
     private static final String KEY_HIGH_QUALITY_PREVIEW = "high_quality_preview";
@@ -219,14 +218,6 @@ public class Preferences {
             LocaleHelper.setLocale(mContext);
             setTimeToSetLanguagePreference(false);
         }
-    }
-
-    public void setAutoIncrement(int value) {
-        getSharedPreferences().edit().putInt(KEY_AUTO_INCREMENT, value).apply();
-    }
-
-    public int getAutoIncrement() {
-        return getSharedPreferences().getInt(KEY_AUTO_INCREMENT, 0);
     }
 
     public void setSortBy(PopupItem.Type type) {

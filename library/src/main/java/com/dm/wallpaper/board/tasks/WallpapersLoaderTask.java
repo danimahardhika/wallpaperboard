@@ -17,6 +17,7 @@ import com.dm.wallpaper.board.applications.WallpaperBoardApplication;
 import com.dm.wallpaper.board.databases.Database;
 import com.dm.wallpaper.board.helpers.JsonHelper;
 import com.dm.wallpaper.board.helpers.TypefaceHelper;
+import com.dm.wallpaper.board.items.Category;
 import com.dm.wallpaper.board.items.Wallpaper;
 import com.dm.wallpaper.board.utils.JsonStructure;
 import com.dm.wallpaper.board.utils.LogUtil;
@@ -127,6 +128,30 @@ public class WallpapersLoaderTask extends AsyncTask<Void, Void, Boolean> {
 
                     List<Wallpaper> wallpapers;
                     if (Database.get(mContext).getWallpapersCount() > 0) {
+                        List<Category> categories = Database.get(mContext).getCategories();
+                        List<Category> newCategories = new ArrayList<>();
+                        for (int i = 0; i < categoryList.size(); i++) {
+                            Category category = JsonHelper.getCategory(categoryList.get(i));
+                            if (category != null) {
+                                newCategories.add(category);
+                            }
+                        }
+
+                        //Same categories
+                        List<Category> intersectionC = (List<Category>)
+                                ListHelper.intersect(newCategories, categories);
+
+                        //Deleted categories
+                        List<Category> differenceC = (List<Category>)
+                                ListHelper.difference(intersectionC, categories);
+
+                        //New categories
+                        List<Category> newlyAddedC = (List<Category>) ListHelper.difference(
+                                intersectionC, newCategories);
+
+                        Database.get(mContext).deleteCategories(differenceC);
+                        Database.get(mContext).addCategories(newlyAddedC);
+
                         wallpapers = Database.get(mContext).getWallpapers();
                         List<Wallpaper> newWallpapers = new ArrayList<>();
                         for (int i = 0; i < wallpaperList.size(); i++) {
@@ -136,23 +161,57 @@ public class WallpapersLoaderTask extends AsyncTask<Void, Void, Boolean> {
                             }
                         }
 
-                        List<Wallpaper> intersection = (List<Wallpaper>)
+                        //A: Wallpapers in json that also available in database
+                        //Considered as same wallpapers
+                        List<Wallpaper> intersectionW = (List<Wallpaper>)
                                 ListHelper.intersect(newWallpapers, wallpapers);
-                        List<Wallpaper> deleted = (List<Wallpaper>)
-                                ListHelper.difference(intersection, wallpapers);
-                        List<Wallpaper> newlyAdded = (List<Wallpaper>)
-                                ListHelper.difference(intersection, newWallpapers);
 
-                        Database.get(mContext).deleteCategories();
-                        Database.get(mContext).addCategories(categoryList);
+                        //B: Wallpapers in database that not available in A
+                        //Considered as deleted wallpapers
+                        List<Wallpaper> differenceW = (List<Wallpaper>)
+                                ListHelper.difference(intersectionW, wallpapers);
 
-                        Database.get(mContext).deleteWallpapers(deleted);
-                        Database.get(mContext).addWallpapers(newlyAdded);
+                        //C: Wallpapers in json that not available in A
+                        //Considered as new wallpapers
+                        List<Wallpaper> newlyAddedW = (List<Wallpaper>)
+                                ListHelper.difference(intersectionW, newWallpapers);
+
+                        List<Integer> deleted = new ArrayList<>();
+                        for (int i = 0; i < newlyAddedW.size(); i++) {
+                            int index = -1;
+
+                            for (int j = 0; j < differenceW.size(); j++) {
+                                if (newlyAddedW.get(i).getUrl().equals(differenceW.get(j).getUrl())) {
+                                    index = j;
+                                    break;
+                                }
+                            }
+
+                            if (index >= 0 && index < differenceW.size()) {
+                                deleted.add(index);
+                            }
+                        }
+
+                        int deleteCount = 0;
+                        for (Integer i : deleted) {
+                            differenceW.remove(i - deleteCount);
+                            deleteCount++;
+                        }
+
+                        Database.get(mContext).deleteWallpapers(differenceW);
+
+                        for (Wallpaper newl : newlyAddedW) {
+                            Database.get(mContext).updateOrIgnoreWallpaper(newl);
+                        }
+
+                        Database.get(mContext).addWallpapers(newlyAddedW);
                         return true;
                     }
 
                     Database.get(mContext).addCategories(categoryList);
                     Database.get(mContext).addWallpapers(wallpaperList);
+
+                    Database.get(mContext).restoreFavorites();
                     return true;
                 }
                 return false;

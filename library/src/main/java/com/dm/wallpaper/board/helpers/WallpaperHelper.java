@@ -17,7 +17,6 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
 import java.io.File;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-
 /*
  * Wallpaper Board
  *

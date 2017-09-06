@@ -99,6 +99,15 @@ public class Category {
         mColor = color;
     }
 
+    @Override
+    public boolean equals(Object object) {
+        boolean equals = false;
+        if (object != null && object instanceof Category) {
+            equals = mName.equals(((Category) object).getName());
+        }
+        return equals;
+    }
+
     public static Builder Builder() {
         return new Builder();
     }
