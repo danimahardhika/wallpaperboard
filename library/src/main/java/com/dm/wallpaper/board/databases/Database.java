@@ -309,6 +309,10 @@ public class Database extends SQLiteOpenHelper {
 
         if (count > 0) {
             ContentValues values = new ContentValues();
+            String name = wallpaper.getName();
+            if (name == null) name = "";
+
+            values.put(KEY_NAME, name);
             values.put(KEY_AUTHOR, wallpaper.getAuthor());
             values.put(KEY_URL, wallpaper.getUrl());
             values.put(KEY_THUMB_URL, wallpaper.getThumbUrl());
