@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import com.danimahardhika.android.helpers.core.FileHelper;
 import com.danimahardhika.android.helpers.permission.PermissionHelper;
+import com.dm.wallpaper.board.databases.Database;
 import com.dm.wallpaper.board.helpers.MuzeiHelper;
 import com.dm.wallpaper.board.helpers.WallpaperHelper;
 import com.dm.wallpaper.board.items.Wallpaper;
@@ -63,7 +64,11 @@ public abstract class WallpaperBoardMuzeiService extends RemoteMuzeiArtSource {
         try {
             if (Preferences.get(this).isConnectedAsPreferred()) {
                 Wallpaper wallpaper = mMuzeiHelper.getRandomWallpaper(wallpaperUrl);
-                if (wallpaper != null) publishArtwork(wallpaper);
+                if (wallpaper != null) {
+                    publishArtwork(wallpaper);
+                }
+
+                Database.get(this).closeDatabase();
             }
         } catch (Exception ignored) {}
     }
