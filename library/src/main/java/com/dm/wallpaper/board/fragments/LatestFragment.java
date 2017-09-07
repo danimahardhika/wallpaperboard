@@ -20,6 +20,7 @@ import com.danimahardhika.android.helpers.core.ViewHelper;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.adapters.LatestAdapter;
+import com.dm.wallpaper.board.applications.WallpaperBoardApplication;
 import com.dm.wallpaper.board.databases.Database;
 import com.dm.wallpaper.board.items.Wallpaper;
 import com.dm.wallpaper.board.tasks.WallpapersLoaderTask;
@@ -139,11 +140,19 @@ public class LatestFragment extends Fragment {
                 R.integer.latest_wallpapers_column_count);
         if (spanCount == 1) {
             mRecyclerView.setPadding(0, 0, 0, 0);
-        } else {
-            int paddingTop = getActivity().getResources().getDimensionPixelSize(R.dimen.card_margin_top);
-            int paddingLeft = getActivity().getResources().getDimensionPixelSize(R.dimen.card_margin_right);
-            mRecyclerView.setPadding(paddingLeft, paddingTop, 0, 0);
+            return;
         }
+
+        if (WallpaperBoardApplication.getConfiguration().getWallpapersGrid() ==
+                WallpaperBoardApplication.GridStyle.FLAT) {
+            int padding = getActivity().getResources().getDimensionPixelSize(R.dimen.card_margin);
+            mRecyclerView.setPadding(padding, padding, 0, 0);
+            return;
+        }
+
+        int paddingTop = getActivity().getResources().getDimensionPixelSize(R.dimen.card_margin_top);
+        int paddingLeft = getActivity().getResources().getDimensionPixelSize(R.dimen.card_margin_right);
+        mRecyclerView.setPadding(paddingLeft, paddingTop, 0, 0);
     }
 
     private void prepareLatestWallpapers() {

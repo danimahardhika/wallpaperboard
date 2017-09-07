@@ -21,6 +21,7 @@ import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.activities.WallpaperBoardBrowserActivity;
 import com.dm.wallpaper.board.items.Category;
+import com.dm.wallpaper.board.preferences.Preferences;
 import com.dm.wallpaper.board.utils.Extras;
 import com.dm.wallpaper.board.utils.ImageConfig;
 import com.dm.wallpaper.board.utils.views.HeaderView;
@@ -34,6 +35,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.dm.wallpaper.board.helpers.ViewHelper.setCardViewToFlat;
 
 /*
  * Wallpaper Board
@@ -161,6 +164,12 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
                         params.setMarginEnd(0);
                     }
                 }
+            } else {
+                setCardViewToFlat(card);
+            }
+
+            if (!Preferences.get(mContext).isShadowEnabled()) {
+                card.setCardElevation(0f);
             }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

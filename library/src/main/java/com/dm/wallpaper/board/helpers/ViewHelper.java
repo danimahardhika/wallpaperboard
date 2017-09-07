@@ -4,10 +4,14 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 
 import com.danimahardhika.android.helpers.core.ContextHelper;
 import com.dm.wallpaper.board.R;
+import com.dm.wallpaper.board.applications.WallpaperBoardApplication;
 
 import static com.danimahardhika.android.helpers.core.ViewHelper.getToolbarHeight;
 import static com.danimahardhika.android.helpers.core.WindowHelper.getStatusBarHeight;
@@ -32,6 +36,36 @@ import static com.danimahardhika.android.helpers.core.WindowHelper.getNavigation
  */
 
 public class ViewHelper {
+
+    public static void setCardViewToFlat(@Nullable CardView cardView) {
+        if (cardView == null) return;
+
+        if (WallpaperBoardApplication.getConfiguration().getWallpapersGrid() ==
+                WallpaperBoardApplication.GridStyle.FLAT) {
+            cardView.setRadius(0f);
+            cardView.setUseCompatPadding(false);
+
+            Context context = ContextHelper.getBaseContext(cardView);
+            int margin = context.getResources().getDimensionPixelSize(R.dimen.card_margin);
+
+            if (cardView.getLayoutParams() instanceof GridLayoutManager.LayoutParams) {
+                GridLayoutManager.LayoutParams params = (GridLayoutManager.LayoutParams) cardView.getLayoutParams();
+                params.setMargins(0, 0, margin, margin);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    params.setMarginEnd(margin);
+                }
+            } else if (cardView.getLayoutParams() instanceof StaggeredGridLayoutManager.LayoutParams) {
+                StaggeredGridLayoutManager.LayoutParams params =
+                        (StaggeredGridLayoutManager.LayoutParams) cardView.getLayoutParams();
+                params.setMargins(0, 0, margin, margin);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    params.setMarginEnd(margin);
+                }
+            }
+        }
+    }
 
     public static void resetViewBottomPadding(@Nullable View view, boolean scroll) {
         if (view == null) return;

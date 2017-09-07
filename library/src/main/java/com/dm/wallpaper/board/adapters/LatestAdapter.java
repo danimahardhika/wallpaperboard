@@ -56,6 +56,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.dm.wallpaper.board.helpers.ViewHelper.setCardViewToFlat;
+
 /*
  * Wallpaper Board
  *
@@ -202,6 +204,12 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.ViewHolder
                         params.setMarginEnd(0);
                     }
                 }
+            } else {
+                setCardViewToFlat(card);
+            }
+
+            if (!Preferences.get(mContext).isShadowEnabled()) {
+                card.setCardElevation(0f);
             }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

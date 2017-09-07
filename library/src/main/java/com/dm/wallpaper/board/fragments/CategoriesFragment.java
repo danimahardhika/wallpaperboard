@@ -17,6 +17,7 @@ import com.danimahardhika.android.helpers.core.ViewHelper;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.adapters.CategoriesAdapter;
+import com.dm.wallpaper.board.applications.WallpaperBoardApplication;
 import com.dm.wallpaper.board.databases.Database;
 import com.dm.wallpaper.board.items.Category;
 import com.dm.wallpaper.board.utils.LogUtil;
@@ -120,11 +121,19 @@ public class CategoriesFragment extends Fragment {
                 R.integer.categories_column_count);
         if (spanCount == 1) {
             mRecyclerView.setPadding(0, 0, 0, 0);
-        } else {
-            int paddingTop = getActivity().getResources().getDimensionPixelSize(R.dimen.card_margin_top);
-            int paddingLeft = getActivity().getResources().getDimensionPixelSize(R.dimen.card_margin_right);
-            mRecyclerView.setPadding(paddingLeft, paddingTop, 0, 0);
+            return;
         }
+
+        if (WallpaperBoardApplication.getConfiguration().getWallpapersGrid() ==
+                WallpaperBoardApplication.GridStyle.FLAT) {
+            int padding = getActivity().getResources().getDimensionPixelSize(R.dimen.card_margin);
+            mRecyclerView.setPadding(padding, padding, 0, 0);
+            return;
+        }
+
+        int paddingTop = getActivity().getResources().getDimensionPixelSize(R.dimen.card_margin_top);
+        int paddingLeft = getActivity().getResources().getDimensionPixelSize(R.dimen.card_margin_right);
+        mRecyclerView.setPadding(paddingLeft, paddingTop, 0, 0);
     }
 
     private class CategoriesLoaderTask extends AsyncTask<Void, Void, Boolean> {
