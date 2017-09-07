@@ -12,7 +12,6 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.danimahardhika.android.helpers.core.TimeHelper;
-import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.applications.WallpaperBoardApplication;
 import com.dm.wallpaper.board.helpers.JsonHelper;
 import com.dm.wallpaper.board.items.Category;
@@ -516,7 +515,7 @@ public class Database extends SQLiteOpenHelper {
                 int wId = cursor.getInt(cursor.getColumnIndex(KEY_ID));
                 String name = cursor.getString(cursor.getColumnIndex(KEY_NAME));
                 if (name.length() == 0) {
-                    name = mContext.getResources().getString(R.string.pref_wallpaper_header) +" "+ wId;
+                    name = "Wallpaper "+ wId;
                 }
 
                 wallpaper = Wallpaper.Builder()
@@ -572,7 +571,7 @@ public class Database extends SQLiteOpenHelper {
                 int id = cursor.getInt(cursor.getColumnIndex(KEY_ID));
                 String name = cursor.getString(cursor.getColumnIndex(KEY_NAME));
                 if (name.length() == 0) {
-                    name = mContext.getResources().getString(R.string.pref_wallpaper_header) +" "+ id;
+                    name = "Wallpaper "+ id;
                 }
 
                 Wallpaper wallpaper = Wallpaper.Builder()
@@ -618,7 +617,7 @@ public class Database extends SQLiteOpenHelper {
                 int id = cursor.getInt(cursor.getColumnIndex(KEY_ID));
                 String name = cursor.getString(cursor.getColumnIndex(KEY_NAME));
                 if (name.length() == 0) {
-                    name = mContext.getResources().getString(R.string.pref_wallpaper_header) +" "+ id;
+                    name = "Wallpaper "+ id;
                 }
 
                 Wallpaper.Builder builder = Wallpaper.Builder()
@@ -673,7 +672,7 @@ public class Database extends SQLiteOpenHelper {
                 int id = cursor.getInt(cursor.getColumnIndex(KEY_ID));
                 String name = cursor.getString(cursor.getColumnIndex(KEY_NAME));
                 if (name.length() == 0) {
-                    name = mContext.getResources().getString(R.string.pref_wallpaper_header) +" "+ id;
+                    name = "Wallpaper "+ id;
                 }
 
                 Wallpaper wallpaper = Wallpaper.Builder()
@@ -725,7 +724,7 @@ public class Database extends SQLiteOpenHelper {
                 int id = cursor.getInt(cursor.getColumnIndex(KEY_ID));
                 String name = cursor.getString(cursor.getColumnIndex(KEY_NAME));
                 if (name.length() == 0) {
-                    name = mContext.getResources().getString(R.string.pref_wallpaper_header) +" "+ id;
+                    name = "Wallpaper "+ id;
                 }
 
                 wallpaper = Wallpaper.Builder()
@@ -767,7 +766,7 @@ public class Database extends SQLiteOpenHelper {
                 int id = cursor.getInt(cursor.getColumnIndex(KEY_ID));
                 String name = cursor.getString(cursor.getColumnIndex(KEY_NAME));
                 if (name.length() == 0) {
-                    name = mContext.getResources().getString(R.string.pref_wallpaper_header) +" "+ id;
+                    name = "Wallpaper "+ id;
                 }
 
                 Wallpaper wallpaper = Wallpaper.Builder()
