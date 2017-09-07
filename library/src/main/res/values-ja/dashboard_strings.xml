@@ -114,6 +114,7 @@ Android Nougatで壁紙をロック画面の背景として設定するか、壁
     <string name="pref_wallpaper_header">壁紙</string>
     <string name="pref_wallpaper_high_quality_preview">壁紙のプレビュー画質</string>
     <string name="pref_wallpaper_high_quality_preview_low">低画質</string>
+    <string name="pref_wallpaper_high_quality_preview_high">高画質</string>
     <string name="pref_wallpaper_location">壁紙の保存場所</string>
     <string name="pref_language_header">言語</string>
     <string name="pref_others_header">その他</string>

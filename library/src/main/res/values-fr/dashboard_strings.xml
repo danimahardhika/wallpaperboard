@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Navigation View -->
-    <string name="navigation_view_wallpapers">Fonds d\'écrans</string>
+    <string name="navigation_view_wallpapers">Fonds d\'écran</string>
     <string name="navigation_view_favorites">Favoris</string>
     <string name="navigation_view_settings">Paramètres</string>
     <string name="navigation_view_about">A propos</string>
@@ -10,7 +10,7 @@
     <string name="navigation_view_rate">Evaluer</string>
     <!-- Share app -->
     <string name="share_app_subject">Salut! Regarde %s</string>
-    <string name="share_app_body">Regarde %1$s, les fonds d\'écrans de cette application sont vraiment sympas! %2$s</string>
+    <string name="share_app_body">Regarde %1$s, les fonds d\'écran de cette application sont vraiment sympas! %2$s</string>
     <!-- Menu -->
     <string name="menu_search">Rechercher</string>
     <string name="menu_filter">Filtres</string>
@@ -21,7 +21,7 @@
     <string name="menu_sort">Trier par</string>
     <string name="menu_sort_latest">Le(s) plus récent(s)</string>
     <string name="menu_sort_oldest">Le(s) plus ancien(s)</string>
-    <string name="menu_sort_name">Nom</string>
+    <string name="menu_sort_name">Noms</string>
     <string name="menu_sort_random">Aléatoire</string>
     <!-- Dialog -->
     <string name="open">Ouvrir</string>
@@ -41,10 +41,10 @@
     <string name="tap_intro_wallpapers_option_desc_download">télécharger ou</string>
     <string name="tap_intro_wallpapers_preview">Prévisualiser le fond d\'écran</string>
     <string name="tap_intro_wallpapers_preview_desc">Appuyer ici pour prévisualiser le fond d\'écran en entier</string>
-    <string name="tap_intro_wallpapers_favorite">Fonds d\'écrans favoris</string>
+    <string name="tap_intro_wallpapers_favorite">Fonds d\'écran favoris</string>
     <string name="tap_intro_wallpapers_favorite_desc">Appuyer ici pour marquer un fond d\'écran comme favori</string>
-    <string name="tap_intro_wallpaper_preview_settings">Paramètres des fonds d\'écrans</string>
-    <string name="tap_intro_wallpaper_preview_settings_desc">Appuyer ici pour ouvrir les paramètres des fonds d\'écrans.
+    <string name="tap_intro_wallpaper_preview_settings">Paramètres des fonds d\'écran</string>
+    <string name="tap_intro_wallpaper_preview_settings_desc">Appuyer ici pour ouvrir les paramètres des fonds d\'écran.
 Activer l\'option qui permet de régler le fond d\'écran pour l\'écran de verrouillage sur Android Nougat ou activer la découpe du fond d\'écran .</string>
     <string name="tap_intro_wallpaper_preview_save">Enregistrer le fond d\'écran</string>
     <string name="tap_intro_wallpaper_preview_save_desc">Appuyer ici pour télécharger et enregistrer le fond d\'écran sur votre appareil ainsi vous pouvez l\'utiliser plus tard.</string>
@@ -111,6 +111,9 @@ ce qui peut le rendre flou et pixelisé.</string>
     <string name="pref_theme_dark">Thème sombre</string>
     <string name="pref_theme_dark_desc">Changer entre le thème sombre et clair</string>
     <string name="pref_wallpaper_header">Fonds d\'écrans</string>
+    <string name="pref_wallpaper_high_quality_preview">Qualité de prévisualisation</string>
+    <string name="pref_wallpaper_high_quality_preview_low">Basse Qualité</string>
+    <string name="pref_wallpaper_high_quality_preview_high">Haute Qualité</string>
     <string name="pref_wallpaper_location">Adresse de sauvegarde des fonds d\'écrans</string>
     <string name="pref_language_header">Langue</string>
     <string name="pref_others_header">Autres</string>
@@ -147,7 +150,7 @@ Vous ne serez pas en mesure d\'utiliser l\'application.</string>
     <string name="txt_close">Fermer</string>
     <string name="menu_wallpaper_settings">Paramètres du fond d\'écran</string>
     <!-- Wallpapers -->
-    <string name="wallpaper_new_added">Nouveaux fonds d\'écrans</string>
+    <string name="wallpaper_new_added">Nouveaux fonds d\'écran</string>
     <string name="wallpaper_download_exist">Le fond d\'écran nommé %s existe déjà, voulez vous le remplacer?</string>
     <string name="wallpaper_download_exist_replace">Remplacer</string>
     <string name="wallpaper_download_exist_new">Créer un nouveau</string>

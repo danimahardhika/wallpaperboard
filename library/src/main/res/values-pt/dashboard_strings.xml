@@ -110,6 +110,9 @@ Ative o papel de parede como o fundo de tela de bloqueio no Android Nougat ou pe
     <string name="pref_theme_dark">Tema Escuro</string>
     <string name="pref_theme_dark_desc">Trocar entre o tema claro ou escuro</string>
     <string name="pref_wallpaper_header">Papel de parede</string>
+    <string name="pref_wallpaper_high_quality_preview">Visualização da qualidade do papel de parede</string>
+    <string name="pref_wallpaper_high_quality_preview_low">Baixa qualidade</string>
+    <string name="pref_wallpaper_high_quality_preview_high">Alta qualidade</string>
     <string name="pref_wallpaper_location">Salvar local do papel de parede</string>
     <string name="pref_language_header">Idioma</string>
     <string name="pref_others_header">Outros</string>
