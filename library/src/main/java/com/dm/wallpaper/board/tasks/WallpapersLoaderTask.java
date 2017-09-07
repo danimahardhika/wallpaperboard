@@ -194,8 +194,11 @@ public class WallpapersLoaderTask extends AsyncTask<Void, Void, Boolean> {
 
                         int deleteCount = 0;
                         for (Integer i : deleted) {
-                            differenceW.remove(i - deleteCount);
-                            deleteCount++;
+                            int index = i - deleteCount;
+                            if (index >= 0 && index < differenceW.size()) {
+                                differenceW.remove(index);
+                                deleteCount += 1;
+                            }
                         }
 
                         Database.get(mContext).deleteWallpapers(differenceW);
