@@ -227,7 +227,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Vi
                         }
 
                         final Intent intent = new Intent(mContext, WallpaperBoardPreviewActivity.class);
-                        intent.putExtra(Extras.EXTRA_ID, mWallpapers.get(position).getId());
+                        intent.putExtra(Extras.EXTRA_URL, mWallpapers.get(position).getUrl());
 
                         ActivityTransitionLauncher.with((AppCompatActivity) mContext)
                                 .from(image, Extras.EXTRA_IMAGE)
@@ -242,7 +242,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Vi
 
                 boolean isFavorite = mWallpapers.get(position).isFavorite();
                 Database.get(mContext).favoriteWallpaper(
-                        mWallpapers.get(position).getId(), !isFavorite);
+                        mWallpapers.get(position).getUrl(), !isFavorite);
 
                 if (mIsFavoriteMode) {
                     mWallpapers.remove(position);

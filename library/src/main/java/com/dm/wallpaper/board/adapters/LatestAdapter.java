@@ -247,7 +247,7 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.ViewHolder
 
                 boolean isFavorite = mWallpapers.get(position).isFavorite();
                 Database.get(mContext).favoriteWallpaper(
-                        mWallpapers.get(position).getId(), !isFavorite);
+                        mWallpapers.get(position).getUrl(), !isFavorite);
 
                 mWallpapers.get(position).setFavorite(!isFavorite);
                 setFavorite(favorite, name.getCurrentTextColor(), position, true);
@@ -316,7 +316,7 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.ViewHolder
                         }
 
                         final Intent intent = new Intent(mContext, WallpaperBoardPreviewActivity.class);
-                        intent.putExtra(Extras.EXTRA_ID, mWallpapers.get(position).getId());
+                        intent.putExtra(Extras.EXTRA_URL, mWallpapers.get(position).getUrl());
 
                         ActivityTransitionLauncher.with((AppCompatActivity) mContext)
                                 .from(image, Extras.EXTRA_IMAGE)

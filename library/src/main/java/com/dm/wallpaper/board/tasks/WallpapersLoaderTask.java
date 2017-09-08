@@ -164,50 +164,37 @@ public class WallpapersLoaderTask extends AsyncTask<Void, Void, Boolean> {
                         //A: Wallpapers in json that also available in database
                         //Considered as same wallpapers
                         List<Wallpaper> intersectionW = (List<Wallpaper>)
-                                ListHelper.intersect(newWallpapers, wallpapers);
-
-                        //B: Wallpapers in database that not available in A
-                        //Considered as deleted wallpapers
-                        List<Wallpaper> differenceW = (List<Wallpaper>)
-                                ListHelper.difference(intersectionW, wallpapers);
+                                ListHelper.intersect(wallpapers, newWallpapers);
 
                         //C: Wallpapers in json that not available in A
                         //Considered as new wallpapers
                         List<Wallpaper> newlyAddedW = (List<Wallpaper>)
                                 ListHelper.difference(intersectionW, newWallpapers);
 
-                        List<Integer> deleted = new ArrayList<>();
-                        for (int i = 0; i < newlyAddedW.size(); i++) {
-                            int index = -1;
-
-                            for (int j = 0; j < differenceW.size(); j++) {
-                                if (newlyAddedW.get(i).getUrl().equals(differenceW.get(j).getUrl())) {
-                                    index = j;
-                                    break;
-                                }
-                            }
-
-                            if (index >= 0 && index < differenceW.size()) {
-                                deleted.add(index);
-                            }
+                        //No new wallpapers, immediately returns true
+                        if (newlyAddedW.size() == 0) {
+                            LogUtil.d("Task from " +mContext.getPackageName() +": no new wallpapers");
+                            return true;
                         }
 
-                        int deleteCount = 0;
-                        for (Integer i : deleted) {
-                            int index = i - deleteCount;
-                            if (index >= 0 && index < differenceW.size()) {
-                                differenceW.remove(index);
-                                deleteCount += 1;
-                            }
-                        }
+                        //B: Wallpapers in database that not available in A
+                        //Considered as different wallpaper
+                        List<Wallpaper> differenceW = (List<Wallpaper>)
+                                ListHelper.difference(intersectionW, wallpapers);
+
+                        List<Wallpaper> favorites = Database.get(mContext).getFavoriteWallpapers();
 
                         Database.get(mContext).deleteWallpapers(differenceW);
 
-                        for (Wallpaper newl : newlyAddedW) {
-                            Database.get(mContext).updateOrIgnoreWallpaper(newl);
+                        if (intersectionW.size() == 0) {
+                            Database.get(mContext).resetAutoIncrement();
                         }
 
                         Database.get(mContext).addWallpapers(newlyAddedW);
+
+                        if (differenceW.size() > 0) {
+                            Database.get(mContext).updateWallpapers(favorites);
+                        }
                         return true;
                     }
 

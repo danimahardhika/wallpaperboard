@@ -149,18 +149,18 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
         mProgress.getIndeterminateDrawable().setColorFilter(
                 Color.parseColor("#CCFFFFFF"), PorterDuff.Mode.SRC_IN);
 
-        int id = -1;
+        String url = "";
         if (savedInstanceState != null) {
-            id = savedInstanceState.getInt(Extras.EXTRA_ID, -1);
+            url = savedInstanceState.getString(Extras.EXTRA_URL);
             mIsResumed = savedInstanceState.getBoolean(Extras.EXTRA_RESUMED);
         }
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            id = bundle.getInt(Extras.EXTRA_ID, -1);
+            url = bundle.getString(Extras.EXTRA_URL);
         }
 
-        mWallpaper = Database.get(this).getWallpaper(id);
+        mWallpaper = Database.get(this).getWallpaper(url);
         if (mWallpaper == null) {
             finish();
             return;
@@ -281,7 +281,7 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         if (mWallpaper != null) {
-            outState.putInt(Extras.EXTRA_ID, mWallpaper.getId());
+            outState.putString(Extras.EXTRA_URL, mWallpaper.getUrl());
         }
 
         outState.putBoolean(Extras.EXTRA_RESUMED, true);

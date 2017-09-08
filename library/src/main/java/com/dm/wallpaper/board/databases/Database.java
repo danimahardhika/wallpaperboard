@@ -293,68 +293,76 @@ public class Database extends SQLiteOpenHelper {
         mDatabase.mSQLiteDatabase.endTransaction();
     }
 
-    public boolean updateWallpaper(Wallpaper wallpaper) {
+    public void updateWallpaper(Wallpaper wallpaper) {
         if (!openDatabase()) {
             LogUtil.e("Database error: updateWallpaper() failed to open database");
-            return false;
-        }
-
-        if (wallpaper == null) return false;
-        Cursor cursor = mDatabase.mSQLiteDatabase.query(TABLE_WALLPAPERS, new String[]{KEY_URL},
-                KEY_URL +" = ?", new String[]{wallpaper.getUrl()},
-                null, null, null, "1");
-        int count = cursor.getCount();
-        cursor.close();
-
-        if (count > 0) {
-            ContentValues values = new ContentValues();
-            String name = wallpaper.getName();
-            if (name == null) name = "";
-
-            values.put(KEY_NAME, name);
-            values.put(KEY_AUTHOR, wallpaper.getAuthor());
-            values.put(KEY_URL, wallpaper.getUrl());
-            values.put(KEY_THUMB_URL, wallpaper.getThumbUrl());
-
-            if (wallpaper.getSize() > 0) {
-                values.put(KEY_SIZE, wallpaper.getSize());
-            }
-
-            if (wallpaper.getMimeType() != null) {
-                values.put(KEY_MIME_TYPE, wallpaper.getMimeType());
-            }
-
-            if (wallpaper.getDimensions() != null) {
-                values.put(KEY_WIDTH, wallpaper.getDimensions().getWidth());
-                values.put(KEY_HEIGHT, wallpaper.getDimensions().getHeight());
-            }
-
-            if (wallpaper.getColor() != 0) {
-                values.put(KEY_COLOR, wallpaper.getColor());
-            }
-
-            if (values.size() > 0) {
-                mDatabase.mSQLiteDatabase.update(TABLE_WALLPAPERS,
-                        values, KEY_URL +" = ?", new String[]{wallpaper.getUrl()});
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void updateOrIgnoreWallpaper(Wallpaper wallpaper) {
-        if (!openDatabase()) {
-            LogUtil.e("Database error: updateOrDeleteWallpaper() failed to open database");
             return;
         }
 
-        boolean isUpdateSuccess = updateWallpaper(wallpaper);
-        if (isUpdateSuccess) {
-            ContentValues values = new ContentValues();
-            values.put(KEY_ADDED_ON, TimeHelper.getLongDateTime());
+        if (wallpaper == null) return;
+
+        ContentValues values = new ContentValues();
+        if (wallpaper.getSize() > 0) {
+            values.put(KEY_SIZE, wallpaper.getSize());
+        }
+
+        if (wallpaper.getMimeType() != null) {
+            values.put(KEY_MIME_TYPE, wallpaper.getMimeType());
+        }
+
+        if (wallpaper.getDimensions() != null) {
+            values.put(KEY_WIDTH, wallpaper.getDimensions().getWidth());
+            values.put(KEY_HEIGHT, wallpaper.getDimensions().getHeight());
+        }
+
+        if (wallpaper.getColor() != 0) {
+            values.put(KEY_COLOR, wallpaper.getColor());
+        }
+
+        if (values.size() > 0) {
             mDatabase.mSQLiteDatabase.update(TABLE_WALLPAPERS,
                     values, KEY_URL +" = ?", new String[]{wallpaper.getUrl()});
         }
+    }
+
+    public void updateWallpapers(@NonNull List<Wallpaper> wallpapers) {
+        if (!openDatabase()) {
+            LogUtil.e("Database error: updateWallpapers() failed to open database");
+            return;
+        }
+
+        String query = "UPDATE " +TABLE_WALLPAPERS+ " SET " +KEY_FAVORITE+ " = ?, " +KEY_SIZE+ " = ?, "
+                +KEY_MIME_TYPE+ " = ?, " +KEY_WIDTH+ " = ?," +KEY_HEIGHT+ " = ?, " +KEY_COLOR+ " = ? "
+                +"WHERE " +KEY_URL+ " = ?";
+        SQLiteStatement statement = mDatabase.mSQLiteDatabase.compileStatement(query);
+        mDatabase.mSQLiteDatabase.beginTransaction();
+
+        for (Wallpaper wallpaper : wallpapers) {
+            statement.clearBindings();
+
+            statement.bindLong(1, wallpaper.isFavorite() ? 1 : 0);
+            statement.bindLong(2, wallpaper.getSize());
+
+            String mimeType = wallpaper.getMimeType();
+            if (mimeType != null) {
+                statement.bindString(3, wallpaper.getMimeType());
+            } else {
+                statement.bindNull(3);
+            }
+
+            ImageSize dimension = wallpaper.getDimensions();
+            int width = dimension == null ? 0 : dimension.getWidth();
+            int height = dimension == null ? 0 : dimension.getHeight();
+            statement.bindLong(4, width);
+            statement.bindLong(5, height);
+
+            statement.bindLong(6, wallpaper.getColor());
+            statement.bindString(7, wallpaper.getUrl());
+            statement.execute();
+        }
+
+        mDatabase.mSQLiteDatabase.setTransactionSuccessful();
+        mDatabase.mSQLiteDatabase.endTransaction();
     }
 
     public void selectCategory(int id, boolean isSelected) {
@@ -379,7 +387,7 @@ public class Database extends SQLiteOpenHelper {
         mDatabase.mSQLiteDatabase.update(TABLE_CATEGORIES, values, KEY_ID +" = ?", new String[]{String.valueOf(id)});
     }
 
-    public void favoriteWallpaper(int id, boolean isFavorite) {
+    public void favoriteWallpaper(String url, boolean isFavorite) {
         if (!openDatabase()) {
             LogUtil.e("Database error: favoriteWallpaper() failed to open database");
             return;
@@ -387,7 +395,8 @@ public class Database extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(KEY_FAVORITE, isFavorite ? 1 : 0);
-        mDatabase.mSQLiteDatabase.update(TABLE_WALLPAPERS, values, KEY_ID +" = ?", new String[]{String.valueOf(id)});
+        mDatabase.mSQLiteDatabase.update(TABLE_WALLPAPERS, values,
+                KEY_URL +" = ?", new String[]{url});
     }
 
     private List<String> getSelectedCategories(boolean isMuzei) {
@@ -494,7 +503,7 @@ public class Database extends SQLiteOpenHelper {
     }
 
     @Nullable
-    public Wallpaper getWallpaper(int id) {
+    public Wallpaper getWallpaper(String url) {
         if (!openDatabase()) {
             LogUtil.e("Database error: getWallpaper() failed to open database");
             return null;
@@ -502,7 +511,7 @@ public class Database extends SQLiteOpenHelper {
 
         Wallpaper wallpaper = null;
         Cursor cursor = mDatabase.mSQLiteDatabase.query(TABLE_WALLPAPERS,
-                null, KEY_ID +" = ?", new String[]{String.valueOf(id)}, null, null, null, "1");
+                null, KEY_URL +" = ?", new String[]{url}, null, null, null, "1");
         if (cursor.moveToFirst()) {
             do {
                 int width = cursor.getInt(cursor.getColumnIndex(KEY_WIDTH));
@@ -763,6 +772,13 @@ public class Database extends SQLiteOpenHelper {
                 new String[]{"1"}, null, null, KEY_NAME +", "+ KEY_ID);
         if (cursor.moveToFirst()) {
             do {
+                int width = cursor.getInt(cursor.getColumnIndex(KEY_WIDTH));
+                int height = cursor.getInt(cursor.getColumnIndex(KEY_HEIGHT));
+                ImageSize dimensions = null;
+                if (width  > 0 && height > 0) {
+                    dimensions = new ImageSize(width, height);
+                }
+
                 int id = cursor.getInt(cursor.getColumnIndex(KEY_ID));
                 String name = cursor.getString(cursor.getColumnIndex(KEY_NAME));
                 if (name.length() == 0) {
@@ -777,6 +793,10 @@ public class Database extends SQLiteOpenHelper {
                         .thumbUrl(cursor.getString(cursor.getColumnIndex(KEY_THUMB_URL)))
                         .category(cursor.getString(cursor.getColumnIndex(KEY_CATEGORY)))
                         .favorite(cursor.getInt(cursor.getColumnIndex(KEY_FAVORITE)) == 1)
+                        .dimensions(dimensions)
+                        .mimeType(cursor.getString(cursor.getColumnIndex(KEY_MIME_TYPE)))
+                        .size(cursor.getInt(cursor.getColumnIndex(KEY_SIZE)))
+                        .color(cursor.getInt(cursor.getColumnIndex(KEY_COLOR)))
                         .build();
                 wallpapers.add(wallpaper);
             } while (cursor.moveToNext());
@@ -803,20 +823,27 @@ public class Database extends SQLiteOpenHelper {
             return;
         }
 
+        String query = "DELETE FROM " +TABLE_WALLPAPERS+ " WHERE " +KEY_URL+ " = ?";
+        SQLiteStatement statement = mDatabase.mSQLiteDatabase.compileStatement(query);
+        mDatabase.mSQLiteDatabase.beginTransaction();
+
         for (Wallpaper wallpaper : wallpapers) {
-            mDatabase.mSQLiteDatabase.delete(TABLE_WALLPAPERS, KEY_URL +" = ?",
-                    new String[]{wallpaper.getUrl()});
+            statement.clearBindings();
+            statement.bindString(1, wallpaper.getUrl());
+            statement.execute();
         }
+
+        mDatabase.mSQLiteDatabase.setTransactionSuccessful();
+        mDatabase.mSQLiteDatabase.endTransaction();
     }
 
-    public void deleteWallpapers() {
+    public void resetAutoIncrement() {
         if (!openDatabase()) {
-            LogUtil.e("Database error: deleteWallpapers() failed to open database");
+            LogUtil.e("Database error: resetAutoIncrement() failed to open database");
             return;
         }
 
         mSQLiteDatabase.delete("SQLITE_SEQUENCE", "NAME = ?", new String[]{TABLE_WALLPAPERS});
-        mSQLiteDatabase.delete(TABLE_WALLPAPERS, null, null);
     }
 
     public void deleteCategories(@NonNull List<Category> categories) {
@@ -825,10 +852,18 @@ public class Database extends SQLiteOpenHelper {
             return;
         }
 
+        String query = "DELETE FROM " +TABLE_CATEGORIES+ " WHERE " +KEY_NAME+ " = ?";
+        SQLiteStatement statement = mDatabase.mSQLiteDatabase.compileStatement(query);
+        mDatabase.mSQLiteDatabase.beginTransaction();
+
         for (Category category : categories) {
-            mDatabase.mSQLiteDatabase.delete(TABLE_CATEGORIES, KEY_NAME +" = ?",
-                    new String[]{category.getName()});
+            statement.clearBindings();
+            statement.bindString(1, category.getName());
+            statement.execute();
         }
+
+        mDatabase.mSQLiteDatabase.setTransactionSuccessful();
+        mDatabase.mSQLiteDatabase.endTransaction();
     }
 
     private String getSortBy(PopupItem.Type type) {

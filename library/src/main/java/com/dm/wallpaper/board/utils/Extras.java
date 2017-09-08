@@ -28,8 +28,8 @@ public abstract class Extras {
     public static final String TAG_FAVORITES = "favorites";
     public static final String TAG_SETTINGS = "settings";
     public static final String TAG_ABOUT = "about";
-
-    public static final String EXTRA_ID = "id";
+    
+    public static final String EXTRA_URL = "url";
     public static final String EXTRA_POSITION = "position";
     public static final String EXTRA_IMAGE = "image";
     public static final String EXTRA_RESUMED = "resumed";
