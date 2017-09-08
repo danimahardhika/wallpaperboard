@@ -205,6 +205,9 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
                 color = ColorHelper.getAttributeColor(this, R.attr.card_background);
             }
             AnimationHelper.setBackgroundColor(mSlidingLayout, Color.TRANSPARENT, color).start();
+            mProgress.getIndeterminateDrawable().setColorFilter(
+                    ColorHelper.setColorAlpha(ColorHelper.getTitleTextColor(color), 0.7f),
+                    PorterDuff.Mode.SRC_IN);
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && savedInstanceState == null) {

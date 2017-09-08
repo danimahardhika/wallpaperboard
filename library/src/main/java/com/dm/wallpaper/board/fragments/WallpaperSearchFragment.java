@@ -34,6 +34,7 @@ import com.danimahardhika.android.helpers.core.ViewHelper;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.adapters.WallpapersAdapter;
+import com.dm.wallpaper.board.applications.WallpaperBoardApplication;
 import com.dm.wallpaper.board.databases.Database;
 import com.dm.wallpaper.board.items.Filter;
 import com.dm.wallpaper.board.items.Wallpaper;
@@ -110,6 +111,12 @@ public class WallpaperSearchFragment extends Fragment {
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),
                 getActivity().getResources().getInteger(R.integer.wallpapers_column_count)));
         mRecyclerView.setHasFixedSize(false);
+
+        if (WallpaperBoardApplication.getConfiguration().getWallpapersGrid() ==
+                WallpaperBoardApplication.GridStyle.FLAT) {
+            int padding = getActivity().getResources().getDimensionPixelSize(R.dimen.card_margin);
+            mRecyclerView.setPadding(padding, padding, 0, 0);
+        }
     }
 
     @Override
@@ -226,6 +233,7 @@ public class WallpaperSearchFragment extends Fragment {
                         filter.add(Filter.Create(Filter.Column.NAME).setQuery(query));
                         filter.add(Filter.Create(Filter.Column.AUTHOR).setQuery(query));
                         filter.add(Filter.Create(Filter.Column.CATEGORY).setQuery(query));
+                        filter.add(Filter.Create(Filter.Column.ID).setQuery(query));
 
                         wallpapers = Database.get(getActivity()).getFilteredWallpapers(filter);
                         return true;

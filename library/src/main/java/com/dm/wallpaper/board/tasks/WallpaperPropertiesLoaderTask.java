@@ -5,13 +5,16 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.dm.wallpaper.board.databases.Database;
 import com.dm.wallpaper.board.items.Wallpaper;
 import com.dm.wallpaper.board.utils.LogUtil;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 
+import java.io.File;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -94,7 +97,11 @@ public class WallpaperPropertiesLoaderTask extends AsyncTask<Void, Void, Boolean
                     ImageSize imageSize = new ImageSize(options.outWidth, options.outHeight);
                     mWallpaper.setDimensions(imageSize);
                     mWallpaper.setMimeType(options.outMimeType);
-                    mWallpaper.setSize(connection.getContentLength());
+
+                    int contentLength = connection.getContentLength();
+                    if (contentLength > 0) {
+                        mWallpaper.setSize(contentLength);
+                    }
 
                     Database.get(mContext).updateWallpaper(mWallpaper);
                     stream.close();
@@ -112,6 +119,15 @@ public class WallpaperPropertiesLoaderTask extends AsyncTask<Void, Void, Boolean
     @Override
     protected void onPostExecute(Boolean aBoolean) {
         super.onPostExecute(aBoolean);
+        if (aBoolean && mContext != null && !((AppCompatActivity) mContext).isFinishing()) {
+            if (mWallpaper.getSize() <= 0) {
+                File target = ImageLoader.getInstance().getDiskCache().get(mWallpaper.getUrl());
+                if (target.exists()) {
+                    mWallpaper.setSize((int) target.length());
+                }
+            }
+        }
+
         if (mCallback != null) {
             mCallback.onPropertiesReceived(mWallpaper);
         }

@@ -54,7 +54,6 @@ public class Database extends SQLiteOpenHelper {
     private static final String TABLE_WALLPAPERS = "wallpapers";
     private static final String TABLE_CATEGORIES = "categories";
 
-    private static final String KEY_ID = "id";
     private static final String KEY_URL = "url";
     private static final String KEY_THUMB_URL = "thumbUrl";
     private static final String KEY_MIME_TYPE = "mimeType";
@@ -63,6 +62,7 @@ public class Database extends SQLiteOpenHelper {
     private static final String KEY_WIDTH = "width";
     private static final String KEY_HEIGHT = "height";
 
+    public static final String KEY_ID = "id";
     public static final String KEY_NAME = "name";
     public static final String KEY_AUTHOR = "author";
     public static final String KEY_CATEGORY = "category";

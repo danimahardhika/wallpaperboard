@@ -125,7 +125,7 @@ public class WallpaperDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
             PaletteHeaderViewHolder paletteHeaderViewHolder = (PaletteHeaderViewHolder) holder;
 
             paletteHeaderViewHolder.container.setVisibility(View.VISIBLE);
-            if (mPalette.size() == 0) {
+            if (mPalette.size() <= 0) {
                 paletteHeaderViewHolder.container.setVisibility(View.GONE);
             }
         } else if (holder.getItemViewType() == TYPE_PALETTE) {

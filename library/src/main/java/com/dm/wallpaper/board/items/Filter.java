@@ -95,6 +95,7 @@ public class Filter {
     }
 
     public enum Column {
+        ID(Database.KEY_ID),
         NAME(Database.KEY_NAME),
         AUTHOR(Database.KEY_AUTHOR),
         CATEGORY(Database.KEY_CATEGORY);
