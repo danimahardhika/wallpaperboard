@@ -65,30 +65,33 @@ public class WallpaperDownloader {
         }
 
         if (target.exists()) {
-            CafeBar.builder(mContext)
-                    .theme(new CafeBarTheme.Custom(ColorHelper.getAttributeColor(mContext, R.attr.card_background)))
-                    .floating(true)
-                    .fitSystemWindow()
-                    .duration(CafeBarDuration.MEDIUM.getDuration())
-                    .typeface(TypefaceHelper.getRegular(mContext), TypefaceHelper.getBold(mContext))
-                    .content(R.string.wallpaper_already_downloaded)
-                    .neutralText(R.string.open)
-                    .neutralColor(ColorHelper.getAttributeColor(mContext, R.attr.colorAccent))
-                    .onNeutral(cafeBar -> {
-                        Uri uri = FileHelper.getUriFromFile(mContext, mContext.getPackageName(), target);
-                        if (uri == null) {
-                            cafeBar.dismiss();
-                            return;
-                        }
+            long size = target.length();
+            if (size == mWallpaper.getSize()) {
+                CafeBar.builder(mContext)
+                        .theme(new CafeBarTheme.Custom(ColorHelper.getAttributeColor(mContext, R.attr.card_background)))
+                        .floating(true)
+                        .fitSystemWindow()
+                        .duration(CafeBarDuration.MEDIUM.getDuration())
+                        .typeface(TypefaceHelper.getRegular(mContext), TypefaceHelper.getBold(mContext))
+                        .content(R.string.wallpaper_already_downloaded)
+                        .neutralText(R.string.open)
+                        .neutralColor(ColorHelper.getAttributeColor(mContext, R.attr.colorAccent))
+                        .onNeutral(cafeBar -> {
+                            Uri uri = FileHelper.getUriFromFile(mContext, mContext.getPackageName(), target);
+                            if (uri == null) {
+                                cafeBar.dismiss();
+                                return;
+                            }
 
-                        mContext.startActivity(new Intent()
-                                .setAction(Intent.ACTION_VIEW)
-                                .setDataAndType(uri, "image/*")
-                                .setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION));
-                        cafeBar.dismiss();
-                    })
-                    .show();
-            return;
+                            mContext.startActivity(new Intent()
+                                    .setAction(Intent.ACTION_VIEW)
+                                    .setDataAndType(uri, "image/*")
+                                    .setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION));
+                            cafeBar.dismiss();
+                        })
+                        .show();
+                return;
+            }
         }
 
         if (!URLUtil.isValidUrl(mWallpaper.getUrl())) {
