@@ -106,6 +106,12 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.ViewHolder
         holder.name.setText(wallpaper.getName());
         holder.author.setText(wallpaper.getAuthor());
 
+        if (mContext.getResources().getBoolean(R.bool.enable_wallpaper_download)) {
+            holder.download.setVisibility(View.VISIBLE);
+        } else {
+            holder.download.setVisibility(View.GONE);
+        }
+
         setFavorite(holder.favorite, Color.WHITE, position, false);
         resetImageViewHeight(holder.image, wallpaper.getDimensions());
 
@@ -218,14 +224,17 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.ViewHolder
                 card.setStateListAnimator(stateListAnimator);
             }
 
-            download.setImageDrawable(DrawableHelper.getTintedDrawable(
-                    mContext, R.drawable.ic_toolbar_download, Color.WHITE));
+            if (mContext.getResources().getBoolean(R.bool.enable_wallpaper_download)) {
+                download.setImageDrawable(DrawableHelper.getTintedDrawable(
+                        mContext, R.drawable.ic_toolbar_download, Color.WHITE));
+                download.setOnClickListener(this);
+            }
+
             apply.setImageDrawable(DrawableHelper.getTintedDrawable(
                     mContext, R.drawable.ic_toolbar_apply_options, Color.WHITE));
 
             card.setOnClickListener(this);
             favorite.setOnClickListener(this);
-            download.setOnClickListener(this);
             apply.setOnClickListener(this);
         }
 
@@ -292,7 +301,10 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.ViewHolder
                         })
                         .build();
 
-                popup.removeItem(popup.getItems().size() - 1);
+                if (mContext.getResources().getBoolean(R.bool.enable_wallpaper_download)) {
+                    popup.removeItem(popup.getItems().size() - 1);
+                }
+
                 popup.show();
             } else if (id == R.id.card) {
                 if (WallpapersAdapter.sIsClickable) {
