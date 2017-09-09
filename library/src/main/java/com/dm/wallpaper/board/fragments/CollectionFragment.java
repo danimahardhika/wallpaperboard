@@ -189,9 +189,9 @@ public class CollectionFragment extends Fragment {
         }
 
         Drawable getIcon(int position, boolean selected) {
-            int color = ColorHelper.getAttributeColor(getActivity(), R.attr.toolbar_icon);
+            int color = ColorHelper.getAttributeColor(getActivity(), R.attr.tab_icon);
             if (selected) {
-                color = ColorHelper.getAttributeColor(getActivity(), R.attr.colorAccent);
+                color = ColorHelper.getAttributeColor(getActivity(), R.attr.tab_icon_selected);
             }
 
             Drawable drawable = DrawableHelper.get(getActivity(), mCollection.get(position).getIcon());

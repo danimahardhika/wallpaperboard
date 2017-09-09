@@ -8,6 +8,9 @@
     <attr name="search_bar" format="color"/>
     <attr name="search_bar_icon" format="color"/>
 
+    <attr name="tab_icon" format="color"/>
+    <attr name="tab_icon_selected" format="color"/>
+
     <attr name="toolbar_icon" format="color"/>
 
     <declare-styleable name="HeaderView">

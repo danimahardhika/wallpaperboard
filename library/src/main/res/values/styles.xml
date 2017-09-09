@@ -34,6 +34,8 @@
         <item name="search_bar">@color/searchBar</item>
         <item name="search_bar_icon">@color/searchBarIcon</item>
 
+        <item name="tab_icon">@color/tabIcon</item>
+        <item name="tab_icon_selected">@color/tabIconSelected</item>
         <item name="toolbar_icon">@color/toolbarIcon</item>
 
         <item name="md_positive_color">@color/colorAccent</item>
@@ -69,6 +71,8 @@
         <item name="search_bar">@color/searchBarDark</item>
         <item name="search_bar_icon">@color/searchBarIconDark</item>
 
+        <item name="tab_icon">@color/tabIconDark</item>
+        <item name="tab_icon_selected">@color/tabIconSelectedDark</item>
         <item name="toolbar_icon">@color/toolbarIconDark</item>
 
         <item name="md_background_color">@color/cardBackgroundDark</item>
