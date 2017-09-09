@@ -11,7 +11,9 @@ import android.support.annotation.Nullable;
 import com.danimahardhika.android.helpers.core.FileHelper;
 import com.danimahardhika.android.helpers.core.WindowHelper;
 import com.dm.wallpaper.board.R;
+import com.dm.wallpaper.board.items.Wallpaper;
 import com.dm.wallpaper.board.preferences.Preferences;
+import com.dm.wallpaper.board.utils.LogUtil;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 
 import java.io.File;
@@ -72,6 +74,18 @@ public class WallpaperHelper {
             default:
                 return "jpg";
         }
+    }
+
+    public static boolean isWallpaperSaved(@NonNull Context context, @NonNull Wallpaper wallpaper) {
+        String fileName = wallpaper.getName() +"."+ getFormat(wallpaper.getMimeType());
+        File directory = WallpaperHelper.getDefaultWallpapersDirectory(context);
+        File target = new File(directory, fileName);
+
+        if (target.exists()) {
+            long size = target.length();
+            return size == wallpaper.getSize();
+        }
+        return false;
     }
 
     public static ImageSize getTargetSize(@NonNull Context context) {
