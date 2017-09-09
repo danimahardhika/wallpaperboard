@@ -3,16 +3,18 @@ package com.dm.wallpaper.board.services;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.danimahardhika.android.helpers.core.FileHelper;
 import com.danimahardhika.android.helpers.permission.PermissionHelper;
 import com.dm.wallpaper.board.databases.Database;
 import com.dm.wallpaper.board.helpers.MuzeiHelper;
-import com.dm.wallpaper.board.helpers.WallpaperHelper;
 import com.dm.wallpaper.board.items.Wallpaper;
 import com.dm.wallpaper.board.preferences.Preferences;
+import com.dm.wallpaper.board.utils.LogUtil;
 import com.google.android.apps.muzei.api.Artwork;
 import com.google.android.apps.muzei.api.RemoteMuzeiArtSource;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.File;
 
@@ -70,17 +72,25 @@ public abstract class WallpaperBoardMuzeiService extends RemoteMuzeiArtSource {
 
                 Database.get(this).closeDatabase();
             }
-        } catch (Exception ignored) {}
+        } catch (Exception e) {
+            LogUtil.e(Log.getStackTraceString(e));
+        }
     }
 
     private void publishArtwork(Wallpaper wallpaper) {
-        String fileName = wallpaper.getName() +"."+ WallpaperHelper.getFormat(wallpaper.getMimeType());
-        File file = new File(WallpaperHelper.getDefaultWallpapersDirectory(this), fileName);
+        File file = null;
+        if (ImageLoader.getInstance().isInited()) {
+            file = ImageLoader.getInstance().getDiskCache().get(wallpaper.getUrl());
+        }
 
         Uri uri = null;
-        if (file.exists() && PermissionHelper.isStorageGranted(this))
+        if (file != null && file.exists() && PermissionHelper.isLocationGranted(this)) {
             uri = FileHelper.getUriFromFile(this, getPackageName(), file);
-        if (uri == null) uri = Uri.parse(wallpaper.getUrl());
+        }
+
+        if (uri == null) {
+            uri = Uri.parse(wallpaper.getUrl());
+        }
 
         publishArtwork(new Artwork.Builder()
                 .title(wallpaper.getName())
