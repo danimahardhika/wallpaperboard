@@ -66,14 +66,13 @@ public class WallpaperDownloader {
 
         if (WallpaperHelper.isWallpaperSaved(mContext, mWallpaper)) {
             CafeBar.builder(mContext)
-                    .theme(new CafeBarTheme.Custom(ColorHelper.getAttributeColor(mContext, R.attr.card_background)))
+                    .theme(CafeBarTheme.Custom(ColorHelper.getAttributeColor(mContext, R.attr.card_background)))
                     .floating(true)
                     .fitSystemWindow()
                     .duration(CafeBarDuration.MEDIUM.getDuration())
                     .typeface(TypefaceHelper.getRegular(mContext), TypefaceHelper.getBold(mContext))
                     .content(R.string.wallpaper_already_downloaded)
                     .neutralText(R.string.open)
-                    .neutralColor(ColorHelper.getAttributeColor(mContext, R.attr.colorAccent))
                     .onNeutral(cafeBar -> {
                         Uri uri = FileHelper.getUriFromFile(mContext, mContext.getPackageName(), target);
                         if (uri == null) {
@@ -119,7 +118,7 @@ public class WallpaperDownloader {
 
     private void showCafeBar(int res) {
         CafeBar.builder(mContext)
-                .theme(new CafeBarTheme.Custom(ColorHelper.getAttributeColor(mContext, R.attr.card_background)))
+                .theme(CafeBarTheme.Custom(ColorHelper.getAttributeColor(mContext, R.attr.card_background)))
                 .contentTypeface(TypefaceHelper.getRegular(mContext))
                 .content(res)
                 .floating(true)

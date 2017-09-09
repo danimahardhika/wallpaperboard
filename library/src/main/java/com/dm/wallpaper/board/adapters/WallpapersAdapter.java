@@ -254,7 +254,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Vi
                 setFavorite(favorite, name.getCurrentTextColor(), position, true);
 
                 CafeBar.builder(mContext)
-                        .theme(new CafeBarTheme.Custom(ColorHelper.getAttributeColor(
+                        .theme(CafeBarTheme.Custom(ColorHelper.getAttributeColor(
                                 mContext, R.attr.card_background)))
                         .fitSystemWindow()
                         .floating(true)

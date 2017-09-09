@@ -255,7 +255,7 @@ public class WallpaperDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     private void showCafeBar(String title, String content, boolean showCopy) {
         CafeBar.Builder builder = CafeBar.builder(mContext)
-                .theme(new CafeBarTheme.Custom(ColorHelper.getAttributeColor(
+                .theme(CafeBarTheme.Custom(ColorHelper.getAttributeColor(
                         mContext, R.attr.card_background)))
                 .typeface(TypefaceHelper.getRegular(mContext), TypefaceHelper.getBold(mContext))
                 .content(title)
@@ -264,7 +264,6 @@ public class WallpaperDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         if (showCopy) {
             builder.neutralText(R.string.copy)
-                    .neutralColor(ColorHelper.getAttributeColor(mContext, R.attr.colorAccent))
                     .onNeutral(cafeBar -> {
                         ClipboardManager clipboard = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
                         ClipData clip = ClipData.newPlainText("content", content);

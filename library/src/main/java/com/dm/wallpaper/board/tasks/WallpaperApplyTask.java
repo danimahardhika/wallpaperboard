@@ -354,7 +354,7 @@ public class WallpaperApplyTask extends AsyncTask<Void, Void, Boolean> implement
 
         if (aBoolean) {
             CafeBar.builder(mContext)
-                    .theme(new CafeBarTheme.Custom(ColorHelper.getAttributeColor(
+                    .theme(CafeBarTheme.Custom(ColorHelper.getAttributeColor(
                             mContext, R.attr.card_background)))
                     .contentTypeface(TypefaceHelper.getRegular(mContext))
                     .floating(true)

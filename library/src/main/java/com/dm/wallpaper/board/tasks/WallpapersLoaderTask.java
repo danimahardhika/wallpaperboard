@@ -225,7 +225,7 @@ public class WallpapersLoaderTask extends AsyncTask<Void, Void, Boolean> {
                 res = R.string.wallpapers_loader_failed;
             }
             CafeBar.builder(mContext)
-                    .theme(new CafeBarTheme.Custom(ColorHelper.getAttributeColor(
+                    .theme(CafeBarTheme.Custom(ColorHelper.getAttributeColor(
                             mContext, R.attr.card_background)))
                     .contentTypeface(TypefaceHelper.getRegular(mContext))
                     .content(res)
