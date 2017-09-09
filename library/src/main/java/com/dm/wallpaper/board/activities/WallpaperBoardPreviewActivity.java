@@ -331,7 +331,9 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
                 mTooltip.dismiss();
             }
 
-            loadWallpaper(mWallpaper.getUrl());
+            if (mProgress.getVisibility() == View.GONE) {
+                loadWallpaper(mWallpaper.getUrl());
+            }
         } else if (id == R.id.menu_save) {
             if (PermissionHelper.isStorageGranted(this)) {
                 WallpaperDownloader.prepare(this)
