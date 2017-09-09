@@ -5,8 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.danimahardhika.android.helpers.core.FileHelper;
-import com.danimahardhika.android.helpers.permission.PermissionHelper;
 import com.dm.wallpaper.board.databases.Database;
 import com.dm.wallpaper.board.helpers.MuzeiHelper;
 import com.dm.wallpaper.board.items.Wallpaper;
@@ -14,9 +12,6 @@ import com.dm.wallpaper.board.preferences.Preferences;
 import com.dm.wallpaper.board.utils.LogUtil;
 import com.google.android.apps.muzei.api.Artwork;
 import com.google.android.apps.muzei.api.RemoteMuzeiArtSource;
-import com.nostra13.universalimageloader.core.ImageLoader;
-
-import java.io.File;
 
 /*
  * Wallpaper Board
@@ -67,7 +62,14 @@ public abstract class WallpaperBoardMuzeiService extends RemoteMuzeiArtSource {
             if (Preferences.get(this).isConnectedAsPreferred()) {
                 Wallpaper wallpaper = mMuzeiHelper.getRandomWallpaper(wallpaperUrl);
                 if (wallpaper != null) {
-                    publishArtwork(wallpaper);
+                    publishArtwork(new Artwork.Builder()
+                            .title(wallpaper.getName())
+                            .byline(wallpaper.getAuthor())
+                            .imageUri(Uri.parse(wallpaper.getUrl()))
+                            .build());
+
+                    scheduleUpdate(System.currentTimeMillis() +
+                            Preferences.get(this).getRotateTime());
                 }
 
                 Database.get(this).closeDatabase();
@@ -75,30 +77,5 @@ public abstract class WallpaperBoardMuzeiService extends RemoteMuzeiArtSource {
         } catch (Exception e) {
             LogUtil.e(Log.getStackTraceString(e));
         }
-    }
-
-    private void publishArtwork(Wallpaper wallpaper) {
-        File file = null;
-        if (ImageLoader.getInstance().isInited()) {
-            file = ImageLoader.getInstance().getDiskCache().get(wallpaper.getUrl());
-        }
-
-        Uri uri = null;
-        if (file != null && file.exists() && PermissionHelper.isLocationGranted(this)) {
-            uri = FileHelper.getUriFromFile(this, getPackageName(), file);
-        }
-
-        if (uri == null) {
-            uri = Uri.parse(wallpaper.getUrl());
-        }
-
-        publishArtwork(new Artwork.Builder()
-                .title(wallpaper.getName())
-                .byline(wallpaper.getAuthor())
-                .imageUri(uri)
-                .build());
-
-        scheduleUpdate(System.currentTimeMillis() +
-                Preferences.get(this).getRotateTime());
     }
 }
