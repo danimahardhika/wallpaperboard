@@ -5,13 +5,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.danimahardhika.android.helpers.permission.PermissionHelper;
 import com.dm.wallpaper.board.databases.Database;
 import com.dm.wallpaper.board.helpers.MuzeiHelper;
+import com.dm.wallpaper.board.helpers.WallpaperHelper;
 import com.dm.wallpaper.board.items.Wallpaper;
 import com.dm.wallpaper.board.preferences.Preferences;
 import com.dm.wallpaper.board.utils.LogUtil;
 import com.google.android.apps.muzei.api.Artwork;
 import com.google.android.apps.muzei.api.RemoteMuzeiArtSource;
+
+import java.io.File;
 
 /*
  * Wallpaper Board
@@ -62,10 +66,19 @@ public abstract class WallpaperBoardMuzeiService extends RemoteMuzeiArtSource {
             if (Preferences.get(this).isConnectedAsPreferred()) {
                 Wallpaper wallpaper = mMuzeiHelper.getRandomWallpaper(wallpaperUrl);
                 if (wallpaper != null) {
+                    Uri uri = Uri.parse(wallpaper.getUrl());
+                    if (WallpaperHelper.isWallpaperSaved(this, wallpaper) && PermissionHelper.isStorageGranted(this)) {
+                        String fileName = wallpaper.getName() +"."+ WallpaperHelper.getFormat(wallpaper.getMimeType());
+                        File directory = WallpaperHelper.getDefaultWallpapersDirectory(this);
+                        File target = new File(directory, fileName);
+
+                        uri = Uri.fromFile(target);
+                    }
+                    
                     publishArtwork(new Artwork.Builder()
                             .title(wallpaper.getName())
                             .byline(wallpaper.getAuthor())
-                            .imageUri(Uri.parse(wallpaper.getUrl()))
+                            .imageUri(uri)
                             .build());
 
                     scheduleUpdate(System.currentTimeMillis() +
