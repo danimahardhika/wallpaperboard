@@ -102,7 +102,7 @@ dependencies {
     compile 'com.github.KeepSafe:TapTargetView:-SNAPSHOT'
     compile 'com.sothree.slidinguppanel:library:3.3.1'
     
-    compile 'com.github.danimahardhika:cafebar:1.1.5'
+    compile 'com.github.danimahardhika:cafebar:1.1.6'
     compile 'com.github.danimahardhika.android-helpers:core:-SNAPSHOT'
     compile 'com.github.danimahardhika.android-helpers:animation:0.0.6'
     compile 'com.github.danimahardhika.android-helpers:license:0.0.6'
