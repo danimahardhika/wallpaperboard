@@ -21,8 +21,8 @@
     <color name="searchBarIcon">#6E6E6E</color>
     <color name="searchBarIconDark">#6E6E6E</color>
 
-    <color name="tabIcon">#556E6E6E</color>
-    <color name="tabIconDark">#55FFFFFF</color>
+    <color name="tabIcon">#6E6E6E</color>
+    <color name="tabIconDark">#FFFFFF</color>
     <color name="tabIconSelected">#20AC6B</color>
     <color name="tabIconSelectedDark">#20AC6B</color>
 
