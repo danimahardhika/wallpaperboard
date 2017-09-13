@@ -391,7 +391,6 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
                     })
                     .build();
 
-            popup.removeItem(popup.getItems().size() - 1);
             popup.show();
         }
     }
