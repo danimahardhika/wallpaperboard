@@ -61,7 +61,8 @@ public class TapIntroHelper {
                     tapTargetSequence.continueOnCancel(true);
 
                     Typeface title = TypefaceHelper.getMedium(context);
-                    Typeface description = TypefaceHelper.getRegular(context);
+                    //Todo:
+                    //Typeface description = TypefaceHelper.getRegular(context);
 
                     ImageView apply = ButterKnife.findById(rootView, R.id.menu_apply);
                     ImageView save = ButterKnife.findById(rootView, R.id.menu_save);
@@ -95,16 +96,21 @@ public class TapIntroHelper {
                             .drawShadow(true);
 
                     if (title != null) {
-                        tapTarget.titleTypeface(title);
-                        tapTarget1.titleTypeface(title);
-                        tapTarget2.titleTypeface(title);
+                        //Todo:
+                        //tapTarget.titleTypeface(title);
+                        //tapTarget1.titleTypeface(title);
+                        //tapTarget2.titleTypeface(title);
+                        tapTarget.textTypeface(title);
+                        tapTarget1.textTypeface(title);
+                        tapTarget2.textTypeface(title);
                     }
 
-                    if (description != null) {
-                        tapTarget.descriptionTypeface(description);
-                        tapTarget1.descriptionTypeface(description);
-                        tapTarget2.descriptionTypeface(description);
-                    }
+                    //if (description != null) {
+                        //Todo:
+                        //tapTarget.descriptionTypeface(description);
+                        //tapTarget1.descriptionTypeface(description);
+                        //tapTarget2.descriptionTypeface(description);
+                    //}
 
                     tapTargetSequence.target(tapTarget);
                     if (context.getResources().getBoolean(R.bool.enable_wallpaper_download)) {
