@@ -391,6 +391,9 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
                     })
                     .build();
 
+            if (getResources().getBoolean(R.bool.enable_wallpaper_download)) {
+                popup.getItems().remove(popup.getItems().size() - 1);
+            }
             popup.show();
         }
     }
