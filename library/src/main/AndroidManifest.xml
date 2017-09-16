@@ -20,6 +20,7 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.dm.wallpaper.board">
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -31,7 +32,9 @@
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-    <application android:supportsRtl="false">
+    <application android:supportsRtl="false"
+        tools:replace="android:icon,android:supportsRtl">
+     
         <meta-data android:name="android.max_aspect" android:value="2.1" />
 
         <activity android:name=".activities.WallpaperBoardCrashReport"
