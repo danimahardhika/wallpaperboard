@@ -9,46 +9,59 @@
     <string name="navigation_view_share">Поделиться</string>
     <string name="navigation_view_rate">Оценить</string>
     <!-- Share app -->
+    <string name="share_app_subject">Воу! Зацени это приложение %s</string>
+    <string name="share_app_body">Проверьте %1$s, это приложение для обоев действительно крутое! %2$s</string>
     <!-- Menu -->
     <string name="menu_search">Поиск</string>
     <string name="menu_filter">Фильтр</string>
     <string name="menu_save">Сохранить</string>
-    <string name="menu_wallpaper_settings">Настройки отображения</string>
+    <string name="menu_wallpaper_crop">Обрезать обои</string>
+    <string name="menu_apply_homescreen">Домашний экран</string>
+    <string name="menu_apply_lockscreen">Экран блокировки</string>
+    <string name="menu_sort">Сортировать по</string>
+    <string name="menu_sort_latest">Последние</string>
+    <string name="menu_sort_oldest">От старых</string>
+    <string name="menu_sort_name">Имени</string>
+    <string name="menu_sort_random">Случайные</string>
     <!-- Dialog -->
     <string name="open">Открыть</string>
     <string name="close">Закрыть</string>
     <string name="clear">Очистить</string>
     <string name="donate">Пожертвовать</string>
+    <string name="copy">Копировать</string>
     <!-- Tap Intro -->
     <string name="tap_intro_wallpapers_navigation">Навигация</string>
     <string name="tap_intro_wallpapers_navigation_desc">Нажми здесь или смахни слева для открытия навигации</string>
     <string name="tap_intro_wallpapers_search">Поиск</string>
     <string name="tap_intro_wallpapers_search_desc">Нажми здесь для поиска</string>
     <string name="tap_intro_wallpapers_filter">Фильтр</string>
-    <string name="tap_intro_wallpapers_filter_desc">Нажми здесь для фильтрации по категориям</string>
+    <string name="tap_intro_wallpapers_filter_desc">Нажми здесь для отображения по категориям</string>
     <string name="tap_intro_wallpapers_option">Настройки обои</string>
+    <string name="tap_intro_wallpapers_option_desc">Нажмите и удерживайте здесь, чтобы показать параметры обоев, %s применить обои.</string>
     <string name="tap_intro_wallpapers_option_desc_download">скачать или</string>
     <string name="tap_intro_wallpapers_preview">Просмотр обои</string>
     <string name="tap_intro_wallpapers_preview_desc">Нажми здесь для просмотра в полном размере</string>
     <string name="tap_intro_wallpapers_favorite">Избранные обои</string>
-    <string name="tap_intro_wallpapers_favorite_desc">Нажми здесь для добавления обои в избранные</string>
+    <string name="tap_intro_wallpapers_favorite_desc">Нажми здесь для добавления фона в избранное</string>
     <string name="tap_intro_wallpaper_preview_settings">Настройки обои</string>
     <string name="tap_intro_wallpaper_preview_save">Сохранить обои</string>
+    <string name="tap_intro_wallpaper_preview_save_desc">Нажмите здесь, чтобы загрузить и сохранить обои на вашем устройстве, чтобы вы могли использовать их позже.</string>
     <string name="tap_intro_wallpaper_preview_apply">Установить как обои</string>
     <!-- Wallpapers -->
-    <string name="wallpaper_new_added">Новые обои</string>
-    <string name="wallpaper_filter">Фильтр по Категории</string>
-    <string name="wallpaper_download_exist_replace">Заменить</string>
-    <string name="wallpaper_download_exist_new">Создать</string>
-    <string name="wallpaper_download_cancelled">Загрузка отменена</string>
-    <string name="wallpaper_downloaded">Сохранено в</string>
+    <string name="wallpaper_filter">Фильтр по категории</string>
+    <string name="wallpaper_downloading">Скачивание фонового рисунка …</string>
+    <string name="wallpaper_download_failed">Невозможно скачать фоновый рисунок</string>
+    <string name="wallpaper_loading">Загрузка обои …</string>
     <string name="wallpaper_applying">Применение обои …</string>
     <string name="wallpaper_applied">Обои установлены</string>
     <string name="wallpaper_apply_failed">Невозможно применить</string>
     <string name="wallpaper_apply_cancelled">Применение обои отменено</string>
+    <string name="wallpaper_favorite_added">%s добавлено в избранные</string>
+    <string name="wallpaper_favorite_removed">%s удалено из избранных</string>
+    <string name="connection_failed">Не удалось получить данные с сервера</string>
     <string name="wallpaper_apply">Установить как обои</string>
-    <string name="wallpaper_settings_crop">Обрезать</string>
-    <string name="wallpaper_settings_lockscreen">Фон экрана блокировки</string>
+    <!-- Wallpaper Tooltips -->
+    <!-- Wallpaper Property -->
     <!-- Muzei -->
     <string name="minute">Минута</string>
     <string name="hour">Час</string>
@@ -59,7 +72,7 @@
     <string name="muzei_refresh_duration_desc">Каждый</string>
     <string name="muzei_wifi_only">Обновлять только при WiFi</string>
     <string name="muzei_wifi_only_desc">Загружать обои только при WiFi соединении</string>
-    <string name="muzei_category">Выбрать Категории</string>
+    <string name="muzei_category">Выбрать категории</string>
     <string name="muzei_category_desc">Загрузить обои только выбранных категорий</string>
     <!-- About -->
     <string name="about_contributors_title">Соавторы</string>
@@ -78,31 +91,52 @@
     <string name="pref_theme_dark">Темная тема</string>
     <string name="pref_theme_dark_desc">Переключение между темной или светлой темой</string>
     <string name="pref_wallpaper_header">Обои</string>
-    <string name="pref_wallpaper_location">Пусть сохранения обои</string>
-    <string name="pref_wallpaper_location_desc">Сначала загрузите хотя бы один фоновый рисунок</string>
+    <string name="pref_wallpaper_high_quality_preview">Качество предварительного просмотра обоев</string>
+    <string name="pref_wallpaper_high_quality_preview_low">Низкое качество</string>
+    <string name="pref_wallpaper_high_quality_preview_high">Высокое качество</string>
+    <string name="pref_wallpaper_location">Путь сохранения фоновых рисунков</string>
     <string name="pref_language_header">Язык</string>
     <string name="pref_others_header">Другие</string>
-    <string name="pref_others_colored_wallpaper_card">Цветные карточки</string>
     <string name="pref_others_reset_tutorial">Сбросить обучение</string>
     <string name="pref_others_reset_tutorial_reset">Сбросить обучение</string>
     <!-- Permission -->
-    <string name="permission_storage_denied">Необходимо разрешить для сохранения фонового изображения</string>
+    <string name="permission_storage_denied">Необходимо разрешение для сохранения фонового изображения</string>
     <!-- Support Development -->
+    <string name="donation_success">Спасибо за поддержку проекта!</string>
     <!-- License -->
     <string name="license_checking">Проверка лицензии</string>
     <string name="license_check">Проверка лицензии</string>
     <string name="license_check_success">Проверка лицензии завершена, спасибо за приобретение продукта!</string>
     <!-- Search -->
+    <string name="search_result_empty">Не найдено \"%s\"</string>
     <!-- Crash Report -->
     <string name="crash_report">Отчет о сбое</string>
     <string name="crash_report_send">Отправить отчет</string>
-    <string name="email_client">Выберите почтовый клиент</string>
+    <string name="email_client">"Выберите почтовый клиент "</string>
     <!-- Please don't modify this -->
     <string name="about_dashboard">Wallpaper Board</string>
+    <string name="about_dashboard_dev">Wallpaper Board - приложение с открытыми исходным кодом, лицензированная Apache License 2.0 для Android. Доступен в GitHub и свободен для использования, разработано Dani Mahardhika.</string>
     <string name="about_dashboard_contributors">Соавторы приложения</string>
     <string name="about_dashboard_translator">Переводчики приложения</string>
     <!-- Splash screen -->
     <!-- DrawerToggle -->
     <string name="txt_open">Открыть</string>
     <string name="txt_close">Закрыть</string>
+    <string name="menu_wallpaper_settings">Настройки отображения</string>
+    <!-- Wallpapers -->
+    <string name="wallpaper_new_added">Новые обои</string>
+    <string name="wallpaper_download_exist">Фоновый рисунок %s уже существует, заменить его?</string>
+    <string name="wallpaper_download_exist_replace">Заменить</string>
+    <string name="wallpaper_download_exist_new">Создать</string>
+    <string name="wallpaper_download_cancelled">Загрузка отменена</string>
+    <string name="wallpaper_downloaded">Сохранено в</string>
+    <string name="wallpaper_apply_crop">Обрезка обоев будет отключена, если вы примените эту опцию</string>
+    <string name="wallpaper_settings_crop">Обрезать</string>
+    <string name="wallpaper_settings_crop_desc">Включить обрезку обоев. Обои будут обрезаны на основе текущего представления обоев.
+Зажмите или дважды нажмите, чтобы увеличить обои.</string>
+    <string name="wallpaper_settings_lockscreen">Фон экрана блокировки</string>
+    <string name="wallpaper_settings_lockscreen_desc">Фоновый рисунок будет применен как обои для рабочего стола и фон блокировки экрана</string>
+    <string name="wallpaper_settings_lockscreen_not_available">Обои экрана блокировки доступны только на Android Nougat</string>
+    <string name="pref_wallpaper_location_desc">Сначала загрузите хотя бы один фоновый рисунок</string>
+    <string name="pref_others_colored_wallpaper_card">Цветные карточки</string>
 </resources>

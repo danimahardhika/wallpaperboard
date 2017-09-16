@@ -65,6 +65,7 @@ Aktiviere die Möglichkeit, dass das Bild als Sperrbildschirmhintergrund in Andr
     <string name="wallpaper_favorite_added">%s zu Favoriten hinzugefügt</string>
     <string name="wallpaper_favorite_removed">%s aus Favoriten entfernt</string>
     <string name="connection_failed">Daten können nicht vom Server geholt werden</string>
+    <string name="wallpapers_loader_failed">Neue Hintergrundbilder können nicht geprüft werden</string>
     <string name="wallpaper_preview_full">Hintergrundbild in Originalgröße sehen</string>
     <string name="wallpaper_apply">Hintergrundbild anwenden</string>
     <string name="wallpaper_save_to_device">Hintergrundbild speichern</string>
@@ -110,6 +111,9 @@ von Miniaturansichten der Cloud-Hintergründe erstellt wurde</string>
     <string name="pref_theme_dark">Dunkles Design</string>
     <string name="pref_theme_dark_desc">Wechsle zwischen dunklem oder hellem Design</string>
     <string name="pref_wallpaper_header">Hintergrundbild</string>
+    <string name="pref_wallpaper_high_quality_preview">Qualität der Bildvorschau</string>
+    <string name="pref_wallpaper_high_quality_preview_low">Niedrige Qualität</string>
+    <string name="pref_wallpaper_high_quality_preview_high">Hohe Qualität</string>
     <string name="pref_wallpaper_location">Speicherort der Hintergrundbilder</string>
     <string name="pref_language_header">Sprache</string>
     <string name="pref_others_header">Weitere</string>
@@ -139,7 +143,6 @@ Du wirst sie nicht benutzen können.</string>
 Für Android bei GitHub verfügbar und kostenlos zur Benutzung freigegeben, entwickelt von Dani Mahardhika.</string>
     <string name="about_dashboard_contributors">Mitwirkende bei Wallpaper Board</string>
     <string name="about_dashboard_translator">Übersetzer bei Wallpaper Board</string>
-    <string name="about_dashboard_dev_instagram_url">https://www.instagram.com/_u/danimahardhika112/</string>
     <!-- Splash screen -->
     <!-- DrawerToggle -->
     <string name="txt_open">Öffnen</string>
