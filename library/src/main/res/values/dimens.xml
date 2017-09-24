@@ -25,9 +25,6 @@
     <!-- Navigation View -->
     <dimen name="navigation_view_width">280dp</dimen>
 
-    <!-- Default Image -->
-    <dimen name="default_image_padding">10dp</dimen>
-
     <!-- Toolbar -->
     <dimen name="toolbar_shadow">4dp</dimen>
 

@@ -13,7 +13,6 @@ import com.danimahardhika.android.helpers.core.WindowHelper;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.items.Wallpaper;
 import com.dm.wallpaper.board.preferences.Preferences;
-import com.dm.wallpaper.board.utils.LogUtil;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 
 import java.io.File;
