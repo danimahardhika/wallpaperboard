@@ -274,7 +274,6 @@ public class WallpaperApplyTask extends AsyncTask<Void, Void, Boolean> implement
                             /*
                              * Final bitmap generated
                              */
-                            loadedBitmap.recycle();
                             LogUtil.d(String.format(Locale.getDefault(), "generated bitmap: %d x %d ",
                                     bitmap.getWidth(), bitmap.getHeight()));
 
