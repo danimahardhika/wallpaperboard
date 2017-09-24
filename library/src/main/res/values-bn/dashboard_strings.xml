@@ -135,7 +135,7 @@ Android Nougat এ লকস্ক্রিন ব্যাকগ্রাউন
     <string name="search_result_empty">\"%s\" এর জন্য কোনো ফলাফল পাওয়া যায়নি</string>
     <!-- Crash Report -->
     <string name="crash_report">ক্র্যাশ রিপোর্ট</string>
-    <string name="crash_report_message">দুর্ভাগ্যবশত% s ক্র্যাশ করেছে। ডেভেলপারকে সমস্যাটির সমাধান করতে সহায়তা করার জন্য নীচের প্রতিবেদনটি নির্বাচন করুন চয়ন করুন।</string>
+    <string name="crash_report_message">দুর্ভাগ্যবশত %s ক্র্যাশ করেছে। ডেভেলপারকে সমস্যাটির সমাধান করতে সহায়তা করার জন্য নীচের প্রতিবেদনটি নির্বাচন করুন চয়ন করুন।</string>
     <string name="crash_report_send">রিপোর্ট পাঠান</string>
     <string name="email_client">ইমেল ক্লায়েন্ট চয়ন করুন</string>
     <!-- Please don't modify this -->

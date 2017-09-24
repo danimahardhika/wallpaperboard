@@ -54,10 +54,10 @@
     <!-- Wallpapers -->
     <string name="wallpaper_filter">زمرہ کی طرف سے فلٹر</string>
     <string name="wallpaper_already_downloaded">وال پیپر پہلے سے ہی ڈاؤن لوڈ کیا</string>
-    <string name="wallpaper_downloading">وال پیپر ڈاؤن لوڈ کر رہا ہے ...</string>
+    <string name="wallpaper_downloading">وال پیپر ڈاؤن لوڈ کر رہا ہے …</string>
     <string name="wallpaper_download_failed">وال پیپر ڈاؤن لوڈ کرنے میں ناکام</string>
-    <string name="wallpaper_loading">وال پیپر لوڈ کر رہا ہے ...</string>
-    <string name="wallpaper_applying">وال پیپر کا اطلاق ...</string>
+    <string name="wallpaper_loading">وال پیپر لوڈ کر رہا ہے …</string>
+    <string name="wallpaper_applying">وال پیپر کا اطلاق …</string>
     <string name="wallpaper_applied">وال پیپر لاگو</string>
     <string name="wallpaper_apply_failed">وال پیپر کا اطلاق کرنے میں ناکام</string>
     <string name="wallpaper_apply_cancelled">وال پیپر منسوخ کردیئے گئے</string>
@@ -124,7 +124,7 @@
     <!-- Support Development -->
     <string name="donation_success">عطیہ کرنے کے لئے آپ کا شکریہ. میں اسے اچھے کے لئے استعمال کروں گا.</string>
     <!-- License -->
-    <string name="license_checking">لائسنس کی جانچ پڑتال ...</string>
+    <string name="license_checking">لائسنس کی جانچ پڑتال …</string>
     <string name="license_check">لائسنس چیک</string>
     <string name="license_check_success">لائسنس چیک کامیابی، Play Store سے ڈاؤن لوڈ کرنے کے لئے آپ کا شکریہ.</string>
     <string name="license_check_failed">لائسنس کی جانچ ناکام ہوگئی، آپ نے اس اپلی کیشن کو Play Store سے نہیں ڈاؤن لوڈ کیا.
