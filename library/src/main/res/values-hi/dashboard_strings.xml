@@ -10,7 +10,7 @@
     <string name="navigation_view_rate">रेट एवम रिव्यू</string>
     <!-- Share app -->
     <string name="share_app_subject">यो! चेक आउट %s</string>
-    <string name="share_app_body">चेक आउट %1s, यह वॉलपेपर ऐप वास्तव में अच्छा है! %2$s</string>
+    <string name="share_app_body">चेक आउट %1$s, यह वॉलपेपर ऐप वास्तव में अच्छा है! %2$s</string>
     <!-- Menu -->
     <string name="menu_search">खोज</string>
     <string name="menu_filter">फिल्टर</string>
