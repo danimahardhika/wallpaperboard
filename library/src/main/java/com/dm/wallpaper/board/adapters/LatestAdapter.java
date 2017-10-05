@@ -242,9 +242,9 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.ViewHolder
         public void onClick(View view) {
             int id = view.getId();
             int position = getAdapterPosition();
-            if (id == R.id.favorite) {
-                if (position < 0 || position > mWallpapers.size()) return;
+            if (position < 0 || position > mWallpapers.size()) return;
 
+            if (id == R.id.favorite) {
                 boolean isFavorite = mWallpapers.get(position).isFavorite();
                 Database.get(mContext).favoriteWallpaper(
                         mWallpapers.get(position).getUrl(), !isFavorite);
