@@ -248,6 +248,9 @@ public class WallpaperSearchFragment extends Fragment {
             @Override
             protected void onPostExecute(Boolean aBoolean) {
                 super.onPostExecute(aBoolean);
+                if (getActivity() == null) return;
+                if (getActivity().isFinishing()) return;
+
                 mAsyncTask = null;
 
                 if (aBoolean) {
