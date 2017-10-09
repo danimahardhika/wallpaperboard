@@ -57,8 +57,9 @@ public class Popup {
         mPopupWindow = new ListPopupWindow(builder.mContext);
         mAdapter = new PopupAdapter(builder.mContext, builder.mItems);
 
+
         int width = getMeasuredWidth(builder.mContext);
-        mPopupWindow.setWidth(width);
+        mPopupWindow.setContentWidth(width);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Drawable drawable = mPopupWindow.getBackground();
             if (drawable != null) {

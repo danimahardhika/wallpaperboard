@@ -55,7 +55,7 @@ public class Tooltip {
         mBuilder = builder;
 
         mPopupWindow = new ListPopupWindow(mBuilder.mContext);
-        mPopupWindow.setWidth(getMeasuredWidth(builder.mContext));
+        mPopupWindow.setContentWidth(getMeasuredWidth(builder.mContext));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Drawable drawable = mPopupWindow.getBackground();
             if (drawable != null) {
@@ -67,7 +67,6 @@ public class Tooltip {
                     ColorHelper.getAttributeColor(builder.mContext, R.attr.card_background)));
         }
 
-        mPopupWindow.setWidth(getMeasuredWidth(mBuilder.mContext));
         mPopupWindow.setListSelector(new ColorDrawable(Color.TRANSPARENT));
         mPopupWindow.setAnchorView(mBuilder.mTo);
         mPopupWindow.setForceIgnoreOutsideTouch(!mBuilder.mCancelable);
