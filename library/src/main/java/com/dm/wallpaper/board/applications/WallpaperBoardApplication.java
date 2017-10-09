@@ -136,7 +136,7 @@ public class WallpaperBoardApplication extends Application {
         private boolean mIsHighQualityPreviewEnabled = false;
         private boolean mIsDashboardThemingEnabled = true;
         private boolean mIsShadowEnabled = true;
-        private int mLatestWallpapersDisplayMax = 20;
+        private int mLatestWallpapersDisplayMax = 15;
 
         private boolean mIsCrashReportEnabled = true;
         private String mCrashReportEmail = null;
@@ -168,12 +168,12 @@ public class WallpaperBoardApplication extends Application {
             return this;
         }
 
-        public Configuration setLatestWallpapersDisplayMax(@IntRange (from = 10, to = 50) int count) {
+        public Configuration setLatestWallpapersDisplayMax(@IntRange (from = 5, to = 15) int count) {
             int finalCount = count;
-            if (finalCount < 10) {
-                finalCount = 10;
-            } else if (finalCount > 50) {
-                finalCount = 50;
+            if (finalCount < 5) {
+                finalCount = 5;
+            } else if (finalCount > 15) {
+                finalCount = 15;
             }
             mLatestWallpapersDisplayMax = finalCount;
             return this;
