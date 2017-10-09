@@ -117,6 +117,7 @@ public class WallpaperApplyTask extends AsyncTask<Void, Void, Boolean> implement
         }
 
         if (mWallpaper.getDimensions() == null) {
+            LogUtil.e("dimensions is unknown");
             return WallpaperPropertiesLoaderTask.prepare(mContext.get())
                     .wallpaper(mWallpaper)
                     .callback(this)
@@ -131,6 +132,7 @@ public class WallpaperApplyTask extends AsyncTask<Void, Void, Boolean> implement
 
     @Override
     public void onPropertiesReceived(Wallpaper wallpaper) {
+        LogUtil.e("dimensions received");
         mWallpaper = wallpaper;
         if (mExecutor == null) mExecutor = SERIAL_EXECUTOR;
         if (mWallpaper.getDimensions() == null) {
@@ -142,7 +144,7 @@ public class WallpaperApplyTask extends AsyncTask<Void, Void, Boolean> implement
             return;
         }
 
-        start(mExecutor);
+        executeOnExecutor(mExecutor);
     }
 
     @Override
