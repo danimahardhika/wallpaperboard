@@ -129,6 +129,7 @@ public class CollectionFragment extends Fragment {
         collection.add(new Collection(R.drawable.ic_collection_categories,
                 new CategoriesFragment(), Extras.TAG_CATEGORIES));
 
+        mPager.setOffscreenPageLimit(2);
         mAdapter = new CollectionPagerAdapter(getChildFragmentManager(), collection);
         mPager.setAdapter(mAdapter);
     }
