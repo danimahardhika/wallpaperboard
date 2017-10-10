@@ -296,6 +296,11 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.ViewHolder
                                         .wallpaper(mWallpapers.get(position))
                                         .to(WallpaperApplyTask.Apply.HOMESCREEN)
                                         .start(AsyncTask.THREAD_POOL_EXECUTOR);
+                            }else if (item.getType() == PopupItem.Type.HOMESCREEN_LOCKSCREEN) {
+                                WallpaperApplyTask.prepare(mContext)
+                                        .wallpaper(mWallpapers.get(position))
+                                        .to(WallpaperApplyTask.Apply.HOMESCREEN_LOCKSCREEN)
+                                        .start(AsyncTask.THREAD_POOL_EXECUTOR);
                             }
                             applyPopup.dismiss();
                         })

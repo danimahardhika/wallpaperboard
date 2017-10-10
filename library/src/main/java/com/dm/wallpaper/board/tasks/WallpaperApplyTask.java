@@ -117,7 +117,6 @@ public class WallpaperApplyTask extends AsyncTask<Void, Void, Boolean> implement
         }
 
         if (mWallpaper.getDimensions() == null) {
-            LogUtil.e("dimensions is unknown");
             return WallpaperPropertiesLoaderTask.prepare(mContext.get())
                     .wallpaper(mWallpaper)
                     .callback(this)
@@ -132,7 +131,6 @@ public class WallpaperApplyTask extends AsyncTask<Void, Void, Boolean> implement
 
     @Override
     public void onPropertiesReceived(Wallpaper wallpaper) {
-        LogUtil.e("dimensions received");
         mWallpaper = wallpaper;
         if (mExecutor == null) mExecutor = SERIAL_EXECUTOR;
         if (mWallpaper.getDimensions() == null) {
@@ -279,6 +277,14 @@ public class WallpaperApplyTask extends AsyncTask<Void, Void, Boolean> implement
                             LogUtil.d(String.format(Locale.getDefault(), "generated bitmap: %d x %d ",
                                     bitmap.getWidth(), bitmap.getHeight()));
 
+                            if (mApply == Apply.HOMESCREEN_LOCKSCREEN) {
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                    WallpaperManager.getInstance(mContext.get().getApplicationContext()).setBitmap(
+                                            bitmap, null, true, WallpaperManager.FLAG_LOCK | WallpaperManager.FLAG_SYSTEM);
+                                    return true;
+                                }
+                            }
+
                             if (mApply == Apply.HOMESCREEN) {
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                                     WallpaperManager.getInstance(mContext.get().getApplicationContext()).setBitmap(
@@ -373,6 +379,7 @@ public class WallpaperApplyTask extends AsyncTask<Void, Void, Boolean> implement
 
     public enum Apply {
         LOCKSCREEN,
-        HOMESCREEN
+        HOMESCREEN,
+        HOMESCREEN_LOCKSCREEN
     }
 }

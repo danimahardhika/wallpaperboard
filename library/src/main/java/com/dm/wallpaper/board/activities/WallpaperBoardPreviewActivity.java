@@ -385,6 +385,18 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
                                     .to(WallpaperApplyTask.Apply.HOMESCREEN)
                                     .crop(rectF)
                                     .start(AsyncTask.THREAD_POOL_EXECUTOR);
+                        } else if (item.getType() == PopupItem.Type.HOMESCREEN_LOCKSCREEN) {
+                            RectF rectF = null;
+                            if (Preferences.get(WallpaperBoardPreviewActivity.this).isCropWallpaper()) {
+                                if (mAttacher != null)
+                                    rectF = mAttacher.getDisplayRect();
+                            }
+
+                            WallpaperApplyTask.prepare(this)
+                                    .wallpaper(mWallpaper)
+                                    .to(WallpaperApplyTask.Apply.HOMESCREEN_LOCKSCREEN)
+                                    .crop(rectF)
+                                    .start(AsyncTask.THREAD_POOL_EXECUTOR);
                         }
 
                         applyPopup.dismiss();
