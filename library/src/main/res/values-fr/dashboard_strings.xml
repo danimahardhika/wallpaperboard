@@ -31,13 +31,13 @@
     <string name="copy">Copier</string>
     <!-- Tap Intro -->
     <string name="tap_intro_wallpapers_navigation">Menu de navigation</string>
-    <string name="tap_intro_wallpapers_navigation_desc">Appuyer ici ou balayer vers la gauche de l\'écran pour ouvrir le menu de navigation.</string>
+    <string name="tap_intro_wallpapers_navigation_desc">Appuyez ici ou faites glisser votre doigt depuis le côté gauche de l\'écran pour ouvrir le Menu de navigation</string>
     <string name="tap_intro_wallpapers_search">Rechercher</string>
     <string name="tap_intro_wallpapers_search_desc">Appuyer ici pour rechercher un fond d\'écran</string>
-    <string name="tap_intro_wallpapers_filter">Filtrer les fonds d\'écrans</string>
-    <string name="tap_intro_wallpapers_filter_desc">Appuyer ici pour filtrer les fonds d\'écrans par catégories</string>
-    <string name="tap_intro_wallpapers_option">Options des fonds d\'écrans</string>
-    <string name="tap_intro_wallpapers_option_desc">Appuyer et maintenir ici pour voir les options des fonds d\'écrans, %s applique le fond d\'écran.</string>
+    <string name="tap_intro_wallpapers_filter">Filtrer les fonds d\'écran</string>
+    <string name="tap_intro_wallpapers_filter_desc">Appuyer ici pour filtrer les fonds d\'écran par catégories</string>
+    <string name="tap_intro_wallpapers_option">Options des fonds d\'écran</string>
+    <string name="tap_intro_wallpapers_option_desc">Appuyez ici et maintenez pour afficher les options du fond d\'écran, %s applique le fond d\'écran.</string>
     <string name="tap_intro_wallpapers_option_desc_download">télécharger ou</string>
     <string name="tap_intro_wallpapers_preview">Prévisualiser le fond d\'écran</string>
     <string name="tap_intro_wallpapers_preview_desc">Appuyer ici pour prévisualiser le fond d\'écran en entier</string>
@@ -111,7 +111,7 @@ ce qui peut le rendre flou et pixelisé.</string>
     <string name="pref_theme_dark">Thème sombre</string>
     <string name="pref_theme_dark_desc">Changer entre le thème sombre et clair</string>
     <string name="pref_wallpaper_header">Fonds d\'écrans</string>
-    <string name="pref_wallpaper_high_quality_preview">Qualité de prévisualisation</string>
+    <string name="pref_wallpaper_high_quality_preview">Qualité d\'aperçu des fonds d\'écran</string>
     <string name="pref_wallpaper_high_quality_preview_low">Basse Qualité</string>
     <string name="pref_wallpaper_high_quality_preview_high">Haute Qualité</string>
     <string name="pref_wallpaper_location">Adresse de sauvegarde des fonds d\'écrans</string>
@@ -158,7 +158,7 @@ Vous ne serez pas en mesure d\'utiliser l\'application.</string>
     <string name="wallpaper_downloaded">Fond d\'écran téléchargé pour</string>
     <string name="wallpaper_apply_crop">Découper le fond d\'écran sera désactivé si vous appliquez à partir de cette option.</string>
     <string name="wallpaper_settings_crop">Découper le fond d\'écran</string>
-    <string name="wallpaper_settings_crop_desc">Activer la découpe du fond d\'écran. Le fond d\'écran sera découpé d\'après la prévisualisation actuel.
+    <string name="wallpaper_settings_crop_desc">Activer la découpe du fond d\'écran. Le fond d\'écran sera découpé d\'après l\'aperçu actuel.
 Pincer ou appuyer 2 fois pour zoomer sur le fond d\'écran.</string>
     <string name="wallpaper_settings_lockscreen">Arrière-plan de l\'écran de verrouillage</string>
     <string name="wallpaper_settings_lockscreen_desc">Appliquer réglera le fond d\'écran à l\'écran d\'accueil ainsi qu\'à l\'écran de verrouillage.</string>
