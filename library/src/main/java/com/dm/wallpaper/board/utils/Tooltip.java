@@ -90,8 +90,8 @@ public class Tooltip {
         DisplayMetrics metrics = new DisplayMetrics();
         ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
-        int maxWidth = context.getResources().getDimensionPixelSize(R.dimen.popup_max_width);
-        int minWidth = context.getResources().getDimensionPixelSize(R.dimen.popup_min_width);
+        int maxWidth = context.getResources().getDimensionPixelSize(R.dimen.tooltip_max_width);
+        int minWidth = context.getResources().getDimensionPixelSize(R.dimen.tooltip_min_width);
         String longestText = mBuilder.mContent;
         if (mBuilder.mContent.length() < mBuilder.mDesc.length()) {
             longestText = mBuilder.mDesc;

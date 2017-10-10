@@ -34,7 +34,11 @@
 
     <!-- Popup -->
     <dimen name="popup_min_width">70dp</dimen>
-    <dimen name="popup_max_width">280dp</dimen>
+    <dimen name="popup_max_width">190dp</dimen>
+
+    <!-- Tooltip -->
+    <dimen name="tooltip_min_width">70dp</dimen>
+    <dimen name="tooltip_max_width">280dp</dimen>
 
     <!-- Sliding Panel -->
     <dimen name="sliding_panel_height">64dp</dimen>
