@@ -3,11 +3,13 @@ package com.dm.wallpaper.board.helpers;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
+import com.danimahardhika.android.helpers.core.ColorHelper;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.applications.WallpaperBoardApplication;
 
-import static com.danimahardhika.android.helpers.core.DrawableHelper.get;
+import static com.danimahardhika.android.helpers.core.DrawableHelper.getTintedDrawable;
 
 /*
  * Wallpaper Board
@@ -29,21 +31,21 @@ import static com.danimahardhika.android.helpers.core.DrawableHelper.get;
 
 public class ConfigurationHelper {
 
-    @NonNull
+    @Nullable
     public static Drawable getNavigationIcon(@NonNull Context context, @NonNull WallpaperBoardApplication.NavigationIcon navigationIcon) {
+        int color = ColorHelper.getAttributeColor(context, R.attr.toolbar_icon);
         switch (navigationIcon) {
-            case DEFAULT:
-                return get(context, R.drawable.ic_toolbar_navigation);
             case STYLE_1:
-                return get(context, R.drawable.ic_toolbar_navigation_1);
+                return getTintedDrawable(context, R.drawable.ic_toolbar_navigation_1, color);
             case STYLE_2:
-                return get(context, R.drawable.ic_toolbar_navigation_2);
+                return getTintedDrawable(context, R.drawable.ic_toolbar_navigation_2, color);
             case STYLE_3:
-                return get(context, R.drawable.ic_toolbar_navigation_3);
+                return getTintedDrawable(context, R.drawable.ic_toolbar_navigation_3, color);
             case STYLE_4:
-                return get(context, R.drawable.ic_toolbar_navigation_4);
+                return getTintedDrawable(context, R.drawable.ic_toolbar_navigation_4, color);
+            case DEFAULT:
             default:
-                return get(context, R.drawable.ic_toolbar_navigation);
+                return getTintedDrawable(context, R.drawable.ic_toolbar_navigation, color);
         }
     }
 }

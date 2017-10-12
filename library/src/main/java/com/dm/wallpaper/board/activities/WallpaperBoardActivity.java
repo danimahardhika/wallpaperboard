@@ -415,7 +415,9 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
         Drawable drawable = ConfigurationHelper.getNavigationIcon(this,
                 WallpaperBoardApplication.getConfiguration().getNavigationIcon());
         int color = ColorHelper.getAttributeColor(this, R.attr.search_bar_icon);
-        mNavigation.setImageDrawable(DrawableHelper.getTintedDrawable(drawable, color));
+        if (drawable != null) {
+            mNavigation.setImageDrawable(DrawableHelper.getTintedDrawable(drawable, color));
+        }
         mNavigation.setOnClickListener(view -> {
             if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
                 mDrawerLayout.closeDrawers();
