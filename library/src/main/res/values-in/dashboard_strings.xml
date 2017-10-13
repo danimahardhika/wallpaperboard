@@ -18,6 +18,7 @@
     <string name="menu_wallpaper_crop">Potong Wallpaper</string>
     <string name="menu_apply_homescreen">Tampilan depan</string>
     <string name="menu_apply_lockscreen">Layar kunci</string>
+    <string name="menu_apply_homescreen_lockscreen">Tampilan depan &amp; layar kunci</string>
     <string name="menu_sort">Urut berdasarkan</string>
     <string name="menu_sort_latest">Terbaru</string>
     <string name="menu_sort_oldest">Tertua</string>

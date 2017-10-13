@@ -18,6 +18,7 @@
     <string name="menu_wallpaper_crop">Cortar papel de parede</string>
     <string name="menu_apply_homescreen">Tela inicial</string>
     <string name="menu_apply_lockscreen">Tela de bloqueio</string>
+    <string name="menu_apply_homescreen_lockscreen">Tela inicial &amp; Tela de bloqueio</string>
     <string name="menu_sort">Classificar por</string>
     <string name="menu_sort_latest">Mais recente</string>
     <string name="menu_sort_oldest">Mais antigo</string>
@@ -55,10 +56,10 @@ Ative o papel de parede como o fundo de tela de bloqueio no Android Nougat ou pe
     <!-- Wallpapers -->
     <string name="wallpaper_filter">Filtrar por Categoria</string>
     <string name="wallpaper_already_downloaded">Papel de parede baixado</string>
-    <string name="wallpaper_downloading">Baixando papel de parede …</string>
+    <string name="wallpaper_downloading">Baixando papel de parede ...</string>
     <string name="wallpaper_download_failed">Incapaz de baixar o papel de parede</string>
-    <string name="wallpaper_loading">Carregando papel de parede …</string>
-    <string name="wallpaper_applying">Aplicando papel de parede …</string>
+    <string name="wallpaper_loading">Carregando papel de parede...</string>
+    <string name="wallpaper_applying">Aplicando papel de parede...</string>
     <string name="wallpaper_applied">Papel de parede aplicado</string>
     <string name="wallpaper_apply_failed">Incapaz de aplicar o papel de parede</string>
     <string name="wallpaper_apply_cancelled">Aplicação do papel de parede cancelada</string>
@@ -123,7 +124,7 @@ Ative o papel de parede como o fundo de tela de bloqueio no Android Nougat ou pe
     <!-- Support Development -->
     <string name="donation_success">Obrigado por fazer uma doação. Eu a usarei para o bem.</string>
     <!-- License -->
-    <string name="license_checking">Verificando a licença …</string>
+    <string name="license_checking">Verificando a licença ...</string>
     <string name="license_check">Licença verificada</string>
     <string name="license_check_success">Sucesso na verificação da licença. Obrigado por baixar o app da Play Store.</string>
     <string name="license_check_failed">Falha na verificação da licença. Você não baixou este app da Play Store.
@@ -138,7 +139,7 @@ Você não será capaz de usar o app.</string>
     <string name="email_client">Escolha o cliente do Email</string>
     <!-- Please don't modify this -->
     <string name="about_dashboard">Wallpaper Board</string>
-    <string name="about_dashboard_dev">Wallpaper Board é um painel de controle para papel de parede feito com código-fonte aberto licenciado sob Apache License 2.0 para Android disponível no GitHub e livre para uso, desenvolvida por Dani Mahardhika.</string>
+    <string name="about_dashboard_dev">Wallpaper Board é um painel de controle para papel de parede feito com código-fonte aberto licenciado sob Apache License 2.0 para Android disponível no GitHub e livre para uso, desenvolvido por Dani Mahardhika.</string>
     <string name="about_dashboard_contributors">Colaboradores do Wallpaper Board</string>
     <string name="about_dashboard_translator">Tradutor do Wallpaper Board</string>
     <string name="about_dashboard_dev_instagram_url">https://www.instagram.com/_u/danimahardhika112/</string>

@@ -18,6 +18,7 @@
     <string name="menu_wallpaper_crop">壁紙を切り抜く</string>
     <string name="menu_apply_homescreen">ホーム画面</string>
     <string name="menu_apply_lockscreen">ロック画面</string>
+    <string name="menu_apply_homescreen_lockscreen">ホーム画面 &amp; ロック画面</string>
     <string name="menu_sort">ソート:</string>
     <string name="menu_sort_latest">最新</string>
     <string name="menu_sort_oldest">最古</string>
