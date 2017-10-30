@@ -50,7 +50,7 @@ public class WallpaperBoardCrashReport extends AppCompatActivity {
 
             LocaleHelper.setLocale(this);
 
-            final String email = WallpaperBoardApplication.getConfiguration().getCrashReportEmail();
+            final String email = WallpaperBoardApplication.getConfig().getCrashReportEmail();
             if (email == null) {
                 finish();
                 return;
