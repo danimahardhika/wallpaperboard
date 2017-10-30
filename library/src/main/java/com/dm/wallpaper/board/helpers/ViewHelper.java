@@ -12,6 +12,7 @@ import android.view.View;
 import com.danimahardhika.android.helpers.core.ContextHelper;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.applications.WallpaperBoardApplication;
+import com.dm.wallpaper.board.applications.WallpaperBoardConfiguration;
 
 import static com.danimahardhika.android.helpers.core.ViewHelper.getToolbarHeight;
 import static com.danimahardhika.android.helpers.core.WindowHelper.getStatusBarHeight;
@@ -40,8 +41,8 @@ public class ViewHelper {
     public static void setCardViewToFlat(@Nullable CardView cardView) {
         if (cardView == null) return;
 
-        if (WallpaperBoardApplication.getConfiguration().getWallpapersGrid() ==
-                WallpaperBoardApplication.GridStyle.FLAT) {
+        if (WallpaperBoardApplication.getConfig().getWallpapersGrid() ==
+                WallpaperBoardConfiguration.GridStyle.FLAT) {
             cardView.setRadius(0f);
             cardView.setUseCompatPadding(false);
 
