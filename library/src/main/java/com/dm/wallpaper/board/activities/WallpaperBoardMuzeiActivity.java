@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.NestedScrollView;
@@ -23,6 +22,7 @@ import com.danimahardhika.android.helpers.core.TimeHelper;
 import com.danimahardhika.android.helpers.core.WindowHelper;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
+import com.dm.wallpaper.board.activities.callbacks.MuzeiCallback;
 import com.dm.wallpaper.board.fragments.dialogs.FilterFragment;
 import com.dm.wallpaper.board.fragments.dialogs.RefreshDurationFragment;
 import com.dm.wallpaper.board.helpers.LocaleHelper;
@@ -53,8 +53,8 @@ import static com.dm.wallpaper.board.helpers.ViewHelper.resetViewBottomPadding;
  * limitations under the License.
  */
 
-public class WallpaperBoardMuzeiActivity extends AppCompatActivity implements View.OnClickListener,
-        RefreshDurationListener {
+public abstract class WallpaperBoardMuzeiActivity extends AppCompatActivity implements MuzeiCallback,
+        View.OnClickListener, RefreshDurationListener {
 
     @BindView(R2.id.scrollview)
     NestedScrollView mScrollView;
@@ -75,27 +75,31 @@ public class WallpaperBoardMuzeiActivity extends AppCompatActivity implements Vi
     private int mRotateTime;
     private boolean mIsMinute;
 
-    public void initMuzeiActivity(@Nullable Bundle savedInstanceState, @NonNull Class<?> muzeiService) {
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.setTheme(Preferences.get(this).isDarkTheme() ?
                 R.style.MuzeiThemeDark : R.style.MuzeiTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_muzei);
         ButterKnife.bind(this);
+        mMuzeiService = onInit();
 
         ViewCompat.setNestedScrollingEnabled(mScrollView, false);
         WindowHelper.disableTranslucentNavigationBar(this);
 
         ColorHelper.setNavigationBarColor(this, ColorHelper.getDarkerColor(
                 ColorHelper.getAttributeColor(this, R.attr.colorAccent), 0.8f));
-        ColorHelper.setStatusBarColor(this, ColorHelper.getDarkerColor(
-                ColorHelper.getAttributeColor(this, R.attr.colorPrimary), 0.8f));
+        ColorHelper.setStatusBarColor(this, ColorHelper.getAttributeColor(
+                this, R.attr.colorPrimaryDark));
+        ColorHelper.setupStatusBarIconColor(this);
 
-        Toolbar toolbar = ButterKnife.findById(this, R.id.toolbar);
+        int color = ColorHelper.getAttributeColor(this, R.attr.toolbar_icon);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("");
-        toolbar.setNavigationIcon(R.drawable.ic_toolbar_muzei);
+        toolbar.setNavigationIcon(DrawableHelper.getTintedDrawable(
+                this, R.drawable.ic_toolbar_muzei, color));
         setSupportActionBar(toolbar);
 
-        mMuzeiService = muzeiService;
         mIsMinute = Preferences.get(this).isRotateMinute();
         mRotateTime = TimeHelper.milliToMinute(
                 Preferences.get(this).getRotateTime());
@@ -169,9 +173,9 @@ public class WallpaperBoardMuzeiActivity extends AppCompatActivity implements Vi
         int color = ColorHelper.getAttributeColor(this, R.attr.colorAccent);
         int titleColor = ColorHelper.getTitleTextColor(color);
 
-        ImageView icon = ButterKnife.findById(this, R.id.muzei_save_icon);
+        ImageView icon = findViewById(R.id.muzei_save_icon);
         icon.setImageDrawable(DrawableHelper.getTintedDrawable(this, R.drawable.ic_toolbar_save, titleColor));
-        TextView text = ButterKnife.findById(this, R.id.muzei_save_text);
+        TextView text = findViewById(R.id.muzei_save_text);
         text.setTextColor(titleColor);
     }
 }

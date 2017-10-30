@@ -31,6 +31,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 /*
  * Wallpaper Board
@@ -58,10 +59,11 @@ public class FilterFragment extends DialogFragment implements View.OnClickListen
     ImageView mMenuSelect;
     @BindView(R2.id.listview)
     ListView mListView;
+    @BindView(R2.id.progress)
+    MaterialProgressBar mProgress;
 
     private FilterAdapter mAdapter;
-    private AsyncTask<Void, Void, Boolean> mGetCategories;
-    private AsyncTask<Void, Void, Boolean> mSelectAll;
+    private AsyncTask mAsyncTask;
     private boolean mIsMuzei;
 
     private static final String MUZEI = "muzei";
@@ -106,22 +108,31 @@ public class FilterFragment extends DialogFragment implements View.OnClickListen
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mIsMuzei = getArguments().getBoolean(MUZEI);
+        if (getArguments() != null) {
+            mIsMuzei = getArguments().getBoolean(MUZEI);
+        }
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getCategories();
+        if (savedInstanceState != null) {
+            mIsMuzei = savedInstanceState.getBoolean(MUZEI);
+        }
+
+        mAsyncTask = new CategoriesLoader().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean(MUZEI, mIsMuzei);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
     public void onDestroy() {
-        if (mGetCategories != null) {
-            mGetCategories.cancel(true);
-        }
-        if (mSelectAll != null) {
-            mSelectAll.cancel(true);
+        if (mAsyncTask != null) {
+            mAsyncTask.cancel(true);
         }
         super.onDestroy();
     }
@@ -130,41 +141,11 @@ public class FilterFragment extends DialogFragment implements View.OnClickListen
     public void onClick(View view) {
         int id = view.getId();
         if (id == R.id.menu_select) {
-            if (mSelectAll != null) return;
-
-            mSelectAll = new AsyncTask<Void, Void, Boolean>() {
-
-                boolean isAllSelected;
-
-                @Override
-                protected Boolean doInBackground(Void... voids) {
-                    while (!isCancelled()) {
-                        try {
-                            Thread.sleep(1);
-                            isAllSelected = mAdapter.selectAll();
-                            return true;
-                        } catch (Exception e) {
-                            LogUtil.e(Log.getStackTraceString(e));
-                            return false;
-                        }
-                    }
-                    return false;
-                }
-
-                @Override
-                protected void onPostExecute(Boolean aBoolean) {
-                    super.onPostExecute(aBoolean);
-                    mSelectAll = null;
-                    if (aBoolean) {
-                        int color = ColorHelper.getAttributeColor(getActivity(), android.R.attr.textColorPrimary);
-                        mMenuSelect.setImageDrawable(DrawableHelper.getTintedDrawable(
-                                getActivity(),
-                                isAllSelected ? R.drawable.ic_toolbar_select_all_selected : R.drawable.ic_toolbar_select_all,
-                                color));
-                        mAdapter.notifyDataSetChanged();
-                    }
-                }
-            }.execute();
+            if (mAsyncTask != null) return;
+            if (mAdapter != null) {
+                mAdapter.setEnabled(false);
+            }
+            mAsyncTask = new SelectAllLoader().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
     }
 
@@ -172,50 +153,97 @@ public class FilterFragment extends DialogFragment implements View.OnClickListen
         int color = ColorHelper.getAttributeColor(getActivity(), android.R.attr.textColorPrimary);
         boolean isAllSelected = mAdapter.getCount() == mAdapter.getSelectedCount();
 
-        mMenuSelect.setImageDrawable(DrawableHelper.getTintedDrawable(
-                getActivity(),
+        mMenuSelect.setImageDrawable(DrawableHelper.getTintedDrawable(getActivity(),
                 isAllSelected ? R.drawable.ic_toolbar_select_all_selected : R.drawable.ic_toolbar_select_all,
                 color));
         AnimationHelper.show(mMenuSelect).start();
     }
 
-    private void getCategories() {
-        mGetCategories = new AsyncTask<Void, Void, Boolean>() {
+    private class SelectAllLoader extends AsyncTask<Void, Void, Boolean> {
 
-            List<Category> categories;
+        boolean isAllSelected;
 
-            @Override
-            protected Boolean doInBackground(Void... voids) {
-                while (!isCancelled()) {
-                    try {
-                        Thread.sleep(1);
-                        categories = Database.get(getActivity()).getCategories();
-                        for (Category category : categories) {
-                            int count = Database.get(getActivity()).getCategoryCount(category.getName());
-                            category.setCount(count);
-                        }
-                        return true;
-                    } catch (Exception e) {
-                        LogUtil.e(Log.getStackTraceString(e));
-                        return false;
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            while (!isCancelled()) {
+                try {
+                    Thread.sleep(1);
+                    isAllSelected = mAdapter.selectAll();
+                    return true;
+                } catch (Exception e) {
+                    LogUtil.e(Log.getStackTraceString(e));
+                    return false;
+                }
+            }
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            if (getActivity() == null) return;
+            if (getActivity().isFinishing()) return;
+
+            mAsyncTask = null;
+            if (aBoolean) {
+                int color = ColorHelper.getAttributeColor(getActivity(), android.R.attr.textColorPrimary);
+                mMenuSelect.setImageDrawable(DrawableHelper.getTintedDrawable(getActivity(),
+                        isAllSelected ? R.drawable.ic_toolbar_select_all_selected : R.drawable.ic_toolbar_select_all,
+                        color));
+                if (mAdapter != null) {
+                    mAdapter.setEnabled(true);
+                    mAdapter.notifyDataSetChanged();
+                }
+
+            }
+        }
+    }
+
+    private class CategoriesLoader extends AsyncTask<Void, Void, Boolean> {
+
+        List<Category> categories;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mProgress.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            while (!isCancelled()) {
+                try {
+                    Thread.sleep(1);
+                    categories = Database.get(getActivity()).getCategories();
+                    for (Category category : categories) {
+                        int count = Database.get(getActivity()).getCategoryCount(category.getName());
+                        category.setCount(count);
                     }
+                    return true;
+                } catch (Exception e) {
+                    LogUtil.e(Log.getStackTraceString(e));
+                    return false;
                 }
-                return false;
             }
+            return false;
+        }
 
-            @Override
-            protected void onPostExecute(Boolean aBoolean) {
-                super.onPostExecute(aBoolean);
-                if (aBoolean) {
-                    mAdapter = new FilterAdapter(getActivity(), categories, mIsMuzei);
-                    mListView.setAdapter(mAdapter);
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            if (getActivity() == null) return;
+            if (getActivity().isFinishing()) return;
 
-                    initMenuSelect();
-                } else {
-                    dismiss();
-                }
-                mGetCategories = null;
+            mAsyncTask = null;
+            mProgress.setVisibility(View.GONE);
+            if (aBoolean) {
+                mAdapter = new FilterAdapter(getActivity(), categories, mIsMuzei);
+                mListView.setAdapter(mAdapter);
+
+                initMenuSelect();
+            } else {
+                dismiss();
             }
-        }.execute();
+        }
     }
 }

@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- animate the translationZ property of a view when pressed -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:state_enabled="true"
@@ -8,7 +7,7 @@
             <objectAnimator
                 android:duration="@android:integer/config_shortAnimTime"
                 android:propertyName="translationZ"
-                android:valueTo="8dp"
+                android:valueTo="4dp"
                 android:valueType="floatType"/>
         </set>
     </item>

@@ -18,15 +18,13 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="?attr/colorPrimary"
+            android:background="?colorPrimary"
             app:layout_scrollFlags="scroll|enterAlways">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:minHeight="?attr/actionBarSize"
+                android:layout_height="@dimen/default_toolbar_height"
                 android:background="@android:color/transparent"/>
 
             <TextView
@@ -38,7 +36,7 @@
                 android:paddingRight="@dimen/content_margin"
                 android:paddingEnd="@dimen/content_margin"
                 android:layout_below="@+id/toolbar"
-                android:textColor="?attr/toolbar_icon"
+                android:textColor="?toolbar_icon"
                 android:textSize="@dimen/text_toolbar_title"
                 android:maxLines="2"
                 android:ellipsize="end"
@@ -55,7 +53,7 @@
                 android:paddingEnd="@dimen/content_margin"
                 android:paddingBottom="@dimen/content_margin"
                 android:layout_below="@+id/category"
-                android:textColor="?attr/toolbar_icon"
+                android:textColor="?toolbar_icon"
                 android:textSize="@dimen/text_content_subtitle"
                 android:maxLines="1"
                 android:ellipsize="end"

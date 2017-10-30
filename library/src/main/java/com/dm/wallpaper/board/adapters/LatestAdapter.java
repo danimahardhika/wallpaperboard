@@ -33,6 +33,7 @@ import com.danimahardhika.cafebar.CafeBarTheme;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.activities.WallpaperBoardPreviewActivity;
+import com.dm.wallpaper.board.applications.WallpaperBoardApplication;
 import com.dm.wallpaper.board.databases.Database;
 import com.dm.wallpaper.board.helpers.TypefaceHelper;
 import com.dm.wallpaper.board.items.PopupItem;
@@ -85,6 +86,7 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.ViewHolder
     public LatestAdapter(@NonNull Context context, @NonNull List<Wallpaper> wallpapers) {
         mContext = context;
         mWallpapers = wallpapers;
+        WallpaperBoardApplication.sIsClickable = true;
 
         mOptions = ImageConfig.getRawDefaultImageOptions();
         mOptions.resetViewBeforeLoading(true);
@@ -140,17 +142,19 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.ViewHolder
                     public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                         super.onLoadingComplete(imageUri, view, loadedImage);
                         if (loadedImage != null && wallpaper.getColor() == 0) {
-                            Palette.from(loadedImage).generate(palette -> {
-                                int vibrant = ColorHelper.getAttributeColor(
-                                        mContext, R.attr.card_background);
-                                int color = palette.getVibrantColor(vibrant);
-                                if (color == vibrant)
-                                    color = palette.getMutedColor(vibrant);
-                                holder.card.setCardBackgroundColor(color);
+                            try {
+                                Palette.from(loadedImage).generate(palette -> {
+                                    int vibrant = ColorHelper.getAttributeColor(
+                                            mContext, R.attr.card_background);
+                                    int color = palette.getVibrantColor(vibrant);
+                                    if (color == vibrant)
+                                        color = palette.getMutedColor(vibrant);
+                                    holder.card.setCardBackgroundColor(color);
 
-                                wallpaper.setColor(color);
-                                Database.get(mContext).updateWallpaper(wallpaper);
-                            });
+                                    wallpaper.setColor(color);
+                                    Database.get(mContext).updateWallpaper(wallpaper);
+                                });
+                            } catch (Exception ignored) {}
                         }
                     }
                 },
@@ -220,7 +224,7 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.ViewHolder
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 StateListAnimator stateListAnimator = AnimatorInflater
-                        .loadStateListAnimator(mContext, R.animator.card_lift);
+                        .loadStateListAnimator(mContext, R.animator.card_lift_long);
                 card.setStateListAnimator(stateListAnimator);
             }
 
@@ -253,8 +257,7 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.ViewHolder
                 setFavorite(favorite, name.getCurrentTextColor(), position, true);
 
                 CafeBar.builder(mContext)
-                        .theme(CafeBarTheme.Custom(ColorHelper.getAttributeColor(
-                                mContext, R.attr.card_background)))
+                        .theme(Preferences.get(mContext).isDarkTheme() ? CafeBarTheme.LIGHT : CafeBarTheme.DARK)
                         .fitSystemWindow()
                         .floating(true)
                         .typeface(TypefaceHelper.getRegular(mContext), TypefaceHelper.getBold(mContext))
@@ -312,8 +315,8 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.ViewHolder
 
                 popup.show();
             } else if (id == R.id.card) {
-                if (WallpapersAdapter.sIsClickable) {
-                    WallpapersAdapter.sIsClickable = false;
+                if (WallpaperBoardApplication.sIsClickable) {
+                    WallpaperBoardApplication.sIsClickable = false;
                     try {
                         Bitmap bitmap = null;
                         if (image.getDrawable() != null) {
@@ -322,13 +325,15 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.ViewHolder
 
                         final Intent intent = new Intent(mContext, WallpaperBoardPreviewActivity.class);
                         intent.putExtra(Extras.EXTRA_URL, mWallpapers.get(position).getUrl());
+                        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
                         ActivityTransitionLauncher.with((AppCompatActivity) mContext)
                                 .from(image, Extras.EXTRA_IMAGE)
                                 .image(bitmap)
                                 .launch(intent);
                     } catch (Exception e) {
-                        WallpapersAdapter.sIsClickable = true;
+                        WallpaperBoardApplication.sIsClickable = true;
                     }
                 }
             }

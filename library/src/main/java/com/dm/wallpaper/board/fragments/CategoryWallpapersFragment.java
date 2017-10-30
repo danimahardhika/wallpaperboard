@@ -5,10 +5,10 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -28,11 +28,12 @@ import android.widget.TextView;
 import com.danimahardhika.android.helpers.core.ColorHelper;
 import com.danimahardhika.android.helpers.core.DrawableHelper;
 import com.danimahardhika.android.helpers.core.ViewHelper;
+import com.danimahardhika.android.helpers.core.WindowHelper;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
-import com.dm.wallpaper.board.adapters.CategoriesAdapter;
 import com.dm.wallpaper.board.adapters.WallpapersAdapter;
 import com.dm.wallpaper.board.applications.WallpaperBoardApplication;
+import com.dm.wallpaper.board.applications.WallpaperBoardConfiguration;
 import com.dm.wallpaper.board.databases.Database;
 import com.dm.wallpaper.board.items.Filter;
 import com.dm.wallpaper.board.items.PopupItem;
@@ -42,6 +43,7 @@ import com.dm.wallpaper.board.utils.AlphanumComparator;
 import com.dm.wallpaper.board.utils.Extras;
 import com.dm.wallpaper.board.utils.LogUtil;
 import com.dm.wallpaper.board.utils.Popup;
+import com.dm.wallpaper.board.utils.listeners.AppBarListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -92,6 +94,8 @@ public class CategoryWallpapersFragment extends Fragment {
     private WallpapersAdapter mAdapter;
     private AsyncTask<Void, Void, Boolean> mAsyncTask;
 
+    private boolean mIsAppBarExpanded = false;
+
     public static CategoryWallpapersFragment newInstance(String category, int count) {
         CategoryWallpapersFragment fragment = new CategoryWallpapersFragment();
         Bundle bundle = new Bundle();
@@ -103,12 +107,12 @@ public class CategoryWallpapersFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_category_wallpapers, container, false);
         ButterKnife.bind(this, view);
 
         if (!Preferences.get(getActivity()).isShadowEnabled()) {
-            View shadow = ButterKnife.findById(view, R.id.shadow);
+            View shadow = view.findViewById(R.id.shadow);
             if (shadow != null) shadow.setVisibility(View.GONE);
         }
         return view;
@@ -117,8 +121,10 @@ public class CategoryWallpapersFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mCategoryName = getArguments().getString(Extras.EXTRA_CATEGORY);
-        mCategoryCount = getArguments().getInt(Extras.EXTRA_COUNT);
+        if (getArguments() != null) {
+            mCategoryName = getArguments().getString(Extras.EXTRA_CATEGORY);
+            mCategoryCount = getArguments().getInt(Extras.EXTRA_COUNT);
+        }
     }
 
     @Override
@@ -142,8 +148,8 @@ public class CategoryWallpapersFragment extends Fragment {
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setHasFixedSize(true);
 
-        if (WallpaperBoardApplication.getConfiguration().getWallpapersGrid() ==
-                WallpaperBoardApplication.GridStyle.FLAT) {
+        if (WallpaperBoardApplication.getConfig().getWallpapersGrid() ==
+                WallpaperBoardConfiguration.GridStyle.FLAT) {
             int padding = getActivity().getResources().getDimensionPixelSize(R.dimen.card_margin);
             mRecyclerView.setPadding(padding, padding, 0, 0);
         }
@@ -156,7 +162,7 @@ public class CategoryWallpapersFragment extends Fragment {
                 getActivity(), R.drawable.ic_toolbar_search, color);
         mSearchResult.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null);
 
-        getWallpapers();
+        mAsyncTask = new WallpapersLoader().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     @Override
@@ -164,16 +170,23 @@ public class CategoryWallpapersFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_wallpaper_search_sort, menu);
         MenuItem search = menu.findItem(R.id.menu_search);
-        int color = ColorHelper.getAttributeColor(getActivity(), R.attr.toolbar_icon);
+        MenuItem sort = menu.findItem(R.id.menu_sort);
 
-        mSearchView = (SearchView) MenuItemCompat.getActionView(search);
+        int color = ColorHelper.getAttributeColor(getActivity(), R.attr.toolbar_icon);
+        search.setIcon(DrawableHelper.getTintedDrawable(getActivity(),
+                R.drawable.ic_toolbar_search, color));
+        sort.setIcon(DrawableHelper.getTintedDrawable(getActivity(),
+                R.drawable.ic_toolbar_sort, color));
+
+        mSearchView = (SearchView) search.getActionView();
         mSearchView.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI | EditorInfo.IME_ACTION_SEARCH);
         mSearchView.setQueryHint(getActivity().getResources().getString(R.string.menu_search));
         mSearchView.setMaxWidth(Integer.MAX_VALUE);
 
         ViewHelper.setSearchViewTextColor(mSearchView, color);
         ViewHelper.setSearchViewBackgroundColor(mSearchView, Color.TRANSPARENT);
-        ViewHelper.setSearchViewCloseIcon(mSearchView, R.drawable.ic_toolbar_close);
+        ViewHelper.setSearchViewCloseIcon(mSearchView,
+                DrawableHelper.getTintedDrawable(getActivity(), R.drawable.ic_toolbar_close, color));
         ViewHelper.setSearchViewSearchIcon(mSearchView, null);
 
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -211,7 +224,8 @@ public class CategoryWallpapersFragment extends Fragment {
                         mSearchView.clearFocus();
 
                         if (mAsyncTask != null) return;
-                        sort(popup.getItems().get(position).getType());
+                        mAsyncTask = new WallpapersSortLoader(popup.getItems().get(position).getType())
+                                .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                     })
                     .show();
             return true;
@@ -229,7 +243,7 @@ public class CategoryWallpapersFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        CategoriesAdapter.sIsClickable = true;
+        WindowHelper.setTranslucentStatusBar(getActivity(), true);
         if (mAsyncTask != null) {
             mAsyncTask.cancel(true);
         }
@@ -241,10 +255,26 @@ public class CategoryWallpapersFragment extends Fragment {
             int maxScroll = mAppBar.getTotalScrollRange();
             float percentage = (float) Math.abs(verticalOffset) / (float) maxScroll;
 
-            if (percentage == 0f) {
-                ColorHelper.setupStatusBarIconColor(getActivity());
-            } else if (percentage == 1f) {
-                ColorHelper.setupStatusBarIconColor(getActivity(), false);
+            try {
+                AppBarListener listener = (AppBarListener) getActivity();
+                listener.onAppBarScroll(percentage);
+            } catch (Exception e) {
+                LogUtil.e("Activity must implements AppBarListener");
+            }
+
+            if (percentage < 0.2f) {
+                if (!mIsAppBarExpanded) {
+                    mIsAppBarExpanded = true;
+                    WindowHelper.setTranslucentStatusBar(getActivity(), false);
+                    ColorHelper.setupStatusBarIconColor(getActivity());
+                    ColorHelper.setStatusBarColor(getActivity(), Color.TRANSPARENT, true);
+                }
+            } else if (percentage > 0.8f) {
+                if (mIsAppBarExpanded) {
+                    mIsAppBarExpanded = false;
+                    ColorHelper.setupStatusBarIconColor(getActivity(), false);
+                    WindowHelper.setTranslucentStatusBar(getActivity(), true);
+                }
             }
         });
     }
@@ -264,118 +294,131 @@ public class CategoryWallpapersFragment extends Fragment {
         }
     }
 
-    private void getWallpapers() {
-        mAsyncTask = new AsyncTask<Void, Void, Boolean>() {
+    private class WallpapersLoader extends AsyncTask<Void, Void, Boolean> {
 
-            List<Wallpaper> wallpapers;
+        private List<Wallpaper> wallpapers;
 
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                wallpapers = new ArrayList<>();
-            }
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            wallpapers = new ArrayList<>();
+        }
 
-            @Override
-            protected Boolean doInBackground(Void... voids) {
-                while (!isCancelled()) {
-                    try {
-                        Thread.sleep(1);
-                        Filter filter = new Filter();
-                        filter.add(Filter.Create(Filter.Column.CATEGORY).setQuery(mCategoryName));
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            while (!isCancelled()) {
+                try {
+                    Thread.sleep(1);
+                    Filter filter = new Filter();
+                    filter.add(Filter.Create(Filter.Column.CATEGORY).setQuery(mCategoryName));
 
-                        wallpapers = Database.get(getActivity()).getFilteredWallpapers(filter);
-                        return true;
-                    } catch (Exception e) {
-                        LogUtil.e(Log.getStackTraceString(e));
-                        return false;
-                    }
-                }
-                return false;
-            }
-
-            @Override
-            protected void onPostExecute(Boolean aBoolean) {
-                super.onPostExecute(aBoolean);
-                mAsyncTask = null;
-
-                if (aBoolean) {
-                    setHasOptionsMenu(true);
-                    mAdapter = new WallpapersAdapter(getActivity(), wallpapers, false, true);
-                    mRecyclerView.setAdapter(mAdapter);
+                    wallpapers = Database.get(getActivity()).getFilteredWallpapers(filter);
+                    return true;
+                } catch (Exception e) {
+                    LogUtil.e(Log.getStackTraceString(e));
+                    return false;
                 }
             }
-        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            if (getActivity() == null) return;
+            if (getActivity().isFinishing()) return;
+
+            mAsyncTask = null;
+            if (aBoolean) {
+                setHasOptionsMenu(true);
+                mAdapter = new WallpapersAdapter(getActivity(), wallpapers, false, true);
+                mRecyclerView.setAdapter(mAdapter);
+            }
+        }
     }
 
-    private void sort(PopupItem.Type type) {
-        mAsyncTask = new AsyncTask<Void, Void, Boolean>() {
+    private class WallpapersSortLoader extends AsyncTask<Void, Void, Boolean> {
 
-            List<Wallpaper> wallpapers;
+        private List<Wallpaper> wallpapers;
+        private PopupItem.Type type;
 
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                if (mAdapter != null) wallpapers = mAdapter.getWallpapers();
+        private WallpapersSortLoader(PopupItem.Type type) {
+            this.type = type;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if (mAdapter != null) {
+                wallpapers = mAdapter.getWallpapers();
             }
+        }
 
-            @Override
-            protected Boolean doInBackground(Void... voids) {
-                while (!isCancelled()) {
-                    try {
-                        Thread.sleep(1);
-                        if (type == PopupItem.Type.SORT_LATEST) {
-                            Collections.sort(wallpapers, Collections.reverseOrder(new AlphanumComparator() {
-
-                                @Override
-                                public int compare(Object o1, Object o2) {
-                                    String s1 = ((Wallpaper) o1).getAddedOn();
-                                    String s2 = ((Wallpaper) o2).getAddedOn();
-                                    return super.compare(s1, s2);
-                                }
-                            }));
-                        } else if (type == PopupItem.Type.SORT_OLDEST) {
-                            Collections.sort(wallpapers, new AlphanumComparator() {
-
-                                @Override
-                                public int compare(Object o1, Object o2) {
-                                    String s1 = ((Wallpaper) o1).getAddedOn();
-                                    String s2 = ((Wallpaper) o2).getAddedOn();
-                                    return super.compare(s1, s2);
-                                }
-                            });
-                        } else if (type == PopupItem.Type.SORT_RANDOM) {
-                            Collections.shuffle(wallpapers);
-                        } else {
-                            Collections.sort(wallpapers, new AlphanumComparator() {
-
-                                @Override
-                                public int compare(Object o1, Object o2) {
-                                    String s1 = ((Wallpaper) o1).getName();
-                                    String s2 = ((Wallpaper) o2).getName();
-                                    return super.compare(s1, s2);
-                                }
-                            });
-                        }
-                        return true;
-                    } catch (Exception e) {
-                        LogUtil.e(Log.getStackTraceString(e));
-                        return false;
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            while (!isCancelled()) {
+                try {
+                    Thread.sleep(1);
+                    if (wallpapers == null) {
+                        Filter filter = new Filter();
+                        filter.add(Filter.Create(Filter.Column.CATEGORY).setQuery(mCategoryName));
+                        wallpapers = Database.get(getActivity()).getFilteredWallpapers(filter);
                     }
-                }
-                return false;
-            }
 
-            @Override
-            protected void onPostExecute(Boolean aBoolean) {
-                super.onPostExecute(aBoolean);
-                mAsyncTask = null;
+                    if (type == PopupItem.Type.SORT_LATEST) {
+                        Collections.sort(wallpapers, Collections.reverseOrder(new AlphanumComparator() {
 
-                if (aBoolean) {
-                    if (mAdapter != null) {
-                        mAdapter.setWallpapers(wallpapers);
+                            @Override
+                            public int compare(Object o1, Object o2) {
+                                String s1 = ((Wallpaper) o1).getAddedOn();
+                                String s2 = ((Wallpaper) o2).getAddedOn();
+                                return super.compare(s1, s2);
+                            }
+                        }));
+                    } else if (type == PopupItem.Type.SORT_OLDEST) {
+                        Collections.sort(wallpapers, new AlphanumComparator() {
+
+                            @Override
+                            public int compare(Object o1, Object o2) {
+                                String s1 = ((Wallpaper) o1).getAddedOn();
+                                String s2 = ((Wallpaper) o2).getAddedOn();
+                                return super.compare(s1, s2);
+                            }
+                        });
+                    } else if (type == PopupItem.Type.SORT_RANDOM) {
+                        Collections.shuffle(wallpapers);
+                    } else {
+                        Collections.sort(wallpapers, new AlphanumComparator() {
+
+                            @Override
+                            public int compare(Object o1, Object o2) {
+                                String s1 = ((Wallpaper) o1).getName();
+                                String s2 = ((Wallpaper) o2).getName();
+                                return super.compare(s1, s2);
+                            }
+                        });
                     }
+                    return true;
+                } catch (Exception e) {
+                    LogUtil.e(Log.getStackTraceString(e));
+                    return false;
                 }
             }
-        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            if (getActivity() == null) return;
+            if (getActivity().isFinishing()) return;
+
+            mAsyncTask = null;
+            if (aBoolean) {
+                if (mAdapter != null) {
+                    mAdapter.setWallpapers(wallpapers);
+                }
+            }
+        }
     }
  }

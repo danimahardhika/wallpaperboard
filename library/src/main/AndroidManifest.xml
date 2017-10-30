@@ -34,7 +34,7 @@
 
     <application android:supportsRtl="false"
         tools:replace="android:supportsRtl">
-     
+
         <meta-data android:name="android.max_aspect" android:value="2.1" />
 
         <activity android:name=".activities.WallpaperBoardCrashReport"
@@ -50,6 +50,7 @@
         <activity android:name=".activities.WallpaperBoardPreviewActivity"
             android:launchMode="singleTop"
             android:theme="@style/WallpaperTheme"
+            android:exported="true"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:resizeableActivity="false"/>
     </application>

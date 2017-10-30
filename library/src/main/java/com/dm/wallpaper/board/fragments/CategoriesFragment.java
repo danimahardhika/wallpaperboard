@@ -3,6 +3,7 @@ package com.dm.wallpaper.board.fragments;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -18,10 +19,12 @@ import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.adapters.CategoriesAdapter;
 import com.dm.wallpaper.board.applications.WallpaperBoardApplication;
+import com.dm.wallpaper.board.applications.WallpaperBoardConfiguration;
 import com.dm.wallpaper.board.databases.Database;
 import com.dm.wallpaper.board.items.Category;
 import com.dm.wallpaper.board.utils.LogUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -62,7 +65,7 @@ public class CategoriesFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_categories, container, false);
         ButterKnife.bind(this, view);
         return view;
@@ -80,12 +83,15 @@ public class CategoriesFragment extends Fragment {
         resetRecyclerViewPadding();
         resetViewBottomPadding(mRecyclerView, true);
 
+        mAdapter = new CategoriesAdapter(getActivity(), new ArrayList<>());
+        mRecyclerView.setAdapter(mAdapter);
+
         if (Database.get(getActivity()).getWallpapersCount() > 0) {
-            mAsyncTask = new CategoriesLoaderTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            mAsyncTask = new CategoriesLoader().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             return;
         }
 
-        mAsyncTask = new CategoriesLoaderTask().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+        mAsyncTask = new CategoriesLoader().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
     @Override
@@ -124,8 +130,8 @@ public class CategoriesFragment extends Fragment {
             return;
         }
 
-        if (WallpaperBoardApplication.getConfiguration().getWallpapersGrid() ==
-                WallpaperBoardApplication.GridStyle.FLAT) {
+        if (WallpaperBoardApplication.getConfig().getWallpapersGrid() ==
+                WallpaperBoardConfiguration.GridStyle.FLAT) {
             int padding = getActivity().getResources().getDimensionPixelSize(R.dimen.card_margin);
             mRecyclerView.setPadding(padding, padding, 0, 0);
             return;
@@ -136,12 +142,16 @@ public class CategoriesFragment extends Fragment {
         mRecyclerView.setPadding(paddingLeft, paddingTop, 0, 0);
     }
 
-    private class CategoriesLoaderTask extends AsyncTask<Void, Void, Boolean> {
+    private class CategoriesLoader extends AsyncTask<Void, Category, Boolean> {
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             mProgress.setVisibility(View.VISIBLE);
+
+            if (mAdapter != null) {
+                mAdapter.clear();
+            }
         }
 
         @Override
@@ -150,6 +160,10 @@ public class CategoriesFragment extends Fragment {
                 try {
                     Thread.sleep(1);
                     mCategories = Database.get(getActivity()).getCategories();
+                    for (Category category : mCategories) {
+                        category = Database.get(getActivity()).getCategoryPreview(category);
+                        publishProgress(category);
+                    }
                     return true;
                 } catch (Exception e) {
                     LogUtil.e(Log.getStackTraceString(e));
@@ -160,14 +174,29 @@ public class CategoriesFragment extends Fragment {
         }
 
         @Override
+        protected void onProgressUpdate(Category... values) {
+            super.onProgressUpdate(values);
+            if (getActivity() == null) return;
+            if (getActivity().isFinishing()) return;
+
+            if (mAdapter != null && values.length > 0) {
+                mAdapter.add(values[0]);
+            }
+        }
+
+        @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-            mAsyncTask = null;
+            if (getActivity() == null) return;
+            if (getActivity().isFinishing()) return;
 
+            mAsyncTask = null;
             mProgress.setVisibility(View.GONE);
             if (aBoolean) {
-                mAdapter = new CategoriesAdapter(getActivity(), mCategories);
-                mRecyclerView.setAdapter(mAdapter);
+                if (mAdapter == null) {
+                    mAdapter = new CategoriesAdapter(getActivity(), mCategories);
+                    mRecyclerView.setAdapter(mAdapter);
+                }
             }
         }
     }

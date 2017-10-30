@@ -1,7 +1,5 @@
 package com.dm.wallpaper.board.activities;
 
-import android.animation.AnimatorInflater;
-import android.animation.StateListAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,12 +8,10 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -23,22 +19,18 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.URLUtil;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.anjlab.android.iab.v3.BillingProcessor;
-import com.danimahardhika.android.helpers.animation.AnimationHelper;
 import com.danimahardhika.android.helpers.core.ColorHelper;
 import com.danimahardhika.android.helpers.core.DrawableHelper;
 import com.danimahardhika.android.helpers.core.SoftKeyboardHelper;
@@ -48,29 +40,27 @@ import com.danimahardhika.android.helpers.license.LicenseHelper;
 import com.danimahardhika.android.helpers.permission.PermissionCode;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
+import com.dm.wallpaper.board.activities.callbacks.ActivityCallback;
+import com.dm.wallpaper.board.activities.configurations.ActivityConfiguration;
 import com.dm.wallpaper.board.applications.WallpaperBoardApplication;
+import com.dm.wallpaper.board.applications.WallpaperBoardConfiguration;
 import com.dm.wallpaper.board.databases.Database;
 import com.dm.wallpaper.board.fragments.AboutFragment;
 import com.dm.wallpaper.board.fragments.CollectionFragment;
 import com.dm.wallpaper.board.fragments.FavoritesFragment;
 import com.dm.wallpaper.board.fragments.SettingsFragment;
 import com.dm.wallpaper.board.fragments.dialogs.InAppBillingFragment;
-import com.dm.wallpaper.board.helpers.ConfigurationHelper;
 import com.dm.wallpaper.board.helpers.InAppBillingHelper;
 
 import com.dm.wallpaper.board.helpers.LicenseCallbackHelper;
 import com.dm.wallpaper.board.helpers.LocaleHelper;
 import com.dm.wallpaper.board.items.InAppBilling;
-import com.dm.wallpaper.board.items.PopupItem;
 import com.dm.wallpaper.board.preferences.Preferences;
 import com.dm.wallpaper.board.tasks.WallpapersLoaderTask;
 import com.dm.wallpaper.board.utils.Extras;
 import com.dm.wallpaper.board.utils.ImageConfig;
-import com.dm.wallpaper.board.utils.Popup;
-import com.dm.wallpaper.board.utils.listeners.AppBarListener;
 import com.dm.wallpaper.board.utils.listeners.InAppBillingListener;
 import com.dm.wallpaper.board.utils.listeners.NavigationListener;
-import com.dm.wallpaper.board.utils.listeners.TabListener;
 import com.dm.wallpaper.board.utils.views.HeaderView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
@@ -98,41 +88,36 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  * limitations under the License.
  */
 
-public class WallpaperBoardActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback,
-        InAppBillingListener, AppBarListener, NavigationListener, TabListener {
+public abstract class WallpaperBoardActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback,
+        InAppBillingListener, NavigationListener, ActivityCallback {
 
-    @BindView(R2.id.search_bar)
-    CardView mSearchBar;
-    @BindView(R2.id.navigation)
-    ImageView mNavigation;
-    @BindView(R2.id.sort)
-    ImageView mMenuSort;
     @BindView(R2.id.navigation_view)
     NavigationView mNavigationView;
     @BindView(R2.id.drawer_layout)
     DrawerLayout mDrawerLayout;
+    @BindView(R2.id.status_bar_view)
+    View mStatusBar;
 
     private BillingProcessor mBillingProcessor;
     private ActionBarDrawerToggle mDrawerToggle;
     private FragmentManager mFragManager;
     private LicenseHelper mLicenseHelper;
-    private AsyncTask mAsyncTask;
 
     private String mFragmentTag;
     private int mPosition, mLastPosition;
 
-    private String mLicenseKey;
-    private String[] mDonationProductsId;
+    private ActivityConfiguration mConfig;
 
-    public void initMainActivity(@Nullable Bundle savedInstanceState, boolean isLicenseCheckerEnabled,
-                                 @NonNull byte[] salt, @NonNull String licenseKey,
-                                 @NonNull String[] donationProductsId) {
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.setTheme(Preferences.get(this).isDarkTheme() ?
                 R.style.AppThemeDark : R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wallpaper_board);
         ButterKnife.bind(this);
-        Database.get(this.getApplicationContext());
+        mStatusBar.getLayoutParams().height = WindowHelper.getStatusBarHeight(this);
+
+        mConfig = onInit();
 
         WindowHelper.resetNavigationBarTranslucent(this,
                 WindowHelper.NavigationBarTranslucent.PORTRAIT_ONLY);
@@ -142,10 +127,7 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
         softKeyboardHelper.enable();
 
         mFragManager = getSupportFragmentManager();
-        mLicenseKey = licenseKey;
-        mDonationProductsId = donationProductsId;
 
-        initSearchBar();
         initNavigationView();
         initNavigationViewHeader();
         initInAppBilling();
@@ -164,15 +146,18 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
         }
 
         setFragment(getFragment(mPosition));
-        mAsyncTask = WallpapersLoaderTask.start(this);
+        if (!WallpaperBoardApplication.isLatestWallpapersLoaded()) {
+            WallpapersLoaderTask.start(this);
+        }
 
-        if (Preferences.get(this).isFirstRun() && isLicenseCheckerEnabled) {
+
+        if (Preferences.get(this).isFirstRun() && mConfig.isLicenseCheckerEnabled()) {
             mLicenseHelper = new LicenseHelper(this);
-            mLicenseHelper.run(mLicenseKey, salt, new LicenseCallbackHelper(this));
+            mLicenseHelper.run(mConfig.getLicenseKey(), mConfig.getRandomString(), new LicenseCallbackHelper(this));
             return;
         }
 
-        if (isLicenseCheckerEnabled && !Preferences.get(this).isLicensed()) {
+        if (mConfig.isLicenseCheckerEnabled() && !Preferences.get(this).isLicensed()) {
             finish();
         }
     }
@@ -206,16 +191,12 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
     protected void onDestroy() {
         if (mBillingProcessor != null) {
             mBillingProcessor.release();
-            mBillingProcessor = null;
         }
 
         if (mLicenseHelper != null) {
             mLicenseHelper.destroy();
         }
 
-        if (mAsyncTask != null) {
-            mAsyncTask.cancel(true);
-        }
         Database.get(this.getApplicationContext()).closeDatabase();
         super.onDestroy();
     }
@@ -276,59 +257,6 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
     }
 
     @Override
-    public void onAppBarScroll(float percentage) {
-        if (percentage == 1f) {
-            if (mSearchBar.getVisibility() == View.VISIBLE) {
-                AnimationHelper.slideUpOut(mSearchBar)
-                        .duration(400)
-                        .callback(new AnimationHelper.Callback() {
-                            @Override
-                            public void onAnimationStart() {
-                                mSearchBar.setVisibility(View.GONE);
-                            }
-
-                            @Override
-                            public void onAnimationEnd() {
-
-                            }
-                        })
-                        .start();
-            }
-        } else if (percentage < 0.5f) {
-            if (mSearchBar.getVisibility() == View.GONE) {
-                AnimationHelper.slideDownIn(mSearchBar)
-                        .interpolator(new LinearOutSlowInInterpolator())
-                        .duration(400)
-                        .callback(new AnimationHelper.Callback() {
-                            @Override
-                            public void onAnimationStart() {
-                                mSearchBar.setVisibility(View.VISIBLE);
-                            }
-
-                            @Override
-                            public void onAnimationEnd() {
-
-                            }
-                        })
-                        .start();
-            }
-        }
-    }
-
-    @Override
-    public void onTabScroll(String tag) {
-        if (tag.equals(Extras.TAG_LATEST) || tag.equals(Extras.TAG_CATEGORIES)) {
-            if (mMenuSort.getVisibility() == View.VISIBLE) {
-                AnimationHelper.hide(mMenuSort).start();
-            }
-        } else if (tag.equals(Extras.TAG_WALLPAPERS)) {
-            if (mMenuSort.getVisibility() == View.GONE) {
-                AnimationHelper.show(mMenuSort).start();
-            }
-        }
-    }
-
-    @Override
     public void onInAppBillingInitialized(boolean success) {
         if (!success) mBillingProcessor = null;
     }
@@ -351,82 +279,7 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
         }
     }
 
-    private void initSearchBar() {
-        int color = ColorHelper.getAttributeColor(this, R.attr.search_bar_icon);
-
-        ImageView searchIcon = ButterKnife.findById(this, R.id.search);
-        if (searchIcon != null) {
-            searchIcon.setImageDrawable(DrawableHelper.getTintedDrawable(
-                    this, R.drawable.ic_toolbar_search, color));
-        }
-
-        TextView searchBarTitle = ButterKnife.findById(this, R.id.search_bar_title);
-        if (searchBarTitle != null) {
-            searchBarTitle.setTextColor(ColorHelper.setColorAlpha(color, 0.7f));
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (mSearchBar.getLayoutParams() instanceof CoordinatorLayout.LayoutParams) {
-                CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) mSearchBar.getLayoutParams();
-                params.setMargins(params.leftMargin,
-                        params.topMargin + WindowHelper.getStatusBarHeight(this),
-                        params.leftMargin,
-                        params.bottomMargin);
-            }
-
-            StateListAnimator stateListAnimator = AnimatorInflater
-                    .loadStateListAnimator(this, R.animator.card_lift);
-            mSearchBar.setStateListAnimator(stateListAnimator);
-        }
-
-        mSearchBar.setOnClickListener(view -> {
-            Intent intent = new Intent(this, WallpaperBoardBrowserActivity.class);
-            intent.putExtra(Extras.EXTRA_FRAGMENT_ID, Extras.ID_WALLPAPER_SEARCH);
-
-            startActivity(intent);
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        });
-
-        mMenuSort.setImageDrawable(DrawableHelper.getTintedDrawable(
-                this, R.drawable.ic_toolbar_sort, color));
-        mMenuSort.setOnClickListener(view -> {
-            Popup.Builder(this)
-                    .to(mMenuSort)
-                    .list(PopupItem.getSortItems(this, true))
-                    .callback((popup, position) -> {
-                        Preferences.get(WallpaperBoardActivity.this)
-                                .setSortBy(popup.getItems().get(position).getType());
-
-                        if (mFragmentTag.equals(Extras.TAG_COLLECTION)) {
-                            Fragment fragment = mFragManager.findFragmentByTag(Extras.TAG_COLLECTION);
-                            if (fragment != null && fragment instanceof CollectionFragment) {
-                                CollectionFragment f = (CollectionFragment) fragment;
-                                f.refreshWallpapers();
-                            }
-                        }
-
-                        popup.dismiss();
-                    })
-                    .show();
-        });
-    }
-
     private void initNavigationView() {
-        Drawable drawable = ConfigurationHelper.getNavigationIcon(this,
-                WallpaperBoardApplication.getConfiguration().getNavigationIcon());
-        int color = ColorHelper.getAttributeColor(this, R.attr.search_bar_icon);
-        if (drawable != null) {
-            mNavigation.setImageDrawable(DrawableHelper.getTintedDrawable(drawable, color));
-        }
-        mNavigation.setOnClickListener(view -> {
-            if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-                mDrawerLayout.closeDrawers();
-                return;
-            }
-
-            mDrawerLayout.openDrawer(GravityCompat.START);
-        });
-
         resetNavigationView(getResources().getConfiguration().orientation);
         mDrawerToggle = new ActionBarDrawerToggle(
                 this, mDrawerLayout, null, R.string.txt_open, R.string.txt_close) {
@@ -447,8 +300,8 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
                     mNavigationView.getMenu().getItem(mPosition).setChecked(true);
                     InAppBillingFragment.showInAppBillingDialog(mFragManager,
                             mBillingProcessor,
-                            mLicenseKey,
-                            mDonationProductsId);
+                            mConfig.getLicenseKey(),
+                            mConfig.getDonationProductsId());
                     return;
                 }
 
@@ -514,7 +367,8 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
     }
 
     private void initNavigationViewHeader() {
-        if (WallpaperBoardApplication.getConfiguration().getNavigationViewHeader() == WallpaperBoardApplication.NavigationViewHeader.NONE) {
+        if (WallpaperBoardApplication.getConfig().getNavigationViewHeader() ==
+                WallpaperBoardConfiguration.NavigationViewHeader.NONE) {
             mNavigationView.removeHeaderView(mNavigationView.getHeaderView(0));
             return;
         }
@@ -523,12 +377,13 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
         String titleText = getResources().getString(R.string.navigation_view_header_title);
         View header = mNavigationView.getHeaderView(0);
 
-        HeaderView image = ButterKnife.findById(header, R.id.header_image);
-        LinearLayout container = ButterKnife.findById(header, R.id.header_title_container);
-        TextView title = ButterKnife.findById(header, R.id.header_title);
-        TextView version = ButterKnife.findById(header, R.id.header_version);
+        HeaderView image = header.findViewById(R.id.header_image);
+        LinearLayout container = header.findViewById(R.id.header_title_container);
+        TextView title = header.findViewById(R.id.header_title);
+        TextView version = header.findViewById(R.id.header_version);
 
-        if (WallpaperBoardApplication.getConfiguration().getNavigationViewHeader() == WallpaperBoardApplication.NavigationViewHeader.MINI) {
+        if (WallpaperBoardApplication.getConfig().getNavigationViewHeader() ==
+                WallpaperBoardConfiguration.NavigationViewHeader.MINI) {
             image.setRatio(16, 9);
         }
 
@@ -558,11 +413,12 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
 
     private void initInAppBilling() {
         if (!getResources().getBoolean(R.bool.enable_donation)) return;
+
         if (mBillingProcessor != null) return;
 
         if (BillingProcessor.isIabServiceAvailable(this)) {
             mBillingProcessor = new BillingProcessor(this,
-                    mLicenseKey, new InAppBillingHelper(this));
+                    mConfig.getLicenseKey(), new InAppBillingHelper(this));
         }
     }
 
@@ -578,6 +434,15 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
         mNavigationView.getMenu().getItem(index).setVisible(false);
     }
 
+    public void openDrawer() {
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.closeDrawers();
+            return;
+        }
+
+        mDrawerLayout.openDrawer(GravityCompat.START);
+    }
+
     private void setFragment(Fragment fragment) {
         if (fragment == null) return;
         clearBackStack();
@@ -591,10 +456,7 @@ public class WallpaperBoardActivity extends AppCompatActivity implements Activit
         }
 
         mNavigationView.getMenu().getItem(mPosition).setChecked(true);
-
-        float percentage = 1.0f;
-        if (mPosition == 0) percentage = 0f;
-        onAppBarScroll(percentage);
+        mStatusBar.setVisibility(mPosition == 0 ? View.GONE : View.VISIBLE);
     }
 
     @Nullable

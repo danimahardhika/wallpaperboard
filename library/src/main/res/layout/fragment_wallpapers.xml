@@ -20,9 +20,8 @@
             android:paddingLeft="@dimen/card_margin_left"
             android:clipToPadding="false"
             android:scrollbars="vertical"
-            android:scrollbarThumbVertical="?attr/colorAccent"
+            android:scrollbarThumbVertical="?colorAccent"
             android:scrollbarSize="4dp"/>
-
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <me.zhanghai.android.materialprogressbar.MaterialProgressBar
@@ -30,7 +29,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="?attr/actionBarSize"
+        android:layout_marginBottom="?actionBarSize"
+        android:indeterminate="true"
         android:visibility="gone"
         style="@style/Widget.MaterialProgressBar.ProgressBar"/>
 
@@ -38,11 +38,12 @@
         android:id="@+id/search_result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="?actionBarSize"
         android:layout_gravity="center"
         android:gravity="center"
         android:layout_margin="@dimen/content_margin"
         android:textSize="@dimen/text_content_subtitle"
         android:visibility="gone"
-        android:textColor="?android:attr/textColorPrimary"
+        android:textColor="?android:textColorPrimary"
         fontPath="fonts/Font-Medium.ttf" />
 </FrameLayout>

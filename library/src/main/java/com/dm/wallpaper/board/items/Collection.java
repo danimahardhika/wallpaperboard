@@ -2,7 +2,6 @@ package com.dm.wallpaper.board.items;
 
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
 /*
@@ -29,7 +28,7 @@ public class Collection {
     private final Fragment mFragment;
     private final String mTag;
 
-    public Collection(@DrawableRes int icon, @NonNull Fragment fragment, @Nullable String tag) {
+    public Collection(@DrawableRes int icon, @NonNull Fragment fragment, @NonNull String tag) {
         mIcon = icon;
         mFragment = fragment;
         mTag = tag;
@@ -45,7 +44,6 @@ public class Collection {
         return mFragment;
     }
 
-    @Nullable
     public String getTag() {
         return mTag;
     }

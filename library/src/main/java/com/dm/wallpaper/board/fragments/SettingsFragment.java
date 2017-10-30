@@ -1,7 +1,9 @@
 package com.dm.wallpaper.board.fragments;
 
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -13,8 +15,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.danimahardhika.android.helpers.core.ColorHelper;
 import com.danimahardhika.android.helpers.core.FileHelper;
 import com.danimahardhika.android.helpers.core.ViewHelper;
+import com.danimahardhika.android.helpers.core.WindowHelper;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.adapters.SettingsAdapter;
@@ -65,12 +69,12 @@ public class SettingsFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
         ButterKnife.bind(this, view);
 
         if (!Preferences.get(getActivity()).isShadowEnabled()) {
-            View shadow = ButterKnife.findById(view, R.id.shadow);
+            View shadow = view.findViewById( R.id.shadow);
             if (shadow != null) shadow.setVisibility(View.GONE);
         }
         return view;
@@ -82,13 +86,16 @@ public class SettingsFragment extends Fragment {
         resetViewBottomPadding(mRecyclerView, true);
         ViewHelper.setupToolbar(mToolbar);
 
-        TextView textView = ButterKnife.findById(getActivity(), R.id.title);
+        WindowHelper.setTranslucentStatusBar(getActivity(), false);
+        ColorHelper.setStatusBarColor(getActivity(), Color.TRANSPARENT, true);
+
+        TextView textView = getActivity().findViewById(R.id.title);
         textView.setText(getActivity().getResources().getString(
                 R.string.navigation_view_settings));
 
         mToolbar.setTitle("");
         mToolbar.setNavigationIcon(ConfigurationHelper.getNavigationIcon(getActivity(),
-                WallpaperBoardApplication.getConfiguration().getNavigationIcon()));
+                WallpaperBoardApplication.getConfig().getNavigationIcon()));
         mToolbar.setNavigationOnClickListener(view -> {
             try {
                 NavigationListener listener = (NavigationListener) getActivity();
@@ -108,6 +115,12 @@ public class SettingsFragment extends Fragment {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         resetViewBottomPadding(mRecyclerView, true);
+    }
+
+    @Override
+    public void onDestroy() {
+        WindowHelper.setTranslucentStatusBar(getActivity(), true);
+        super.onDestroy();
     }
 
     private void initSettings() {

@@ -46,27 +46,30 @@ public class WallpaperPaletteLoaderTask {
             return null;
         }
 
-        return Palette.from(mBitmap).generate(palette -> {
-            int dominant = palette.getDominantColor(0);
-            int vibrant = palette.getVibrantColor(0);
-            int vibrantLight = palette.getLightVibrantColor(0);
-            int vibrantDark = palette.getDarkVibrantColor(0);
-            int muted = palette.getMutedColor(0);
-            int mutedLight = palette.getLightMutedColor(0);
-            int mutedDark = palette.getDarkMutedColor(0);
+        try {
+            return Palette.from(mBitmap).generate(palette -> {
+                int dominant = palette.getDominantColor(0);
+                int vibrant = palette.getVibrantColor(0);
+                int vibrantLight = palette.getLightVibrantColor(0);
+                int vibrantDark = palette.getDarkVibrantColor(0);
+                int muted = palette.getMutedColor(0);
+                int mutedLight = palette.getLightMutedColor(0);
+                int mutedDark = palette.getDarkMutedColor(0);
 
-            ColorPalette colorPalette = new ColorPalette();
-            colorPalette.add(dominant);
-            colorPalette.add(vibrant);
-            colorPalette.add(vibrantLight);
-            colorPalette.add(vibrantDark);
-            colorPalette.add(muted);
-            colorPalette.add(mutedLight);
-            colorPalette.add(mutedDark);
-            if (mCallback != null) {
-                mCallback.onPaletteGenerated(colorPalette);
-            }
-        });
+                ColorPalette colorPalette = new ColorPalette();
+                colorPalette.add(dominant);
+                colorPalette.add(vibrant);
+                colorPalette.add(vibrantLight);
+                colorPalette.add(vibrantDark);
+                colorPalette.add(muted);
+                colorPalette.add(mutedLight);
+                colorPalette.add(mutedDark);
+                if (mCallback != null) {
+                    mCallback.onPaletteGenerated(colorPalette);
+                }
+            });
+        } catch (Exception ignored) {}
+        return null;
     }
 
     public static WallpaperPaletteLoaderTask with(Bitmap bitmap) {

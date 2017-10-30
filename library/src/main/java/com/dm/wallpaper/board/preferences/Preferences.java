@@ -12,6 +12,7 @@ import com.dm.wallpaper.board.helpers.LocaleHelper;
 import com.dm.wallpaper.board.items.Language;
 import com.dm.wallpaper.board.items.PopupItem;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Locale;
 
@@ -35,8 +36,6 @@ import java.util.Locale;
 
 public class Preferences {
 
-    private final Context mContext;
-
     private static final String PREFERENCES_NAME = "wallpaper_board_preferences";
 
     private static final String KEY_LICENSED = "licensed";
@@ -54,17 +53,23 @@ public class Preferences {
     private static final String KEY_SORT_BY = "sort_by";
     private static final String KEY_HIGH_QUALITY_PREVIEW = "high_quality_preview";
 
+    private static WeakReference<Preferences> mPreferences;
+    private final Context mContext;
+
     private Preferences(@NonNull Context context) {
         mContext = context;
     }
 
     @NonNull
     public static Preferences get(@NonNull Context context) {
-        return new Preferences(context);
+        if (mPreferences == null || mPreferences.get() == null) {
+            mPreferences = new WeakReference<>(new Preferences(context));
+        }
+        return mPreferences.get();
     }
 
     private SharedPreferences getSharedPreferences() {
-        return mContext.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+        return mPreferences.get().mContext.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
     }
 
     public void clearPreferences() {
@@ -95,7 +100,7 @@ public class Preferences {
 
     public boolean isDarkTheme() {
         boolean useDarkTheme = mContext.getResources().getBoolean(R.bool.use_dark_theme);
-        boolean isThemingEnabled = WallpaperBoardApplication.getConfiguration().isDashboardThemingEnabled();
+        boolean isThemingEnabled = WallpaperBoardApplication.getConfig().isDashboardThemingEnabled();
         if (!isThemingEnabled) return useDarkTheme;
         return getSharedPreferences().getBoolean(KEY_DARK_THEME, useDarkTheme);
     }
@@ -105,7 +110,7 @@ public class Preferences {
     }
 
     public boolean isShadowEnabled() {
-        return WallpaperBoardApplication.getConfiguration().isShadowEnabled();
+        return WallpaperBoardApplication.getConfig().isShadowEnabled();
     }
 
     public boolean isTimeToShowWallpaperPreviewIntro() {
@@ -166,7 +171,7 @@ public class Preferences {
 
     public boolean isHighQualityPreviewEnabled() {
         return getSharedPreferences().getBoolean(KEY_HIGH_QUALITY_PREVIEW,
-                WallpaperBoardApplication.getConfiguration().isHighQualityPreviewEnabled());
+                WallpaperBoardApplication.getConfig().isHighQualityPreviewEnabled());
     }
 
     public void setHighQualityPreviewEnabled(boolean bool) {
@@ -192,7 +197,7 @@ public class Preferences {
 
     public void setLanguagePreference() {
         Locale locale = Locale.getDefault();
-        List<Language> languages = LocaleHelper.getAvailableLanguages(mContext);
+        List<Language> languages = LocaleHelper.getAvailableLanguages(mPreferences.get().mContext);
 
         Locale currentLocale = null;
         for (Language language : languages) {
@@ -215,7 +220,7 @@ public class Preferences {
 
         if (currentLocale != null) {
             setCurrentLocale(currentLocale.toString());
-            LocaleHelper.setLocale(mContext);
+            LocaleHelper.setLocale(mPreferences.get().mContext);
             setTimeToSetLanguagePreference(false);
         }
     }
@@ -256,7 +261,7 @@ public class Preferences {
     public boolean isConnectedToNetwork() {
         try {
             ConnectivityManager connectivityManager = (ConnectivityManager)
-                    mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+                    mPreferences.get().mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
             return activeNetworkInfo != null && activeNetworkInfo.isConnected();
         } catch (Exception e) {
@@ -268,7 +273,7 @@ public class Preferences {
         try {
             if (isWifiOnly()) {
                 ConnectivityManager connectivityManager = (ConnectivityManager)
-                        mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+                        mPreferences.get().mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
                 NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
                 return activeNetworkInfo.getType() == ConnectivityManager.TYPE_WIFI &&
                         activeNetworkInfo.isConnected();

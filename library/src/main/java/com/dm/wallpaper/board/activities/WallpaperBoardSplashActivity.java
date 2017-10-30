@@ -1,5 +1,6 @@
 package com.dm.wallpaper.board.activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -9,14 +10,17 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.util.TypedValue;
 import android.widget.TextView;
 
 import com.danimahardhika.android.helpers.core.ColorHelper;
 import com.dm.wallpaper.board.R;
-import com.dm.wallpaper.board.helpers.LocaleHelper;
+import com.dm.wallpaper.board.activities.callbacks.SplashScreenCallback;
+import com.dm.wallpaper.board.activities.configurations.SplashScreenConfiguration;
 import com.dm.wallpaper.board.utils.LogUtil;
 
-import butterknife.ButterKnife;
+import java.lang.ref.WeakReference;
+
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /*
@@ -37,66 +41,92 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  * limitations under the License.
  */
 
-public class WallpaperBoardSplashActivity extends AppCompatActivity {
+public abstract class WallpaperBoardSplashActivity extends AppCompatActivity implements SplashScreenCallback {
 
-    private Class<?> mMainActivity;
-    private AsyncTask<Void, Void, Boolean> mPrepareApp;
+    private AsyncTask mAsyncTask;
 
-    @Deprecated
-    public void initSplashActivity(@Nullable Bundle savedInstanceState, @NonNull Class<?> mainActivity, int duration) {
-        initSplashActivity(savedInstanceState, mainActivity);
-    }
+    private SplashScreenConfiguration mConfig;
 
-    public void initSplashActivity(@Nullable Bundle savedInstanceState, @NonNull Class<?> mainActivity) {
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        mMainActivity = mainActivity;
+        mConfig = onInit();
+        initBottomText();
 
-        int color = ContextCompat.getColor(this, R.color.splashColor);
-        TextView splashTitle = ButterKnife.findById(this, R.id.splash_title);
-        splashTitle.setTextColor(ColorHelper.getBodyTextColor(color));
-
-        prepareApp();
+        mAsyncTask = new SplashScreenLoader(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        LocaleHelper.setLocale(newBase);
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     @Override
     protected void onDestroy() {
-        if (mPrepareApp != null) mPrepareApp.cancel(true);
+        if (mAsyncTask != null) {
+            mAsyncTask.cancel(true);
+        }
         super.onDestroy();
     }
 
-    private void prepareApp() {
-        mPrepareApp = new AsyncTask<Void, Void, Boolean>() {
-            @Override
-            protected Boolean doInBackground(Void... voids) {
-                while (!isCancelled()) {
-                    try {
-                        Thread.sleep(500);
-                        return true;
-                    } catch (Exception e) {
-                        LogUtil.e(Log.getStackTraceString(e));
-                        return false;
-                    }
-                }
-                return null;
+    private void initBottomText() {
+        TextView splashTitle = findViewById(R.id.splash_title);
+        if (splashTitle != null) {
+            splashTitle.setText(mConfig.getBottomText());
+
+            if (mConfig.getBottomTextColor() != -1) {
+                splashTitle.setTextColor(mConfig.getBottomTextColor());
+            } else {
+                int color = ContextCompat.getColor(this, R.color.splashColor);
+                splashTitle.setTextColor(ColorHelper.getBodyTextColor(color));
             }
 
-            @Override
-            protected void onPostExecute(Boolean aBoolean) {
-                super.onPostExecute(aBoolean);
-                mPrepareApp = null;
-                if (aBoolean) {
-                    startActivity(new Intent(WallpaperBoardSplashActivity.this, mMainActivity));
-                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                    finish();
+            splashTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, mConfig.getBottomTextSize());
+            splashTitle.setTypeface(mConfig.getBottomTextFont(this));
+        }
+    }
+
+    private class SplashScreenLoader extends AsyncTask<Void, Void, Boolean> {
+
+        private WeakReference<Context> context;
+
+        private SplashScreenLoader(@NonNull Context context) {
+            this.context = new WeakReference<>(context);
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            while (!isCancelled()) {
+                try {
+                    Thread.sleep(500);
+                    return true;
+                } catch (Exception e) {
+                    LogUtil.e(Log.getStackTraceString(e));
+                    return false;
                 }
             }
-        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            if (context.get() == null) return;
+            if (context.get() instanceof Activity) {
+                if (((Activity) context.get()).isFinishing()) return;
+            }
+
+            mAsyncTask = null;
+            if (aBoolean) {
+                Intent intent = new Intent(context.get(), mConfig.getMainActivity());
+                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                startActivity(intent);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                finish();
+            }
+        }
     }
 }

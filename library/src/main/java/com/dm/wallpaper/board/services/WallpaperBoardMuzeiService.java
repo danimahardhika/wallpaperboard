@@ -5,17 +5,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.danimahardhika.android.helpers.permission.PermissionHelper;
+import com.dm.wallpaper.board.activities.WallpaperBoardPreviewActivity;
 import com.dm.wallpaper.board.databases.Database;
 import com.dm.wallpaper.board.helpers.MuzeiHelper;
-import com.dm.wallpaper.board.helpers.WallpaperHelper;
 import com.dm.wallpaper.board.items.Wallpaper;
 import com.dm.wallpaper.board.preferences.Preferences;
+import com.dm.wallpaper.board.utils.Extras;
 import com.dm.wallpaper.board.utils.LogUtil;
 import com.google.android.apps.muzei.api.Artwork;
 import com.google.android.apps.muzei.api.RemoteMuzeiArtSource;
-
-import java.io.File;
 
 /*
  * Wallpaper Board
@@ -37,13 +35,12 @@ import java.io.File;
 
 public abstract class WallpaperBoardMuzeiService extends RemoteMuzeiArtSource {
 
-    private MuzeiHelper mMuzeiHelper;
-
     public WallpaperBoardMuzeiService(String name) {
         super(name);
     }
 
-    public void startCommand(Intent intent) {
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
         Bundle bundle = intent.getExtras();
         if (bundle != null) {
             boolean restart = intent.getBooleanExtra("restart", false);
@@ -53,32 +50,34 @@ public abstract class WallpaperBoardMuzeiService extends RemoteMuzeiArtSource {
                 } catch (RetryException ignored) {}
             }
         }
+        return super.onStartCommand(intent, flags, startId);
     }
 
-    public void initMuzeiService() {
+    @Override
+    public void onCreate() {
         super.onCreate();
-        mMuzeiHelper = new MuzeiHelper(this);
         setUserCommands(BUILTIN_COMMAND_ID_NEXT_ARTWORK);
     }
 
-    public void tryUpdate(String wallpaperUrl) {
+    @Override
+    protected void onTryUpdate(int reason) throws RemoteMuzeiArtSource.RetryException {
         try {
             if (Preferences.get(this).isConnectedAsPreferred()) {
-                Wallpaper wallpaper = mMuzeiHelper.getRandomWallpaper(wallpaperUrl);
+                Wallpaper wallpaper = MuzeiHelper.getRandomWallpaper(this);
+
                 if (wallpaper != null) {
                     Uri uri = Uri.parse(wallpaper.getUrl());
-                    if (WallpaperHelper.isWallpaperSaved(this, wallpaper) && PermissionHelper.isStorageGranted(this)) {
-                        String fileName = wallpaper.getName() +"."+ WallpaperHelper.getFormat(wallpaper.getMimeType());
-                        File directory = WallpaperHelper.getDefaultWallpapersDirectory(this);
-                        File target = new File(directory, fileName);
 
-                        uri = Uri.fromFile(target);
-                    }
-                    
+                    Intent intent = new Intent(this, WallpaperBoardPreviewActivity.class);
+                    intent.putExtra(Extras.EXTRA_URL, wallpaper.getUrl());
+                    intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
                     publishArtwork(new Artwork.Builder()
                             .title(wallpaper.getName())
                             .byline(wallpaper.getAuthor())
                             .imageUri(uri)
+                            .viewIntent(intent)
                             .build());
 
                     scheduleUpdate(System.currentTimeMillis() +

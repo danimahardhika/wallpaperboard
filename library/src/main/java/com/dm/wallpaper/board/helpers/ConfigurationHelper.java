@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 
 import com.danimahardhika.android.helpers.core.ColorHelper;
 import com.dm.wallpaper.board.R;
-import com.dm.wallpaper.board.applications.WallpaperBoardApplication;
+import com.dm.wallpaper.board.applications.WallpaperBoardConfiguration;
 
 import static com.danimahardhika.android.helpers.core.DrawableHelper.getTintedDrawable;
 
@@ -29,21 +29,21 @@ import static com.danimahardhika.android.helpers.core.DrawableHelper.getTintedDr
  * limitations under the License.
  */
 
-public class ConfigurationHelper {
+public abstract class ConfigurationHelper {
 
     @Nullable
-    public static Drawable getNavigationIcon(@NonNull Context context, @NonNull WallpaperBoardApplication.NavigationIcon navigationIcon) {
+    public static Drawable getNavigationIcon(@NonNull Context context, @WallpaperBoardConfiguration.NavigationIcon int navigationIcon) {
         int color = ColorHelper.getAttributeColor(context, R.attr.toolbar_icon);
         switch (navigationIcon) {
-            case STYLE_1:
+            case WallpaperBoardConfiguration.NavigationIcon.STYLE_1:
                 return getTintedDrawable(context, R.drawable.ic_toolbar_navigation_1, color);
-            case STYLE_2:
+            case WallpaperBoardConfiguration.NavigationIcon.STYLE_2:
                 return getTintedDrawable(context, R.drawable.ic_toolbar_navigation_2, color);
-            case STYLE_3:
+            case WallpaperBoardConfiguration.NavigationIcon.STYLE_3:
                 return getTintedDrawable(context, R.drawable.ic_toolbar_navigation_3, color);
-            case STYLE_4:
+            case WallpaperBoardConfiguration.NavigationIcon.STYLE_4:
                 return getTintedDrawable(context, R.drawable.ic_toolbar_navigation_4, color);
-            case DEFAULT:
+            case WallpaperBoardConfiguration.NavigationIcon.DEFAULT:
             default:
                 return getTintedDrawable(context, R.drawable.ic_toolbar_navigation, color);
         }

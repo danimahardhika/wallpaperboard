@@ -1,30 +1,47 @@
 package com.dm.wallpaper.board.fragments;
 
+import android.animation.AnimatorInflater;
+import android.animation.StateListAnimator;
+import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.animation.LinearOutSlowInInterpolator;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.danimahardhika.android.helpers.animation.AnimationHelper;
 import com.danimahardhika.android.helpers.core.ColorHelper;
 import com.danimahardhika.android.helpers.core.DrawableHelper;
 import com.danimahardhika.android.helpers.core.ViewHelper;
+import com.danimahardhika.android.helpers.core.WindowHelper;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
+import com.dm.wallpaper.board.activities.WallpaperBoardActivity;
+import com.dm.wallpaper.board.activities.WallpaperBoardBrowserActivity;
+import com.dm.wallpaper.board.applications.WallpaperBoardApplication;
+import com.dm.wallpaper.board.helpers.ConfigurationHelper;
 import com.dm.wallpaper.board.items.Collection;
+import com.dm.wallpaper.board.items.PopupItem;
+import com.dm.wallpaper.board.preferences.Preferences;
 import com.dm.wallpaper.board.utils.Extras;
-import com.dm.wallpaper.board.utils.LogUtil;
-import com.dm.wallpaper.board.utils.listeners.AppBarListener;
-import com.dm.wallpaper.board.utils.listeners.TabListener;
+import com.dm.wallpaper.board.utils.Popup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +69,12 @@ import butterknife.ButterKnife;
 
 public class CollectionFragment extends Fragment {
 
+    @BindView(R2.id.search_bar)
+    CardView mSearchBar;
+    @BindView(R2.id.navigation)
+    ImageView mNavigation;
+    @BindView(R2.id.sort)
+    ImageView mMenuSort;
     @BindView(R2.id.appbar)
     AppBarLayout mAppBar;
     @BindView(R2.id.toolbar)
@@ -60,12 +83,18 @@ public class CollectionFragment extends Fragment {
     TabLayout mTab;
     @BindView(R2.id.pager)
     ViewPager mPager;
+    @BindView(R2.id.status_bar_view)
+    View mStatusBar;
 
     private CollectionPagerAdapter mAdapter;
 
+    private boolean mIsAppBarExpanded = false;
+    private boolean mIsSearchBarShown = false;
+    private int mSearchBarTranslationY;
+
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_collection, container, false);
         ButterKnife.bind(this, view);
         initViewPager();
@@ -76,11 +105,15 @@ public class CollectionFragment extends Fragment {
                 mPager.setCurrentItem(tab.getPosition());
                 tab.setIcon(mAdapter.getIcon(tab.getPosition(), true));
 
-                try {
-                    TabListener listener = (TabListener) getActivity();
-                    listener.onTabScroll(mAdapter.get(tab.getPosition()).getTag());
-                } catch (IllegalStateException e) {
-                    LogUtil.e("Parent activity must implements TabListener");
+                String tag = mAdapter.get(tab.getPosition()).getTag();
+                if (tag.equals(Extras.TAG_LATEST) || tag.equals(Extras.TAG_CATEGORIES)) {
+                    if (mMenuSort.getVisibility() == View.VISIBLE) {
+                        AnimationHelper.hide(mMenuSort).start();
+                    }
+                } else if (tag.equals(Extras.TAG_WALLPAPERS)) {
+                    if (mMenuSort.getVisibility() == View.GONE) {
+                        AnimationHelper.show(mMenuSort).start();
+                    }
                 }
             }
 
@@ -100,23 +133,21 @@ public class CollectionFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        mSearchBarTranslationY = getResources().getDimensionPixelSize(R.dimen.default_toolbar_height) +
+                getResources().getDimensionPixelSize(R.dimen.content_margin) * 2;
+
         ViewHelper.setupToolbar(mToolbar);
+        mStatusBar.getLayoutParams().height = WindowHelper.getStatusBarHeight(getActivity());
 
         mToolbar.setTitle("");
         initAppBar();
+        initSearchBar();
 
         for (int i = 0; i < mTab.getTabCount(); i++) {
             TabLayout.Tab tab = mTab.getTabAt(i);
             if (tab != null) {
                 tab.setIcon(mAdapter.getIcon(i, i == 0));
             }
-        }
-
-        try {
-            TabListener listener = (TabListener) getActivity();
-            listener.onTabScroll(mAdapter.get(0).getTag());
-        } catch (IllegalStateException e) {
-            LogUtil.e("Parent activity must implements TabListener");
         }
     }
 
@@ -139,18 +170,120 @@ public class CollectionFragment extends Fragment {
             int maxScroll = mAppBar.getTotalScrollRange();
             float percentage = (float) Math.abs(verticalOffset) / (float) maxScroll;
 
-            try {
-                AppBarListener listener = (AppBarListener) getActivity();
-                listener.onAppBarScroll(percentage);
-            } catch (IllegalStateException e) {
-                LogUtil.e("Parent activity must implements AppBarListener");
+            if (percentage == 1f) {
+                if (mIsSearchBarShown) {
+                    mIsSearchBarShown = false;
+                    mSearchBar.animate().cancel();
+                    mSearchBar.animate().translationY(-mSearchBarTranslationY)
+                            .setInterpolator(new DecelerateInterpolator())
+                            .setDuration(400)
+                            .start();
+                }
+            } else if (percentage < 0.8f) {
+                if (!mIsSearchBarShown) {
+                    mIsSearchBarShown = true;
+                    mSearchBar.animate().cancel();
+                    mSearchBar.animate().translationY(0)
+                            .setInterpolator(new LinearOutSlowInInterpolator())
+                            .setDuration(400)
+                            .start();
+                }
             }
 
-            if (percentage == 0f) {
-                ColorHelper.setupStatusBarIconColor(getActivity());
-            } else if (percentage == 1f) {
-                ColorHelper.setupStatusBarIconColor(getActivity(), false);
+            if (percentage < 0.2f) {
+                if (!mIsAppBarExpanded) {
+                    mIsAppBarExpanded = true;
+                    WindowHelper.setTranslucentStatusBar(getActivity(), false);
+                    ColorHelper.setupStatusBarIconColor(getActivity());
+                    ColorHelper.setStatusBarColor(getActivity(), Color.TRANSPARENT, true);
+
+                    mStatusBar.animate().cancel();
+                    mStatusBar.animate().alpha(1f)
+                            .setInterpolator(new LinearOutSlowInInterpolator())
+                            .setDuration(400)
+                            .start();
+                }
+            } else if (percentage > 0.8f) {
+                if (mIsAppBarExpanded) {
+                    mIsAppBarExpanded = false;
+                    ColorHelper.setupStatusBarIconColor(getActivity(), false);
+                    WindowHelper.setTranslucentStatusBar(getActivity(), true);
+
+                    mStatusBar.animate().cancel();
+                    mStatusBar.animate().alpha(0f)
+                            .setDuration(400)
+                            .start();
+                }
             }
+        });
+    }
+
+    private void initSearchBar() {
+        Drawable drawable = ConfigurationHelper.getNavigationIcon(getActivity(),
+                WallpaperBoardApplication.getConfig().getNavigationIcon());
+        int color = ColorHelper.getAttributeColor(getActivity(), R.attr.search_bar_icon);
+        if (drawable != null) {
+            mNavigation.setImageDrawable(DrawableHelper.getTintedDrawable(drawable, color));
+        }
+        mNavigation.setOnClickListener(view -> {
+            if (getActivity() instanceof WallpaperBoardActivity) {
+                ((WallpaperBoardActivity) getActivity()).openDrawer();
+            }
+        });
+
+        ImageView searchIcon = getActivity().findViewById(R.id.search);
+        if (searchIcon != null) {
+            searchIcon.setImageDrawable(DrawableHelper.getTintedDrawable(
+                    getActivity(), R.drawable.ic_toolbar_search, color));
+        }
+
+        TextView searchBarTitle = getActivity().findViewById(R.id.search_bar_title);
+        if (searchBarTitle != null) {
+            if (WallpaperBoardApplication.getConfig().getAppLogoColor() != -1) {
+                searchBarTitle.setTextColor(WallpaperBoardApplication.getConfig().getAppLogoColor());
+            } else {
+                searchBarTitle.setTextColor(ColorHelper.setColorAlpha(color, 0.7f));
+            }
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (mSearchBar.getLayoutParams() instanceof CoordinatorLayout.LayoutParams) {
+                CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) mSearchBar.getLayoutParams();
+                params.setMargins(params.leftMargin,
+                        params.topMargin + WindowHelper.getStatusBarHeight(getActivity()),
+                        params.leftMargin,
+                        params.bottomMargin);
+            }
+
+            StateListAnimator stateListAnimator = AnimatorInflater
+                    .loadStateListAnimator(getActivity(), R.animator.card_lift);
+            mSearchBar.setStateListAnimator(stateListAnimator);
+        }
+
+        mSearchBar.setOnClickListener(view -> {
+            Intent intent = new Intent(getActivity(), WallpaperBoardBrowserActivity.class);
+            intent.putExtra(Extras.EXTRA_FRAGMENT_ID, Extras.ID_WALLPAPER_SEARCH);
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+            startActivity(intent);
+            getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        });
+
+        mMenuSort.setImageDrawable(DrawableHelper.getTintedDrawable(
+                getActivity(), R.drawable.ic_toolbar_sort, color));
+        mMenuSort.setOnClickListener(view -> {
+            Popup.Builder(getActivity())
+                    .to(mMenuSort)
+                    .list(PopupItem.getSortItems(getActivity(), true))
+                    .callback((popup, position) -> {
+                        Preferences.get(getActivity())
+                                .setSortBy(popup.getItems().get(position).getType());
+
+                        refreshWallpapers();
+                        popup.dismiss();
+                    })
+                    .show();
         });
     }
 
@@ -178,6 +311,11 @@ public class CollectionFragment extends Fragment {
         @Override
         public Fragment getItem(int position) {
             return mCollection.get(position).getFragment();
+        }
+
+        @Override
+        public int getItemPosition(@NonNull Object object) {
+            return POSITION_NONE;
         }
 
         @Override

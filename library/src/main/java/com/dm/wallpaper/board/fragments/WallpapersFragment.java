@@ -1,9 +1,9 @@
 package com.dm.wallpaper.board.fragments;
 
 import android.content.res.Configuration;
-import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -21,6 +21,7 @@ import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.adapters.WallpapersAdapter;
 import com.dm.wallpaper.board.applications.WallpaperBoardApplication;
+import com.dm.wallpaper.board.applications.WallpaperBoardConfiguration;
 import com.dm.wallpaper.board.databases.Database;
 import com.dm.wallpaper.board.items.Wallpaper;
 import com.dm.wallpaper.board.preferences.Preferences;
@@ -66,12 +67,12 @@ public class WallpapersFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_wallpapers, container, false);
         ButterKnife.bind(this, view);
 
         if (!Preferences.get(getActivity()).isShadowEnabled()) {
-            View shadow = ButterKnife.findById(view, R.id.shadow);
+            View shadow = view.findViewById( R.id.shadow);
             if (shadow != null) shadow.setVisibility(View.GONE);
         }
         return view;
@@ -80,16 +81,13 @@ public class WallpapersFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mProgress.getIndeterminateDrawable().setColorFilter(ColorHelper.getAttributeColor(
-                getActivity(), R.attr.colorAccent), PorterDuff.Mode.SRC_IN);
-
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),
                 getActivity().getResources().getInteger(R.integer.wallpapers_column_count)));
         mRecyclerView.setHasFixedSize(false);
 
-        if (WallpaperBoardApplication.getConfiguration().getWallpapersGrid() ==
-                WallpaperBoardApplication.GridStyle.FLAT) {
+        if (WallpaperBoardApplication.getConfig().getWallpapersGrid() ==
+                WallpaperBoardConfiguration.GridStyle.FLAT) {
             int padding = getActivity().getResources().getDimensionPixelSize(R.dimen.card_margin);
             mRecyclerView.setPadding(padding, padding, 0, 0);
         }
@@ -165,6 +163,9 @@ public class WallpapersFragment extends Fragment {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
+            if (getActivity() == null) return;
+            if (getActivity().isFinishing()) return;
+
             mAsyncTask = null;
 
             mSwipe.setRefreshing(false);

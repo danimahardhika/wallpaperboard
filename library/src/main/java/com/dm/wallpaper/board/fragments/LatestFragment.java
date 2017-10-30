@@ -4,6 +4,7 @@ import android.content.res.Configuration;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -21,6 +22,7 @@ import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.adapters.LatestAdapter;
 import com.dm.wallpaper.board.applications.WallpaperBoardApplication;
+import com.dm.wallpaper.board.applications.WallpaperBoardConfiguration;
 import com.dm.wallpaper.board.databases.Database;
 import com.dm.wallpaper.board.items.Wallpaper;
 import com.dm.wallpaper.board.tasks.WallpapersLoaderTask;
@@ -72,7 +74,7 @@ public class LatestFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_latest, container, false);
         ButterKnife.bind(this, view);
         return view;
@@ -97,13 +99,13 @@ public class LatestFragment extends Fragment {
             }
 
             WallpapersLoaderTask.start(getActivity());
-            prepareLatestWallpapers();
+            mAsyncTask = new WallpapersLoader().execute();
         });
 
         resetRecyclerViewPadding();
         resetViewBottomPadding(mRecyclerView, true);
 
-        prepareLatestWallpapers();
+        mAsyncTask = new WallpapersLoader().execute();
     }
 
     @Override
@@ -143,8 +145,8 @@ public class LatestFragment extends Fragment {
             return;
         }
 
-        if (WallpaperBoardApplication.getConfiguration().getWallpapersGrid() ==
-                WallpaperBoardApplication.GridStyle.FLAT) {
+        if (WallpaperBoardApplication.getConfig().getWallpapersGrid() ==
+                WallpaperBoardConfiguration.GridStyle.FLAT) {
             int padding = getActivity().getResources().getDimensionPixelSize(R.dimen.card_margin);
             mRecyclerView.setPadding(padding, padding, 0, 0);
             return;
@@ -155,48 +157,49 @@ public class LatestFragment extends Fragment {
         mRecyclerView.setPadding(paddingLeft, paddingTop, 0, 0);
     }
 
-    private void prepareLatestWallpapers() {
-        mAsyncTask = new AsyncTask<Void, Integer, Boolean>() {
+    private class WallpapersLoader extends AsyncTask<Void, Integer, Boolean> {
 
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                if (!mSwipe.isRefreshing()) {
-                    mProgress.setVisibility(View.VISIBLE);
-                }
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if (!mSwipe.isRefreshing()) {
+                mProgress.setVisibility(View.VISIBLE);
             }
+        }
 
-            @Override
-            protected Boolean doInBackground(Void... voids) {
-                while (!isCancelled()) {
-                    try {
-                        Thread.sleep(1);
-                        mWallpapers = Database.get(getActivity()).getLatestWallpapers();
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            while (!isCancelled()) {
+                try {
+                    Thread.sleep(1);
+                    mWallpapers = Database.get(getActivity()).getLatestWallpapers();
 
-                        for (int i = 0; i < mWallpapers.size(); i++) {
-                            publishProgress(i);
-                        }
-                        return true;
-                    } catch (Exception e) {
-                        LogUtil.e(Log.getStackTraceString(e));
-                        return false;
+                    for (int i = 0; i < mWallpapers.size(); i++) {
+                        publishProgress(i);
                     }
+                    return true;
+                } catch (Exception e) {
+                    LogUtil.e(Log.getStackTraceString(e));
+                    return false;
                 }
-                return false;
             }
+            return false;
+        }
 
-            @Override
-            protected void onProgressUpdate(Integer... values) {
-                super.onProgressUpdate(values);
-                new WallpaperDimensionLoader(values[0]).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            }
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            new WallpaperDimensionLoader(values[0]).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
 
-            @Override
-            protected void onPostExecute(Boolean aBoolean) {
-                super.onPostExecute(aBoolean);
-                mAsyncTask = null;
-            }
-        }.execute();
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            if (getActivity() == null) return;
+            if (getActivity().isFinishing()) return;
+
+            mAsyncTask = null;
+        }
     }
 
     private class WallpaperDimensionLoader extends AsyncTask<Void, Void, Boolean> {
@@ -246,15 +249,11 @@ public class LatestFragment extends Fragment {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-            if (getActivity() == null) {
-                LogUtil.e("WallpaperDimensionLoader: error activity is null");
-                return;
-            }
-            if (getActivity().isFinishing()) {
-                LogUtil.e("WallpaperDimensionLoader: error activity is finishing");
-                return;
-            }
+            if (getActivity() == null) return;
+            if (getActivity().isFinishing()) return;
 
+            mSwipe.setRefreshing(false);
+            mProgress.setVisibility(View.GONE);
             if (aBoolean) {
                 if (mPosition == (mWallpapers.size() - 1)) {
                     if (mSwipe.isRefreshing()) {
@@ -263,13 +262,7 @@ public class LatestFragment extends Fragment {
                         mAdapter = new LatestAdapter(getActivity(), mWallpapers);
                         mRecyclerView.setAdapter(mAdapter);
                     }
-
-                    mSwipe.setRefreshing(false);
-                    mProgress.setVisibility(View.GONE);
                 }
-            } else {
-                mSwipe.setRefreshing(false);
-                mProgress.setVisibility(View.GONE);
             }
         }
     }

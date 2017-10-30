@@ -1,6 +1,7 @@
 package com.dm.wallpaper.board.utils;
 
 import android.app.DownloadManager;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -8,15 +9,14 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.webkit.URLUtil;
 
-import com.danimahardhika.android.helpers.core.ColorHelper;
 import com.danimahardhika.android.helpers.core.FileHelper;
 import com.danimahardhika.cafebar.CafeBar;
-import com.danimahardhika.cafebar.CafeBarDuration;
 import com.danimahardhika.cafebar.CafeBarTheme;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.helpers.TypefaceHelper;
 import com.dm.wallpaper.board.helpers.WallpaperHelper;
 import com.dm.wallpaper.board.items.Wallpaper;
+import com.dm.wallpaper.board.preferences.Preferences;
 
 import java.io.File;
 
@@ -66,10 +66,10 @@ public class WallpaperDownloader {
 
         if (WallpaperHelper.isWallpaperSaved(mContext, mWallpaper)) {
             CafeBar.builder(mContext)
-                    .theme(CafeBarTheme.Custom(ColorHelper.getAttributeColor(mContext, R.attr.card_background)))
+                    .theme(Preferences.get(mContext).isDarkTheme() ? CafeBarTheme.LIGHT : CafeBarTheme.DARK)
                     .floating(true)
                     .fitSystemWindow()
-                    .duration(CafeBarDuration.MEDIUM.getDuration())
+                    .duration(CafeBar.Duration.MEDIUM)
                     .typeface(TypefaceHelper.getRegular(mContext), TypefaceHelper.getBold(mContext))
                     .content(R.string.wallpaper_already_downloaded)
                     .neutralText(R.string.open)
@@ -80,10 +80,15 @@ public class WallpaperDownloader {
                             return;
                         }
 
-                        mContext.startActivity(new Intent()
-                                .setAction(Intent.ACTION_VIEW)
-                                .setDataAndType(uri, "image/*")
-                                .setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION));
+                        try {
+                            mContext.startActivity(new Intent()
+                                    .setAction(Intent.ACTION_VIEW)
+                                    .setDataAndType(uri, "image/*")
+                                    .setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION));
+                        } catch (ActivityNotFoundException e) {
+                            LogUtil.e(Log.getStackTraceString(e));
+                        }
+
                         cafeBar.dismiss();
                     })
                     .show();
@@ -118,7 +123,7 @@ public class WallpaperDownloader {
 
     private void showCafeBar(int res) {
         CafeBar.builder(mContext)
-                .theme(CafeBarTheme.Custom(ColorHelper.getAttributeColor(mContext, R.attr.card_background)))
+                .theme(Preferences.get(mContext).isDarkTheme() ? CafeBarTheme.LIGHT : CafeBarTheme.DARK)
                 .contentTypeface(TypefaceHelper.getRegular(mContext))
                 .content(res)
                 .floating(true)

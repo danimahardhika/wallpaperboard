@@ -1,8 +1,10 @@
 package com.dm.wallpaper.board.fragments;
 
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -19,10 +21,12 @@ import android.widget.TextView;
 import com.danimahardhika.android.helpers.core.ColorHelper;
 import com.danimahardhika.android.helpers.core.DrawableHelper;
 import com.danimahardhika.android.helpers.core.ViewHelper;
+import com.danimahardhika.android.helpers.core.WindowHelper;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.adapters.WallpapersAdapter;
 import com.dm.wallpaper.board.applications.WallpaperBoardApplication;
+import com.dm.wallpaper.board.applications.WallpaperBoardConfiguration;
 import com.dm.wallpaper.board.databases.Database;
 import com.dm.wallpaper.board.helpers.ConfigurationHelper;
 import com.dm.wallpaper.board.items.Wallpaper;
@@ -65,16 +69,16 @@ public class FavoritesFragment extends Fragment {
     @BindView(R2.id.toolbar)
     Toolbar mToolbar;
 
-    private AsyncTask<Void, Void, Boolean> mGetWallpapers;
+    private AsyncTask mAsyncTask;
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_favorites, container, false);
         ButterKnife.bind(this, view);
 
         if (!Preferences.get(getActivity()).isShadowEnabled()) {
-            View shadow = ButterKnife.findById(view, R.id.shadow);
+            View shadow = view.findViewById( R.id.shadow);
             if (shadow != null) shadow.setVisibility(View.GONE);
         }
         return view;
@@ -85,12 +89,15 @@ public class FavoritesFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         ViewHelper.setupToolbar(mToolbar);
 
-        TextView textView = ButterKnife.findById(getActivity(), R.id.title);
+        WindowHelper.setTranslucentStatusBar(getActivity(), false);
+        ColorHelper.setStatusBarColor(getActivity(), Color.TRANSPARENT, true);
+
+        TextView textView = getActivity().findViewById(R.id.title);
         textView.setText(getActivity().getResources().getString(
                 R.string.navigation_view_favorites));
         mToolbar.setTitle("");
         mToolbar.setNavigationIcon(ConfigurationHelper.getNavigationIcon(getActivity(),
-                WallpaperBoardApplication.getConfiguration().getNavigationIcon()));
+                WallpaperBoardApplication.getConfig().getNavigationIcon()));
         mToolbar.setNavigationOnClickListener(view -> {
             try {
                 NavigationListener listener = (NavigationListener) getActivity();
@@ -105,14 +112,14 @@ public class FavoritesFragment extends Fragment {
                 getActivity().getResources().getInteger(R.integer.wallpapers_column_count)));
         mRecyclerView.setHasFixedSize(false);
 
-        if (WallpaperBoardApplication.getConfiguration().getWallpapersGrid() ==
-                WallpaperBoardApplication.GridStyle.FLAT) {
+        if (WallpaperBoardApplication.getConfig().getWallpapersGrid() ==
+                WallpaperBoardConfiguration.GridStyle.FLAT) {
             int padding = getActivity().getResources().getDimensionPixelSize(R.dimen.card_margin);
             mRecyclerView.setPadding(padding, padding, 0, 0);
         }
         resetViewBottomPadding(mRecyclerView, true);
 
-        getWallpapers();
+        mAsyncTask = new FavoritesLoader().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     @Override
@@ -125,55 +132,60 @@ public class FavoritesFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        if (mGetWallpapers != null) mGetWallpapers.cancel(true);
+        WindowHelper.setTranslucentStatusBar(getActivity(), true);
+        if (mAsyncTask != null) {
+            mAsyncTask.cancel(true);
+        }
         super.onDestroy();
     }
 
-    private void getWallpapers() {
-        mGetWallpapers = new AsyncTask<Void, Void, Boolean>() {
+    private class FavoritesLoader extends AsyncTask<Void, Void, Boolean> {
 
-            List<Wallpaper> wallpapers;
+        private List<Wallpaper> wallpapers;
 
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                wallpapers = new ArrayList<>();
-            }
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            wallpapers = new ArrayList<>();
+        }
 
-            @Override
-            protected Boolean doInBackground(Void... voids) {
-                while (!isCancelled()) {
-                    try {
-                        Thread.sleep(1);
-                        wallpapers = Database.get(getActivity()).getFavoriteWallpapers();
-                        return true;
-                    } catch (Exception e) {
-                        LogUtil.e(Log.getStackTraceString(e));
-                        return false;
-                    }
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            while (!isCancelled()) {
+                try {
+                    Thread.sleep(1);
+                    wallpapers = Database.get(getActivity()).getFavoriteWallpapers();
+                    return true;
+                } catch (Exception e) {
+                    LogUtil.e(Log.getStackTraceString(e));
+                    return false;
                 }
-                return false;
             }
+            return false;
+        }
 
-            @Override
-            protected void onPostExecute(Boolean aBoolean) {
-                super.onPostExecute(aBoolean);
-                if (aBoolean) {
-                    mRecyclerView.setAdapter(new WallpapersAdapter(getActivity(), wallpapers, true, false));
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            if (getActivity() == null) return;
+            if (getActivity().isFinishing()) return;
 
-                    if (mRecyclerView.getAdapter().getItemCount() == 0) {
-                        int color = ColorHelper.getAttributeColor(getActivity(),
-                                android.R.attr.textColorSecondary);
+            mAsyncTask = null;
+            if (aBoolean) {
+                mRecyclerView.setAdapter(new WallpapersAdapter(getActivity(),
+                        wallpapers, true, false));
 
-                        mFavoriteEmpty.setImageDrawable(
-                                DrawableHelper.getTintedDrawable(getActivity(),
-                                        R.drawable.ic_wallpaper_favorite_empty,
-                                        ColorHelper.setColorAlpha(color, 0.7f)));
-                        mFavoriteEmpty.setVisibility(View.VISIBLE);
-                    }
+                if (mRecyclerView.getAdapter().getItemCount() == 0) {
+                    int color = ColorHelper.getAttributeColor(getActivity(),
+                            android.R.attr.textColorSecondary);
+
+                    mFavoriteEmpty.setImageDrawable(
+                            DrawableHelper.getTintedDrawable(getActivity(),
+                                    R.drawable.ic_wallpaper_favorite_empty,
+                                    ColorHelper.setColorAlpha(color, 0.7f)));
+                    mFavoriteEmpty.setVisibility(View.VISIBLE);
                 }
-                mGetWallpapers = null;
             }
-        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
     }
 }

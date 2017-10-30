@@ -162,7 +162,7 @@ public class AboutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         HeaderViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            RecyclerView recyclerView = ButterKnife.findById(itemView, R.id.recyclerview);
+            RecyclerView recyclerView = itemView.findViewById(R.id.recyclerview);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, true));
             recyclerView.setHasFixedSize(true);
@@ -190,7 +190,7 @@ public class AboutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
             subtitle.setHtml(mContext.getResources().getString(R.string.about_desc));
 
-            CardView card = ButterKnife.findById(itemView, R.id.card);
+            CardView card = itemView.findViewById(R.id.card);
             if (!Preferences.get(mContext).isShadowEnabled()) {
                 if (card != null) card.setCardElevation(0);
 
@@ -204,9 +204,9 @@ public class AboutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         ContributorsViewHolder(View itemView) {
             super(itemView);
-            TextView title = ButterKnife.findById(itemView, R.id.title);
+            TextView title = itemView.findViewById(R.id.title);
 
-            CardView card = (CardView) itemView.findViewById(R.id.card);
+            CardView card = itemView.findViewById(R.id.card);
             if (!Preferences.get(mContext).isShadowEnabled() && card != null) {
                 card.setCardElevation(0);
             }
@@ -245,13 +245,13 @@ public class AboutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             super(itemView);
             ButterKnife.bind(this, itemView);
 
-            CardView card = (CardView) itemView.findViewById(R.id.card);
+            CardView card = itemView.findViewById(R.id.card);
             if (!Preferences.get(mContext).isShadowEnabled() && card != null) {
                 card.setCardElevation(0);
             }
 
             int color = ColorHelper.getAttributeColor(mContext, android.R.attr.textColorPrimary);
-            TextView title = ButterKnife.findById(itemView, R.id.about_dashboard_title);
+            TextView title = itemView.findViewById(R.id.about_dashboard_title);
             title.setCompoundDrawablesWithIntrinsicBounds(DrawableHelper.getTintedDrawable(
                     mContext, R.drawable.ic_toolbar_dashboard, color), null, null, null);
 
@@ -312,7 +312,7 @@ public class AboutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         ShadowViewHolder(View itemView) {
             super(itemView);
             if (!Preferences.get(mContext).isShadowEnabled()) {
-                View shadow = ButterKnife.findById(itemView, R.id.shadow);
+                View shadow = itemView.findViewById(R.id.shadow);
                 shadow.setVisibility(View.GONE);
 
                 View root = shadow.getRootView();

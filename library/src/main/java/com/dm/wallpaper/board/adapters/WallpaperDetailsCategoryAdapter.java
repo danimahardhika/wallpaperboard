@@ -105,7 +105,7 @@ public class WallpaperDetailsCategoryAdapter extends RecyclerView.Adapter<Wallpa
             ButterKnife.bind(this, itemView);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 StateListAnimator stateListAnimator = AnimatorInflater
-                        .loadStateListAnimator(mContext, R.animator.card_lift);
+                        .loadStateListAnimator(mContext, R.animator.card_lift_long);
                 card.setStateListAnimator(stateListAnimator);
             }
             card.setOnClickListener(this);
@@ -117,6 +117,8 @@ public class WallpaperDetailsCategoryAdapter extends RecyclerView.Adapter<Wallpa
             if (position < 0 || position > mCategories.size()) return;
 
             Intent intent = new Intent(mContext, WallpaperBoardBrowserActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra(Extras.EXTRA_FRAGMENT_ID, Extras.ID_CATEGORY_WALLPAPERS);
             intent.putExtra(Extras.EXTRA_CATEGORY, mCategories.get(position).getName());
             intent.putExtra(Extras.EXTRA_COUNT, mCategories.get(position).getCount());

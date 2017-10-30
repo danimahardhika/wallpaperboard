@@ -45,11 +45,13 @@ public class FilterAdapter extends BaseAdapter {
     private final Context mContext;
     private final List<Category> mCategories;
     private final boolean mIsMuzei;
+    private boolean mIsEnabled;
 
     public FilterAdapter(@NonNull Context context, @NonNull List<Category> categories, boolean isMuzei) {
         mContext = context;
         mCategories = categories;
         mIsMuzei = isMuzei;
+        mIsEnabled = true;
     }
 
     @Override
@@ -85,6 +87,8 @@ public class FilterAdapter extends BaseAdapter {
                 category.isSelected());
         holder.counter.setText(category.getCategoryCount());
         holder.container.setOnClickListener(v -> {
+            if (!mIsEnabled) return;
+
             Database database = Database.get(mContext);
             if (mIsMuzei) {
                 database.selectCategoryForMuzei(category.getId(),
@@ -137,6 +141,10 @@ public class FilterAdapter extends BaseAdapter {
             }
         }
         return selected;
+    }
+
+    public void setEnabled(boolean enabled) {
+        mIsEnabled = enabled;
     }
 
     public boolean selectAll() {

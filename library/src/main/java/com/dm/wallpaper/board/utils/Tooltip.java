@@ -14,6 +14,7 @@ import android.support.annotation.StringRes;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.ListPopupWindow;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +25,6 @@ import com.danimahardhika.android.helpers.core.ColorHelper;
 import com.danimahardhika.android.helpers.core.DrawableHelper;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.helpers.TypefaceHelper;
-
-import butterknife.ButterKnife;
 
 /*
  * Wallpaper Board
@@ -69,7 +68,7 @@ public class Tooltip {
 
         mPopupWindow.setListSelector(new ColorDrawable(Color.TRANSPARENT));
         mPopupWindow.setAnchorView(mBuilder.mTo);
-        mPopupWindow.setForceIgnoreOutsideTouch(!mBuilder.mCancelable);
+        mPopupWindow.setForceIgnoreOutsideTouch(true);
         mPopupWindow.setAdapter(new TooltipAdapter(mBuilder.mContext, this));
     }
 
@@ -78,7 +77,11 @@ public class Tooltip {
     }
 
     public void show() {
-        mPopupWindow.show();
+        try {
+            mPopupWindow.show();
+        } catch (Exception e) {
+            LogUtil.e(Log.getStackTraceString(e));
+        }
     }
 
     public void dismiss() {
@@ -225,10 +228,10 @@ public class Tooltip {
                 view = View.inflate(mContext, R.layout.tooltips_popup, null);
             }
 
-            TextView content = ButterKnife.findById(view, R.id.content);
-            TextView desc = ButterKnife.findById(view, R.id.desc);
-            AppCompatCheckBox checkBox = ButterKnife.findById(view, R.id.checkbox);
-            TextView button = ButterKnife.findById(view, R.id.button);
+            TextView content = view.findViewById( R.id.content);
+            TextView desc = view.findViewById( R.id.desc);
+            AppCompatCheckBox checkBox = view.findViewById( R.id.checkbox);
+            TextView button = view.findViewById( R.id.button);
 
             content.setText(mBuilder.mContent);
             button.setText(mBuilder.mButton);

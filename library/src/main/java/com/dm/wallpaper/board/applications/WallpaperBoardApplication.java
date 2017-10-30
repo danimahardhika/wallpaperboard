@@ -2,16 +2,14 @@ package com.dm.wallpaper.board.applications;
 
 import android.app.Application;
 import android.content.Intent;
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
 
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.activities.WallpaperBoardCrashReport;
+import com.dm.wallpaper.board.databases.Database;
 import com.dm.wallpaper.board.helpers.LocaleHelper;
 import com.dm.wallpaper.board.helpers.UrlHelper;
 import com.dm.wallpaper.board.preferences.Preferences;
 import com.dm.wallpaper.board.utils.ImageConfig;
-import com.dm.wallpaper.board.utils.JsonStructure;
 import com.dm.wallpaper.board.utils.LogUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -39,25 +37,20 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
  * limitations under the License.
  */
 
-public class WallpaperBoardApplication extends Application {
+public abstract class WallpaperBoardApplication extends Application implements ApplicationCallback {
 
-    private static Configuration mConfiguration;
+    public static boolean sIsClickable = true;
+    private static boolean mIsLatestWallpapersLoaded;
+    private static WallpaperBoardConfiguration mConfiguration;
+
     private Thread.UncaughtExceptionHandler mHandler;
 
-    public static Configuration getConfiguration() {
-        if (mConfiguration == null) {
-            mConfiguration = new Configuration();
-        }
-        return mConfiguration;
-    }
-
-    public void initApplication() {
-        initApplication(new Configuration());
-    }
-
-    public void initApplication(@NonNull Configuration configuration) {
+    @Override
+    public void onCreate() {
         super.onCreate();
-        mConfiguration = configuration;
+        mConfiguration = onInit();
+        Database.get(this).openDatabase();
+        Preferences.get(this);
 
         if (!ImageLoader.getInstance().isInited())
             ImageLoader.getInstance().init(ImageConfig.getImageLoaderConfiguration(this));
@@ -70,7 +63,7 @@ public class WallpaperBoardApplication extends Application {
         //Enable logging
         LogUtil.setLoggingEnabled(true);
 
-        if (mConfiguration.mIsCrashReportEnabled) {
+        if (mConfiguration.isCrashReportEnabled()) {
             String[] urls = getResources().getStringArray(R.array.about_social_links);
             boolean isContainsValidEmail = false;
             for (String url : urls) {
@@ -96,6 +89,21 @@ public class WallpaperBoardApplication extends Application {
         }
 
         LocaleHelper.setLocale(this);
+    }
+
+    public static WallpaperBoardConfiguration getConfig() {
+        if (mConfiguration == null) {
+            mConfiguration = new WallpaperBoardConfiguration();
+        }
+        return mConfiguration;
+    }
+
+    public static boolean isLatestWallpapersLoaded() {
+        return mIsLatestWallpapersLoaded;
+    }
+
+    public static void setLatestWallpapersLoaded(boolean loaded) {
+        mIsLatestWallpapersLoaded = loaded;
     }
 
     private void handleUncaughtException(Thread thread, Throwable throwable) {
@@ -125,133 +133,5 @@ public class WallpaperBoardApplication extends Application {
             }
         }
         System.exit(1);
-    }
-
-    public static class Configuration {
-
-        private NavigationIcon mNavigationIcon = NavigationIcon.DEFAULT;
-        private NavigationViewHeader mNavigationViewHeader = NavigationViewHeader.NORMAL;
-        private GridStyle mWallpapersGrid = GridStyle.CARD;
-
-        private boolean mIsHighQualityPreviewEnabled = false;
-        private boolean mIsDashboardThemingEnabled = true;
-        private boolean mIsShadowEnabled = true;
-        private int mLatestWallpapersDisplayMax = 15;
-
-        private boolean mIsCrashReportEnabled = true;
-        private String mCrashReportEmail = null;
-
-        private JsonStructure mJsonStructure = new JsonStructure.Builder().build();
-
-        public Configuration setNavigationIcon(@NonNull NavigationIcon navigationIcon) {
-            mNavigationIcon = navigationIcon;
-            return this;
-        }
-
-        public Configuration setNavigationViewHeaderStyle(@NonNull NavigationViewHeader navigationViewHeader) {
-            mNavigationViewHeader = navigationViewHeader;
-            return this;
-        }
-
-        public Configuration setWallpapersGridStyle(@NonNull GridStyle gridStyle) {
-            mWallpapersGrid = gridStyle;
-            return this;
-        }
-
-        public Configuration setDashboardThemingEnabled(boolean dashboardThemingEnabled) {
-            mIsDashboardThemingEnabled = dashboardThemingEnabled;
-            return this;
-        }
-
-        public Configuration setShadowEnabled(boolean shadowEnabled) {
-            mIsShadowEnabled = shadowEnabled;
-            return this;
-        }
-
-        public Configuration setLatestWallpapersDisplayMax(@IntRange (from = 5, to = 15) int count) {
-            int finalCount = count;
-            if (finalCount < 5) {
-                finalCount = 5;
-            } else if (finalCount > 15) {
-                finalCount = 15;
-            }
-            mLatestWallpapersDisplayMax = finalCount;
-            return this;
-        }
-
-        public Configuration setHighQualityPreviewEnabled(boolean highQualityPreviewEnabled) {
-            mIsHighQualityPreviewEnabled = highQualityPreviewEnabled;
-            return this;
-        }
-
-        public Configuration setCrashReportEnabled(boolean crashReportEnabled) {
-            mIsCrashReportEnabled = crashReportEnabled;
-            return this;
-        }
-
-        private Configuration setCrashReportEmail(String email) {
-            mCrashReportEmail = email;
-            return this;
-        }
-
-        public Configuration setJsonStructure(@NonNull JsonStructure jsonStructure) {
-            mJsonStructure = jsonStructure;
-            return this;
-        }
-
-        public NavigationIcon getNavigationIcon() {
-            return mNavigationIcon;
-        }
-
-        public NavigationViewHeader getNavigationViewHeader() {
-            return mNavigationViewHeader;
-        }
-
-        public GridStyle getWallpapersGrid() {
-            return mWallpapersGrid;
-        }
-
-        public boolean isDashboardThemingEnabled() {
-            return mIsDashboardThemingEnabled;
-        }
-
-        public boolean isShadowEnabled() {
-            return mIsShadowEnabled;
-        }
-
-        public int getLatestWallpapersDisplayMax() {
-            return mLatestWallpapersDisplayMax;
-        }
-
-        public boolean isHighQualityPreviewEnabled() {
-            return mIsHighQualityPreviewEnabled;
-        }
-
-        public  String getCrashReportEmail() {
-            return mCrashReportEmail;
-        }
-
-        public JsonStructure getJsonStructure() {
-            return mJsonStructure;
-        }
-    }
-
-    public enum NavigationIcon {
-        DEFAULT,
-        STYLE_1,
-        STYLE_2,
-        STYLE_3,
-        STYLE_4
-    }
-
-    public enum NavigationViewHeader {
-        NORMAL,
-        MINI,
-        NONE
-    }
-
-    public enum GridStyle {
-        CARD,
-        FLAT
     }
 }

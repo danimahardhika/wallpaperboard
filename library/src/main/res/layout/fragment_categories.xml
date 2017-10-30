@@ -15,7 +15,7 @@
         android:paddingLeft="@dimen/card_margin_left"
         android:clipToPadding="false"
         android:scrollbars="vertical"
-        android:scrollbarThumbVertical="?attr/colorAccent"
+        android:scrollbarThumbVertical="?colorAccent"
         android:scrollbarSize="4dp"/>
 
     <me.zhanghai.android.materialprogressbar.MaterialProgressBar
@@ -23,7 +23,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="?attr/actionBarSize"
+        android:layout_marginBottom="?actionBarSize"
+        android:indeterminate="true"
         android:visibility="gone"
         style="@style/Widget.MaterialProgressBar.ProgressBar"/>
 </FrameLayout>

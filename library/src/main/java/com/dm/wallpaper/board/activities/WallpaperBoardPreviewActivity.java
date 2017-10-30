@@ -1,6 +1,7 @@
 package com.dm.wallpaper.board.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -41,7 +42,7 @@ import com.danimahardhika.android.helpers.permission.PermissionHelper;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.adapters.WallpaperDetailsAdapter;
-import com.dm.wallpaper.board.adapters.WallpapersAdapter;
+import com.dm.wallpaper.board.applications.WallpaperBoardApplication;
 import com.dm.wallpaper.board.databases.Database;
 import com.dm.wallpaper.board.helpers.LocaleHelper;
 import com.dm.wallpaper.board.helpers.TapIntroHelper;
@@ -160,6 +161,8 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
             url = bundle.getString(Extras.EXTRA_URL);
         }
 
+        LogUtil.e("url: " +url);
+
         mWallpaper = Database.get(this).getWallpaper(url);
         if (mWallpaper == null) {
             finish();
@@ -204,13 +207,15 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
             if (color == 0) {
                 color = ColorHelper.getAttributeColor(this, R.attr.card_background);
             }
+
             AnimationHelper.setBackgroundColor(mSlidingLayout, Color.TRANSPARENT, color).start();
             mProgress.getIndeterminateDrawable().setColorFilter(
                     ColorHelper.setColorAlpha(ColorHelper.getTitleTextColor(color), 0.7f),
                     PorterDuff.Mode.SRC_IN);
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && savedInstanceState == null) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && savedInstanceState == null
+                && mImageView.getDrawable() != null) {
             Transition transition = getWindow().getSharedElementEnterTransition();
 
             if (transition != null) {
@@ -282,6 +287,30 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (intent != null && intent.getExtras() != null) {
+            this.setIntent(intent);
+            String url = "";
+            Bundle bundle = getIntent().getExtras();
+            if (bundle != null) {
+                url = bundle.getString(Extras.EXTRA_URL);
+            }
+
+            LogUtil.e("url: " +url);
+
+            Wallpaper wallpaper = Database.get(this).getWallpaper(url);
+            if (wallpaper == null) {
+                return;
+            }
+
+            mWallpaper = wallpaper;
+            loadWallpaper(mWallpaper.getThumbUrl());
+            mSlidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+        }
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         if (mWallpaper != null) {
             outState.putString(Extras.EXTRA_URL, mWallpaper.getUrl());
@@ -294,6 +323,7 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
     @Override
     protected void onDestroy() {
         ImageLoader.getInstance().cancelDisplayTask(mImageView);
+        WallpaperBoardApplication.sIsClickable = true;
         if (mAttacher != null) mAttacher.cleanup();
         super.onDestroy();
     }
@@ -310,7 +340,6 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
             mTooltip = null;
         }
 
-        WallpapersAdapter.sIsClickable = true;
         if (mHandler != null && mRunnable != null)
             mHandler.removeCallbacks(mRunnable);
 
@@ -359,7 +388,7 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
                                 return;
                             }
 
-                            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+                            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER);
                             return;
                         } else if (item.getType() == PopupItem.Type.LOCKSCREEN) {
                             RectF rectF = null;
@@ -682,18 +711,22 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
                         .start();
 
                 if (loadedImage != null && mWallpaper.getColor() == 0) {
-                    Palette.from(loadedImage).generate(palette -> {
-                        int accent = ColorHelper.getAttributeColor(
-                                WallpaperBoardPreviewActivity.this, R.attr.colorAccent);
-                        int color = palette.getVibrantColor(accent);
-                        if (color == accent)
-                            color = palette.getMutedColor(accent);
+                    try {
+                        Palette.from(loadedImage).generate(palette -> {
+                            int accent = ColorHelper.getAttributeColor(
+                                    WallpaperBoardPreviewActivity.this, R.attr.colorAccent);
+                            int color = palette.getVibrantColor(accent);
+                            if (color == accent)
+                                color = palette.getMutedColor(accent);
 
-                        mWallpaper.setColor(color);
-                        Database.get(WallpaperBoardPreviewActivity.this).updateWallpaper(mWallpaper);
+                            mWallpaper.setColor(color);
+                            Database.get(WallpaperBoardPreviewActivity.this).updateWallpaper(mWallpaper);
 
+                            onWallpaperLoaded();
+                        });
+                    } catch (Exception ignored) {
                         onWallpaperLoaded();
-                    });
+                    }
                     return;
                 }
 

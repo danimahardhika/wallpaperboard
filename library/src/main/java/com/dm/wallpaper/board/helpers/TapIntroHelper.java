@@ -18,8 +18,6 @@ import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
-import butterknife.ButterKnife;
-
 /*
  * Wallpaper Board
  *
@@ -44,7 +42,7 @@ public class TapIntroHelper {
         if (Preferences.get(context).isTimeToShowWallpaperPreviewIntro()) {
             AppCompatActivity activity = (AppCompatActivity) context;
 
-            RelativeLayout rootView = (RelativeLayout) activity.findViewById(R.id.bottom_panel);
+            RelativeLayout rootView = activity.findViewById(R.id.bottom_panel);
             if (rootView == null) return;
 
             new Handler().postDelayed(() -> {
@@ -64,9 +62,9 @@ public class TapIntroHelper {
                     //Todo:
                     //Typeface description = TypefaceHelper.getRegular(context);
 
-                    ImageView apply = ButterKnife.findById(rootView, R.id.menu_apply);
-                    ImageView save = ButterKnife.findById(rootView, R.id.menu_save);
-                    ImageView preview = ButterKnife.findById(rootView, R.id.menu_preview);
+                    ImageView apply = rootView.findViewById(R.id.menu_apply);
+                    ImageView save = rootView.findViewById(R.id.menu_save);
+                    ImageView preview = rootView.findViewById(R.id.menu_preview);
 
                     TapTarget tapTarget = TapTarget.forView(apply,
                             context.getResources().getString(R.string.tap_intro_wallpaper_preview_apply),
@@ -123,7 +121,7 @@ public class TapIntroHelper {
                         public void onSequenceFinish() {
                             Preferences.get(context).setTimeToShowWallpaperPreviewIntro(false);
 
-                            SlidingUpPanelLayout panelLayout = ButterKnife.findById(activity, R.id.sliding_layout);
+                            SlidingUpPanelLayout panelLayout = activity.findViewById(R.id.sliding_layout);
                             if (panelLayout != null) {
                                 new Handler().postDelayed(() -> panelLayout.setPanelState(
                                         SlidingUpPanelLayout.PanelState.EXPANDED), 300);

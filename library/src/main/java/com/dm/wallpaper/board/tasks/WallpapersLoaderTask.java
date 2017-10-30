@@ -1,16 +1,14 @@
 package com.dm.wallpaper.board.tasks;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.bluelinelabs.logansquare.LoganSquare;
-import com.danimahardhika.android.helpers.core.ColorHelper;
 import com.danimahardhika.android.helpers.core.ListHelper;
 import com.danimahardhika.cafebar.CafeBar;
-import com.danimahardhika.cafebar.CafeBarDuration;
 import com.danimahardhika.cafebar.CafeBarTheme;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.applications.WallpaperBoardApplication;
@@ -19,6 +17,7 @@ import com.dm.wallpaper.board.helpers.JsonHelper;
 import com.dm.wallpaper.board.helpers.TypefaceHelper;
 import com.dm.wallpaper.board.items.Category;
 import com.dm.wallpaper.board.items.Wallpaper;
+import com.dm.wallpaper.board.preferences.Preferences;
 import com.dm.wallpaper.board.utils.JsonStructure;
 import com.dm.wallpaper.board.utils.LogUtil;
 
@@ -73,7 +72,7 @@ public class WallpapersLoaderTask extends AsyncTask<Void, Void, Boolean> {
         while (!isCancelled()) {
             try {
                 Thread.sleep(1);
-                String wallpaperUrl = WallpaperBoardApplication.getConfiguration().getJsonStructure().getUrl();
+                String wallpaperUrl = WallpaperBoardApplication.getConfig().getJsonStructure().getUrl();
                 if (wallpaperUrl == null) {
                     wallpaperUrl = mContext.get().getResources().getString(R.string.wallpaper_json);
                 }
@@ -82,12 +81,12 @@ public class WallpapersLoaderTask extends AsyncTask<Void, Void, Boolean> {
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setConnectTimeout(15000);
 
-                if (WallpaperBoardApplication.getConfiguration().getJsonStructure().getUrl() != null) {
+                if (WallpaperBoardApplication.getConfig().getJsonStructure().getUrl() != null) {
                     connection.setRequestMethod("POST");
                     connection.setUseCaches(false);
                     connection.setDoOutput(true);
 
-                    List<NameValuePair> values = WallpaperBoardApplication.getConfiguration()
+                    List<NameValuePair> values = WallpaperBoardApplication.getConfig()
                             .getJsonStructure().getPosts();
                     if (values.size() > 0) {
                         DataOutputStream stream = new DataOutputStream(connection.getOutputStream());
@@ -100,9 +99,9 @@ public class WallpapersLoaderTask extends AsyncTask<Void, Void, Boolean> {
                 if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                     InputStream stream = connection.getInputStream();
                     JsonStructure.CategoryStructure categoryStructure = WallpaperBoardApplication
-                            .getConfiguration().getJsonStructure().getCategory();
+                            .getConfig().getJsonStructure().getCategory();
                     JsonStructure.WallpaperStructure wallpaperStructure = WallpaperBoardApplication
-                            .getConfiguration().getJsonStructure().getWallpaper();
+                            .getConfig().getJsonStructure().getWallpaper();
 
                     Map<String, List> map = LoganSquare.parseMap(stream, List.class);
                     if (map == null) return false;
@@ -218,20 +217,23 @@ public class WallpapersLoaderTask extends AsyncTask<Void, Void, Boolean> {
     protected void onPostExecute(Boolean aBoolean) {
         super.onPostExecute(aBoolean);
         if (mContext.get() == null) return;
-        if (((AppCompatActivity) mContext.get()).isFinishing()) return;
+        if (mContext.get() instanceof Activity) {
+            if (((Activity) mContext.get()).isFinishing()) return;
+        }
 
+        WallpaperBoardApplication.setLatestWallpapersLoaded(true);
         if (!aBoolean) {
             int res = R.string.connection_failed;
             if (Database.get(mContext.get()).getWallpapersCount() > 0) {
                 res = R.string.wallpapers_loader_failed;
             }
             CafeBar.builder(mContext.get())
-                    .theme(CafeBarTheme.Custom(ColorHelper.getAttributeColor(
-                            mContext.get(), R.attr.card_background)))
+                    .theme(Preferences.get(mContext.get()).isDarkTheme() ? CafeBarTheme.LIGHT : CafeBarTheme.DARK)
                     .contentTypeface(TypefaceHelper.getRegular(mContext.get()))
                     .content(res)
                     .fitSystemWindow()
-                    .duration(CafeBarDuration.MEDIUM.getDuration())
+                    .floating(true)
+                    .duration(CafeBar.Duration.MEDIUM)
                     .show();
         }
     }

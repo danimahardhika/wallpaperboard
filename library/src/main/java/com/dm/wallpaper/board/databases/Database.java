@@ -62,6 +62,7 @@ public class Database extends SQLiteOpenHelper {
     private static final String KEY_COLOR = "color";
     private static final String KEY_WIDTH = "width";
     private static final String KEY_HEIGHT = "height";
+    private static final String KEY_COUNT = "count";
 
     public static final String KEY_ID = "id";
     public static final String KEY_NAME = "name";
@@ -440,23 +441,24 @@ public class Database extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         cursor.close();
-
-        for (Category category : categories) {
-            String name = category.getName().toLowerCase(Locale.getDefault());
-            String query = "SELECT wallpapers.thumbUrl, wallpapers.color, " +
-                    "(SELECT COUNT(*) FROM wallpapers WHERE LOWER(wallpapers.category) LIKE ?) AS count " +
-                    "FROM wallpapers WHERE LOWER(wallpapers.category) LIKE ? ORDER BY RANDOM() LIMIT 1";
-            cursor = mDatabase.get().mSQLiteDatabase.rawQuery(query, new String[]{"%" +name+ "%", "%" +name+ "%"});
-            if (cursor.moveToFirst()) {
-                do {
-                    category.setColor(cursor.getInt(cursor.getColumnIndex(KEY_COLOR)));
-                    category.setThumbUrl(cursor.getString(cursor.getColumnIndex(KEY_THUMB_URL)));
-                    category.setCount(cursor.getInt(cursor.getColumnIndex("count")));
-                } while (cursor.moveToNext());
-            }
-            cursor.close();
-        }
         return categories;
+    }
+
+    public Category getCategoryPreview(@NonNull Category category) {
+        String name = category.getName().toLowerCase(Locale.getDefault());
+        String query = "SELECT wallpapers.thumbUrl, wallpapers.color, " +
+                "(SELECT COUNT(*) FROM wallpapers WHERE LOWER(wallpapers.category) LIKE ?) AS " +KEY_COUNT+
+                " FROM wallpapers WHERE LOWER(wallpapers.category) LIKE ? ORDER BY RANDOM() LIMIT 1";
+        Cursor cursor = mDatabase.get().mSQLiteDatabase.rawQuery(query, new String[]{"%" +name+ "%", "%" +name+ "%"});
+        if (cursor.moveToFirst()) {
+            do {
+                category.setColor(cursor.getInt(cursor.getColumnIndex(KEY_COLOR)));
+                category.setThumbUrl(cursor.getString(cursor.getColumnIndex(KEY_THUMB_URL)));
+                category.setCount(cursor.getInt(cursor.getColumnIndex(KEY_COUNT)));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return category;
     }
 
     public List<Category> getWallpaperCategories(String category) {
@@ -471,8 +473,8 @@ public class Database extends SQLiteOpenHelper {
             String s = string.toLowerCase(Locale.getDefault());
             String query = "SELECT categories.id, categories.name, " +
                     "(SELECT wallpapers.thumbUrl FROM wallpapers WHERE LOWER(wallpapers.category) LIKE ? ORDER BY RANDOM() LIMIT 1) AS thumbUrl, " +
-                    "(SELECT COUNT(*) FROM wallpapers WHERE LOWER(wallpapers.category) LIKE ?) AS count " +
-                    "FROM categories WHERE LOWER(categories.name) = ? LIMIT 1";
+                    "(SELECT COUNT(*) FROM wallpapers WHERE LOWER(wallpapers.category) LIKE ?) AS " +KEY_COUNT+
+                    " FROM categories WHERE LOWER(categories.name) = ? LIMIT 1";
             Cursor cursor = mDatabase.get().mSQLiteDatabase.rawQuery(query, new String[]{"%" +s+ "%", "%" +s+ "%", s});
             if (cursor.moveToFirst()) {
                 do {
@@ -480,7 +482,7 @@ public class Database extends SQLiteOpenHelper {
                             .id(cursor.getInt(cursor.getColumnIndex(KEY_ID)))
                             .name(cursor.getString(cursor.getColumnIndex(KEY_NAME)))
                             .thumbUrl(cursor.getString(2))
-                            .count(cursor.getInt(cursor.getColumnIndex("count")))
+                            .count(cursor.getInt(cursor.getColumnIndex(KEY_COUNT)))
                             .build();
                     categories.add(c);
                 } while (cursor.moveToNext());
@@ -669,7 +671,7 @@ public class Database extends SQLiteOpenHelper {
         List<Wallpaper> wallpapers = new ArrayList<>();
         Cursor cursor = mDatabase.get().mSQLiteDatabase.query(TABLE_WALLPAPERS, null, null, null, null, null,
                 KEY_ADDED_ON+ " DESC, " +KEY_ID,
-                String.valueOf(WallpaperBoardApplication.getConfiguration().getLatestWallpapersDisplayMax()));
+                String.valueOf(WallpaperBoardApplication.getConfig().getLatestWallpapersDisplayMax()));
         if (cursor.moveToFirst()) {
             do {
                 int width = cursor.getInt(cursor.getColumnIndex(KEY_WIDTH));

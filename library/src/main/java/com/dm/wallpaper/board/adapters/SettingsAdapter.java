@@ -245,7 +245,7 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         FooterViewHolder(View itemView) {
             super(itemView);
             if (!Preferences.get(mContext).isShadowEnabled()) {
-                View shadow = ButterKnife.findById(itemView, R.id.shadow);
+                View shadow = itemView.findViewById(R.id.shadow);
                 shadow.setVisibility(View.GONE);
 
                 View root = shadow.getRootView();

@@ -50,7 +50,7 @@ public class LicensesFragment extends DialogFragment {
     @BindView(R2.id.webview)
     WebView mWebView;
 
-    private AsyncTask<Void, Void, Boolean> mLoadLicenses;
+    private AsyncTask mAsyncTask;
 
     private static final String TAG = "com.dm.wallpaper.board.dialog.licenses";
 
@@ -88,65 +88,67 @@ public class LicensesFragment extends DialogFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        loadLicenses();
+        mAsyncTask = new LicensesLoader().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     @Override
     public void onDismiss(DialogInterface dialog) {
-        if (mLoadLicenses != null) mLoadLicenses.cancel(true);
+        if (mAsyncTask != null) {
+            mAsyncTask.cancel(true);
+        }
         super.onDismiss(dialog);
     }
 
-    private void loadLicenses() {
-        mLoadLicenses = new AsyncTask<Void, Void, Boolean>() {
+    private class LicensesLoader extends AsyncTask<Void, Void, Boolean> {
 
-            StringBuilder sb;
+        private StringBuilder sb;
 
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                sb = new StringBuilder();
-            }
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            sb = new StringBuilder();
+        }
 
-            @Override
-            protected Boolean doInBackground(Void... voids) {
-                while (!isCancelled()) {
-                    try {
-                        Thread.sleep(1);
-                        InputStream rawResource = getActivity().getResources()
-                                .openRawResource(R.raw.licenses);
-                        BufferedReader bufferedReader = new BufferedReader(
-                                new InputStreamReader(rawResource));
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            while (!isCancelled()) {
+                try {
+                    Thread.sleep(1);
+                    InputStream rawResource = getActivity().getResources()
+                            .openRawResource(R.raw.licenses);
+                    BufferedReader bufferedReader = new BufferedReader(
+                            new InputStreamReader(rawResource));
 
-                        String line;
-                        while ((line = bufferedReader.readLine()) != null) {
-                            sb.append(line);
-                            sb.append("\n");
-                        }
-                        bufferedReader.close();
-                        rawResource.close();
-                        return true;
-                    } catch (Exception e) {
-                        LogUtil.e(Log.getStackTraceString(e));
-                        return false;
+                    String line;
+                    while ((line = bufferedReader.readLine()) != null) {
+                        sb.append(line);
+                        sb.append("\n");
                     }
+                    bufferedReader.close();
+                    rawResource.close();
+                    return true;
+                } catch (Exception e) {
+                    LogUtil.e(Log.getStackTraceString(e));
+                    return false;
                 }
-                return false;
             }
+            return false;
+        }
 
-            @Override
-            protected void onPostExecute(Boolean aBoolean) {
-                super.onPostExecute(aBoolean);
-                if (aBoolean) {
-                    mWebView.setVisibility(View.VISIBLE);
-                    mWebView.loadDataWithBaseURL(null,
-                            sb.toString(), "text/html", "utf-8", null);
-                    LocaleHelper.setLocale(getActivity());
-                }
-                mLoadLicenses = null;
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            if (getActivity() == null) return;
+            if (getActivity().isFinishing()) return;
+
+            mAsyncTask = null;
+            if (aBoolean) {
+                mWebView.setVisibility(View.VISIBLE);
+                mWebView.loadDataWithBaseURL(null,
+                        sb.toString(), "text/html", "utf-8", null);
+                LocaleHelper.setLocale(getActivity());
             }
-
-        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
     }
 }
 

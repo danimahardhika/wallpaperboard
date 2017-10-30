@@ -27,6 +27,7 @@
 
     <!-- Toolbar -->
     <dimen name="toolbar_shadow">4dp</dimen>
+    <dimen name="default_toolbar_height">56dp</dimen>
 
     <!-- Dialog -->
     <dimen name="dialog_content_padding">24dp</dimen>
@@ -57,10 +58,6 @@
     <dimen name="text_content_title">16sp</dimen>
     <dimen name="text_content_subtitle">15sp</dimen>
     <dimen name="text_content">14sp</dimen>
-
-    <!-- Splash Screen -->
-    <dimen name="splash_screen_logo">96dp</dimen>
-    <dimen name="splash_screen_text">14sp</dimen>
 
     <!-- About header image height -->
     <dimen name="about_profile">120dp</dimen>

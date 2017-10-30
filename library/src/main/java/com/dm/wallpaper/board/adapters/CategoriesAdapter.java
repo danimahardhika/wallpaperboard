@@ -62,8 +62,6 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
     private List<Category> mCategories;
     private final DisplayImageOptions.Builder mOptions;
 
-    public static boolean sIsClickable = true;
-
     public CategoriesAdapter(@NonNull Context context, @NonNull List<Category> categories) {
         mContext = context;
         mCategories = categories;
@@ -115,16 +113,18 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
                     public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                         super.onLoadingComplete(imageUri, view, loadedImage);
                         if (loadedImage != null && category.getColor() == 0) {
-                            Palette.from(loadedImage).generate(palette -> {
-                                int vibrant = ColorHelper.getAttributeColor(
-                                        mContext, R.attr.card_background);
-                                int color = palette.getVibrantColor(vibrant);
-                                if (color == vibrant)
-                                    color = palette.getMutedColor(vibrant);
-                                holder.card.setCardBackgroundColor(color);
+                            try {
+                                Palette.from(loadedImage).generate(palette -> {
+                                    int vibrant = ColorHelper.getAttributeColor(
+                                            mContext, R.attr.card_background);
+                                    int color = palette.getVibrantColor(vibrant);
+                                    if (color == vibrant)
+                                        color = palette.getMutedColor(vibrant);
+                                    holder.card.setCardBackgroundColor(color);
 
-                                category.setColor(color);
-                            });
+                                    category.setColor(color);
+                                });
+                            } catch (Exception ignored) {}
                         }
                     }
                 },
@@ -174,7 +174,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 StateListAnimator stateListAnimator = AnimatorInflater
-                        .loadStateListAnimator(mContext, R.animator.card_lift);
+                        .loadStateListAnimator(mContext, R.animator.card_lift_long);
                 card.setStateListAnimator(stateListAnimator);
             }
 
@@ -187,6 +187,8 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
             if (position < 0 || position > mCategories.size()) return;
 
             Intent intent = new Intent(mContext, WallpaperBoardBrowserActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra(Extras.EXTRA_FRAGMENT_ID, Extras.ID_CATEGORY_WALLPAPERS);
             intent.putExtra(Extras.EXTRA_CATEGORY, mCategories.get(position).getName());
             intent.putExtra(Extras.EXTRA_COUNT, mCategories.get(position).getCount());
@@ -195,5 +197,15 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
             //((AppCompatActivity) mContext).overridePendingTransition(
                     //android.R.anim.fade_in, android.R.anim.fade_out);
         }
+    }
+
+    public void clear() {
+        mCategories.clear();
+        notifyDataSetChanged();
+    }
+
+    public void add(@NonNull Category category) {
+        mCategories.add(category);
+        notifyItemInserted(mCategories.size() - 1);
     }
 }

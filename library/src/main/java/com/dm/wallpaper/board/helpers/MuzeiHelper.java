@@ -2,22 +2,25 @@ package com.dm.wallpaper.board.helpers;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.bluelinelabs.logansquare.LoganSquare;
+import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.applications.WallpaperBoardApplication;
 import com.dm.wallpaper.board.databases.Database;
 import com.dm.wallpaper.board.items.Wallpaper;
 import com.dm.wallpaper.board.utils.JsonStructure;
 import com.dm.wallpaper.board.utils.LogUtil;
 
-import java.io.BufferedInputStream;
+import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
+import cz.msebera.android.httpclient.NameValuePair;
 
 /*
  * Wallpaper Board
@@ -39,31 +42,49 @@ import java.util.Random;
 
 public class MuzeiHelper {
 
-    private final Context mContext;
+    public static Wallpaper getRandomWallpaper(@NonNull Context context) {
+        if (Database.get(context).getWallpapersCount() > 0) {
+            return Database.get(context).getRandomWallpaper();
+        }
 
-    public MuzeiHelper(@NonNull Context context) {
-        mContext = context;
-    }
+        try {
+            String wallpaperUrl = WallpaperBoardApplication.getConfig().getJsonStructure().getUrl();
+            if (wallpaperUrl == null) {
+                wallpaperUrl = context.getResources().getString(R.string.wallpaper_json);
+            }
 
-    @Nullable
-    public Wallpaper getRandomWallpaper(String wallpaperUrl) throws Exception {
-        if (Database.get(mContext).getWallpapersCount() == 0) {
             URL url = new URL(wallpaperUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setConnectTimeout(15000);
 
+            if (WallpaperBoardApplication.getConfig().getJsonStructure().getUrl() != null) {
+                connection.setRequestMethod("POST");
+                connection.setUseCaches(false);
+                connection.setDoOutput(true);
+
+                List<NameValuePair> values = WallpaperBoardApplication.getConfig()
+                        .getJsonStructure().getPosts();
+                if (values.size() > 0) {
+                    DataOutputStream stream = new DataOutputStream(connection.getOutputStream());
+                    stream.writeBytes(JsonHelper.getQuery(values));
+                    stream.flush();
+                    stream.close();
+                }
+            }
+
             if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                InputStream stream = new BufferedInputStream(connection.getInputStream());
+                InputStream stream = connection.getInputStream();
+                JsonStructure.WallpaperStructure wallpaperStructure = WallpaperBoardApplication
+                        .getConfig().getJsonStructure().getWallpaper();
+
                 Map<String, List> map = LoganSquare.parseMap(stream, List.class);
                 if (map == null) return null;
 
-                JsonStructure.WallpaperStructure wallpaperStructure = WallpaperBoardApplication
-                        .getConfiguration().getJsonStructure().getWallpaper();
-                List wallpaperList = map.get(wallpaperStructure.getArrayName());
                 stream.close();
+                List wallpaperList = map.get(wallpaperStructure.getArrayName());
                 if (wallpaperList == null) {
-                    LogUtil.e("Muzei: Json error: wallpaper array with name "
-                            +wallpaperStructure.getArrayName() +" not found");
+                    LogUtil.e("Muzei error: wallpaper array with name "
+                            + wallpaperStructure.getArrayName() + " not found");
                     return null;
                 }
 
@@ -73,12 +94,13 @@ public class MuzeiHelper {
                 }
             }
             return null;
-        } else {
-            return Database.get(mContext).getRandomWallpaper();
+        } catch (Exception e) {
+            LogUtil.e(Log.getStackTraceString(e));
+            return null;
         }
     }
 
-    private int getRandomInt(int size) {
+    private static int getRandomInt(int size) {
         try {
             Random random = new Random();
             return random.nextInt(size);

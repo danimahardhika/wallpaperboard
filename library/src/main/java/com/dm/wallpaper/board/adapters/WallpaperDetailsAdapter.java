@@ -22,7 +22,6 @@ import com.danimahardhika.android.helpers.core.ColorHelper;
 import com.danimahardhika.android.helpers.core.DrawableHelper;
 import com.danimahardhika.android.helpers.core.ViewHelper;
 import com.danimahardhika.cafebar.CafeBar;
-import com.danimahardhika.cafebar.CafeBarDuration;
 import com.danimahardhika.cafebar.CafeBarTheme;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
@@ -30,6 +29,7 @@ import com.dm.wallpaper.board.helpers.TypefaceHelper;
 import com.dm.wallpaper.board.items.Category;
 import com.dm.wallpaper.board.items.ColorPalette;
 import com.dm.wallpaper.board.items.WallpaperProperty;
+import com.dm.wallpaper.board.preferences.Preferences;
 import com.dm.wallpaper.board.utils.LogUtil;
 
 import java.util.List;
@@ -198,7 +198,7 @@ public class WallpaperDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
             super(itemView);
             ButterKnife.bind(this, itemView);
 
-            TextView title = ButterKnife.findById(itemView, R.id.title);
+            TextView title = itemView.findViewById(R.id.title);
             int color = ColorHelper.getAttributeColor(mContext, android.R.attr.textColorPrimary);
             Drawable drawable = DrawableHelper.getTintedDrawable(mContext,
                     R.drawable.ic_toolbar_details_palette, color);
@@ -255,11 +255,9 @@ public class WallpaperDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     private void showCafeBar(String title, String content, boolean showCopy) {
         CafeBar.Builder builder = CafeBar.builder(mContext)
-                .theme(CafeBarTheme.Custom(ColorHelper.getAttributeColor(
-                        mContext, R.attr.card_background)))
+                .theme(Preferences.get(mContext).isDarkTheme() ? CafeBarTheme.LIGHT : CafeBarTheme.DARK)
                 .typeface(TypefaceHelper.getRegular(mContext), TypefaceHelper.getBold(mContext))
                 .content(title)
-                .duration(CafeBarDuration.SHORT.getDuration())
                 .floating(true);
 
         if (showCopy) {

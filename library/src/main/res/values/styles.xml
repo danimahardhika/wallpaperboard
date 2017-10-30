@@ -88,7 +88,7 @@
     <!-- Splash Screen Theme -->
     <style name="SplashTheme" parent="AppTheme">
         <item name="android:windowFullscreen">true</item>
-        <item name="android:windowBackground">@color/splashColor</item>
+        <item name="android:windowBackground">@drawable/splash_screen_logo</item>
     </style>
 
     <!-- Wallpaper Theme -->
