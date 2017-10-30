@@ -256,12 +256,13 @@ public class LatestFragment extends Fragment {
             mProgress.setVisibility(View.GONE);
             if (aBoolean) {
                 if (mPosition == (mWallpapers.size() - 1)) {
-                    if (mSwipe.isRefreshing()) {
+                    if (mAdapter != null) {
                         mAdapter.setWallpapers(mWallpapers);
-                    } else {
-                        mAdapter = new LatestAdapter(getActivity(), mWallpapers);
-                        mRecyclerView.setAdapter(mAdapter);
+                        return;
                     }
+
+                    mAdapter = new LatestAdapter(getActivity(), mWallpapers);
+                    mRecyclerView.setAdapter(mAdapter);
                 }
             }
         }
