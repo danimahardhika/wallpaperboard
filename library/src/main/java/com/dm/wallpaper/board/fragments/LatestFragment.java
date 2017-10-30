@@ -32,6 +32,7 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -88,7 +89,10 @@ public class LatestFragment extends Fragment {
                 StaggeredGridLayoutManager.VERTICAL);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setLayoutManager(mManager);
-        mRecyclerView.setHasFixedSize(false);
+
+        mWallpapers = new ArrayList<>();
+        mAdapter = new LatestAdapter(getActivity(), mWallpapers);
+        mRecyclerView.setAdapter(mAdapter);
 
         mSwipe.setColorSchemeColors(ColorHelper.getAttributeColor(
                 getActivity(), R.attr.colorAccent));
