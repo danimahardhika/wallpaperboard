@@ -117,6 +117,11 @@ public abstract class WallpaperBoardActivity extends AppCompatActivity implement
         ButterKnife.bind(this);
         mStatusBar.getLayoutParams().height = WindowHelper.getStatusBarHeight(this);
 
+        //Todo: wait until google fix the issue, then enable wallpaper crop again on API 26+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Preferences.get(this).setCropWallpaper(false);
+        }
+
         mConfig = onInit();
 
         WindowHelper.resetNavigationBarTranslucent(this,
