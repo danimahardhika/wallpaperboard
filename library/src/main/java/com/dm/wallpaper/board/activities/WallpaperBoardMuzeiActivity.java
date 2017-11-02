@@ -87,11 +87,8 @@ public abstract class WallpaperBoardMuzeiActivity extends AppCompatActivity impl
         ViewCompat.setNestedScrollingEnabled(mScrollView, false);
         WindowHelper.disableTranslucentNavigationBar(this);
 
-        ColorHelper.setNavigationBarColor(this, ColorHelper.getDarkerColor(
-                ColorHelper.getAttributeColor(this, R.attr.colorAccent), 0.8f));
-        ColorHelper.setStatusBarColor(this, ColorHelper.getAttributeColor(
-                this, R.attr.colorPrimaryDark));
-        ColorHelper.setupStatusBarIconColor(this);
+        int primary = ColorHelper.getAttributeColor(this, R.attr.colorPrimary);
+        ColorHelper.setupStatusBarIconColor(this, ColorHelper.isLightColor(primary));
 
         int color = ColorHelper.getAttributeColor(this, R.attr.toolbar_icon);
         Toolbar toolbar = findViewById(R.id.toolbar);

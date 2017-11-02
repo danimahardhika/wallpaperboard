@@ -28,7 +28,6 @@ import android.widget.TextView;
 import com.danimahardhika.android.helpers.core.ColorHelper;
 import com.danimahardhika.android.helpers.core.DrawableHelper;
 import com.danimahardhika.android.helpers.core.ViewHelper;
-import com.danimahardhika.android.helpers.core.WindowHelper;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.adapters.WallpapersAdapter;
@@ -43,7 +42,6 @@ import com.dm.wallpaper.board.utils.AlphanumComparator;
 import com.dm.wallpaper.board.utils.Extras;
 import com.dm.wallpaper.board.utils.LogUtil;
 import com.dm.wallpaper.board.utils.Popup;
-import com.dm.wallpaper.board.utils.listeners.AppBarListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -243,7 +241,6 @@ public class CategoryWallpapersFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        WindowHelper.setTranslucentStatusBar(getActivity(), true);
         if (mAsyncTask != null) {
             mAsyncTask.cancel(true);
         }
@@ -255,25 +252,16 @@ public class CategoryWallpapersFragment extends Fragment {
             int maxScroll = mAppBar.getTotalScrollRange();
             float percentage = (float) Math.abs(verticalOffset) / (float) maxScroll;
 
-            try {
-                AppBarListener listener = (AppBarListener) getActivity();
-                listener.onAppBarScroll(percentage);
-            } catch (Exception e) {
-                LogUtil.e("Activity must implements AppBarListener");
-            }
-
             if (percentage < 0.2f) {
                 if (!mIsAppBarExpanded) {
                     mIsAppBarExpanded = true;
-                    WindowHelper.setTranslucentStatusBar(getActivity(), false);
-                    ColorHelper.setupStatusBarIconColor(getActivity());
-                    ColorHelper.setStatusBarColor(getActivity(), Color.TRANSPARENT, true);
+                    int color = ColorHelper.getAttributeColor(getActivity(), R.attr.colorPrimary);
+                    ColorHelper.setupStatusBarIconColor(getActivity(), ColorHelper.isLightColor(color));
                 }
-            } else if (percentage > 0.8f) {
+            } else if (percentage == 1.0f) {
                 if (mIsAppBarExpanded) {
                     mIsAppBarExpanded = false;
                     ColorHelper.setupStatusBarIconColor(getActivity(), false);
-                    WindowHelper.setTranslucentStatusBar(getActivity(), true);
                 }
             }
         });

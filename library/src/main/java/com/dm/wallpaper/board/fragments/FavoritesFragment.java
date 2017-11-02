@@ -1,7 +1,6 @@
 package com.dm.wallpaper.board.fragments;
 
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -89,9 +88,6 @@ public class FavoritesFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         ViewHelper.setupToolbar(mToolbar);
 
-        WindowHelper.setTranslucentStatusBar(getActivity(), false);
-        ColorHelper.setStatusBarColor(getActivity(), Color.TRANSPARENT, true);
-
         TextView textView = getActivity().findViewById(R.id.title);
         textView.setText(getActivity().getResources().getString(
                 R.string.navigation_view_favorites));
@@ -132,7 +128,6 @@ public class FavoritesFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        WindowHelper.setTranslucentStatusBar(getActivity(), true);
         if (mAsyncTask != null) {
             mAsyncTask.cancel(true);
         }

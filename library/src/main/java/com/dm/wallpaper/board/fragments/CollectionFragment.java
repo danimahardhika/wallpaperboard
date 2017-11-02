@@ -3,7 +3,6 @@ package com.dm.wallpaper.board.fragments;
 import android.animation.AnimatorInflater;
 import android.animation.StateListAnimator;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -83,8 +82,6 @@ public class CollectionFragment extends Fragment {
     TabLayout mTab;
     @BindView(R2.id.pager)
     ViewPager mPager;
-    @BindView(R2.id.status_bar_view)
-    View mStatusBar;
 
     private CollectionPagerAdapter mAdapter;
 
@@ -137,7 +134,6 @@ public class CollectionFragment extends Fragment {
                 getResources().getDimensionPixelSize(R.dimen.content_margin) * 2;
 
         ViewHelper.setupToolbar(mToolbar);
-        mStatusBar.getLayoutParams().height = WindowHelper.getStatusBarHeight(getActivity());
 
         mToolbar.setTitle("");
         initAppBar();
@@ -193,26 +189,13 @@ public class CollectionFragment extends Fragment {
             if (percentage < 0.2f) {
                 if (!mIsAppBarExpanded) {
                     mIsAppBarExpanded = true;
-                    WindowHelper.setTranslucentStatusBar(getActivity(), false);
-                    ColorHelper.setupStatusBarIconColor(getActivity());
-                    ColorHelper.setStatusBarColor(getActivity(), Color.TRANSPARENT, true);
-
-                    mStatusBar.animate().cancel();
-                    mStatusBar.animate().alpha(1f)
-                            .setInterpolator(new LinearOutSlowInInterpolator())
-                            .setDuration(400)
-                            .start();
+                    int color = ColorHelper.getAttributeColor(getActivity(), R.attr.colorPrimary);
+                    ColorHelper.setupStatusBarIconColor(getActivity(), ColorHelper.isLightColor(color));
                 }
-            } else if (percentage > 0.8f) {
+            } else if (percentage == 1.0f) {
                 if (mIsAppBarExpanded) {
                     mIsAppBarExpanded = false;
                     ColorHelper.setupStatusBarIconColor(getActivity(), false);
-                    WindowHelper.setTranslucentStatusBar(getActivity(), true);
-
-                    mStatusBar.animate().cancel();
-                    mStatusBar.animate().alpha(0f)
-                            .setDuration(400)
-                            .start();
                 }
             }
         });

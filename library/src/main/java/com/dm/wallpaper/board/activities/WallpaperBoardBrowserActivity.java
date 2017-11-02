@@ -3,29 +3,23 @@ package com.dm.wallpaper.board.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 
 import com.danimahardhika.android.helpers.core.ColorHelper;
 import com.danimahardhika.android.helpers.core.SoftKeyboardHelper;
 import com.danimahardhika.android.helpers.core.WindowHelper;
 import com.dm.wallpaper.board.R;
-import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.fragments.CategoryWallpapersFragment;
 import com.dm.wallpaper.board.fragments.WallpaperSearchFragment;
 import com.dm.wallpaper.board.helpers.LocaleHelper;
 import com.dm.wallpaper.board.preferences.Preferences;
 import com.dm.wallpaper.board.utils.Extras;
-import com.dm.wallpaper.board.utils.listeners.AppBarListener;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -47,10 +41,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  * limitations under the License.
  */
 
-public class WallpaperBoardBrowserActivity extends AppCompatActivity implements AppBarListener {
-
-    @BindView(R2.id.status_bar_view)
-    View mStatusBar;
+public class WallpaperBoardBrowserActivity extends AppCompatActivity {
 
     private FragmentManager mFragManager;
 
@@ -67,11 +58,8 @@ public class WallpaperBoardBrowserActivity extends AppCompatActivity implements 
         setContentView(R.layout.activity_wallpaper_browser);
         ButterKnife.bind(this);
 
-        mStatusBar.getLayoutParams().height = WindowHelper.getStatusBarHeight(this);
-
-        ColorHelper.setupStatusBarIconColor(this);
-        WindowHelper.setTranslucentStatusBar(this, false);
-        ColorHelper.setStatusBarColor(this, Color.TRANSPARENT, true);
+        int color = ColorHelper.getAttributeColor(this, R.attr.colorPrimary);
+        ColorHelper.setupStatusBarIconColor(this, ColorHelper.isLightColor(color));
 
         WindowHelper.resetNavigationBarTranslucent(this,
                 WindowHelper.NavigationBarTranslucent.PORTRAIT_ONLY);
@@ -160,22 +148,6 @@ public class WallpaperBoardBrowserActivity extends AppCompatActivity implements 
         }
 
         super.onBackPressed();
-    }
-
-    @Override
-    public void onAppBarScroll(float percentage) {
-        if (percentage < 0.2f) {
-            mStatusBar.animate().cancel();
-            mStatusBar.animate().alpha(1f)
-                    .setInterpolator(new LinearOutSlowInInterpolator())
-                    .setDuration(400)
-                    .start();
-        } else if (percentage > 0.8f) {
-            mStatusBar.animate().cancel();
-            mStatusBar.animate().alpha(0f)
-                    .setDuration(400)
-                    .start();
-        }
     }
 
     private void setFragment() {

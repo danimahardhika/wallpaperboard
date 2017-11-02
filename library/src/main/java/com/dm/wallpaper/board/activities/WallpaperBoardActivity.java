@@ -95,8 +95,6 @@ public abstract class WallpaperBoardActivity extends AppCompatActivity implement
     NavigationView mNavigationView;
     @BindView(R2.id.drawer_layout)
     DrawerLayout mDrawerLayout;
-    @BindView(R2.id.status_bar_view)
-    View mStatusBar;
 
     private BillingProcessor mBillingProcessor;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -115,7 +113,6 @@ public abstract class WallpaperBoardActivity extends AppCompatActivity implement
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wallpaper_board);
         ButterKnife.bind(this);
-        mStatusBar.getLayoutParams().height = WindowHelper.getStatusBarHeight(this);
 
         //Todo: wait until google fix the issue, then enable wallpaper crop again on API 26+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -298,7 +295,8 @@ public abstract class WallpaperBoardActivity extends AppCompatActivity implement
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
-                ColorHelper.setupStatusBarIconColor(WallpaperBoardActivity.this);
+                int color = ColorHelper.getAttributeColor(WallpaperBoardActivity.this, R.attr.colorPrimary);
+                ColorHelper.setupStatusBarIconColor(WallpaperBoardActivity.this, ColorHelper.isLightColor(color));
 
                 if (mPosition == 4) {
                     mPosition = mLastPosition;
@@ -461,7 +459,6 @@ public abstract class WallpaperBoardActivity extends AppCompatActivity implement
         }
 
         mNavigationView.getMenu().getItem(mPosition).setChecked(true);
-        mStatusBar.setVisibility(mPosition == 0 ? View.GONE : View.VISIBLE);
     }
 
     @Nullable
