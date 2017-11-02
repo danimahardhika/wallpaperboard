@@ -161,8 +161,6 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
             url = bundle.getString(Extras.EXTRA_URL);
         }
 
-        LogUtil.e("url: " +url);
-
         mWallpaper = Database.get(this).getWallpaper(url);
         if (mWallpaper == null) {
             finish();
@@ -297,8 +295,6 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
                 url = bundle.getString(Extras.EXTRA_URL);
             }
 
-            LogUtil.e("url: " +url);
-
             Wallpaper wallpaper = Database.get(this).getWallpaper(url);
             if (wallpaper == null) {
                 return;
@@ -322,6 +318,10 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
 
     @Override
     protected void onDestroy() {
+        if (Preferences.get(this).isCropWallpaper()) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER);
+        }
+
         ImageLoader.getInstance().cancelDisplayTask(mImageView);
         WallpaperBoardApplication.sIsClickable = true;
         if (mAttacher != null) mAttacher.cleanup();
