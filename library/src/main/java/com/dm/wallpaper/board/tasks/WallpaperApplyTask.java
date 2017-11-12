@@ -1,5 +1,6 @@
 package com.dm.wallpaper.board.tasks;
 
+import android.app.Activity;
 import android.app.WallpaperManager;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -11,7 +12,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -134,15 +134,28 @@ public class WallpaperApplyTask extends AsyncTask<Void, Void, Boolean> implement
         mWallpaper = wallpaper;
         if (mExecutor == null) mExecutor = SERIAL_EXECUTOR;
         if (mWallpaper.getDimensions() == null) {
-            mDialog.dismiss();
             LogUtil.e("WallpaperApply cancelled, unable to retrieve wallpaper dimensions");
+
+            if (mContext.get() == null) return;
+            if (mContext.get() instanceof Activity) {
+                if (((Activity) mContext.get()).isFinishing())
+                    return;
+            }
+
+            if (mDialog != null && mDialog.isShowing()) {
+                mDialog.dismiss();
+            }
 
             Toast.makeText(mContext.get(), R.string.wallpaper_apply_failed,
                     Toast.LENGTH_LONG).show();
             return;
         }
 
-        executeOnExecutor(mExecutor);
+        try {
+            executeOnExecutor(mExecutor);
+        } catch (IllegalStateException e) {
+            LogUtil.e(Log.getStackTraceString(e));
+        }
     }
 
     @Override
@@ -337,12 +350,24 @@ public class WallpaperApplyTask extends AsyncTask<Void, Void, Boolean> implement
     @Override
     protected void onProgressUpdate(Void... values) {
         super.onProgressUpdate(values);
+        if (mContext.get() == null) return;
+        if (mContext.get() instanceof Activity) {
+            if (((Activity) mContext.get()).isFinishing())
+                return;
+        }
+
         mDialog.setContent(R.string.wallpaper_applying);
     }
 
     @Override
     protected void onCancelled(Boolean aBoolean) {
         super.onCancelled(aBoolean);
+        if (mContext.get() == null) return;
+        if (mContext.get() instanceof Activity) {
+            if (((Activity) mContext.get()).isFinishing())
+                return;
+        }
+
         Toast.makeText(mContext.get(), R.string.wallpaper_apply_cancelled,
                 Toast.LENGTH_LONG).show();
     }
@@ -350,12 +375,10 @@ public class WallpaperApplyTask extends AsyncTask<Void, Void, Boolean> implement
     @Override
     protected void onPostExecute(Boolean aBoolean) {
         super.onPostExecute(aBoolean);
-        if (mContext.get() == null) {
-            return;
-        }
-
-        if (((AppCompatActivity) mContext.get()).isFinishing()) {
-            return;
+        if (mContext.get() == null) return;
+        if (mContext.get() instanceof Activity) {
+            if (((Activity) mContext.get()).isFinishing())
+                return;
         }
 
         if (mDialog != null && mDialog.isShowing()) {
