@@ -6,8 +6,8 @@
 # Gradle Dependency
 **Requirements**
 * Latest version of Android Studio</li>
-* Android-SDK Build tools v25</li>
-* API 25 SDK Platform</li>
+* Android-SDK Build tools v27</li>
+* API 26 SDK Platform</li>
 * Latest version of Android Support Library</li>
 * Java SE Development Kit 8</li>
 
