@@ -15,6 +15,7 @@ import com.dm.wallpaper.board.utils.LogUtil;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.lang.ref.WeakReference;
@@ -62,7 +63,11 @@ public class LocalFavoritesBackupTask extends AsyncTask<Void, Void, Boolean> {
 
             File nomedia = new File(file, BackupHelper.NOMEDIA);
             if (!nomedia.exists()) {
-                nomedia.mkdirs();
+                try {
+                    nomedia.createNewFile();
+                } catch (IOException e) {
+                    LogUtil.e(Log.getStackTraceString(e));
+                }
             }
         }
     }
