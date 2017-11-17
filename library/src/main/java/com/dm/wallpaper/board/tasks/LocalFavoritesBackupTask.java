@@ -84,7 +84,13 @@ public class LocalFavoritesBackupTask extends AsyncTask<Void, Void, Boolean> {
 
                 List<Wallpaper> favorites = Database.get(mContext.get()).getFavoriteWallpapers();
                 File file = new File(BackupHelper.getDefaultDirectory(mContext.get()), BackupHelper.FILE_BACKUP);
-
+                if (!file.exists()) {
+                    if (!file.createNewFile()) {
+                        LogUtil.e("Unable to create backup file");
+                        return false;
+                    }
+                }
+                
                 Writer writer = new BufferedWriter(new OutputStreamWriter(
                         new FileOutputStream(file), "UTF8"));
 
