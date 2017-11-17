@@ -56,12 +56,12 @@ public class LocalFavoritesBackupTask extends AsyncTask<Void, Void, Boolean> {
     protected void onPreExecute() {
         super.onPreExecute();
         if (mIsStorageGranted) {
-            File file = BackupHelper.getDefaultDirectory(mContext.get()).getParentFile();
+            File file = BackupHelper.getDefaultDirectory(mContext.get());
             if (!file.exists()) {
                 file.mkdirs();
             }
 
-            File nomedia = new File(file, BackupHelper.NOMEDIA);
+            File nomedia = new File(file.getParent(), BackupHelper.NOMEDIA);
             if (!nomedia.exists()) {
                 try {
                     nomedia.createNewFile();
@@ -84,13 +84,7 @@ public class LocalFavoritesBackupTask extends AsyncTask<Void, Void, Boolean> {
 
                 List<Wallpaper> favorites = Database.get(mContext.get()).getFavoriteWallpapers();
                 File file = new File(BackupHelper.getDefaultDirectory(mContext.get()), BackupHelper.FILE_BACKUP);
-                if (!file.exists()) {
-                    if (!file.createNewFile()) {
-                        LogUtil.e("Unable to create backup file");
-                        return false;
-                    }
-                }
-                
+
                 Writer writer = new BufferedWriter(new OutputStreamWriter(
                         new FileOutputStream(file), "UTF8"));
 
