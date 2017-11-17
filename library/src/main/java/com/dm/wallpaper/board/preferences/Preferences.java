@@ -52,6 +52,8 @@ public class Preferences {
     private static final String KEY_WALLPAPER_TOOLTIP = "wallpaper_tooltip";
     private static final String KEY_SORT_BY = "sort_by";
     private static final String KEY_HIGH_QUALITY_PREVIEW = "high_quality_preview";
+    private static final String KEY_BACKUP = "backup";
+    private static final String KEY_PREVIOUS_BACKUP = "previousBackup";
 
     private static WeakReference<Preferences> mPreferences;
     private final Context mContext;
@@ -99,7 +101,7 @@ public class Preferences {
     }
 
     public boolean isDarkTheme() {
-        boolean useDarkTheme = mContext.getResources().getBoolean(R.bool.use_dark_theme);
+        boolean useDarkTheme = mPreferences.get().mContext.getResources().getBoolean(R.bool.use_dark_theme);
         boolean isThemingEnabled = WallpaperBoardApplication.getConfig().isDashboardThemingEnabled();
         if (!isThemingEnabled) return useDarkTheme;
         return getSharedPreferences().getBoolean(KEY_DARK_THEME, useDarkTheme);
@@ -176,6 +178,22 @@ public class Preferences {
 
     public void setHighQualityPreviewEnabled(boolean bool) {
         getSharedPreferences().edit().putBoolean(KEY_HIGH_QUALITY_PREVIEW, bool).apply();
+    }
+
+    public boolean isBackupRestored() {
+        return getSharedPreferences().getBoolean(KEY_BACKUP, false);
+    }
+
+    public void setBackupRestored(boolean bool) {
+        getSharedPreferences().edit().putBoolean(KEY_BACKUP, bool).apply();
+    }
+
+    public boolean isPreviousBackupExist() {
+        return getSharedPreferences().getBoolean(KEY_PREVIOUS_BACKUP, false);
+    }
+
+    public void setPreviousBackupExist(boolean bool) {
+        getSharedPreferences().edit().putBoolean(KEY_PREVIOUS_BACKUP, bool).apply();
     }
 
     public Locale getCurrentLocale() {

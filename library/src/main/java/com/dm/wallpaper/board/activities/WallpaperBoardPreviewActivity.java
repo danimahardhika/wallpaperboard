@@ -52,6 +52,7 @@ import com.dm.wallpaper.board.items.PopupItem;
 import com.dm.wallpaper.board.items.Wallpaper;
 import com.dm.wallpaper.board.items.WallpaperProperty;
 import com.dm.wallpaper.board.preferences.Preferences;
+import com.dm.wallpaper.board.tasks.LocalFavoritesRestoreTask;
 import com.dm.wallpaper.board.tasks.WallpaperApplyTask;
 import com.dm.wallpaper.board.tasks.WallpaperPropertiesLoaderTask;
 import com.dm.wallpaper.board.tasks.WallpaperPaletteLoaderTask;
@@ -467,6 +468,10 @@ public class WallpaperBoardPreviewActivity extends AppCompatActivity implements 
                 WallpaperDownloader.prepare(this)
                         .wallpaper(mWallpaper)
                         .start();
+
+                if (!Preferences.get(this).isBackupRestored()) {
+                    LocalFavoritesRestoreTask.with(this).start(AsyncTask.THREAD_POOL_EXECUTOR);
+                }
             } else {
                 Toast.makeText(this, R.string.permission_storage_denied, Toast.LENGTH_LONG).show();
             }

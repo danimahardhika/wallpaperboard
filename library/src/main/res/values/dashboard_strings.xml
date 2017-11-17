@@ -85,6 +85,8 @@
     <string name="wallpaper_apply">Apply wallpaper</string>
     <string name="wallpaper_save_to_device">Save wallpaper</string>
 
+    <string name="wallpapers_favorite_restored">Favorite wallpapers restored</string>
+
     <!-- Wallpaper Tooltips -->
     <string name="wallpaper_tooltip_preview">You are currently previewing wallpaper with smaller resolution,
         which may looks blurry and pixelated.</string>

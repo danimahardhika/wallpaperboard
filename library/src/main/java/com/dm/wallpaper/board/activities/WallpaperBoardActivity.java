@@ -8,6 +8,7 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -50,12 +51,15 @@ import com.dm.wallpaper.board.fragments.CollectionFragment;
 import com.dm.wallpaper.board.fragments.FavoritesFragment;
 import com.dm.wallpaper.board.fragments.SettingsFragment;
 import com.dm.wallpaper.board.fragments.dialogs.InAppBillingFragment;
+import com.dm.wallpaper.board.helpers.BackupHelper;
 import com.dm.wallpaper.board.helpers.InAppBillingHelper;
 
 import com.dm.wallpaper.board.helpers.LicenseCallbackHelper;
 import com.dm.wallpaper.board.helpers.LocaleHelper;
 import com.dm.wallpaper.board.items.InAppBilling;
 import com.dm.wallpaper.board.preferences.Preferences;
+import com.dm.wallpaper.board.tasks.LocalFavoritesBackupTask;
+import com.dm.wallpaper.board.tasks.LocalFavoritesRestoreTask;
 import com.dm.wallpaper.board.tasks.WallpapersLoaderTask;
 import com.dm.wallpaper.board.utils.Extras;
 import com.dm.wallpaper.board.utils.ImageConfig;
@@ -65,6 +69,8 @@ import com.dm.wallpaper.board.utils.views.HeaderView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -152,11 +158,21 @@ public abstract class WallpaperBoardActivity extends AppCompatActivity implement
             WallpapersLoaderTask.start(this);
         }
 
+        if (Preferences.get(this).isFirstRun()) {
+            File file = new File(BackupHelper.getDefaultDirectory(this), BackupHelper.FILE_BACKUP);
+            Preferences.get(this).setPreviousBackupExist(file.exists());
+        }
 
         if (Preferences.get(this).isFirstRun() && mConfig.isLicenseCheckerEnabled()) {
             mLicenseHelper = new LicenseHelper(this);
-            mLicenseHelper.run(mConfig.getLicenseKey(), mConfig.getRandomString(), new LicenseCallbackHelper(this));
+            mLicenseHelper.run(mConfig.getLicenseKey(),
+                    mConfig.getRandomString(),
+                    new LicenseCallbackHelper(this));
             return;
+        }
+
+        if (!mConfig.isLicenseCheckerEnabled()) {
+            Preferences.get(this).setFirstRun(false);
         }
 
         if (mConfig.isLicenseCheckerEnabled() && !Preferences.get(this).isLicensed()) {
@@ -179,14 +195,16 @@ public abstract class WallpaperBoardActivity extends AppCompatActivity implement
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putInt(Extras.EXTRA_POSITION, mPosition);
-        Database.get(this.getApplicationContext()).closeDatabase();
         super.onSaveInstanceState(outState);
     }
 
     @Override
-    protected void onResume() {
-        Database.get(this.getApplicationContext()).openDatabase();
-        super.onResume();
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        resetNavigationView(newConfig.orientation);
+        WindowHelper.resetNavigationBarTranslucent(this,
+                WindowHelper.NavigationBarTranslucent.PORTRAIT_ONLY);
+        LocaleHelper.setLocale(this);
     }
 
     @Override
@@ -200,15 +218,12 @@ public abstract class WallpaperBoardActivity extends AppCompatActivity implement
         }
 
         Database.get(this.getApplicationContext()).closeDatabase();
-        super.onDestroy();
-    }
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        resetNavigationView(newConfig.orientation);
-        WindowHelper.resetNavigationBarTranslucent(this, WindowHelper.NavigationBarTranslucent.PORTRAIT_ONLY);
-        LocaleHelper.setLocale(this);
+        if (!Preferences.get(this).isPreviousBackupExist()) {
+            LocalFavoritesBackupTask.with(this.getApplicationContext())
+                    .start(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+        super.onDestroy();
     }
 
     @Override
@@ -244,6 +259,11 @@ public abstract class WallpaperBoardActivity extends AppCompatActivity implement
         if (requestCode == PermissionCode.STORAGE) {
             if (grantResults.length > 0 && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this, R.string.permission_storage_denied, Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            if (!Preferences.get(this).isBackupRestored()) {
+                LocalFavoritesRestoreTask.with(this).start(AsyncTask.THREAD_POOL_EXECUTOR);
             }
         }
     }
