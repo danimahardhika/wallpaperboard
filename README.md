@@ -26,14 +26,16 @@ allprojects {
 Add the dependency
 ```Gradle
 dependencies {
-    compile 'com.github.danimahardhika:wallpaperboard:1.7.0-b3'
+    implementation 'com.github.danimahardhika:wallpaperboard:1.7.0-b3'
 }
 ```
 
 Or use a snapshot
 ```Gradle
 dependecies {
-    compile 'com.github.danimahardhika:wallpaperboard:-SNAPSHOT'
+    implementation('com.github.danimahardhika:wallpaperboard:-SNAPSHOT') {
+        changing = true
+    }
 }
 ````
 
