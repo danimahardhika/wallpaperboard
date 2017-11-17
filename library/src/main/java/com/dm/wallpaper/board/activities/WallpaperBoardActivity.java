@@ -52,7 +52,6 @@ import com.dm.wallpaper.board.fragments.FavoritesFragment;
 import com.dm.wallpaper.board.fragments.SettingsFragment;
 import com.dm.wallpaper.board.fragments.dialogs.InAppBillingFragment;
 import com.dm.wallpaper.board.helpers.BackupHelper;
-import com.dm.wallpaper.board.helpers.InAppBillingHelper;
 
 import com.dm.wallpaper.board.helpers.LicenseCallbackHelper;
 import com.dm.wallpaper.board.helpers.LocaleHelper;
@@ -64,6 +63,7 @@ import com.dm.wallpaper.board.tasks.LocalFavoritesRestoreTask;
 import com.dm.wallpaper.board.tasks.WallpapersLoaderTask;
 import com.dm.wallpaper.board.utils.Extras;
 import com.dm.wallpaper.board.utils.ImageConfig;
+import com.dm.wallpaper.board.utils.InAppBillingProcessor;
 import com.dm.wallpaper.board.utils.listeners.InAppBillingListener;
 import com.dm.wallpaper.board.utils.listeners.NavigationListener;
 import com.dm.wallpaper.board.utils.views.HeaderView;
@@ -103,7 +103,6 @@ public abstract class WallpaperBoardActivity extends AppCompatActivity implement
     @BindView(R2.id.drawer_layout)
     DrawerLayout mDrawerLayout;
 
-    private BillingProcessor mBillingProcessor;
     private ActionBarDrawerToggle mDrawerToggle;
     private FragmentManager mFragManager;
     private LicenseHelper mLicenseHelper;
@@ -128,6 +127,7 @@ public abstract class WallpaperBoardActivity extends AppCompatActivity implement
         }
 
         mConfig = onInit();
+        InAppBillingProcessor.get(this).init(mConfig.getLicenseKey());
 
         WindowHelper.resetNavigationBarTranslucent(this,
                 WindowHelper.NavigationBarTranslucent.PORTRAIT_ONLY);
@@ -140,7 +140,6 @@ public abstract class WallpaperBoardActivity extends AppCompatActivity implement
 
         initNavigationView();
         initNavigationViewHeader();
-        initInAppBilling();
 
         mPosition = mLastPosition = 0;
         if (savedInstanceState != null) {
@@ -211,9 +210,7 @@ public abstract class WallpaperBoardActivity extends AppCompatActivity implement
 
     @Override
     protected void onDestroy() {
-        if (mBillingProcessor != null) {
-            mBillingProcessor.release();
-        }
+        InAppBillingProcessor.get(this).destroy();
 
         if (mLicenseHelper != null) {
             mLicenseHelper.destroy();
@@ -251,7 +248,7 @@ public abstract class WallpaperBoardActivity extends AppCompatActivity implement
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (!mBillingProcessor.handleActivityResult(requestCode, resultCode, data))
+        if (!InAppBillingProcessor.get(this).handleActivityResult(requestCode, resultCode, data))
             super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -282,20 +279,14 @@ public abstract class WallpaperBoardActivity extends AppCompatActivity implement
     }
 
     @Override
-    public void onInAppBillingInitialized(boolean success) {
-        if (!success) mBillingProcessor = null;
-    }
-
-    @Override
     public void onInAppBillingSelected(InAppBilling product) {
-        if (mBillingProcessor == null) return;
-        mBillingProcessor.purchase(this, product.getProductId());
+        InAppBillingProcessor.get(this).getProcessor()
+                .purchase(this, product.getProductId());
     }
 
     @Override
     public void onInAppBillingConsume(String productId) {
-        if (mBillingProcessor == null) return;
-        if (mBillingProcessor.consumePurchase(productId)) {
+        if (InAppBillingProcessor.get(this).getProcessor().consumePurchase(productId)) {
             new MaterialDialog.Builder(this)
                     .title(R.string.navigation_view_donate)
                     .content(R.string.donation_success)
@@ -325,7 +316,6 @@ public abstract class WallpaperBoardActivity extends AppCompatActivity implement
                     mPosition = mLastPosition;
                     mNavigationView.getMenu().getItem(mPosition).setChecked(true);
                     InAppBillingFragment.showInAppBillingDialog(mFragManager,
-                            mBillingProcessor,
                             mConfig.getLicenseKey(),
                             mConfig.getDonationProductsId());
                     return;
@@ -435,17 +425,6 @@ public abstract class WallpaperBoardActivity extends AppCompatActivity implement
 
         ImageLoader.getInstance().displayImage(imageUrl, new ImageViewAware(image),
                 ImageConfig.getDefaultImageOptions(), new ImageSize(720, 720), null, null);
-    }
-
-    private void initInAppBilling() {
-        if (!getResources().getBoolean(R.bool.enable_donation)) return;
-
-        if (mBillingProcessor != null) return;
-
-        if (BillingProcessor.isIabServiceAvailable(this)) {
-            mBillingProcessor = new BillingProcessor(this,
-                    mConfig.getLicenseKey(), new InAppBillingHelper(this));
-        }
     }
 
     private void resetNavigationView(int orientation) {

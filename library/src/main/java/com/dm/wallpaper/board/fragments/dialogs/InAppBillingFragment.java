@@ -1,7 +1,6 @@
 package com.dm.wallpaper.board.fragments.dialogs;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,7 +16,6 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.anjlab.android.iab.v3.BillingProcessor;
 import com.anjlab.android.iab.v3.SkuDetails;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
@@ -25,10 +23,9 @@ import com.dm.wallpaper.board.adapters.InAppBillingAdapter;
 import com.dm.wallpaper.board.helpers.TypefaceHelper;
 import com.dm.wallpaper.board.items.InAppBilling;
 import com.dm.wallpaper.board.utils.Extras;
+import com.dm.wallpaper.board.utils.InAppBillingProcessor;
 import com.dm.wallpaper.board.utils.LogUtil;
 import com.dm.wallpaper.board.utils.listeners.InAppBillingListener;
-
-import java.lang.ref.WeakReference;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,13 +55,9 @@ public class InAppBillingFragment extends DialogFragment {
     @BindView(R2.id.progress)
     ProgressBar mProgress;
 
-    private String mKey;
     private String[] mProductsId;
-
     private InAppBillingAdapter mAdapter;
-    private AsyncTask<Void, Void, Boolean> mLoadInAppProducts;
-
-    private static WeakReference<BillingProcessor> mBillingProcessor;
+    private AsyncTask mAsyncTask;
 
     private static final String TAG = "com.dm.wallpaper.board.dialog.inappbilling";
 
@@ -77,9 +70,7 @@ public class InAppBillingFragment extends DialogFragment {
         return fragment;
     }
 
-    public static void showInAppBillingDialog(@NonNull FragmentManager fm, BillingProcessor billingProcessor,
-                                              @NonNull String key, @NonNull String[] productId) {
-        mBillingProcessor = new WeakReference<>(billingProcessor);
+    public static void showInAppBillingDialog(@NonNull FragmentManager fm, @NonNull String key, @NonNull String[] productId) {
         FragmentTransaction ft = fm.beginTransaction();
         Fragment prev = fm.findFragmentByTag(TAG);
         if (prev != null) {
@@ -95,7 +86,6 @@ public class InAppBillingFragment extends DialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mKey = getArguments().getString(Extras.EXTRA_KEY);
         mProductsId = getArguments().getStringArray(Extras.EXTRA_PRODUCT_ID);
     }
 
@@ -109,7 +99,7 @@ public class InAppBillingFragment extends DialogFragment {
                 .positiveText(R.string.donate)
                 .negativeText(R.string.close)
                 .onPositive((dialog, which) -> {
-                    if (mLoadInAppProducts == null) {
+                    if (mAsyncTask == null) {
                         try {
                             InAppBillingListener listener = (InAppBillingListener) getActivity();
                             listener.onInAppBillingSelected(mAdapter.getSelectedProduct());
@@ -132,92 +122,80 @@ public class InAppBillingFragment extends DialogFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null) {
-            mKey = savedInstanceState.getString(Extras.EXTRA_KEY);
             mProductsId = savedInstanceState.getStringArray(Extras.EXTRA_PRODUCT_ID);
         }
-        loadInAppProducts();
+
+        mAsyncTask = new InAppProductsLoader().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putString(Extras.EXTRA_KEY, mKey);
         outState.putStringArray(Extras.EXTRA_PRODUCT_ID, mProductsId);
         super.onSaveInstanceState(outState);
     }
 
     @Override
-    public void onDismiss(DialogInterface dialog) {
-        mBillingProcessor = null;
-        if (mLoadInAppProducts != null) {
-            mLoadInAppProducts.cancel(true);
+    public void onDestroy() {
+        if (mAsyncTask != null) {
+            mAsyncTask.cancel(true);
         }
-        super.onDismiss(dialog);
+        super.onDestroy();
     }
 
-    private void loadInAppProducts() {
-        mLoadInAppProducts = new AsyncTask<Void, Void, Boolean>() {
+    private class InAppProductsLoader extends AsyncTask<Void, Void, Boolean> {
 
-            InAppBilling[] inAppBillings;
-            boolean isBillingNotReady = false;
+        InAppBilling[] inAppBillings;
 
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                mProgress.setVisibility(View.VISIBLE);
-                inAppBillings = new InAppBilling[mProductsId.length];
-            }
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mProgress.setVisibility(View.VISIBLE);
+            inAppBillings = new InAppBilling[mProductsId.length];
+        }
 
-            @Override
-            protected Boolean doInBackground(Void... voids) {
-                while (!isCancelled()) {
-                    try {
-                        Thread.sleep(1);
-                        if (mBillingProcessor == null) {
-                            isBillingNotReady = true;
-                            return false;
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            while (!isCancelled()) {
+                try {
+                    Thread.sleep(1);
+                    for (int i = 0; i < mProductsId.length; i++) {
+                        SkuDetails product = InAppBillingProcessor.get(getActivity()).getProcessor()
+                                .getPurchaseListingDetails(mProductsId[i]);
+                        if (product != null) {
+                            InAppBilling inAppBilling;
+                            String title = product.title.substring(0, product.title.lastIndexOf("("));
+                            inAppBilling = new InAppBilling(product.priceText, mProductsId[i], title);
+                            inAppBillings[i] = inAppBilling;
+                        } else {
+                            if (i == mProductsId.length - 1)
+                                return false;
                         }
-
-                        for (int i = 0; i < mProductsId.length; i++) {
-                            SkuDetails product = mBillingProcessor.get()
-                                    .getPurchaseListingDetails(mProductsId[i]);
-                            if (product != null) {
-                                InAppBilling inAppBilling;
-                                String title = product.title.substring(0, product.title.lastIndexOf("("));
-                                inAppBilling = new InAppBilling(product.priceText, mProductsId[i], title);
-                                inAppBillings[i] = inAppBilling;
-                            } else {
-                                if (i == mProductsId.length - 1)
-                                    return false;
-                            }
-                        }
-                        return true;
-                    } catch (Exception e) {
-                        LogUtil.e(Log.getStackTraceString(e));
-                        return false;
                     }
-                }
-                return false;
-            }
-
-            @Override
-            protected void onPostExecute(Boolean aBoolean) {
-                super.onPostExecute(aBoolean);
-                mLoadInAppProducts = null;
-
-                if (getActivity() == null) return;
-                if (getActivity().isFinishing()) return;
-
-                mProgress.setVisibility(View.GONE);
-                if (aBoolean) {
-                    mAdapter = new InAppBillingAdapter(getActivity(), inAppBillings);
-                    mListView.setAdapter(mAdapter);
-                } else {
-                    dismiss();
-                    if (!isBillingNotReady)
-                        Toast.makeText(getActivity(), R.string.billing_load_product_failed,
-                                Toast.LENGTH_LONG).show();
+                    return true;
+                } catch (Exception e) {
+                    LogUtil.e(Log.getStackTraceString(e));
+                    return false;
                 }
             }
-        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            if (getActivity() == null) return;
+            if (getActivity().isFinishing()) return;
+
+            mAsyncTask = null;
+            mProgress.setVisibility(View.GONE);
+            if (aBoolean) {
+                mAdapter = new InAppBillingAdapter(getActivity(), inAppBillings);
+                mListView.setAdapter(mAdapter);
+            } else {
+                dismiss();
+                Toast.makeText(getActivity(), R.string.billing_load_product_failed,
+                        Toast.LENGTH_LONG).show();
+            }
+        }
     }
 }
