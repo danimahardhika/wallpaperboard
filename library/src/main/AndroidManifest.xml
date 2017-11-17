@@ -53,6 +53,8 @@
             android:exported="true"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:resizeableActivity="false"/>
-    </application>
 
+        <service android:name=".services.WallpaperBoardService"
+            android:stopWithTask="false"/>
+    </application>
 </manifest>

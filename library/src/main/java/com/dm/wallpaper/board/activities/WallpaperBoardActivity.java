@@ -58,6 +58,7 @@ import com.dm.wallpaper.board.helpers.LicenseCallbackHelper;
 import com.dm.wallpaper.board.helpers.LocaleHelper;
 import com.dm.wallpaper.board.items.InAppBilling;
 import com.dm.wallpaper.board.preferences.Preferences;
+import com.dm.wallpaper.board.services.WallpaperBoardService;
 import com.dm.wallpaper.board.tasks.LocalFavoritesBackupTask;
 import com.dm.wallpaper.board.tasks.LocalFavoritesRestoreTask;
 import com.dm.wallpaper.board.tasks.WallpapersLoaderTask;
@@ -119,6 +120,7 @@ public abstract class WallpaperBoardActivity extends AppCompatActivity implement
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wallpaper_board);
         ButterKnife.bind(this);
+        startService(new Intent(this, WallpaperBoardService.class));
 
         //Todo: wait until google fix the issue, then enable wallpaper crop again on API 26+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -217,6 +219,7 @@ public abstract class WallpaperBoardActivity extends AppCompatActivity implement
             mLicenseHelper.destroy();
         }
 
+        stopService(new Intent(this, WallpaperBoardService.class));
         Database.get(this.getApplicationContext()).closeDatabase();
 
         if (!Preferences.get(this).isPreviousBackupExist()) {
