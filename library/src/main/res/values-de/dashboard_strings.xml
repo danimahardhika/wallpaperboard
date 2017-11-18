@@ -18,6 +18,7 @@
     <string name="menu_wallpaper_crop">Hintergrundbild zuschneiden</string>
     <string name="menu_apply_homescreen">Startbildschirm</string>
     <string name="menu_apply_lockscreen">Speerbildschirm</string>
+    <string name="menu_apply_homescreen_lockscreen">Startbildschirm &amp; Speerbildschirm</string>
     <string name="menu_sort">Sortieren nach</string>
     <string name="menu_sort_latest">Neueste</string>
     <string name="menu_sort_oldest">Älteste</string>
@@ -143,6 +144,7 @@ Du wirst sie nicht benutzen können.</string>
 Für Android bei GitHub verfügbar und kostenlos zur Benutzung freigegeben, entwickelt von Dani Mahardhika.</string>
     <string name="about_dashboard_contributors">Mitwirkende bei Wallpaper Board</string>
     <string name="about_dashboard_translator">Übersetzer bei Wallpaper Board</string>
+    <string name="about_dashboard_dev_instagram_url">https://www.instagram.com/_u/danimahardhika112/</string>
     <!-- Splash screen -->
     <!-- DrawerToggle -->
     <string name="txt_open">Öffnen</string>
