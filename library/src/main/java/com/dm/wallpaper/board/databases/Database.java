@@ -347,7 +347,7 @@ public class Database extends SQLiteOpenHelper {
 
             String mimeType = wallpaper.getMimeType();
             if (mimeType != null) {
-                statement.bindString(3, wallpaper.getMimeType());
+                statement.bindString(3, mimeType);
             } else {
                 statement.bindNull(3);
             }
@@ -468,7 +468,7 @@ public class Database extends SQLiteOpenHelper {
         }
 
         List<Category> categories = new ArrayList<>();
-        String[] strings = category.split(",|;");
+        String[] strings = category.split("[,;]");
         for (String string : strings) {
             String s = string.toLowerCase(Locale.getDefault());
             String query = "SELECT categories.id, categories.name, " +
