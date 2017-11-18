@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.danimahardhika.android.helpers.core.FileHelper;
 import com.danimahardhika.android.helpers.core.ViewHelper;
-import com.danimahardhika.android.helpers.core.WindowHelper;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.R2;
 import com.dm.wallpaper.board.adapters.SettingsAdapter;
@@ -173,7 +172,7 @@ public class SettingsFragment extends Fragment {
 
         Language language = LocaleHelper.getCurrentLanguage(getActivity());
         settings.add(Setting.Builder(Setting.Type.LANGUAGE)
-                .subtitle(language.getName())
+                .subtitle(Preferences.get(getActivity()).isLocaleDefault() ? "Default" : language.getName())
                 .build()
         );
 

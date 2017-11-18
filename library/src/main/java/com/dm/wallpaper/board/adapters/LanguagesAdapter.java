@@ -89,7 +89,7 @@ public class LanguagesAdapter extends BaseAdapter {
             if (fragment == null) return;
 
             if (fragment instanceof LanguagesFragment) {
-                ((LanguagesFragment) fragment).setLanguage(mLanguages.get(position).getLocale());
+                ((LanguagesFragment) fragment).setLanguage(mLanguages.get(position));
             }
         });
         return view;

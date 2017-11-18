@@ -1,7 +1,6 @@
 package com.dm.wallpaper.board.fragments.dialogs;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,6 +21,7 @@ import com.dm.wallpaper.board.items.Language;
 import com.dm.wallpaper.board.preferences.Preferences;
 import com.dm.wallpaper.board.utils.LogUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -51,7 +51,6 @@ public class LanguagesFragment extends DialogFragment {
     @BindView(R2.id.listview)
     ListView mListView;
 
-    private Locale mLocale;
     private AsyncTask mAsyncTask;
 
     public static final String TAG = "com.dm.wallpaper.board.dialog.languages";
@@ -94,21 +93,23 @@ public class LanguagesFragment extends DialogFragment {
     }
 
     @Override
-    public void onDismiss(DialogInterface dialog) {
-        if (mLocale != null) {
-            Preferences.get(getActivity()).setCurrentLocale(mLocale.toString());
-            LocaleHelper.setLocale(getActivity());
-            getActivity().recreate();
-        }
+    public void onDestroy() {
         if (mAsyncTask != null) {
             mAsyncTask.cancel(true);
         }
-        super.onDismiss(dialog);
+        super.onDestroy();
     }
 
-    public void setLanguage(@NonNull Locale locale) {
-        mLocale = locale;
+    public void setLanguage(@NonNull Language language) {
+        boolean isDefault = language.getName().equalsIgnoreCase("default");
+        Preferences.get(getActivity()).setLocaleDefault(isDefault);
+
+        if (!isDefault && language.getLocale() != null) {
+            Preferences.get(getActivity()).setCurrentLocale(
+                    language.getLocale().toString());
+        }
         dismiss();
+        getActivity().recreate();
     }
 
     private class LanguagesLoader extends AsyncTask<Void, Void, Boolean> {
@@ -117,15 +118,27 @@ public class LanguagesFragment extends DialogFragment {
         private int index = 0;
 
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            languages = new ArrayList<>();
+        }
+
+        @Override
         protected Boolean doInBackground(Void... voids) {
             while (!isCancelled()) {
                 try {
                     Thread.sleep(1);
-                    languages = LocaleHelper.getAvailableLanguages(getActivity());
+                    languages.add(new Language("Default", null));
+                    languages.addAll(LocaleHelper.getAvailableLanguages(getActivity()));
+
+                    if (Preferences.get(getActivity()).isLocaleDefault()) {
+                        return true;
+                    }
+
                     Locale locale = Preferences.get(getActivity()).getCurrentLocale();
                     for (int i = 0; i < languages.size(); i++) {
                         Locale l = languages.get(i).getLocale();
-                        if (l.toString().equals(locale.toString())) {
+                        if (l != null && l.toString().equals(locale.toString())) {
                             index = i;
                             break;
                         }

@@ -83,11 +83,6 @@ public abstract class WallpaperBoardApplication extends Application implements A
             }
         }
 
-        if (Preferences.get(this).isTimeToSetLanguagePreference()) {
-            Preferences.get(this).setLanguagePreference();
-            return;
-        }
-
         LocaleHelper.setLocale(this);
     }
 
