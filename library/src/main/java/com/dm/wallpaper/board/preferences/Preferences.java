@@ -222,7 +222,7 @@ public class Preferences {
     }
 
     @Nullable
-    public Locale getDefaultLocale() {
+    private Locale getDefaultLocale() {
         Locale locale = LocaleHelper.getSystem();
         List<Language> languages = LocaleHelper.getAvailableLanguages(mContext);
 
@@ -244,7 +244,6 @@ public class Preferences {
                 }
             }
         }
-
         return currentLocale;
     }
 
