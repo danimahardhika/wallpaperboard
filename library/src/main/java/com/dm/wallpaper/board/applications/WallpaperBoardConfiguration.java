@@ -23,6 +23,7 @@ public class WallpaperBoardConfiguration {
     private @GridStyle int mWallpapersGrid = GridStyle.CARD;
 
     private boolean mIsHighQualityPreviewEnabled = false;
+    private boolean mIsCropWallpaperEnabledByDefault = false;
     private boolean mIsDashboardThemingEnabled = true;
     private boolean mIsShadowEnabled = true;
     private int mLatestWallpapersDisplayMax = 15;
@@ -80,6 +81,11 @@ public class WallpaperBoardConfiguration {
         return this;
     }
 
+    public WallpaperBoardConfiguration setCropWallpaperEnabledByDefault(boolean enabled) {
+        mIsCropWallpaperEnabledByDefault = enabled;
+        return this;
+    }
+
     public WallpaperBoardConfiguration setCrashReportEnabled(boolean crashReportEnabled) {
         mIsCrashReportEnabled = crashReportEnabled;
         return this;
@@ -125,6 +131,10 @@ public class WallpaperBoardConfiguration {
 
     public boolean isHighQualityPreviewEnabled() {
         return mIsHighQualityPreviewEnabled;
+    }
+
+    public boolean isCropWallpaperEnabledByDefault() {
+        return mIsCropWallpaperEnabledByDefault;
     }
 
     public boolean isCrashReportEnabled() {

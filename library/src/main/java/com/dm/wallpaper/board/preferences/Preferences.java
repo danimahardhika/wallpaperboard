@@ -157,7 +157,8 @@ public class Preferences {
     }
 
     public boolean isCropWallpaper() {
-        return getSharedPreferences().getBoolean(KEY_CROP_WALLPAPER, false);
+        return getSharedPreferences().getBoolean(KEY_CROP_WALLPAPER,
+                WallpaperBoardApplication.getConfig().isCropWallpaperEnabledByDefault());
     }
 
     public void setCropWallpaper(boolean bool) {
