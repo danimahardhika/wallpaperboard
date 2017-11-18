@@ -172,7 +172,8 @@ public class SettingsFragment extends Fragment {
 
         Language language = LocaleHelper.getCurrentLanguage(getActivity());
         settings.add(Setting.Builder(Setting.Type.LANGUAGE)
-                .subtitle(Preferences.get(getActivity()).isLocaleDefault() ? "Default" : language.getName())
+                .subtitle(Preferences.get(getActivity()).isLocaleDefault() ?
+                        getString(R.string.pref_options_default) : language.getName())
                 .build()
         );
 
