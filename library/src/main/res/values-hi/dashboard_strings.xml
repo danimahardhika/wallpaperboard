@@ -16,7 +16,7 @@
     <string name="menu_filter">फिल्टर</string>
     <string name="menu_save">फोन मे सुरक्षित करें</string>
     <string name="menu_wallpaper_crop">क्रौप वालपेपर</string>
-    <string name="menu_apply_homescreen">होम स्क्रीन</string>
+    <string name="menu_apply_homescreen">होमस्क्रीन</string>
     <string name="menu_apply_lockscreen">लॉक स्क्रीन</string>
     <string name="menu_sort">इसके अनुसार क्रमबद्ध करें</string>
     <string name="menu_sort_latest">नवीनतम</string>
@@ -48,8 +48,8 @@
 एंड्रॉयड नौगत पर लॉकस्क्रीन बैकग्राउंड के रूप में वॉलपेपर सेट करें या वॉलपेपर क्रॉप को एनेबल करें।</string>
     <string name="tap_intro_wallpaper_preview_save">वॉलपेपर सुरक्षित करें</string>
     <string name="tap_intro_wallpaper_preview_save_desc">वॉलपेपर को अपने डिवाइस पर डाउनलोड और सुरक्षित करने के लिए यहां टैप करें ताकि आप इसे बाद में उपयोग कर सकें</string>
-    <string name="tap_intro_wallpaper_preview_apply">एप्लाय वॉलपेपर</string>
-    <string name="tap_intro_wallpaper_preview_apply_desc">होमस्क्रीन बैकग्राउंड के रूप में वॉलपेपर सेट करने के लिए यहां टैप करें</string>
+    <string name="tap_intro_wallpaper_preview_apply">वॉलपेपर लागू करें</string>
+    <string name="tap_intro_wallpaper_preview_apply_desc">होमस्क्रीन पृष्ठभूमि के रूप में वॉलपेपर सेट करने के लिए यहां टैप करें</string>
     <string name="tap_intro_wallpaper_preview_full">मूल आकार के वॉलपेपर</string>
     <string name="tap_intro_wallpaper_preview_full_desc">मूल आकार के साथ वॉलपेपर का पूर्वावलोकन करने के लिए यहां टैप करें</string>
     <!-- Wallpapers -->
@@ -67,7 +67,7 @@
     <string name="connection_failed">सर्वर से डेटा प्राप्त करने में असमर्थ हैं</string>
     <string name="wallpapers_loader_failed">नए वॉलपेपर को चेक करने में असमर्थ</string>
     <string name="wallpaper_preview_full">मूल आकार के साथ वॉलपेपर का पूर्वावलोकन करें</string>
-    <string name="wallpaper_apply">वॉलपेपर के रूप में सेट करें</string>
+    <string name="wallpaper_apply">वॉलपेपर लागु करें</string>
     <string name="wallpaper_save_to_device">वॉलपेपर सेव करें</string>
     <!-- Wallpaper Tooltips -->
     <string name="wallpaper_tooltip_preview">आप वर्तमान में छोटे रिसोल्यूशन के साथ वॉलपेपर का पूर्वावलोकन कर रहे हैं,
@@ -76,7 +76,7 @@
     <string name="wallpaper_tooltip_dont_show">फिर से मत दिखाओ</string>
     <!-- Wallpaper Property -->
     <string name="wallpaper_property_name">नाम: %s</string>
-    <string name="wallpaper_property_author">लेखक: %s</string>
+    <string name="wallpaper_property_author">रचयिता: %s</string>
     <string name="wallpaper_property_dimensions">आयाम: %s</string>
     <string name="wallpaper_property_format">स्वरूप: %s</string>
     <string name="wallpaper_property_size">आकार: %s</string>
@@ -101,19 +101,19 @@
     <!-- InAppBilling -->
     <string name="billing_load_product_failed">इन ऐप उत्पादों को लोड करने मे असमर्थ हैं</string>
     <!-- Preferences -->
-    <string name="pref_data_header">डेटा एवम कैश</string>
-    <string name="pref_data_cache">कैश साफ करें</string>
+    <string name="pref_data_header">डेटा और कैश</string>
+    <string name="pref_data_cache">कैश हटाएँ</string>
     <string name="pref_data_cache_desc">क्लाउड वॉलपेपर थंबनेल्स लोड करने के बाद इमेज कैश को स्टोरेज से हटाएँ</string>
     <string name="pref_data_cache_size">कैश मात्रा: %s</string>
     <string name="pref_data_cache_cleared">कैश साफ कर दी गयी है</string>
     <string name="pref_data_cache_clear_dialog">क्या आप कैश साफ करना चाहते हैं</string>
     <string name="pref_theme_header">थीम</string>
-    <string name="pref_theme_dark">डार्क थीम</string>
-    <string name="pref_theme_dark_desc">डार्क और लाइट थीम के बीच स्विच करें</string>
+    <string name="pref_theme_dark">गहरे रंग थीम</string>
+    <string name="pref_theme_dark_desc">गहरे रंग और लाइट थीम के बीच स्विच करें</string>
     <string name="pref_wallpaper_header">वॉलपेपर</string>
-    <string name="pref_wallpaper_high_quality_preview">वॉलपेपर पृव्यू क्वालिटी</string>
-    <string name="pref_wallpaper_high_quality_preview_low">लो क्वालिटी</string>
-    <string name="pref_wallpaper_high_quality_preview_high">हाई क्वालिटी</string>
+    <string name="pref_wallpaper_high_quality_preview">वॉलपेपर पूर्वावलोकन गुणवत्ता</string>
+    <string name="pref_wallpaper_high_quality_preview_low">कम गुणवत्ता</string>
+    <string name="pref_wallpaper_high_quality_preview_high">उच्च गुणवत्ता</string>
     <string name="pref_wallpaper_location">वॉलपेपर सुरक्षित करने की जगह</string>
     <string name="pref_language_header">भाषा</string>
     <string name="pref_others_header">अन्य</string>
@@ -132,15 +132,15 @@
     <!-- Search -->
     <string name="search_result_empty">\"%s\" के लिए कोई परिणाम नही मिला है</string>
     <!-- Crash Report -->
-    <string name="crash_report">क्रैश रिपोर्ट</string>
-    <string name="crash_report_message">दुर्भाग्य से %s क्रैश हो गया है. कृपया नीचे दिए गये सेन्द रिपोर्ट का चयन करें जिससे की ऐप डेवलपर इस को ठीक कर सके</string>
-    <string name="crash_report_send">सेन्द रिपोर्ट</string>
-    <string name="email_client">ई मेल क्लाइंट का चयन करें</string>
+    <string name="crash_report">क्रैश विवरण</string>
+    <string name="crash_report_message">दुर्भाग्य से %s क्रैश हो गया है. डेवलपर समस्या को ठीक करने में सहायता के लिए नीचे विवरण भेजें चुनें।</string>
+    <string name="crash_report_send">विवरणी भेजो</string>
+    <string name="email_client">ई-मेल क्लाइंट का चयन करें</string>
     <!-- Please don't modify this -->
     <string name="about_dashboard">वॉलपेपर बोर्ड</string>
-    <string name="about_dashboard_dev">"वॉलपेपर बोर्ड एक ओपन सोर्स वॉलपेपर डैशबोअर्ड है जो की एंड्रॉयड के लिए अपाचे लाइसेन्स 2.0 के अंतर्गत लाइसेन्स्ड है. ये गिटहब पर उपयोग के लिए मुफ़्त मे उपलब्ध है जो की दानी महरधिका द्वारा विकसित किया गया है. "</string>
-    <string name="about_dashboard_contributors">वॉलपेपर बोर्ड योगदानकर्ता</string>
-    <string name="about_dashboard_translator">वॉलपेपर बोर्ड अनुवादक</string>
+    <string name="about_dashboard_dev">"वॉलपेपर बोर्ड एक ओपन सोर्स वॉलपेपर डैशबोअर्ड है जो की एंड्रॉयड के लिए अपाचे अनुज्ञापित 2.0 के अंतर्गत अनुज्ञापित है. ये गिटहब पर उपयोग के लिए मुफ़्त मे उपलब्ध है जो की दानी महरधिका द्वारा विकसित किया गया है. "</string>
+    <string name="about_dashboard_contributors">वॉलपेपर पटल योगदानकर्ता</string>
+    <string name="about_dashboard_translator">वॉलपेपर पटल अनुवादक</string>
     <string name="about_dashboard_dev_google_plus_url">https://plus.google.com/u/1/+DaniMahardhika</string>
     <string name="about_dashboard_dev_github_url">https://github.com/danimahardhika</string>
     <!-- Splash screen -->
