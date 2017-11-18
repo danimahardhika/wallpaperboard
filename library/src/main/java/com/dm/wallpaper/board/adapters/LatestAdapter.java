@@ -2,6 +2,7 @@ package com.dm.wallpaper.board.adapters;
 
 import android.animation.AnimatorInflater;
 import android.animation.StateListAnimator;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -142,19 +143,20 @@ public class LatestAdapter extends RecyclerView.Adapter<LatestAdapter.ViewHolder
                     public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                         super.onLoadingComplete(imageUri, view, loadedImage);
                         if (loadedImage != null && wallpaper.getColor() == 0) {
-                            try {
-                                Palette.from(loadedImage).generate(palette -> {
-                                    int vibrant = ColorHelper.getAttributeColor(
-                                            mContext, R.attr.card_background);
-                                    int color = palette.getVibrantColor(vibrant);
-                                    if (color == vibrant)
-                                        color = palette.getMutedColor(vibrant);
-                                    holder.card.setCardBackgroundColor(color);
+                            Palette.from(loadedImage).generate(palette -> {
+                                if (mContext == null) return;
+                                if (((Activity) mContext).isFinishing()) return;
 
-                                    wallpaper.setColor(color);
-                                    Database.get(mContext).updateWallpaper(wallpaper);
-                                });
-                            } catch (Exception ignored) {}
+                                int vibrant = ColorHelper.getAttributeColor(
+                                        mContext, R.attr.card_background);
+                                int color = palette.getVibrantColor(vibrant);
+                                if (color == vibrant)
+                                    color = palette.getMutedColor(vibrant);
+                                holder.card.setCardBackgroundColor(color);
+
+                                wallpaper.setColor(color);
+                                Database.get(mContext).updateWallpaper(wallpaper);
+                            });
                         }
                     }
                 },
