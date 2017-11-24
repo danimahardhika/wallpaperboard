@@ -126,8 +126,8 @@ public class WallpapersLoaderTask extends AsyncTask<Void, Void, Boolean> {
                         return false;
                     }
 
-                    List<Wallpaper> wallpapers;
                     if (Database.get(mContext.get()).getWallpapersCount() > 0) {
+                        List<Wallpaper> wallpapers;
                         List<Category> categories = Database.get(mContext.get()).getCategories();
                         List<Category> newCategories = new ArrayList<>();
                         for (int i = 0; i < categoryList.size(); i++) {
@@ -198,9 +198,7 @@ public class WallpapersLoaderTask extends AsyncTask<Void, Void, Boolean> {
                         return true;
                     }
 
-                    Database.get(mContext.get()).addCategories(categoryList);
-                    Database.get(mContext.get()).addWallpapers(wallpaperList);
-
+                    Database.get(mContext.get()).add(categoryList, wallpaperList);
                     Database.get(mContext.get()).restoreFavorites();
                     return true;
                 }

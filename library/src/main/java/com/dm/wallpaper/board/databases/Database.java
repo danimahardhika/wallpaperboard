@@ -26,6 +26,7 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -218,6 +219,79 @@ public class Database extends SQLiteOpenHelper {
             LogUtil.e(Log.getStackTraceString(e));
             return false;
         }
+    }
+
+    public void add(@NonNull List<?> categoryLIst, @NonNull List<?> wallpaperList) {
+        if (!openDatabase()) {
+            LogUtil.e("Database error: add() failed to open database");
+            return;
+        }
+
+        Iterator categoryIterator = categoryLIst.iterator();
+        Iterator wallpaperIterator = wallpaperList.iterator();
+        int size = categoryLIst.size() > wallpaperList.size() ? categoryLIst.size() : wallpaperList.size();
+
+        String categoryQuery = "INSERT OR IGNORE INTO " +TABLE_CATEGORIES+ " (" +KEY_NAME+ ") VALUES (?);";
+        String wallpaperQuery = "INSERT OR IGNORE INTO " +TABLE_WALLPAPERS+ " (" +KEY_NAME+ "," +KEY_AUTHOR+ "," +KEY_URL+ ","
+                +KEY_THUMB_URL+ "," +KEY_CATEGORY+ "," +KEY_ADDED_ON+ ") VALUES (?,?,?,?,?,?);";
+
+        SQLiteStatement categoryStatements = mDatabase.get().mSQLiteDatabase.compileStatement(categoryQuery);
+        SQLiteStatement wallpaperStatements = mDatabase.get().mSQLiteDatabase.compileStatement(wallpaperQuery);
+        mDatabase.get().mSQLiteDatabase.beginTransaction();
+
+        int i = 0;
+        do {
+            categoryStatements.clearBindings();
+            wallpaperStatements.clearBindings();
+
+            if (categoryIterator.hasNext()) {
+                Category category;
+                if (categoryIterator.next() instanceof Category) {
+                    category = (Category) categoryLIst.get(i);
+                } else {
+                    category = JsonHelper.getCategory(categoryLIst.get(i));
+                }
+
+                if (category != null) {
+                    categoryStatements.bindString(1, category.getName());
+                    categoryStatements.execute();
+                }
+            }
+
+            if (wallpaperIterator.hasNext()) {
+                Wallpaper wallpaper;
+                if (wallpaperIterator.next() instanceof Wallpaper) {
+                    wallpaper = (Wallpaper) wallpaperList.get(i);
+                } else {
+                    wallpaper = JsonHelper.getWallpaper(wallpaperList.get(i));
+                }
+
+                if (wallpaper != null) {
+                    if (wallpaper.getUrl() != null) {
+                        String name = wallpaper.getName();
+                        if (name == null) name = "";
+
+                        wallpaperStatements.bindString(1, name);
+
+                        if (wallpaper.getAuthor() != null) {
+                            wallpaperStatements.bindString(2, wallpaper.getAuthor());
+                        } else {
+                            wallpaperStatements.bindNull(2);
+                        }
+
+                        wallpaperStatements.bindString(3, wallpaper.getUrl());
+                        wallpaperStatements.bindString(4, wallpaper.getThumbUrl());
+                        wallpaperStatements.bindString(5, wallpaper.getCategory());
+                        wallpaperStatements.bindString(6, TimeHelper.getLongDateTime());
+                        wallpaperStatements.execute();
+                    }
+                }
+            }
+            i++;
+        } while (i < size);
+
+        mDatabase.get().mSQLiteDatabase.setTransactionSuccessful();
+        mDatabase.get().mSQLiteDatabase.endTransaction();
     }
 
     public void addCategories(List<?> list) {
