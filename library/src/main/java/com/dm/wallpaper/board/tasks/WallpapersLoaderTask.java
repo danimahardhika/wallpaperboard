@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.bluelinelabs.logansquare.LoganSquare;
@@ -54,9 +55,27 @@ import cz.msebera.android.httpclient.NameValuePair;
 public class WallpapersLoaderTask extends AsyncTask<Void, Void, Boolean> {
 
     private final WeakReference<Context> mContext;
+    private WeakReference<Callback> mCallback;
 
     private WallpapersLoaderTask(Context context) {
         mContext = new WeakReference<>(context);
+    }
+
+    public WallpapersLoaderTask callback(@Nullable Callback callback) {
+        mCallback = new WeakReference<>(callback);
+        return this;
+    }
+
+    public AsyncTask start() {
+        return start(SERIAL_EXECUTOR);
+    }
+
+    public AsyncTask start(@NonNull Executor executor) {
+        return executeOnExecutor(executor);
+    }
+
+    public static WallpapersLoaderTask with(@NonNull Context context) {
+        return new WallpapersLoaderTask(context);
     }
 
     public static AsyncTask start(@NonNull Context context) {
@@ -219,6 +238,10 @@ public class WallpapersLoaderTask extends AsyncTask<Void, Void, Boolean> {
             if (((Activity) mContext.get()).isFinishing()) return;
         }
 
+        if (mCallback != null && mCallback.get() != null) {
+            mCallback.get().onFinished(aBoolean);
+        }
+
         WallpaperBoardApplication.setLatestWallpapersLoaded(true);
         if (!aBoolean) {
             int res = R.string.connection_failed;
@@ -234,5 +257,9 @@ public class WallpapersLoaderTask extends AsyncTask<Void, Void, Boolean> {
                     .duration(CafeBar.Duration.MEDIUM)
                     .show();
         }
+    }
+
+    public interface Callback {
+        void onFinished(boolean success);
     }
 }

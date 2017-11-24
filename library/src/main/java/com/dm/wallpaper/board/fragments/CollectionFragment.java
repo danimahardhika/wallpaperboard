@@ -40,6 +40,7 @@ import com.dm.wallpaper.board.items.Collection;
 import com.dm.wallpaper.board.items.PopupItem;
 import com.dm.wallpaper.board.preferences.Preferences;
 import com.dm.wallpaper.board.utils.Extras;
+import com.dm.wallpaper.board.utils.LogUtil;
 import com.dm.wallpaper.board.utils.Popup;
 
 import java.util.ArrayList;
@@ -277,8 +278,19 @@ public class CollectionFragment extends Fragment {
         if (index > mAdapter.getCount()) return;
         Fragment fragment = mAdapter.getItem(index);
         if (fragment != null && fragment instanceof WallpapersFragment) {
-            WallpapersFragment f = (WallpapersFragment) fragment;
-            f.getWallpapers();
+            ((WallpapersFragment) fragment).getWallpapers();
+        }
+    }
+
+    public void refreshCategories() {
+        if (mAdapter == null) return;
+
+        LogUtil.e("Categories refreshed");
+        int index = 2;
+        if (index > mAdapter.getCount()) return;
+        Fragment fragment = mAdapter.getItem(index);
+        if (fragment != null && fragment instanceof CategoriesFragment) {
+            ((CategoriesFragment) fragment).getCategories();
         }
     }
 

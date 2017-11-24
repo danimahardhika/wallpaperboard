@@ -86,12 +86,7 @@ public class CategoriesFragment extends Fragment {
         mAdapter = new CategoriesAdapter(getActivity(), new ArrayList<>());
         mRecyclerView.setAdapter(mAdapter);
 
-        if (Database.get(getActivity()).getWallpapersCount() > 0) {
-            mAsyncTask = new CategoriesLoader().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            return;
-        }
-
-        mAsyncTask = new CategoriesLoader().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+        getCategories();
     }
 
     @Override
@@ -120,6 +115,19 @@ public class CategoriesFragment extends Fragment {
             mAsyncTask.cancel(true);
         }
         super.onDestroy();
+    }
+
+    public void getCategories() {
+        if (mAsyncTask != null) {
+            mAsyncTask.cancel(true);
+        }
+
+        if (Database.get(getActivity()).getWallpapersCount() > 0) {
+            mAsyncTask = new CategoriesLoader().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            return;
+        }
+
+        mAsyncTask = new CategoriesLoader().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
     private void resetRecyclerViewPadding() {

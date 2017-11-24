@@ -155,7 +155,16 @@ public abstract class WallpaperBoardActivity extends AppCompatActivity implement
 
         setFragment(getFragment(mPosition));
         if (!WallpaperBoardApplication.isLatestWallpapersLoaded()) {
-            WallpapersLoaderTask.start(this);
+            WallpapersLoaderTask.with(this)
+                    .callback(success -> {
+                        if (!success) return;
+
+                        Fragment fragment = mFragManager.findFragmentByTag(Extras.TAG_COLLECTION);
+                        if (fragment != null && fragment instanceof CollectionFragment) {
+                            ((CollectionFragment) fragment).refreshCategories();
+                        }
+                    })
+                    .start();
         }
 
         if (Preferences.get(this).isFirstRun()) {

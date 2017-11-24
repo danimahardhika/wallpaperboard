@@ -101,7 +101,7 @@ public class WallpapersFragment extends Fragment {
                 return;
             }
 
-            WallpapersLoaderTask.start(getActivity());
+            WallpapersLoaderTask.with(getActivity()).start();
             mAsyncTask = new WallpapersTask().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
         });
 
@@ -125,6 +125,10 @@ public class WallpapersFragment extends Fragment {
     }
 
     public void getWallpapers() {
+        if (mAsyncTask != null) {
+            mAsyncTask.cancel(true);
+        }
+
         if (Database.get(getActivity()).getWallpapersCount() > 0) {
             mAsyncTask = new WallpapersTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             return;
