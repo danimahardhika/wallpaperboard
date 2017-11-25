@@ -11,10 +11,22 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- * Author: Dani Mahardhika
- * Created on: 11/25/2017
- * https://github.com/danimahardhika
+/*
+ * Wallpaper Board
+ *
+ * Copyright (c) 2017 Dani Mahardhika
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 public class WallpaperTest {
@@ -77,5 +89,63 @@ public class WallpaperTest {
         System.out.println("forLoopTime: " +forLoopEnd);
         System.out.println("doWhileTime: " +doWhileEnd);
         Assert.assertTrue(doWhileEnd < forLoopEnd);
+    }
+
+    @Test
+    public void testIsWallpaperEquals() {
+        Wallpaper wallpaper = Wallpaper.Builder()
+                .name("Wallpaper test")
+                .url("http://www.url.com/image.jpg")
+                .thumbUrl("http://www.url.com/image.jpg")
+                .author("Unknown")
+                .category("Category")
+                .addedOn(TimeHelper.getLongDateTime())
+                .build();
+
+        Wallpaper wallpaper1 = Wallpaper.Builder()
+                .name("Wallpaper test")
+                .url("http://www.url.com/image.jpg")
+                .thumbUrl("http://www.url.com/image.jpg")
+                .author("Unknown")
+                .category("Category 1")
+                .addedOn(TimeHelper.getLongDateTime())
+                .build();
+        Assert.assertFalse(wallpaper.equals(wallpaper1));
+    }
+
+    @Test
+    public void testIsCategoryEquals() {
+        Category category = Category.Builder()
+                .name("Category test")
+                .build();
+
+        Category category1 = Category.Builder()
+                .name("Category test 1")
+                .build();
+        Assert.assertFalse(category.equals(category1));
+    }
+
+    @Test
+    public void testCategoryCount() {
+        Category category = Category.Builder()
+                .name("Category test")
+                .count(125)
+                .build();
+
+        String c1 = category.getCategoryCount();
+
+        category.setCount(1245);
+        String c2 = category.getCategoryCount();
+
+        category.setCount(6457);
+        String c3 = category.getCategoryCount();
+
+        category.setCount(12457);
+        String c4 = category.getCategoryCount();
+
+        Assert.assertTrue(c1.equals("99+") &&
+                c2.equals("1K+") &&
+                c3.equals("6K+") &&
+                c4.equals("9K+"));
     }
 }
