@@ -15,7 +15,7 @@ import android.widget.ImageView;
 
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.helpers.UrlHelper;
-import com.dm.wallpaper.board.utils.LogUtil;
+import com.danimahardhika.android.helpers.core.utils.LogUtil;
 
 /*
  * Wallpaper Board

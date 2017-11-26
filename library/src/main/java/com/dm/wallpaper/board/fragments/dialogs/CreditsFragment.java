@@ -19,7 +19,7 @@ import com.dm.wallpaper.board.adapters.CreditsAdapter;
 import com.dm.wallpaper.board.helpers.TypefaceHelper;
 import com.dm.wallpaper.board.items.Credit;
 import com.dm.wallpaper.board.utils.Extras;
-import com.dm.wallpaper.board.utils.LogUtil;
+import com.danimahardhika.android.helpers.core.utils.LogUtil;
 
 import org.xmlpull.v1.XmlPullParser;
 

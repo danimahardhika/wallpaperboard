@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.graphics.Palette;
 
 import com.dm.wallpaper.board.items.ColorPalette;
-import com.dm.wallpaper.board.utils.LogUtil;
+import com.danimahardhika.android.helpers.core.utils.LogUtil;
 
 /*
  * Wallpaper Board

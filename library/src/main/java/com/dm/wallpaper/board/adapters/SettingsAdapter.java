@@ -23,7 +23,7 @@ import com.dm.wallpaper.board.fragments.dialogs.LanguagesFragment;
 import com.dm.wallpaper.board.helpers.TypefaceHelper;
 import com.dm.wallpaper.board.items.Setting;
 import com.dm.wallpaper.board.preferences.Preferences;
-import com.dm.wallpaper.board.utils.LogUtil;
+import com.danimahardhika.android.helpers.core.utils.LogUtil;
 
 import java.io.File;
 import java.text.DecimalFormat;

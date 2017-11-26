@@ -108,7 +108,9 @@ dependencies {
     compile 'me.zhanghai.android.materialprogressbar:library:1.4.2'
 
     compile 'com.github.danimahardhika:cafebar:1.3.2'
-    compile 'com.github.danimahardhika.android-helpers:core:0.1.0'
+    implementation('com.github.danimahardhika.android-helpers:core:-SNAPSHOT') {
+        changing = true
+    }
     compile 'com.github.danimahardhika.android-helpers:animation:0.1.0'
     compile 'com.github.danimahardhika.android-helpers:license:0.1.0'
     compile 'com.github.danimahardhika.android-helpers:permission:0.1.0'

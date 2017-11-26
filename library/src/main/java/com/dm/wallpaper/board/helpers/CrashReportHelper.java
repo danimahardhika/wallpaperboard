@@ -10,7 +10,7 @@ import android.util.Log;
 
 import com.dm.wallpaper.board.BuildConfig;
 import com.dm.wallpaper.board.R;
-import com.dm.wallpaper.board.utils.LogUtil;
+import com.danimahardhika.android.helpers.core.utils.LogUtil;
 
 import java.io.BufferedWriter;
 import java.io.File;

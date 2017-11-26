@@ -10,7 +10,7 @@ import com.dm.wallpaper.board.databases.Database;
 import com.dm.wallpaper.board.helpers.BackupHelper;
 import com.dm.wallpaper.board.items.Wallpaper;
 import com.dm.wallpaper.board.utils.Extras;
-import com.dm.wallpaper.board.utils.LogUtil;
+import com.danimahardhika.android.helpers.core.utils.LogUtil;
 
 import java.io.BufferedWriter;
 import java.io.File;

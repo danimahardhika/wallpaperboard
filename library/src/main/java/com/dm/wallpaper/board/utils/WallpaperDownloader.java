@@ -10,6 +10,7 @@ import android.util.Log;
 import android.webkit.URLUtil;
 
 import com.danimahardhika.android.helpers.core.FileHelper;
+import com.danimahardhika.android.helpers.core.utils.LogUtil;
 import com.danimahardhika.cafebar.CafeBar;
 import com.danimahardhika.cafebar.CafeBarTheme;
 import com.dm.wallpaper.board.R;

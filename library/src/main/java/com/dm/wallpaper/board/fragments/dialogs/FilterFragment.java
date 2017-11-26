@@ -25,7 +25,7 @@ import com.dm.wallpaper.board.adapters.FilterAdapter;
 import com.dm.wallpaper.board.databases.Database;
 import com.dm.wallpaper.board.helpers.TypefaceHelper;
 import com.dm.wallpaper.board.items.Category;
-import com.dm.wallpaper.board.utils.LogUtil;
+import com.danimahardhika.android.helpers.core.utils.LogUtil;
 
 import java.util.List;
 

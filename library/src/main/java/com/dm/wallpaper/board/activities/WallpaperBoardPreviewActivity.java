@@ -59,7 +59,7 @@ import com.dm.wallpaper.board.tasks.WallpaperPaletteLoaderTask;
 import com.dm.wallpaper.board.utils.Popup;
 import com.dm.wallpaper.board.utils.Extras;
 import com.dm.wallpaper.board.utils.ImageConfig;
-import com.dm.wallpaper.board.utils.LogUtil;
+import com.danimahardhika.android.helpers.core.utils.LogUtil;
 import com.dm.wallpaper.board.utils.Tooltip;
 import com.dm.wallpaper.board.utils.WallpaperDownloader;
 import com.github.chrisbanes.photoview.PhotoViewAttacher;

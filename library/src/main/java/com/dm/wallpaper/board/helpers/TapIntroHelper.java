@@ -13,7 +13,7 @@ import android.widget.RelativeLayout;
 import com.danimahardhika.android.helpers.core.ColorHelper;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.preferences.Preferences;
-import com.dm.wallpaper.board.utils.LogUtil;
+import com.danimahardhika.android.helpers.core.utils.LogUtil;
 import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;

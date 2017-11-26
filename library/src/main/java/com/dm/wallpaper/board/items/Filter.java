@@ -3,7 +3,7 @@ package com.dm.wallpaper.board.items;
 import android.support.annotation.Nullable;
 
 import com.dm.wallpaper.board.databases.Database;
-import com.dm.wallpaper.board.utils.LogUtil;
+import com.danimahardhika.android.helpers.core.utils.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;

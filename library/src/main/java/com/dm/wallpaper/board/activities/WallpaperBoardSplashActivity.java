@@ -17,7 +17,7 @@ import com.danimahardhika.android.helpers.core.ColorHelper;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.activities.callbacks.SplashScreenCallback;
 import com.dm.wallpaper.board.activities.configurations.SplashScreenConfiguration;
-import com.dm.wallpaper.board.utils.LogUtil;
+import com.danimahardhika.android.helpers.core.utils.LogUtil;
 
 import java.lang.ref.WeakReference;
 

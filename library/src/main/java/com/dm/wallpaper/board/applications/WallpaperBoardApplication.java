@@ -3,6 +3,7 @@ package com.dm.wallpaper.board.applications;
 import android.app.Application;
 import android.content.Intent;
 
+import com.danimahardhika.android.helpers.core.TimeHelper;
 import com.dm.wallpaper.board.R;
 import com.dm.wallpaper.board.activities.WallpaperBoardCrashReport;
 import com.dm.wallpaper.board.databases.Database;
@@ -10,12 +11,11 @@ import com.dm.wallpaper.board.helpers.LocaleHelper;
 import com.dm.wallpaper.board.helpers.UrlHelper;
 import com.dm.wallpaper.board.preferences.Preferences;
 import com.dm.wallpaper.board.utils.ImageConfig;
-import com.dm.wallpaper.board.utils.LogUtil;
+import com.danimahardhika.android.helpers.core.utils.LogUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
@@ -48,7 +48,6 @@ public abstract class WallpaperBoardApplication extends Application implements A
     @Override
     public void onCreate() {
         super.onCreate();
-        mConfiguration = onInit();
         Database.get(this).openDatabase();
         Preferences.get(this);
 
@@ -61,7 +60,10 @@ public abstract class WallpaperBoardApplication extends Application implements A
                 .build());
 
         //Enable logging
+        LogUtil.setLoggingTag(getString(R.string.app_name));
         LogUtil.setLoggingEnabled(true);
+
+        mConfiguration = onInit();
 
         if (mConfiguration.isCrashReportEnabled()) {
             String[] urls = getResources().getStringArray(R.array.about_social_links);
@@ -104,8 +106,7 @@ public abstract class WallpaperBoardApplication extends Application implements A
     private void handleUncaughtException(Thread thread, Throwable throwable) {
         try {
             StringBuilder sb = new StringBuilder();
-            SimpleDateFormat dateFormat = new SimpleDateFormat(
-                    "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+            SimpleDateFormat dateFormat = TimeHelper.getDefaultShortDateTimeFormat();
             String dateTime = dateFormat.format(new Date());
             sb.append("Crash Time : ").append(dateTime).append("\n");
             sb.append("Class Name : ").append(throwable.getClass().getName()).append("\n");

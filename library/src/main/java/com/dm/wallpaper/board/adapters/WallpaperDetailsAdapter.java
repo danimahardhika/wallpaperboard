@@ -30,7 +30,7 @@ import com.dm.wallpaper.board.items.Category;
 import com.dm.wallpaper.board.items.ColorPalette;
 import com.dm.wallpaper.board.items.WallpaperProperty;
 import com.dm.wallpaper.board.preferences.Preferences;
-import com.dm.wallpaper.board.utils.LogUtil;
+import com.danimahardhika.android.helpers.core.utils.LogUtil;
 
 import java.util.List;
 
