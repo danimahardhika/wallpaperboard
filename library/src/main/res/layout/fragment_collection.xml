@@ -112,6 +112,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:padding="12dp"
+                android:visibility="gone"
                 android:theme="@style/RippleStyle"
                 android:background="?attr/selectableItemBackgroundBorderless"/>
         </LinearLayout>
