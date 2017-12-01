@@ -26,7 +26,7 @@ allprojects {
 Add the dependency
 ```Gradle
 dependencies {
-    implementation 'com.github.danimahardhika:wallpaperboard:1.7.0-b4'
+    implementation 'com.github.danimahardhika:wallpaperboard:1.7.0-b5'
 }
 ```
 
