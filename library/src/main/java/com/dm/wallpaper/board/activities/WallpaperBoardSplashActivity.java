@@ -20,6 +20,7 @@ import com.dm.wallpaper.board.activities.configurations.SplashScreenConfiguratio
 import com.danimahardhika.android.helpers.core.utils.LogUtil;
 
 import java.lang.ref.WeakReference;
+import java.util.concurrent.Executor;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -54,7 +55,9 @@ public abstract class WallpaperBoardSplashActivity extends AppCompatActivity imp
         mConfig = onInit();
         initBottomText();
 
-        mAsyncTask = new SplashScreenLoader(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        mAsyncTask = SplashScreenLoader.with(this)
+                .mainActivity(mConfig.getMainActivity())
+                .start(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     @Override
@@ -66,6 +69,7 @@ public abstract class WallpaperBoardSplashActivity extends AppCompatActivity imp
     protected void onDestroy() {
         if (mAsyncTask != null) {
             mAsyncTask.cancel(true);
+            mAsyncTask = null;
         }
         super.onDestroy();
     }
@@ -87,12 +91,26 @@ public abstract class WallpaperBoardSplashActivity extends AppCompatActivity imp
         }
     }
 
-    private class SplashScreenLoader extends AsyncTask<Void, Void, Boolean> {
+    private static class SplashScreenLoader extends AsyncTask<Void, Void, Boolean> {
 
         private WeakReference<Context> context;
+        private Class<?> mainActivity;
 
         private SplashScreenLoader(@NonNull Context context) {
             this.context = new WeakReference<>(context);
+        }
+
+        private SplashScreenLoader mainActivity(@NonNull Class<?> mainActivity) {
+            this.mainActivity = mainActivity;
+            return this;
+        }
+
+        private AsyncTask start(@NonNull Executor executor) {
+            return executeOnExecutor(executor);
+        }
+
+        private static SplashScreenLoader with(@NonNull Context context) {
+            return new SplashScreenLoader(context);
         }
 
         @Override
@@ -117,15 +135,17 @@ public abstract class WallpaperBoardSplashActivity extends AppCompatActivity imp
                 if (((Activity) context.get()).isFinishing()) return;
             }
 
-            mAsyncTask = null;
             if (aBoolean) {
-                Intent intent = new Intent(context.get(), mConfig.getMainActivity());
+                Intent intent = new Intent(context.get(), mainActivity);
                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-                startActivity(intent);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                finish();
+                if (context.get() instanceof Activity) {
+                    Activity activity = (Activity) context.get();
+                    activity.startActivity(intent);
+                    activity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    activity.finish();
+                }
             }
         }
     }
