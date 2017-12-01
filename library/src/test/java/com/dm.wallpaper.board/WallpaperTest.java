@@ -56,7 +56,7 @@ public class WallpaperTest {
             wallpapers.add(wallpaper);
         }
 
-        //Estimating for time process time
+        //Estimating for loop process time
         long forLopStart = System.currentTimeMillis();
         for (Category category : categories) {
             String name = category.getName();
