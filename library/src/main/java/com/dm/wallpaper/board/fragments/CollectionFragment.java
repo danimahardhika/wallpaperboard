@@ -40,7 +40,6 @@ import com.dm.wallpaper.board.items.Collection;
 import com.dm.wallpaper.board.items.PopupItem;
 import com.dm.wallpaper.board.preferences.Preferences;
 import com.dm.wallpaper.board.utils.Extras;
-import com.danimahardhika.android.helpers.core.utils.LogUtil;
 import com.dm.wallpaper.board.utils.Popup;
 
 import java.util.ArrayList;
@@ -285,7 +284,6 @@ public class CollectionFragment extends Fragment {
     public void refreshCategories() {
         if (mAdapter == null) return;
 
-        LogUtil.e("Categories refreshed");
         int index = 2;
         if (index > mAdapter.getCount()) return;
         Fragment fragment = mAdapter.getItem(index);
