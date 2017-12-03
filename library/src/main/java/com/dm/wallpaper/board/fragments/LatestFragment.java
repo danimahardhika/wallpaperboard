@@ -145,11 +145,14 @@ public class LatestFragment extends Fragment implements WallpapersLoaderTask.Cal
 
     @Override
     public void onFinished(boolean success) {
+        if (getActivity() == null) return;
+        if (getActivity().isFinishing()) return;
         if (!success) return;
 
         FragmentManager fm = getActivity().getSupportFragmentManager();
         Fragment fragment = fm.findFragmentByTag(Extras.TAG_COLLECTION);
         if (fragment != null && fragment instanceof CollectionFragment) {
+            ((CollectionFragment) fragment).refreshWallpapers();
             ((CollectionFragment) fragment).refreshCategories();
         }
     }
