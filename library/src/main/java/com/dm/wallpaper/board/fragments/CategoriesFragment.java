@@ -155,6 +155,9 @@ public class CategoriesFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            if (getActivity() == null) return;
+            if (getActivity().isFinishing()) return;
+
             mProgress.setVisibility(View.VISIBLE);
 
             if (mAdapter != null) {
