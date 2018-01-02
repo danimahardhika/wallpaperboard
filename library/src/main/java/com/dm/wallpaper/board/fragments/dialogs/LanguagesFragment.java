@@ -66,10 +66,14 @@ public class LanguagesFragment extends DialogFragment {
             ft.remove(prev);
         }
 
+        ft.add(newInstance(), TAG)
+                .setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+
         try {
-            DialogFragment dialog = LanguagesFragment.newInstance();
-            dialog.show(ft, TAG);
-        } catch (IllegalArgumentException | IllegalStateException ignored) {}
+            ft.commit();
+        } catch (IllegalStateException e) {
+            ft.commitAllowingStateLoss();
+        }
     }
 
     @NonNull
