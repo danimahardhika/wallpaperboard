@@ -72,10 +72,14 @@ public class CreditsFragment extends DialogFragment {
             ft.remove(prev);
         }
 
+        ft.add(newInstance(type), TAG)
+                .setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+
         try {
-            DialogFragment dialog = CreditsFragment.newInstance(type);
-            dialog.show(ft, TAG);
-        } catch (IllegalStateException | IllegalArgumentException ignored) {}
+            ft.commit();
+        } catch (IllegalStateException e) {
+            ft.commitAllowingStateLoss();
+        }
     }
 
     @Override
