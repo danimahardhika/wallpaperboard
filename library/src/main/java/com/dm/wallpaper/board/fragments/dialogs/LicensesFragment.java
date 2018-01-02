@@ -65,10 +65,14 @@ public class LicensesFragment extends DialogFragment {
             ft.remove(prev);
         }
 
+        ft.add(newInstance(), TAG)
+                .setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+
         try {
-            DialogFragment dialog = LicensesFragment.newInstance();
-            dialog.show(ft, TAG);
-        } catch (IllegalStateException | IllegalArgumentException ignored) {}
+            ft.commit();
+        } catch (IllegalStateException e) {
+            ft.commitAllowingStateLoss();
+        }
     }
 
     @NonNull
