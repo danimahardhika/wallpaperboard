@@ -76,10 +76,14 @@ public class RefreshDurationFragment extends DialogFragment implements View.OnCl
             ft.remove(prev);
         }
 
+        ft.add(newInstance(rotateTime, isMinute), TAG)
+                .setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+
         try {
-            DialogFragment dialog = RefreshDurationFragment.newInstance(rotateTime, isMinute);
-            dialog.show(ft, TAG);
-        } catch (IllegalStateException | IllegalArgumentException ignored) {}
+            ft.commit();
+        } catch (IllegalStateException e) {
+            ft.commitAllowingStateLoss();
+        }
     }
 
     @NonNull
