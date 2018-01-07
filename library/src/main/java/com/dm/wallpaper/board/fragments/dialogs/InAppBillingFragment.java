@@ -77,10 +77,14 @@ public class InAppBillingFragment extends DialogFragment {
             ft.remove(prev);
         }
 
+        ft.add(newInstance(key, productId), TAG)
+                .setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+
         try {
-            DialogFragment dialog = InAppBillingFragment.newInstance(key, productId);
-            dialog.show(ft, TAG);
-        } catch (IllegalArgumentException | IllegalStateException ignored) {}
+            ft.commit();
+        } catch (IllegalStateException e) {
+            ft.commitAllowingStateLoss();
+        }
     }
 
     @Override
