@@ -84,10 +84,14 @@ public class FilterFragment extends DialogFragment implements View.OnClickListen
             ft.remove(prev);
         }
 
+        ft.add(newInstance(isMuzei), TAG)
+                .setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+
         try {
-            DialogFragment dialog = FilterFragment.newInstance(isMuzei);
-            dialog.show(ft, TAG);
-        } catch (IllegalArgumentException | IllegalStateException ignored) {}
+            ft.commit();
+        } catch (IllegalStateException e) {
+            ft.commitAllowingStateLoss();
+        }
     }
 
     @NonNull
