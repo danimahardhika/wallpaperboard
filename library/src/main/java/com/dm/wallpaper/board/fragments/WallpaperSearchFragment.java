@@ -151,14 +151,23 @@ public class WallpaperSearchFragment extends Fragment {
             public boolean onQueryTextChange(String string) {
                 if (string.length() == 0) {
                     clearAdapter();
+                    return false;
                 }
-                return false;
+
+                if (mAsyncTask != null) {
+                    mAsyncTask.cancel(true);
+                }
+
+                mAsyncTask = new WallpapersLoader(string.trim())
+                        .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                return true;
             }
 
             @Override
             public boolean onQueryTextSubmit(String string) {
                 mSearchView.clearFocus();
-                mAsyncTask = new WallpapersLoader(string.trim()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                mAsyncTask = new WallpapersLoader(string.trim())
+                        .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 return true;
             }
         });
