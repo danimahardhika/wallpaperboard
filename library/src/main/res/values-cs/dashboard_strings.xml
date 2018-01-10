@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Navigation View -->
+    <string name="navigation_view_wallpapers">Tapety</string>
+    <string name="navigation_view_favorites">Oblíbené</string>
+    <string name="navigation_view_settings">Nastavení</string>
+    <string name="navigation_view_about">O programu</string>
+    <string name="navigation_view_donate">Podpořit vývoj</string>
+    <string name="navigation_view_share">Sdílet Aplikaci</string>
+    <string name="navigation_view_rate">Hodnocení &amp; recenze</string>
+    <!-- Share app -->
+    <string name="share_app_subject">Jo! Podívejte se %s</string>
+    <string name="share_app_body">Podívejte se %1$s, tato tapeta je vážně úžasná! %2$s</string>
+    <!-- Menu -->
+    <string name="menu_search">Hledat</string>
+    <string name="menu_filter">Třídit</string>
+    <string name="menu_save">Uložit do zařízení</string>
+    <string name="menu_wallpaper_crop">Oříznutí tapety</string>
+    <string name="menu_apply_homescreen">Domovská obrazovka</string>
+    <string name="menu_apply_lockscreen">Zamykací obrazovka</string>
+    <string name="menu_apply_homescreen_lockscreen">Domovská &amp; zamykací obrazovka</string>
+    <string name="menu_sort">Seřazeno podle</string>
+    <string name="menu_sort_latest">Nejnovější</string>
+    <string name="menu_sort_oldest">Nejstarší</string>
+    <string name="menu_sort_name">Názvu</string>
+    <string name="menu_sort_random">Náhodně</string>
+    <!-- Dialog -->
+    <string name="open">Otevřít</string>
+    <string name="close">Zavřít</string>
+    <string name="clear">Vymazat</string>
+    <string name="donate">Přispět</string>
+    <string name="copy">Kopírovat</string>
+    <!-- Tap Intro -->
+    <string name="tap_intro_wallpapers_navigation">Navigační panel</string>
+    <string name="tap_intro_wallpapers_navigation_desc">Klepnutím sem nebo přejetím z levé hrany obrazovky otevřete navigační panel</string>
+    <string name="tap_intro_wallpapers_search">Hledat</string>
+    <string name="tap_intro_wallpapers_search_desc">Klepněte sem pro vyhledání tapety</string>
+    <string name="tap_intro_wallpapers_filter">Třídit tapety</string>
+    <string name="tap_intro_wallpapers_filter_desc">Klepněte sem pro třídění tapet podle kategorie</string>
+    <string name="tap_intro_wallpapers_option">Možnosti tapety</string>
+    <string name="tap_intro_wallpapers_option_desc">Klepnutím a podržením zobrazíte možnosti tapety, %s použít tapetu.</string>
+    <string name="tap_intro_wallpapers_option_desc_download">stáhnout nebo</string>
+    <string name="tap_intro_wallpapers_preview">Náhled tapety</string>
+    <string name="tap_intro_wallpapers_preview_desc">Klepněte sem pro náhled tapety v plné velikosti</string>
+    <string name="tap_intro_wallpapers_favorite">Oblíbená tapeta</string>
+    <string name="tap_intro_wallpapers_favorite_desc">Klepněte sem pro označení tapety jako oblíbenou</string>
+    <string name="tap_intro_wallpaper_preview_settings">Nastavení tapety</string>
+    <string name="tap_intro_wallpaper_preview_settings_desc">Klepněte sem pro otevření nastavení tapety.
+
+        Povolte nastavení tapety jako pozadí zamykací obrazovky v Android Nougat nebo povolte oříznutí tapety.</string>
+    <string name="tap_intro_wallpaper_preview_save">Uložit tapetu</string>
+    <string name="tap_intro_wallpaper_preview_save_desc">Klepněte sem pro stáhnutí a uložení tapety do zařízení, abyste ji mohli později použít</string>
+    <string name="tap_intro_wallpaper_preview_apply">Použít tapetu</string>
+    <string name="tap_intro_wallpaper_preview_apply_desc">Klepněte sem a nastavíte tapetu jako pozadí domovské obrazovky</string>
+    <string name="tap_intro_wallpaper_preview_full">Tapeta v původní velikosti</string>
+    <string name="tap_intro_wallpaper_preview_full_desc">Klepněte sem pro náhled tapety v původní velikosti</string>
+    <!-- Wallpapers -->
+    <string name="wallpaper_filter">Třídit podle kategorie</string>
+    <string name="wallpaper_already_downloaded">Tapeta již byla stažena</string>
+    <string name="wallpaper_downloading">Stahování tapety …</string>
+    <string name="wallpaper_download_failed">Nelze stáhnout tapetu</string>
+    <string name="wallpaper_loading">Načítání tapety …</string>
+    <string name="wallpaper_applying">Nastavování tapety …</string>
+    <string name="wallpaper_applied">Tapeta byla použita</string>
+    <string name="wallpaper_apply_failed">Nelze použít tapetu</string>
+    <string name="wallpaper_apply_cancelled">Použití tapety bylo zrušeno</string>
+    <string name="wallpaper_favorite_added">%s přidáno do oblíbených</string>
+    <string name="wallpaper_favorite_removed">%s odstraněno z oblíbených</string>
+    <string name="connection_failed">Nelze načíst data ze serveru</string>
+    <string name="wallpapers_loader_failed">Nelze zkontrolovat nové tapety</string>
+    <string name="wallpaper_preview_full">Náhled tapety v původní velikosti</string>
+    <string name="wallpaper_apply">Použít tapetu</string>
+    <string name="wallpaper_save_to_device">Uložit tapetu</string>
+    <string name="wallpapers_favorite_restored">Oblíbené tapety obnoveny</string>
+    <!-- Wallpaper Tooltips -->
+    <string name="wallpaper_tooltip_preview">Momentálně prohlížíte tapety s menším rozlišením,
+
+        které mohou vypadat rozmazané a kostkované.</string>
+    <string name="wallpaper_tooltip_preview_icon_tap">Klepněte na ikonu pro zobrazení tapety v původní velikosti</string>
+    <string name="wallpaper_tooltip_dont_show">Znovu nezobrazovat</string>
+    <!-- Wallpaper Property -->
+    <string name="wallpaper_property_name">Název: %s</string>
+    <string name="wallpaper_property_author">Autor: %s</string>
+    <string name="wallpaper_property_dimensions">Rozměry: %s</string>
+    <string name="wallpaper_property_format">Formát: %s</string>
+    <string name="wallpaper_property_size">Velikost: %s</string>
+    <string name="wallpaper_property_palette">Paleta barev</string>
+    <string name="wallpaper_property_color">Barva: %s</string>
+    <string name="wallpaper_property_category">Kategorie</string>
+    <!-- Muzei -->
+    <string name="minute">Minuta</string>
+    <string name="hour">Hodina</string>
+    <string name="muzei_settings">Nastavení Muzei</string>
+    <string name="muzei_settings_save">Uložit</string>
+    <string name="muzei_settings_saved">Nastavení uloženo</string>
+    <string name="muzei_refresh_duration">Čas mezi obnovením</string>
+    <string name="muzei_refresh_duration_desc">Každou</string>
+    <string name="muzei_wifi_only">Obnovit pouze prostřednictvím WiFi</string>
+    <string name="muzei_wifi_only_desc">Načíst tapetu pouze při připojení zařízení k WiFi</string>
+    <string name="muzei_category">Vybrat kategorie</string>
+    <string name="muzei_category_desc">Načíst tapetu pouze z vybraných kategorií</string>
+    <!-- About -->
+    <string name="about_contributors_title">Přispěvatelé</string>
+    <string name="about_open_source_licenses">Licence Open Source</string>
+    <!-- InAppBilling -->
+    <string name="billing_load_product_failed">Nelze načíst produkty k nákupu prostřednictvím aplikace</string>
+    <!-- Preferences -->
+    <string name="pref_data_header">Data &amp; mezipaměť</string>
+    <string name="pref_data_cache">Vymazat mezipaměť</string>
+    <string name="pref_data_cache_desc">Vyčistit soubory mezipaměti vytvořené v interní paměti
+
+        po načtení náhledů tapet z cloudu</string>
+    <string name="pref_data_cache_size">Velikost mezipaměťi: %s</string>
+    <string name="pref_data_cache_cleared">Mezipaměť vymazána</string>
+    <string name="pref_data_cache_clear_dialog">Opravdu chcete vymazat mezipaměť?</string>
+    <string name="pref_theme_header">Téma</string>
+    <string name="pref_theme_dark">Tmavý motiv</string>
+    <string name="pref_theme_dark_desc">Přepnout mezi tmavým a světlým motivem</string>
+    <string name="pref_wallpaper_header">Tapeta</string>
+    <string name="pref_wallpaper_high_quality_preview">Kvalita náhledu tapety</string>
+    <string name="pref_wallpaper_high_quality_preview_low">Nízká kvalita</string>
+    <string name="pref_wallpaper_high_quality_preview_high">Vysoká kvalita</string>
+    <string name="pref_wallpaper_location">Umístění uložení tapety</string>
+    <string name="pref_language_header">Jazyk</string>
+    <string name="pref_others_header">Ostatní</string>
+    <string name="pref_others_reset_tutorial">Obnovit výukový program</string>
+    <string name="pref_others_reset_tutorial_reset">Obnovení výukového programu</string>
+    <string name="pref_options_default">Výchozí</string>
+    <!-- Permission -->
+    <string name="permission_storage_denied">Pro uložení tapety je zapotřebí oprávnění k úložišti</string>
+    <!-- Support Development -->
+    <string name="donation_success">Děkuji za příspěvek. Použiji jej pro dobrou věc.</string>
+    <!-- License -->
+    <string name="license_checking">Kontroluji licenci …</string>
+    <string name="license_check">Kontrola Licence</string>
+    <string name="license_check_success">Kontrola licence úspěšná, děkuji za stažení aplikace z Play Store.</string>
+    <string name="license_check_failed">Kontrola licence selhala, nestáhli jste tuto aplikaci z Play Store.
+Nebudete moct používat aplikaci.</string>
+    <string name="license_check_retry">Nelze zkontrolovat licenci, zkuste to prosím znovu za chvíli</string>
+    <!-- Search -->
+    <string name="search_result_empty">Nebyl nalezen žádný výsledek pro \"%s\"</string>
+    <!-- Crash Report -->
+    <string name="crash_report">Zpráva o selhání</string>
+    <string name="crash_report_message">Neuvěřitelné, aplikace %s selhala. Chcete-li pomoci vývojáři problém vyřešit, zvolte možnost \"Odeslat hlášení\" níže.</string>
+    <string name="crash_report_send">Odeslat hlášení</string>
+    <string name="email_client">Zvolte e-mailový klient</string>
+    <!-- Please don't modify this -->
+    <string name="about_dashboard">Wallpaper Board</string>
+    <string name="about_dashboard_dev">Wallpaper Board je open source balíček tapet, který je licencován pod Apache License 2.0 pro
+
+         Android dostupný na GitHubu a volný k použití. Vytvořen vývojářem Dani Mahardhika.</string>
+    <string name="about_dashboard_contributors">Přispěvatelé Wallpaper Board</string>
+    <string name="about_dashboard_translator">Překladatel Wallpaper Board</string>
+    <!-- Splash screen -->
+    <!-- DrawerToggle -->
+    <string name="txt_open">Otevřít</string>
+    <string name="txt_close">Zavřít</string>
+    <string name="menu_wallpaper_settings">Nastavení tapety</string>
+    <!-- Wallpapers -->
+    <string name="wallpaper_new_added">Nová tapeta</string>
+    <string name="wallpaper_download_exist">Tapeta s názvem %s již existuje, chcete ji nahradit?</string>
+    <string name="wallpaper_download_exist_replace">Nahradit</string>
+    <string name="wallpaper_download_exist_new">Vytvořit novou</string>
+    <string name="wallpaper_download_cancelled">Stahování tapety bylo zrušeno</string>
+    <string name="wallpaper_downloaded">Tapeta byla stažena do</string>
+    <string name="wallpaper_apply_crop">Pokud použijete tuto možnost, bude oříznutí tapety zakázáno</string>
+    <string name="wallpaper_settings_crop">Oříznutí tapety</string>
+    <string name="wallpaper_settings_crop_desc">Aktivujte oříznutí tapety. Tapeta bude oříznuta na základě aktuálního zobrazení náhledu tapety.
+
+        Stisknutím nebo dvojitým klepnutím přiblížíte tapetu.</string>
+    <string name="wallpaper_settings_lockscreen">Pozadí zamykací obrazovky</string>
+    <string name="wallpaper_settings_lockscreen_desc">Nastavte tapetu pozadí na domovské a zamykací obrazovce</string>
+    <string name="wallpaper_settings_lockscreen_not_available">Pozadí zamykací obrazovky je dostupné pouze v Android Nougat</string>
+    <string name="pref_wallpaper_location_desc">Zkuste nejdříve stáhnout alespoň jednu tapetu</string>
+    <string name="pref_others_colored_wallpaper_card">Barevné pozadí tapety</string>
+</resources>
