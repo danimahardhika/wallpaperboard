@@ -43,8 +43,6 @@ public abstract class Extras {
     public static final String EXTRA_TYPE = "type";
 
     public static final int TYPE_CONTRIBUTORS = 1;
-    public static final int TYPE_DASHBOARD_CONTRIBUTORS = 2;
-    public static final int TYPE_DASHBOARD_TRANSLATOR = 3;
 
     public static final int ID_CATEGORY_WALLPAPERS = 0;
     public static final int ID_WALLPAPER_SEARCH = 1;
