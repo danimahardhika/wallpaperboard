@@ -178,17 +178,17 @@
     <string name="email_client">Choose Email Client</string>
 
     <!-- Please don't modify this -->
-    <string name="about_dashboard">Wallpaper Board</string>
-    <string name="about_dashboard_dev">Wallpaper Board is open source wallpaper dashboard licensed under Apache License 2.0 for
+    <string name="about_dashboard">K Walls</string>
+    <string name="about_dashboard_dev">K Walls is open source wallpaper dashboard licensed under Apache License 2.0 for
         Android available at GitHub and free to use, developed by Dani Mahardhika.</string>
-    <string name="about_dashboard_contributors">Wallpaper Board Contributors</string>
-    <string name="about_dashboard_translator">Wallpaper Board Translator</string>
+    <string name="about_dashboard_contributors">K Walls Contributors</string>
+    <string name="about_dashboard_translator">K Walls Translator</string>
     <string name="about_dashboard_dev_google_plus_url">https://plus.google.com/u/1/+DaniMahardhika</string>
     <string name="about_dashboard_dev_github_url">https://github.com/danimahardhika</string>
     <string name="about_dashboard_dev_instagram_url">https://www.instagram.com/_u/danimahardhika112/</string>
 
     <!-- Splash screen -->
-    <string name="splash_screen_title">Wallpaper Board</string>
+    <!-- <string name="splash_screen_title">K Walls</string> -->
 
     <!-- DrawerToggle -->
     <string name="txt_open">Open</string>
