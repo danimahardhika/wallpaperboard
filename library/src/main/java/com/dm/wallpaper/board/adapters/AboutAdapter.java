@@ -234,12 +234,8 @@ public class AboutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         ImageView googlePlus;
         @BindView(R2.id.about_dev_instagram)
         ImageView instagram;
-        @BindView(R2.id.about_dashboard_licenses)
-        TextView licenses;
-        @BindView(R2.id.about_dashboard_contributors)
-        TextView contributors;
-        @BindView(R2.id.about_dashboard_translator)
-        TextView translator;
+
+
 
         FooterViewHolder(View itemView) {
             super(itemView);
@@ -263,29 +259,12 @@ public class AboutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             googlePlus.setOnClickListener(this);
             github.setOnClickListener(this);
             licenses.setOnClickListener(this);
-            contributors.setOnClickListener(this);
-            translator.setOnClickListener(this);
+
         }
 
         @Override
         public void onClick(View view) {
             int id = view.getId();
-            if (id == R.id.about_dashboard_licenses) {
-                LicensesFragment.showLicensesDialog(((AppCompatActivity) mContext).getSupportFragmentManager());
-                return;
-            }
-
-            if (id == R.id.about_dashboard_contributors) {
-                CreditsFragment.showCreditsDialog(((AppCompatActivity) mContext).getSupportFragmentManager(),
-                        Extras.TYPE_DASHBOARD_CONTRIBUTORS);
-                return;
-            }
-
-            if (id == R.id.about_dashboard_translator) {
-                CreditsFragment.showCreditsDialog(((AppCompatActivity) mContext).getSupportFragmentManager(),
-                        Extras.TYPE_DASHBOARD_TRANSLATOR);
-                return;
-            }
 
             Intent intent = null;
             if (id == R.id.about_dev_google_plus) {

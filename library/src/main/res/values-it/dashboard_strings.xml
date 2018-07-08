@@ -6,24 +6,40 @@
     <string name="navigation_view_settings">Impostazioni</string>
     <string name="navigation_view_about">Informazioni</string>
     <string name="navigation_view_donate">Supporta lo sviluppo</string>
+
     <string name="navigation_view_share">Condividi App</string>
     <string name="navigation_view_rate">Valuta e Recensisci</string>
+
     <!-- Share app -->
     <string name="share_app_subject">Yo! Dai un\'occhiata a %s</string>
     <string name="share_app_body">Controlla %1$s, questa app di sfondi è fantastica! %2$s</string>
+
     <!-- Menu -->
     <string name="menu_search">Cerca</string>
     <string name="menu_filter">Filtra</string>
     <string name="menu_save">Salva sul dispositivo</string>
-    <string name="menu_wallpaper_settings">Impostazioni Sfondi</string>
+
+    <string name="menu_wallpaper_crop">Taglia sfondo</string>
+    <string name="menu_apply_homescreen">Homescreen</string>
+    <string name="menu_apply_lockscreen">Lockscreen</string>
+    <string name="menu_apply_homescreen_lockscreen">Homescreen &amp; Lockscreen</string>
+
+    <string name="menu_sort">Ordina per</string>
+    <string name="menu_sort_latest">Nuovi</string>
+    <string name="menu_sort_oldest">Vecchi</string>
+    <string name="menu_sort_name">Nome</string>
+    <string name="menu_sort_random">Casuale</string>
+
     <!-- Dialog -->
     <string name="open">Apri</string>
     <string name="close">Chiudi</string>
     <string name="clear">Cancella</string>
     <string name="donate">Dona</string>
+    <string name="copy">Copia</string>
+
     <!-- Tap Intro -->
-    <string name="tap_intro_wallpapers_navigation">Navigation Drawer</string>
-    <string name="tap_intro_wallpapers_navigation_desc">Tappa qui o fai uno swipe dal lato sinistro dello schermo per aprire il drawer</string>
+    <string name="tap_intro_wallpapers_navigation">Menu</string>
+    <string name="tap_intro_wallpapers_navigation_desc">Tappa qui o fai uno swipe dal lato sinistro dello schermo per aprire il menu</string>
     <string name="tap_intro_wallpapers_search">Cerca</string>
     <string name="tap_intro_wallpapers_search_desc">Tappa qui per cercare gli sfondi</string>
     <string name="tap_intro_wallpapers_filter">Filtra sfondi</string>
@@ -38,53 +54,77 @@
     <string name="tap_intro_wallpaper_preview_settings">Impostazioni sfondo</string>
     <string name="tap_intro_wallpaper_preview_settings_desc">Tappa qui per aprire le impostazioni degli sfondi. 
 Puoi abilitare Imposta sfondo nella lockscreen su Android Nougat o abilitare il ritaglio dello sfondo.</string>
+
     <string name="tap_intro_wallpaper_preview_save">Salva sfondo</string>
     <string name="tap_intro_wallpaper_preview_save_desc">Tappa qui per scaricare e salvare lo sfondo sul tuo dispositivo, per usarlo più tardi</string>
     <string name="tap_intro_wallpaper_preview_apply">Applica sfondo</string>
     <string name="tap_intro_wallpaper_preview_apply_desc">Tappa qui per impostarlo come sfondo della homescreen</string>
+    <string name="tap_intro_wallpaper_preview_full">Sfondo con dimensioni originali</string>
+    <string name="tap_intro_wallpaper_preview_full_desc">Tappa qui per un anterprima dello sfondo con le dimensioni originali</string>
+
     <!-- Wallpapers -->
-    <string name="wallpaper_new_added">Nuovi Sfondi</string>
     <string name="wallpaper_filter">Filtra per Categoria</string>
+    <string name="wallpaper_already_downloaded">Sfondo già scaricato</string>
     <string name="wallpaper_downloading">Download sfondo …</string>
-    <string name="wallpaper_download_exist">Lo sfondo con nome %s esiste già, vuoi sostituirlo?</string>
-    <string name="wallpaper_download_exist_replace">Sostituisci</string>
-    <string name="wallpaper_download_exist_new">Crea Nuovo</string>
     <string name="wallpaper_download_failed">Impossibile scaricare lo sfondo</string>
-    <string name="wallpaper_download_cancelled">Download sfondo cancellato</string>
-    <string name="wallpaper_downloaded">Sfondo scaricato in</string>
+
     <string name="wallpaper_loading">Caricamento sfondo …</string>
     <string name="wallpaper_applying">Impostando lo sfondo …</string>
     <string name="wallpaper_applied">Sfondo applicato</string>
     <string name="wallpaper_apply_failed">Impossibile applicare lo sfondo</string>
     <string name="wallpaper_apply_cancelled">Applicazione sfondo cancellata</string>
-    <string name="connection_failed">Impossibile ottenere i dati dal server</string>
-    <string name="wallpaper_apply">Imposta come sfondo</string>
-    <string name="wallpaper_apply_crop">Il ritaglio dello sfondo sarà disabilitato se lo applichi da questa opzione</string>
-    <string name="wallpaper_settings_crop">Ritaglio Sfondo</string>
-    <string name="wallpaper_settings_crop_desc">Abilita Ritaglio Sfondo. Lo sfondo sarà ritagliato in base alla posizione dell\'anteprima sfondi.
-Esegui un pinch o un doppio tocco per zoommare lo sfondo.</string>
-    <string name="wallpaper_settings_lockscreen">Sfondo Lockscreen</string>
-    <string name="wallpaper_settings_lockscreen_desc">Applica Sfondo imposterà lo sfondo nella homescreen e nella lockscreen</string>
-    <string name="wallpaper_settings_lockscreen_not_available">Sfondo lockscreen è disponibile solo per Android Nougat</string>
-    <string name="wallpaper_favorite_added">%s aggiunto ai preferiti</string>
+
+     <string name="wallpaper_favorite_added">%s aggiunto ai preferiti</string>
     <string name="wallpaper_favorite_removed">%s rimosso dai preferiti</string>
+
+     <string name="connection_failed">Impossibile ottenere i dati dal server</string>
+    <string name="wallpapers_loader_failed">Impossibile controllare nuovi sfondi</string>
+
+    <string name="wallpaper_preview_full">Anteprima sfondo dimensioni originali</string>
+    <string name="wallpaper_apply">Imposta come sfondo</string>
+    <string name="wallpaper_save_to_device">Salva sfondo</string>
+
+    <string name="wallpapers_favorite_restored">Sfondi preferiti ripristinati</string>
+    
+     <!-- Wallpaper Tooltips -->
+    <string name="wallpaper_tooltip_preview">Stai vendo lo sfondo a bassa risoluzione, il che lo potrebbe rendere sfocato e pixelato.</string>
+    <string name="wallpaper_tooltip_preview_icon_tap">Tappa questa icona per vedere un anteprima dello sfondo con le dimensioni originali.</string>
+    <string name="wallpaper_tooltip_dont_show">Non mostrare di nuovo</string>
+    
+    <!-- Wallpaper Property -->
+    <string name="wallpaper_property_name">Nome: %s</string>
+    <string name="wallpaper_property_author">Autore: %s</string>
+    <string name="wallpaper_property_dimensions">Dimensioni: %s</string>
+    <string name="wallpaper_property_format">Formato: %s</string>
+    <string name="wallpaper_property_size">Grandezza: %s</string>
+    <string name="wallpaper_property_palette">Palette Colore</string>
+    <string name="wallpaper_property_color">Colore: %s</string>
+    <string name="wallpaper_property_category">Categoria</string>
+
     <!-- Muzei -->
-    <string name="minute">Minuti</string>
-    <string name="hour">Ore</string>
+     <string name="minute">Minuti</string>
+     <string name="hour">Ore</string>
+
     <string name="muzei_settings">Impostazioni Muzei</string>
     <string name="muzei_settings_save">Salva</string>
     <string name="muzei_settings_saved">Impostazioni Salvate</string>
-    <string name="muzei_refresh_duration">Tempo di aggiornamento</string>
-    <string name="muzei_refresh_duration_desc">Ogni</string>
+
+     <string name="muzei_refresh_duration">Tempo di aggiornamento</string>
+     <string name="muzei_refresh_duration_desc">Ogni</string>
+
     <string name="muzei_wifi_only">Aggiorna solo da WiFi</string>
     <string name="muzei_wifi_only_desc">Aggiorna gli sfondi solo se il dispositivo è connesso al wifi</string>
+
     <string name="muzei_category">Seleziona Categorie</string>
     <string name="muzei_category_desc">Carica gli sfondi solo dalle categorie selezionate</string>
+
     <!-- About -->
     <string name="about_contributors_title">Contributori</string>
     <string name="about_open_source_licenses">Licenze Open Source</string>
+
     <!-- InAppBilling -->
     <string name="billing_load_product_failed">Impossibile caricare gli acquisti InApp</string>
+
     <!-- Preferences -->
     <string name="pref_data_header">Dati &amp; Cache</string>
     <string name="pref_data_cache">Cancella Cache</string>
@@ -92,21 +132,31 @@ Esegui un pinch o un doppio tocco per zoommare lo sfondo.</string>
     <string name="pref_data_cache_size">Dimensione Cache: %s</string>
     <string name="pref_data_cache_cleared">Cache cancellata</string>
     <string name="pref_data_cache_clear_dialog">Vuoi davvero cancellare la cache?</string>
+
     <string name="pref_theme_header">Tema</string>
     <string name="pref_theme_dark">Tema Scuro</string>
     <string name="pref_theme_dark_desc">Cambia tema tra chiaro e scuro</string>
-    <string name="pref_wallpaper_header">Sfondo</string>
+
+     <string name="pref_wallpaper_header">Sfondo</string>
+    <string name="pref_wallpaper_high_quality_preview">Qualità anteprima sfondo</string>
+    <string name="pref_wallpaper_high_quality_preview_low">Bassa qualità</string>
+    <string name="pref_wallpaper_high_quality_preview_high">Alta qualità</string>
     <string name="pref_wallpaper_location">Percorso di salvataggio sfondi</string>
-    <string name="pref_wallpaper_location_desc">Prova a scaricare almeno uno sfondo</string>
+
     <string name="pref_language_header">Lingua</string>
+
     <string name="pref_others_header">Altro</string>
-    <string name="pref_others_colored_wallpaper_card">Scheda sfondi colorata</string>
-    <string name="pref_others_reset_tutorial">Resetta Tutorial</string>
-    <string name="pref_others_reset_tutorial_reset">Resetta Tutorial</string>
+     <string name="pref_others_reset_tutorial">Ripristina Tutorial</string>
+    <string name="pref_others_reset_tutorial_reset">Ripristina Tutorial</string>
+
+    <string name="pref_options_default">Default</string>
+   
     <!-- Permission -->
     <string name="permission_storage_denied">Autorizzazione Archiviazione richiesta per salvare gli sfondi</string>
-    <!-- Support Development -->
-    <string name="donation_success">Grazie per la donazione. La userò per lo sviluppo dell\'app.</string>
+
+     <!-- Support Development -->
+    <string name="donation_success">Grazie per la donazione. Verrà usata per lo sviluppo dell\'app.</string>
+
     <!-- License -->
     <string name="license_checking">Controllando la licenza …</string>
     <string name="license_check">Controlla Licenza</string>
@@ -114,21 +164,29 @@ Esegui un pinch o un doppio tocco per zoommare lo sfondo.</string>
     <string name="license_check_failed">Controllo della licenza fallito, non hai scaricato l\'applicazione dal Play Store.
 Non puoi usare l\'applicazione.</string>
     <string name="license_check_retry">Impossibile controllare la licenza, per favore riprova tra qualche istante</string>
+
     <!-- Search -->
     <string name="search_result_empty">Nessun risultato trovato per \"%s\"</string>
+
     <!-- Crash Report -->
     <string name="crash_report">Segnalazione Crash</string>
     <string name="crash_report_message">Sfortunatamente %s ha crashato. Scegli Invia Segnalazione per aiutare lo sviluppatore a risolvere il problema.</string>
     <string name="crash_report_send">Invia Segnalazione</string>
     <string name="email_client">Scegli Email Client</string>
+
     <!-- Please don't modify this -->
-    <string name="about_dashboard">Wallpaper Board</string>
-    <string name="about_dashboard_dev">Wallpaper Board è una dashboard di sfondi open source, con licenza Apache License 2.0 per
+    <string name="about_dashboard">K Walls</string>
+    <string name="about_dashboard_dev">K Walls è una dashboard di sfondi open source, con licenza Apache License 2.0 per
 Android disponibile su Github e gratis, sviluppata da Dani Mahardhika.</string>
     <string name="about_dashboard_contributors">Contributori Wallpaper Board</string>
     <string name="about_dashboard_translator">Traduttori Wallpaper Board</string>
     <string name="about_dashboard_dev_google_plus_url">https://plus.google.com/u/1/+DaniMahardhika</string>
     <string name="about_dashboard_dev_github_url">https://github.com/danimahardhika</string>
+    <string name="about_dashboard_dev_instagram_url">https://www.instagram.com/_u/danimahardhika112/</string>
+
+    <!-- Splash screen -->
+    <string name="splash_screen_title">Wallpaper Board</string>
+    
     <!-- DrawerToggle -->
     <string name="txt_open">Apri</string>
     <string name="txt_close">Chiudi</string>
