@@ -234,8 +234,6 @@ public class AboutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         ImageView googlePlus;
         @BindView(R2.id.about_dev_instagram)
         ImageView instagram;
-        @BindView(R2.id.about_dashboard_licenses)
-        TextView licenses;
 
 
         FooterViewHolder(View itemView) {
@@ -263,13 +261,7 @@ public class AboutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         }
 
-        @Override
-        public void onClick(View view) {
-            int id = view.getId();
-            if (id == R.id.about_dashboard_licenses) {
-                LicensesFragment.showLicensesDialog(((AppCompatActivity) mContext).getSupportFragmentManager());
-                return;
-            }
+
 
             Intent intent = null;
             if (id == R.id.about_dev_google_plus) {
