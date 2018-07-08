@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Navigation View -->
+    <string name="navigation_view_wallpapers">Achtergronden</string>
+    <string name="navigation_view_favorites">Favorieten</string>
+    <string name="navigation_view_settings">Instellingen</string>
+    <string name="navigation_view_about">Over</string>
+    <string name="navigation_view_donate">Ondersteun ontwikkeling</string>
+    <!-- Menu -->
+    <string name="menu_search">Zoek</string>
+    <string name="menu_filter">Filter</string>
+    <string name="menu_save">Opslaan op apparaat</string>
+    <string name="menu_wallpaper_settings">Achtergrond instellingen</string>
+    <!-- Dialog -->
+    <string name="open">Open</string>
+    <string name="close">Sluiten</string>
+    <string name="clear">Leegmaken</string>
+    <string name="donate">Doneer</string>
+    <!-- Tap Intro -->
+    <string name="tap_intro_wallpapers_navigation">Navigatie menu</string>
+    <string name="tap_intro_wallpapers_navigation_desc">Tik hier of veeg van de linkerkant van het scherm om de navigatiemenu te openen</string>
+    <string name="tap_intro_wallpapers_search">Zoeken</string>
+    <string name="tap_intro_wallpapers_search_desc">Klik hier om achtergrond te zoeken</string>
+    <string name="tap_intro_wallpapers_filter">Filter achtergrond</string>
+    <string name="tap_intro_wallpapers_filter_desc">Klik hier op achtergronden te filteren op categorie</string>
+    <string name="tap_intro_wallpapers_option">Achtergrond instellingen</string>
+    <string name="tap_intro_wallpapers_option_desc">Tik hier en houd hier vast om achtergrondopties weer te geven, %s pas achtergrond toe.</string>
+    <string name="tap_intro_wallpapers_option_desc_download">Download of</string>
+    <string name="tap_intro_wallpapers_preview">Bekijk achtergrond</string>
+    <string name="tap_intro_wallpapers_preview_desc">Tik hier om de volledige grootte van de achtergrond te bekijken</string>
+    <string name="tap_intro_wallpapers_favorite">Favorieten achtergronden</string>
+    <string name="tap_intro_wallpapers_favorite_desc">Tik hier om achtergrond als favoriet te markeren</string>
+    <string name="tap_intro_wallpaper_preview_settings">Achtergrond instellingen</string>
+    <string name="tap_intro_wallpaper_preview_settings_desc">Tik hier om achtergrond instellingen te openen.
+Schakel achtergrond instellen als vergrendelingsachtergrond op Android Nougat of schakel achtergrond bijsnijden in</string>
+    <string name="tap_intro_wallpaper_preview_save">Achtergrond opslaan</string>
+    <string name="tap_intro_wallpaper_preview_save_desc">Tik hier om de achtergrond te downloaden en op te slaan op je toestel, zodat je het later kunt gebruiken</string>
+    <string name="tap_intro_wallpaper_preview_apply">Achtergrond toepassen</string>
+    <string name="tap_intro_wallpaper_preview_apply_desc">Tik hier om de achtergrond in te stellen als thuisscherm achtergrond</string>
+    <!-- Wallpapers -->
+    <string name="wallpaper_new_added">Nieuwe achtergronden</string>
+    <string name="wallpaper_filter">Filter op categorie</string>
+    <string name="wallpaper_downloading">Achtergrond downloaden</string>
+    <string name="wallpaper_download_exist">Achtergrond met naam %s bestaat al, wil je het vervangen?</string>
+    <string name="wallpaper_download_exist_replace">Vervangen</string>
+    <string name="wallpaper_download_exist_new">Maak nieuwe</string>
+    <string name="wallpaper_download_failed">Achtergrond downloaden mislukt</string>
+    <string name="wallpaper_download_cancelled">Achtergrond downloaden geannuleerd</string>
+    <string name="wallpaper_downloaded">Achtergrond gedownload naar</string>
+    <string name="wallpaper_loading">Achtergrond laden …</string>
+    <string name="wallpaper_applying">Achtergrond toepassen …</string>
+    <string name="wallpaper_applied">Achtergrond toegepast</string>
+    <string name="wallpaper_apply_failed">Achtergrond toepassen mislukt</string>
+    <string name="wallpaper_apply_cancelled">Achtergrond toepassen geannuleerd</string>
+    <string name="connection_failed">Gegevens ophalen van server mislukt</string>
+    <string name="wallpaper_apply">Stel in als achtergrond</string>
+    <string name="wallpaper_apply_crop">Achtergrond bijsnijden zal worden uitgeschakeld als je via deze optie toepast</string>
+    <string name="wallpaper_settings_crop">Achtergrond bijsnijden</string>
+    <string name="wallpaper_settings_crop_desc">Achtergrond bijsnijden inschakelen. Achtergrond wordt bijgesneden op basis van de huidige weergave van het voorbeeld.
+Knip of dubbelklik om de achtergrond te vergroten</string>
+    <string name="wallpaper_settings_lockscreen">Vergrendelingsscherm achtergrond</string>
+    <string name="wallpaper_settings_lockscreen_desc">Toepassen zal de achtergrond toepassen op beide thuisscherm en vergrendelingsscherm</string>
+    <string name="wallpaper_settings_lockscreen_not_available">Vergrendelingsscherm achtergrond alleen beschikbaar op Android Nougat</string>
+    <string name="wallpaper_favorite_added">%s toegevoegd aan favorieten</string>
+    <string name="wallpaper_favorite_removed">%s verwijderd uit favorieten</string>
+    <!-- Muzei -->
+    <string name="minute">Minuut</string>
+    <string name="hour">Uur</string>
+    <string name="muzei_settings">Museum instellingen</string>
+    <string name="muzei_settings_save">Opslaan</string>
+    <string name="muzei_settings_saved">Instellingen opgeslagen</string>
+    <string name="muzei_refresh_duration">Vernieuwingsduur</string>
+    <string name="muzei_refresh_duration_desc">Allemaal</string>
+    <string name="muzei_wifi_only">Vernieuw alleen met Wifi</string>
+    <string name="muzei_wifi_only_desc">Achtergronden alleen laden als toestel is verbonden met Wifi</string>
+    <string name="muzei_category">Selecteer categorie</string>
+    <string name="muzei_category_desc">Laadt alleen achtergrond van de geselecteerde categorieën</string>
+    <!-- About -->
+    <string name="about_contributors_title">Medewerkers</string>
+    <string name="about_open_source_licenses">Open Source Licenties</string>
+    <!-- InAppBilling -->
+    <string name="billing_load_product_failed">Kan inApp aankoop-producten niet laden</string>
+    <!-- Preferences -->
+    <string name="pref_data_header">Data &amp; Tijdelijke bestanden</string>
+    <string name="pref_data_cache">Tijdelijk bestanden verwijderen</string>
+    <string name="pref_data_cache_desc">Verwijder aangemaakte tijdelijke bestanden van uw apparaat
+na het laden van miniaturen</string>
+    <string name="pref_data_cache_size">Tijdelijke bestanden opslag: %s</string>
+    <string name="pref_data_cache_cleared">Tijdelijke bestanden verwijderd</string>
+    <string name="pref_data_cache_clear_dialog">Weet je zeker dat je de tijdelijke bestanden wilt verwijderen?</string>
+    <string name="pref_theme_header">Thema</string>
+    <string name="pref_theme_dark">Donker thema</string>
+    <string name="pref_theme_dark_desc">Wissel tussen donker of licht thema</string>
+    <string name="pref_wallpaper_header">Achtergrond</string>
+    <string name="pref_wallpaper_location">Achtergrond opslag locatie</string>
+    <string name="pref_wallpaper_location_desc">Download op zijn minst een achtergrond</string>
+    <string name="pref_language_header">Taal</string>
+    <string name="pref_others_header">Andere</string>
+    <string name="pref_others_colored_wallpaper_card">Gekleurde achtergrond kaart</string>
+    <string name="pref_others_reset_tutorial">Reset intro</string>
+    <string name="pref_others_reset_tutorial_reset">Intro resetten</string>
+    <!-- Permission -->
+    <string name="permission_storage_denied">Opslagrechten nodig om de achtergrond op te slaan</string>
+    <!-- Support Development -->
+    <string name="donation_success">Bedankt voor de donatie. Ik zal het goed gebruiken.</string>
+    <!-- License -->
+    <string name="license_checking">Licentie controleren …</string>
+    <string name="license_check">Licentie controleren</string>
+    <string name="license_check_success">Licentie controle succesvol, bedankt voor het downloaden van de app via de Play Store.</string>
+    <string name="license_check_failed">Licentiecontrole mislukt, je hebt deze app niet van de Play Store.
+U kunt de app niet gebruiken</string>
+    <string name="license_check_retry">Kan de licentie niet controleren, probeer het over een paar minuten opnieuw</string>
+    <!-- Search -->
+    <string name="search_result_empty">Geen resultaten gevonden voor \"%s\"</string>
+    <!-- Crash Report -->
+    <string name="crash_report">Crash rapport</string>
+    <string name="crash_report_message">Helaas is %s gecrasht. Stuur hieronder een rapport om de ontwikkelaar te helpen het probleem oplossen.</string>
+    <string name="crash_report_send">Verstuur rapport</string>
+    <string name="email_client">Kies Email cliënt</string>
+    <!-- Please don't modify this -->
+    <string name="about_dashboard">Wallpaper Board</string>
+    <string name="about_dashboard_dev">Wallpaper Board is een dashboard met open source licentie dat is gelicentieerd onder Apache License 2.0 voor
+Android beschikbaar bij GitHub en gratis te gebruiken, ontwikkeld door Dani Mahardhika.</string>
+    <string name="about_dashboard_contributors">Wallpaper Board medewerkers</string>
+    <string name="about_dashboard_translator">Wallpaper Board vertaler</string>
+    <!-- DrawerToggle -->
+    <string name="txt_open">Openen</string>
+    <string name="txt_close">Sluiten</string>
+</resources>

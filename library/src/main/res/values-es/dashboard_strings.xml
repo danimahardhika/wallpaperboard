@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Navigation View -->
+    <string name="navigation_view_wallpapers">Fondos de Pantalla</string>
+    <string name="navigation_view_favorites">Favoritos</string>
+    <string name="navigation_view_settings">Ajustes</string>
+    <string name="navigation_view_about">Acerca de</string>
+    <string name="navigation_view_donate">Apoyar al Desarrollo</string>
+    <string name="navigation_view_share">Compartir la aplicación</string>
+    <string name="navigation_view_rate">Valorar y comentar</string>
+    <!-- Share app -->
+    <string name="share_app_subject">Hey! Echa un vistazo a %s</string>
+    <string name="share_app_body">Mira %1$s, esta aplicación de fondos de pantalla es realmente genial! %2$s</string>
+    <!-- Menu -->
+    <string name="menu_search">Buscar</string>
+    <string name="menu_filter">Filtro</string>
+    <string name="menu_save">Guardar al dispositivo</string>
+    <string name="menu_wallpaper_crop">Recortar fondo de pantalla</string>
+    <string name="menu_apply_homescreen">Pantalla de inicio</string>
+    <string name="menu_apply_lockscreen">Pantalla de bloqueo</string>
+    <string name="menu_sort">Ordenar por</string>
+    <string name="menu_sort_latest">Último</string>
+    <string name="menu_sort_oldest">Más antiguo</string>
+    <string name="menu_sort_name">Nombre</string>
+    <string name="menu_sort_random">Aleatorio</string>
+    <!-- Dialog -->
+    <string name="open">Abrir</string>
+    <string name="close">Cerrar</string>
+    <string name="clear">Limpiar</string>
+    <string name="donate">Donar</string>
+    <string name="copy">Copiar</string>
+    <!-- Tap Intro -->
+    <string name="tap_intro_wallpapers_navigation">Cajón de Navegación</string>
+    <string name="tap_intro_wallpapers_navigation_desc">Toque aquí o deslice desde el borde izquierdo de la pantalla para abrir el cajón de navegación</string>
+    <string name="tap_intro_wallpapers_search">Buscar</string>
+    <string name="tap_intro_wallpapers_search_desc">Click aquí para buscar wallpapers</string>
+    <string name="tap_intro_wallpapers_filter">Filtrar fondos de pantalla</string>
+    <string name="tap_intro_wallpapers_filter_desc">Toque aquí para filtrar los fondos de pantalla por categoría</string>
+    <string name="tap_intro_wallpapers_option">Opciones de Fondo de Pantalla</string>
+    <string name="tap_intro_wallpapers_option_desc">Toque y mantenga presionado aquí para mostrar opciones del papel tapiz, %s aplicar fondo de pantalla.</string>
+    <string name="tap_intro_wallpapers_option_desc_download">descargar o</string>
+    <string name="tap_intro_wallpapers_preview">Vista previa del fondo de pantalla</string>
+    <string name="tap_intro_wallpapers_preview_desc">Pulse aquí para obtener una vista previa del tamaño completo del fondo de pantalla</string>
+    <string name="tap_intro_wallpapers_favorite">Fondos de Pantalla Favoritos</string>
+    <string name="tap_intro_wallpapers_favorite_desc">Toque aquí para marcar el fondo de pantalla como favorito</string>
+    <string name="tap_intro_wallpaper_preview_settings">Ajustes de wallpaper</string>
+    <string name="tap_intro_wallpaper_preview_settings_desc">Presiona aquí para abrir la configuración del fondo de pantalla.
+Active el papel tapiz de conjunto como fondo de pantalla de bloqueo en Android Nougat o habilite el recorte de papel tapiz.</string>
+    <string name="tap_intro_wallpaper_preview_save">Guardar fondo de pantalla</string>
+    <string name="tap_intro_wallpaper_preview_save_desc">Toca aquí para descargar y guardar el fondo de pantalla en tu dispositivo para que puedas usarlo más tarde</string>
+    <string name="tap_intro_wallpaper_preview_apply">Aplicar fondo de pantalla</string>
+    <string name="tap_intro_wallpaper_preview_apply_desc">Toca aquí para aplicar el fondo como fondo de pantalla de inicio</string>
+    <string name="tap_intro_wallpaper_preview_full">Fondo de pantalla con tamaño original</string>
+    <string name="tap_intro_wallpaper_preview_full_desc">Toca aquí para previsualizar el fondo de pantalla con tamaño original</string>
+    <!-- Wallpapers -->
+    <string name="wallpaper_filter">Filtrar por Categoría</string>
+    <string name="wallpaper_already_downloaded">Fondo de pantalla ya descargado</string>
+    <string name="wallpaper_downloading">Descargando fondo de pantalla …</string>
+    <string name="wallpaper_download_failed">No se puede descargar el fondo de pantalla</string>
+    <string name="wallpaper_loading">Cargando fondo de pantalla …</string>
+    <string name="wallpaper_applying">Aplicando fondo de pantalla …</string>
+    <string name="wallpaper_applied">Fondo de pantalla aplicado</string>
+    <string name="wallpaper_apply_failed">No se puede aplicar el fondo de pantalla</string>
+    <string name="wallpaper_apply_cancelled">Aplicación del fondo de pantalla cancelada</string>
+    <string name="wallpaper_favorite_added">%s agregado a Favoritos</string>
+    <string name="wallpaper_favorite_removed">%s eliminado de favoritos</string>
+    <string name="connection_failed">Imposible obtener datos del servidor</string>
+    <string name="wallpapers_loader_failed">No es posible comprobar nuevos fondos de pantalla</string>
+    <string name="wallpaper_preview_full">Previsualizar fondo de pantalla con tamaño original</string>
+    <string name="wallpaper_apply">Aplicar fondo de pantalla</string>
+    <string name="wallpaper_save_to_device">Guardar fondo de pantalla</string>
+    <!-- Wallpaper Tooltips -->
+    <string name="wallpaper_tooltip_preview">Actualmente estas viendo el fondo de pantalla con una resolución menor,
+que puede parecer borrosa y pixelada.</string>
+    <string name="wallpaper_tooltip_preview_icon_tap">Toca este icono para ver el fondo de pantalla con el tamaño original</string>
+    <string name="wallpaper_tooltip_dont_show">No mostrar de nuevo</string>
+    <!-- Wallpaper Property -->
+    <string name="wallpaper_property_name">Nombre: %s</string>
+    <string name="wallpaper_property_author">Autor: %s</string>
+    <string name="wallpaper_property_dimensions">Dimensiones: %s</string>
+    <string name="wallpaper_property_format">Formato: %s</string>
+    <string name="wallpaper_property_size">Tamaño: %s</string>
+    <string name="wallpaper_property_palette">Paleta de colores</string>
+    <string name="wallpaper_property_color">Color: %s</string>
+    <string name="wallpaper_property_category">Categoría</string>
+    <!-- Muzei -->
+    <string name="minute">Minuto</string>
+    <string name="hour">Hora</string>
+    <string name="muzei_settings">Ajustes de Muzei</string>
+    <string name="muzei_settings_save">Guardar</string>
+    <string name="muzei_settings_saved">Ajustes Guardados</string>
+    <string name="muzei_refresh_duration">Duración de Actualización</string>
+    <string name="muzei_refresh_duration_desc">Cada</string>
+    <string name="muzei_wifi_only">Actualizar solo desde WiFi</string>
+    <string name="muzei_wifi_only_desc">Cargar el fondo de pantalla solo si el dispositivo esta conectado mediante WiFi</string>
+    <string name="muzei_category">Seleccionar categorías</string>
+    <string name="muzei_category_desc">Cargar fondos de pantalla solo de las categorías seleccionadas</string>
+    <!-- About -->
+    <string name="about_contributors_title">Colaboradores</string>
+    <string name="about_open_source_licenses">Licencias de código abierto</string>
+    <!-- InAppBilling -->
+    <string name="billing_load_product_failed">Imposible cargar las compras de productos dentro de la aplicación</string>
+    <!-- Preferences -->
+    <string name="pref_data_header">Almacenamiento y Caché</string>
+    <string name="pref_data_cache">Limpiar Caché</string>
+    <string name="pref_data_cache_desc">Borrar caché de imágenes de tu almacenamiento, creado después de cargar las miniaturas de fondos de pantalla en la nube</string>
+    <string name="pref_data_cache_size">Tamaño de Caché: %s</string>
+    <string name="pref_data_cache_cleared">Caché Limpiado</string>
+    <string name="pref_data_cache_clear_dialog">¿Realmente deseas limpiar el Caché?</string>
+    <string name="pref_theme_header">Tema</string>
+    <string name="pref_theme_dark">Tema Oscuro</string>
+    <string name="pref_theme_dark_desc">Cambiar entre tema oscuro o claro</string>
+    <string name="pref_wallpaper_header">Fondos de Pantalla</string>
+    <string name="pref_wallpaper_high_quality_preview">Calidad de vista previa del fondo de pantalla</string>
+    <string name="pref_wallpaper_high_quality_preview_low">Baja calidad</string>
+    <string name="pref_wallpaper_high_quality_preview_high">Alta calidad</string>
+    <string name="pref_wallpaper_location">Ubicación de guardado de los Fondos de Pantalla</string>
+    <string name="pref_language_header">Idioma</string>
+    <string name="pref_others_header">Otros</string>
+    <string name="pref_others_reset_tutorial">Restablecer tutorial</string>
+    <string name="pref_others_reset_tutorial_reset">Tutorial restablecido</string>
+    <!-- Permission -->
+    <string name="permission_storage_denied">Permisos de Almacenamiento necesarios para guardar los fondos de pantalla</string>
+    <!-- Support Development -->
+    <string name="donation_success">Gracias por realizar una donación. La usare lo mejor posible.</string>
+    <!-- License -->
+    <string name="license_checking">Verificando licencia …</string>
+    <string name="license_check">Licencia verificada</string>
+    <string name="license_check_success">Licencia verificada, gracias por descargar la aplicación de la Play Store.</string>
+    <string name="license_check_failed">Error al verificar la licencia, no descargaste esta aplicación de la Play Store.
+No podras usar esta aplicación.</string>
+    <string name="license_check_retry">No es posible verificar la licencia, intenta de nuevo en un momento</string>
+    <!-- Search -->
+    <string name="search_result_empty">Sin resultados para \"%s\"</string>
+    <!-- Crash Report -->
+    <string name="crash_report">Reporte de fallo</string>
+    <string name="crash_report_message">Desafortunadamente %s a fallado. Elige enviar reporte debajo para ayudar al desarrollador a reparar el problema.</string>
+    <string name="crash_report_send">Enviar reporte</string>
+    <string name="email_client">Elegir Correo Electrónico</string>
+    <!-- Please don't modify this -->
+    <string name="about_dashboard">Wallpaper Board</string>
+    <string name="about_dashboard_dev">Wallpaper Board es de código abierto bajo licencia Apache 2.0, para Android, disponible en GitHub para uso gratuito, desarrollado por Dani Mahardhika.</string>
+    <string name="about_dashboard_contributors">Colaboradores de Wallpaper Board</string>
+    <string name="about_dashboard_translator">Traductores de Wallpaper Board</string>
+    <!-- Splash screen -->
+    <!-- DrawerToggle -->
+    <string name="txt_open">Abrir</string>
+    <string name="txt_close">Cerrar</string>
+    <string name="menu_wallpaper_settings">Ajustes del fondo de pantalla</string>
+    <!-- Wallpapers -->
+    <string name="wallpaper_new_added">Nuevo fondo de pantalla</string>
+    <string name="wallpaper_download_exist">Fondo de pantalla con nombre %s ya existe, quieres reemplazarlo?</string>
+    <string name="wallpaper_download_exist_replace">Reemplazar</string>
+    <string name="wallpaper_download_exist_new">Crear nuevo</string>
+    <string name="wallpaper_download_cancelled">Descarga del fondo cancelada</string>
+    <string name="wallpaper_downloaded">Fondo de pantalla descargado en</string>
+    <string name="wallpaper_apply_crop">Recorte de fondo de pantalla se deshabilitará si aplicas desde esta opción</string>
+    <string name="wallpaper_settings_crop">Recorte de Fondo de pantalla</string>
+    <string name="wallpaper_settings_crop_desc">Habilitar recorte de fondo de pantalla. El fondo de pantalla se recortará basándose en la vista actual de la vista previa del fondo de pantalla.
+Pellizque o toque dos veces para ampliar el fondo de pantalla.</string>
+    <string name="wallpaper_settings_lockscreen">Fondo de pantalla de bloqueo</string>
+    <string name="wallpaper_settings_lockscreen_desc">Aplicar establecerá fondo de pantalla como fondo de inicio y pantalla de bloqueo</string>
+    <string name="wallpaper_settings_lockscreen_not_available">Fondo de pantalla de bloqueo solo disponible en Android Nougat</string>
+    <string name="pref_wallpaper_location_desc">Intenta descargar un Fondo de Pantalla primero</string>
+    <string name="pref_others_colored_wallpaper_card">Tarjeta de wallpapers coloridos</string>
+</resources>

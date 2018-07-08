@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Navigation View -->
+    <string name="navigation_view_wallpapers">Wallpapers</string>
+    <string name="navigation_view_favorites">Favorites</string>
+    <string name="navigation_view_settings">Pengaturan</string>
+    <string name="navigation_view_about">Tentang</string>
+    <string name="navigation_view_donate">Dukung Pengembangan</string>
+    <string name="navigation_view_share">Bagikan</string>
+    <string name="navigation_view_rate">Berikan Penilaian</string>
+    <!-- Share app -->
+    <string name="share_app_subject">Yo! Lihat %s</string>
+    <string name="share_app_body">Lihat %1$s, aplikasi wallpaper ini sangat keren! %2$s</string>
+    <!-- Menu -->
+    <string name="menu_search">Pencarian</string>
+    <string name="menu_filter">Filter</string>
+    <string name="menu_save">Simpan ke Perangkat</string>
+    <string name="menu_wallpaper_crop">Potong Wallpaper</string>
+    <string name="menu_apply_homescreen">Tampilan depan</string>
+    <string name="menu_apply_lockscreen">Layar kunci</string>
+    <string name="menu_apply_homescreen_lockscreen">Tampilan depan &amp; layar kunci</string>
+    <string name="menu_sort">Urut berdasarkan</string>
+    <string name="menu_sort_latest">Terbaru</string>
+    <string name="menu_sort_oldest">Tertua</string>
+    <string name="menu_sort_name">Nama</string>
+    <string name="menu_sort_random">Acak</string>
+    <!-- Dialog -->
+    <string name="open">Buka</string>
+    <string name="close">Tutup</string>
+    <string name="clear">Bersihkan</string>
+    <string name="donate">Donasi</string>
+    <string name="copy">Salin</string>
+    <!-- Tap Intro -->
+    <string name="tap_intro_wallpapers_navigation">Navigation drawer</string>
+    <string name="tap_intro_wallpapers_navigation_desc">Sentuh di sini atau geser dari tepi kiri layar untuk membuka navigation drawer</string>
+    <string name="tap_intro_wallpapers_search">Pencarian</string>
+    <string name="tap_intro_wallpapers_search_desc">Sentuh di sini untuk melakukan pencarian wallpaper</string>
+    <string name="tap_intro_wallpapers_filter">Filter wallpaper</string>
+    <string name="tap_intro_wallpapers_filter_desc">Sentuh di sini untuk melakukan filter wallpaper berdasarkan kategori</string>
+    <string name="tap_intro_wallpapers_option">Pilihan wallpaper</string>
+    <string name="tap_intro_wallpapers_option_desc">Sentuh dan tahan di sini untuk menampilkan pilihan wallpaper, %s menerapkan wallpaper.</string>
+    <string name="tap_intro_wallpapers_option_desc_download">mengunduh atau</string>
+    <string name="tap_intro_wallpapers_preview">Pratinjau wallpaper</string>
+    <string name="tap_intro_wallpapers_preview_desc">Sentuh di sini untuk melihat pratinjau dari ukuran asli wallpaper</string>
+    <string name="tap_intro_wallpapers_favorite">Wallpaper favorit</string>
+    <string name="tap_intro_wallpapers_favorite_desc">Sentuh di sini untuk menandai wallpaper sebagai favorit</string>
+    <string name="tap_intro_wallpaper_preview_settings">Pengaturan wallpaper</string>
+    <string name="tap_intro_wallpaper_preview_settings_desc">Sentuh di sini untuk membuka pengaturan wallpaper. Mengaktifkan tetapkan wallpaper sebagai latar belakang layar kunci pada Android Nougat atau mengaktifkan potong wallpaper.</string>
+    <string name="tap_intro_wallpaper_preview_save">Simpan wallpaper</string>
+    <string name="tap_intro_wallpaper_preview_save_desc">Sentuh di sini untuk mengunduh dan menyimpan wallpaper ke penyimpanan perangkat</string>
+    <string name="tap_intro_wallpaper_preview_apply">Terapkan wallpaper</string>
+    <string name="tap_intro_wallpaper_preview_apply_desc">Sentuh di sini untuk menetapkan wallpaper sebagai latar belakang tampilan depan</string>
+    <string name="tap_intro_wallpaper_preview_full">Wallpaper dengan ukuran asli</string>
+    <string name="tap_intro_wallpaper_preview_full_desc">Sentuh di sini untuk melakukan pratinjau wallpaper dengan ukuran asli</string>
+    <!-- Wallpapers -->
+    <string name="wallpaper_filter">Filter berdasarkan Kategori</string>
+    <string name="wallpaper_already_downloaded">Wallpaper telah diunduh</string>
+    <string name="wallpaper_downloading">Mengunduh wallpaper …</string>
+    <string name="wallpaper_download_failed">Tidak dapat mengunduh wallpaper</string>
+    <string name="wallpaper_loading">Memuat wallpaper …</string>
+    <string name="wallpaper_applying">Menerapkan wallpaper …</string>
+    <string name="wallpaper_applied">Wallpaper diterapkan</string>
+    <string name="wallpaper_apply_failed">Tidak dapat menerapkan wallpaper</string>
+    <string name="wallpaper_apply_cancelled">Menerapkan wallpaper dibatalkan</string>
+    <string name="wallpaper_favorite_added">%s ditambahkan ke favorit</string>
+    <string name="wallpaper_favorite_removed">%s telah dihapus dari favorit</string>
+    <string name="connection_failed">Tidak dapat mengambil data dari server</string>
+    <string name="wallpapers_loader_failed">Tidak dapat memeriksa wallpaper baru</string>
+    <string name="wallpaper_preview_full">Pratinjau wallpaper dengan ukuran asli</string>
+    <string name="wallpaper_apply">Terapkan Wallpaper</string>
+    <string name="wallpaper_save_to_device">Simpan wallpaper</string>
+    <!-- Wallpaper Tooltips -->
+    <string name="wallpaper_tooltip_preview">Saat ini Anda melihat pratinjau wallpaper dengan resolusi lebih kecil, yang mungkin terlihat buram dan bergerigi.</string>
+    <string name="wallpaper_tooltip_preview_icon_tap">Sentuh icon ini untuk melakukan pratinjau wallpaper dengan ukuran asli</string>
+    <string name="wallpaper_tooltip_dont_show">Jangan tampilkan lagi</string>
+    <!-- Wallpaper Property -->
+    <string name="wallpaper_property_name">Nama: %s</string>
+    <string name="wallpaper_property_dimensions">Resolusi: %s</string>
+    <string name="wallpaper_property_size">Ukuran: %s</string>
+    <string name="wallpaper_property_palette">Palet Warna</string>
+    <string name="wallpaper_property_color">Warna: %s</string>
+    <string name="wallpaper_property_category">Kategori</string>
+    <!-- Muzei -->
+    <string name="minute">Menit</string>
+    <string name="hour">Jam</string>
+    <string name="muzei_settings">Pengaturan Muzei</string>
+    <string name="muzei_settings_save">Simpan</string>
+    <string name="muzei_settings_saved">Pengaturan Disimpan</string>
+    <string name="muzei_refresh_duration">Durasi Refresh</string>
+    <string name="muzei_refresh_duration_desc">Tiap</string>
+    <string name="muzei_wifi_only">Refresh hanya dari Wifi</string>
+    <string name="muzei_wifi_only_desc">Memuat wallpaper hanya jika perangkat terhubung  ke wifi</string>
+    <string name="muzei_category">Pilih Kategori</string>
+    <string name="muzei_category_desc">Memuat wallpaper hanya dari kategori yang dipilih</string>
+    <!-- About -->
+    <string name="about_contributors_title">Kontributor</string>
+    <string name="about_open_source_licenses">Lisensi Open Source</string>
+    <!-- InAppBilling -->
+    <string name="billing_load_product_failed">Tidak dapat memuat produk InApp Purchase</string>
+    <!-- Preferences -->
+    <string name="pref_data_header">Data &amp; Cache</string>
+    <string name="pref_data_cache">Hapus Cache</string>
+    <string name="pref_data_cache_desc">Hapus cache gambar dari penyimpanan yang dibuat setelah memuat thumbnail wallpaper dari awan</string>
+    <string name="pref_data_cache_size">Ukuran Cache: %s</string>
+    <string name="pref_data_cache_cleared">Cache telah dibersihkan</string>
+    <string name="pref_data_cache_clear_dialog">Apakah anda yakin ingin membersihkan cache?</string>
+    <string name="pref_theme_header">Tema</string>
+    <string name="pref_theme_dark">Tema Gelap</string>
+    <string name="pref_theme_dark_desc">Beralih dari tema gelap atau terang</string>
+    <string name="pref_wallpaper_header">Wallpaper</string>
+    <string name="pref_wallpaper_high_quality_preview">Kualitas Pratinjau Wallpaper</string>
+    <string name="pref_wallpaper_high_quality_preview_low">Kualitas Rendah</string>
+    <string name="pref_wallpaper_high_quality_preview_high">Kualitas Tinggi</string>
+    <string name="pref_wallpaper_location">Lokasi Simpan Wallpaper</string>
+    <string name="pref_language_header">Bahasa</string>
+    <string name="pref_others_header">Lainnya</string>
+    <string name="pref_others_reset_tutorial">Reset Tutorial</string>
+    <string name="pref_others_reset_tutorial_reset">Tutorial Direset</string>
+    <!-- Permission -->
+    <string name="permission_storage_denied">Izin penyimpanan dibutuhkan untuk menyimpan wallpaper</string>
+    <!-- Support Development -->
+    <string name="donation_success">Terima kasih telah memberikan donasi. Saya akan menggunakannya dengan baik.</string>
+    <!-- License -->
+    <string name="license_checking">Memeriksa lisensi …</string>
+    <string name="license_check">Pemeriksaan Lisensi</string>
+    <string name="license_check_success">Pemeriksaan lisensi berhasil, terima kasih telah mengunduh aplikasi ini dari Play Store.</string>
+    <string name="license_check_failed">Pemeriksaan lisensi gagal, anda tidak mengunduh aplikasi ini dari Play Store.
+Anda tidak dapat menggunakan aplikasi ini.</string>
+    <string name="license_check_retry">Tidak dapat memeriksa lisensi, cobalah beberapa saat lagi.</string>
+    <!-- Search -->
+    <string name="search_result_empty">Tidak ditemukan hasil untuk pencarian \"%s\"</string>
+    <!-- Crash Report -->
+    <string name="crash_report">Laporan Masalah</string>
+    <string name="crash_report_message">Sayangnya %s telah berhenti. Pilih kirim laporan di bawah ini untuk membantu pengembang memperbaiki masalahnya.</string>
+    <string name="crash_report_send">Kirim Laporan</string>
+    <string name="email_client">Pilih Email Client</string>
+    <!-- Please don't modify this -->
+    <string name="about_dashboard">Wallpaper Board</string>
+    <string name="about_dashboard_dev">Wallpaper Board adalah open source wallpaper dasbor yang berlisensi dibawah Apache License 2.0 untuk Android tersedia pada GitHub dan gratis, dikembangkan oleh Dani Mahardhika.</string>
+    <string name="about_dashboard_contributors">Kontributor Wallpaper Board</string>
+    <string name="about_dashboard_translator">Penerjemah Wallpaper Board</string>
+    <!-- Splash screen -->
+    <!-- DrawerToggle -->
+    <string name="txt_open">Buka</string>
+    <string name="txt_close">Tutup</string>
+    <string name="menu_wallpaper_settings">Pengaturan Wallpaper</string>
+    <!-- Wallpapers -->
+    <string name="wallpaper_new_added">Wallpaper Baru</string>
+    <string name="wallpaper_download_exist">Wallpaper dengan nama %s telah ada, apakah anda ingin menggantinya?</string>
+    <string name="wallpaper_download_exist_replace">Ganti</string>
+    <string name="wallpaper_download_exist_new">Buat Baru</string>
+    <string name="wallpaper_download_cancelled">Unduh wallpaper dibatalkan</string>
+    <string name="wallpaper_downloaded">Wallpaper telah diunduh ke</string>
+    <string name="wallpaper_apply_crop">Potong wallpaper akan dinonaktifkan jika anda menerapkan wallpaper dari pilihan ini</string>
+    <string name="wallpaper_settings_crop">Potong Wallpaper</string>
+    <string name="wallpaper_settings_crop_desc">Mengaktifkan potong wallpaper. Wallpaper akan dipotong berdasarkan tampilan pada layar dari pratinjau wallpaper. Cubit atau ketuk dua kali untuk memperbesar atau memperkecil wallpaper.</string>
+    <string name="wallpaper_settings_lockscreen">Latar Belakang Layar Kunci</string>
+    <string name="wallpaper_settings_lockscreen_desc">Terapkan wallpaper akan menetapkan wallpaper sebagai latar belakang dari layar depan dan layar kunci</string>
+    <string name="wallpaper_settings_lockscreen_not_available">Latar belakang layar kunci hanya terdapat pada Android Nougat</string>
+    <string name="pref_wallpaper_location_desc">Cobalah mengunduh setidaknya satu wallpaper terlebih dahulu</string>
+    <string name="pref_others_colored_wallpaper_card">Kartu Wallpaper Berwarna</string>
+</resources>

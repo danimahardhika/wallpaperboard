@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="main_background" format="color"/>
+    <attr name="card_background" format="color"/>
+    <attr name="ripple_color" format="color"/>
+
+    <attr name="search_bar" format="color"/>
+    <attr name="search_bar_icon" format="color"/>
+
+    <attr name="tab_icon" format="color"/>
+    <attr name="tab_icon_selected" format="color"/>
+
+    <attr name="toolbar_icon" format="color"/>
+
+    <declare-styleable name="HeaderView">
+        <attr name="widthRatio" format="integer"/>
+        <attr name="heightRatio" format="integer"/>
+    </declare-styleable>
+
+</resources>

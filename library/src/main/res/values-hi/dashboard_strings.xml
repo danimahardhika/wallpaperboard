@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Navigation View -->
+    <string name="navigation_view_wallpapers">वॉलपेपर्स</string>
+    <string name="navigation_view_favorites">पसंदीदा</string>
+    <string name="navigation_view_settings">सेटिंग्स</string>
+    <string name="navigation_view_about">ऐप के बारे में</string>
+    <string name="navigation_view_donate">ऐप विकास मे सहयोग करें</string>
+    <string name="navigation_view_share">ऐप शेयर करें</string>
+    <string name="navigation_view_rate">रेट एवम रिव्यू</string>
+    <!-- Share app -->
+    <string name="share_app_subject">यो! चेक आउट %s</string>
+    <string name="share_app_body">चेक आउट %1$s, यह वॉलपेपर ऐप वास्तव में अच्छा है! %2$s</string>
+    <!-- Menu -->
+    <string name="menu_search">खोज</string>
+    <string name="menu_filter">फिल्टर</string>
+    <string name="menu_save">फोन मे सुरक्षित करें</string>
+    <string name="menu_wallpaper_crop">क्रौप वालपेपर</string>
+    <string name="menu_apply_homescreen">होमस्क्रीन</string>
+    <string name="menu_apply_lockscreen">लॉक स्क्रीन</string>
+    <string name="menu_sort">इसके अनुसार क्रमबद्ध करें</string>
+    <string name="menu_sort_latest">नवीनतम</string>
+    <string name="menu_sort_oldest">सबसे पुराना</string>
+    <string name="menu_sort_name">नाम</string>
+    <string name="menu_sort_random">रेंडम</string>
+    <!-- Dialog -->
+    <string name="open">खोलें</string>
+    <string name="close">बंद करें</string>
+    <string name="clear">साफ़ करें</string>
+    <string name="donate">दान करें</string>
+    <string name="copy">प्रतिलिपि</string>
+    <!-- Tap Intro -->
+    <string name="tap_intro_wallpapers_navigation">नॅविगेशन ड्रावर</string>
+    <string name="tap_intro_wallpapers_navigation_desc">नेविगेशन ड्रॉवर खोलने के लिए यहां टैप करें या स्क्रीन के बायीं किनारे से स्वाइप करें</string>
+    <string name="tap_intro_wallpapers_search">खोजें</string>
+    <string name="tap_intro_wallpapers_search_desc">वॉलपेपर खोजने के लिए यहाँ तैप करें</string>
+    <string name="tap_intro_wallpapers_filter">फिल्टर वॉलपेपर</string>
+    <string name="tap_intro_wallpapers_filter_desc">श्रेणी के अनुसार वॉलपेपर फ़िल्टर करने के लिए यहां टैप करें</string>
+    <string name="tap_intro_wallpapers_option">वॉलपेपर विकल्प</string>
+    <string name="tap_intro_wallpapers_option_desc">वॉलपेपर विकल्पों को देखने के लिए यहां टैप करके रखें, %s एप्लाय वॉलपेपर</string>
+    <string name="tap_intro_wallpapers_option_desc_download">डाउनलोड अथवा</string>
+    <string name="tap_intro_wallpapers_preview">वॉलपेपर को प्रीव्यू करें</string>
+    <string name="tap_intro_wallpapers_preview_desc">वॉलपेपर का पूर्ण आकार में देखने के लिए यहां टैप करें</string>
+    <string name="tap_intro_wallpapers_favorite">पसंदीदा वॉलपेपर</string>
+    <string name="tap_intro_wallpapers_favorite_desc">वॉलपेपर पसंदीदा के रूप में चिह्नित करने के लिए यहाँ टैप करें</string>
+    <string name="tap_intro_wallpaper_preview_settings">वॉलपेपर सेटिंग्स</string>
+    <string name="tap_intro_wallpaper_preview_settings_desc">वॉलपेपर सेटिंग खोलने के लिए यहां टैप करें.
+एंड्रॉयड नौगत पर लॉकस्क्रीन बैकग्राउंड के रूप में वॉलपेपर सेट करें या वॉलपेपर क्रॉप को एनेबल करें।</string>
+    <string name="tap_intro_wallpaper_preview_save">वॉलपेपर सुरक्षित करें</string>
+    <string name="tap_intro_wallpaper_preview_save_desc">वॉलपेपर को अपने डिवाइस पर डाउनलोड और सुरक्षित करने के लिए यहां टैप करें ताकि आप इसे बाद में उपयोग कर सकें</string>
+    <string name="tap_intro_wallpaper_preview_apply">वॉलपेपर लागू करें</string>
+    <string name="tap_intro_wallpaper_preview_apply_desc">होमस्क्रीन पृष्ठभूमि के रूप में वॉलपेपर सेट करने के लिए यहां टैप करें</string>
+    <string name="tap_intro_wallpaper_preview_full">मूल आकार के वॉलपेपर</string>
+    <string name="tap_intro_wallpaper_preview_full_desc">मूल आकार के साथ वॉलपेपर का पूर्वावलोकन करने के लिए यहां टैप करें</string>
+    <!-- Wallpapers -->
+    <string name="wallpaper_filter">श्रेणी के आधार पर फ़िल्टर करें</string>
+    <string name="wallpaper_already_downloaded">वॉलपेपर पहले से डाउनलोड हैं</string>
+    <string name="wallpaper_downloading">वॉलपेपर डाउनलोड किया जा रहा है …</string>
+    <string name="wallpaper_download_failed">वॉलपेपर डाउनलोड करने मे असमर्थ हैं</string>
+    <string name="wallpaper_loading">वॉलपेपर लोड किया जा रहा है</string>
+    <string name="wallpaper_applying">वॉलपेपर एप्लाय किया जा रहा है</string>
+    <string name="wallpaper_applied">वालपेपर एप्लाय कर दिया गया है</string>
+    <string name="wallpaper_apply_failed">वालपेपर एप्लाय करने मे असमर्थ हैं</string>
+    <string name="wallpaper_apply_cancelled">वालपेपर एप्लाय रद्द कर दिया गया है</string>
+    <string name="wallpaper_favorite_added">%s पसंद मे जोड़ दिया गया है</string>
+    <string name="wallpaper_favorite_removed">%s पसंद से हटाया</string>
+    <string name="connection_failed">सर्वर से डेटा प्राप्त करने में असमर्थ हैं</string>
+    <string name="wallpapers_loader_failed">नए वॉलपेपर को चेक करने में असमर्थ</string>
+    <string name="wallpaper_preview_full">मूल आकार के साथ वॉलपेपर का पूर्वावलोकन करें</string>
+    <string name="wallpaper_apply">वॉलपेपर लागु करें</string>
+    <string name="wallpaper_save_to_device">वॉलपेपर सेव करें</string>
+    <!-- Wallpaper Tooltips -->
+    <string name="wallpaper_tooltip_preview">आप वर्तमान में छोटे रिसोल्यूशन के साथ वॉलपेपर का पूर्वावलोकन कर रहे हैं,
+जो धुँधली और पिक्सलेटेड दिख सकता है</string>
+    <string name="wallpaper_tooltip_preview_icon_tap">मूल आकार के साथ वॉलपेपर का पूर्वावलोकन करने के लिए इस आइकन को टैप करें</string>
+    <string name="wallpaper_tooltip_dont_show">फिर से मत दिखाओ</string>
+    <!-- Wallpaper Property -->
+    <string name="wallpaper_property_name">नाम: %s</string>
+    <string name="wallpaper_property_author">रचयिता: %s</string>
+    <string name="wallpaper_property_dimensions">आयाम: %s</string>
+    <string name="wallpaper_property_format">स्वरूप: %s</string>
+    <string name="wallpaper_property_size">आकार: %s</string>
+    <string name="wallpaper_property_palette">रंगों के प्रकार</string>
+    <string name="wallpaper_property_color">रंग: %s</string>
+    <string name="wallpaper_property_category">वर्ग</string>
+    <!-- Muzei -->
+    <string name="minute">मिनट</string>
+    <string name="hour">घंटा</string>
+    <string name="muzei_settings">मुज़ेई सेटिंग्स</string>
+    <string name="muzei_settings_save">सुरक्षित करें</string>
+    <string name="muzei_settings_saved">सेटिंग्स सुरक्षित कर दी गयी हैं</string>
+    <string name="muzei_refresh_duration">रिफ्रेस अवधि</string>
+    <string name="muzei_refresh_duration_desc">प्रत्येक</string>
+    <string name="muzei_wifi_only">सिर्फ़ वाईफाई पर रिफ्रेश करें</string>
+    <string name="muzei_wifi_only_desc">वॉलपेपर तब ही लोड करें जब फोन वाईफ़ाई से जुड़ा हो</string>
+    <string name="muzei_category">श्रेणियाँ चुनें</string>
+    <string name="muzei_category_desc">वॉलपेपर सिर्फ़ चुनी हुई श्रेणियों से लोड करें</string>
+    <!-- About -->
+    <string name="about_contributors_title">योगदान कर्ता</string>
+    <string name="about_open_source_licenses">ओपन सोर्स लाइसेन्स</string>
+    <!-- InAppBilling -->
+    <string name="billing_load_product_failed">इन ऐप उत्पादों को लोड करने मे असमर्थ हैं</string>
+    <!-- Preferences -->
+    <string name="pref_data_header">डेटा और कैश</string>
+    <string name="pref_data_cache">कैश हटाएँ</string>
+    <string name="pref_data_cache_desc">क्लाउड वॉलपेपर थंबनेल्स लोड करने के बाद इमेज कैश को स्टोरेज से हटाएँ</string>
+    <string name="pref_data_cache_size">कैश मात्रा: %s</string>
+    <string name="pref_data_cache_cleared">कैश साफ कर दी गयी है</string>
+    <string name="pref_data_cache_clear_dialog">क्या आप कैश साफ करना चाहते हैं</string>
+    <string name="pref_theme_header">थीम</string>
+    <string name="pref_theme_dark">गहरे रंग थीम</string>
+    <string name="pref_theme_dark_desc">गहरे रंग और लाइट थीम के बीच स्विच करें</string>
+    <string name="pref_wallpaper_header">वॉलपेपर</string>
+    <string name="pref_wallpaper_high_quality_preview">वॉलपेपर पूर्वावलोकन गुणवत्ता</string>
+    <string name="pref_wallpaper_high_quality_preview_low">कम गुणवत्ता</string>
+    <string name="pref_wallpaper_high_quality_preview_high">उच्च गुणवत्ता</string>
+    <string name="pref_wallpaper_location">वॉलपेपर सुरक्षित करने की जगह</string>
+    <string name="pref_language_header">भाषा</string>
+    <string name="pref_others_header">अन्य</string>
+    <string name="pref_others_reset_tutorial">ट्यूटोरियल रीसेट करें</string>
+    <string name="pref_others_reset_tutorial_reset">ट्यूटोरियल रीसेट करें</string>
+    <!-- Permission -->
+    <string name="permission_storage_denied">वॉलपेपर को सुरक्षित करने के लिए स्टोरेज पर्मिशन की आवश्यक्ता है</string>
+    <!-- Support Development -->
+    <string name="donation_success">डोनेट करने के लिए धन्यवाद. में इसे ऐप के विकास के लिए उपयोग करूँगा</string>
+    <!-- License -->
+    <string name="license_checking">लाइसेंस को चैक किया जा रहा है …</string>
+    <string name="license_check">लाइसेंस चैक</string>
+    <string name="license_check_success">लाइसेंस चैक सफल रहा, ऐप को प्ले स्टोर से डाउनलोड करने के लिए धन्यवाद.</string>
+    <string name="license_check_failed">लाइसेंस चैक विफल रहा, आपने ये ऐप प्ले स्टोर से डाउनलोड नहीं करा है. आप इस ऐप को इस्तमाल नही कर पाएँगे</string>
+    <string name="license_check_retry">हम इस समय लाइसेन्स चैक नही कर पाए हैं, कृप्या थोड़ी देर बाद फिर प्रयास करें</string>
+    <!-- Search -->
+    <string name="search_result_empty">\"%s\" के लिए कोई परिणाम नही मिला है</string>
+    <!-- Crash Report -->
+    <string name="crash_report">क्रैश विवरण</string>
+    <string name="crash_report_message">दुर्भाग्य से %s क्रैश हो गया है. डेवलपर समस्या को ठीक करने में सहायता के लिए नीचे विवरण भेजें चुनें।</string>
+    <string name="crash_report_send">विवरणी भेजो</string>
+    <string name="email_client">ई-मेल क्लाइंट का चयन करें</string>
+    <!-- Please don't modify this -->
+    <string name="about_dashboard">वॉलपेपर बोर्ड</string>
+    <string name="about_dashboard_dev">"वॉलपेपर बोर्ड एक ओपन सोर्स वॉलपेपर डैशबोअर्ड है जो की एंड्रॉयड के लिए अपाचे अनुज्ञापित 2.0 के अंतर्गत अनुज्ञापित है. ये गिटहब पर उपयोग के लिए मुफ़्त मे उपलब्ध है जो की दानी महरधिका द्वारा विकसित किया गया है. "</string>
+    <string name="about_dashboard_contributors">वॉलपेपर पटल योगदानकर्ता</string>
+    <string name="about_dashboard_translator">वॉलपेपर पटल अनुवादक</string>
+    <string name="about_dashboard_dev_google_plus_url">https://plus.google.com/u/1/+DaniMahardhika</string>
+    <string name="about_dashboard_dev_github_url">https://github.com/danimahardhika</string>
+    <!-- Splash screen -->
+    <string name="splash_screen_title">वॉलपेपर बोर्ड</string>
+    <!-- DrawerToggle -->
+    <string name="txt_open">खोलें</string>
+    <string name="txt_close">बंद करें</string>
+    <string name="menu_wallpaper_settings">वॉलपेपर सेटिंग्स</string>
+    <!-- Wallpapers -->
+    <string name="wallpaper_new_added">नया वॉलपेपर</string>
+    <string name="wallpaper_download_exist">%s नाम के साथ वॉलपेपर पहले से ही मौजूद है, क्या आप इसे बदलना चाहते हैं?</string>
+    <string name="wallpaper_download_exist_replace">बदलें</string>
+    <string name="wallpaper_download_exist_new">नया बनाएँ</string>
+    <string name="wallpaper_download_cancelled">वॉलपेपर डाउनलोड रद्द  कर दिया गया है</string>
+    <string name="wallpaper_downloaded">वालपेपर डाउनलोड किया गया है</string>
+    <string name="wallpaper_apply_crop">यदि आप इस विकल्प से एप्लाय करते हैं तो वॉलपेपर क्रॉप अक्षम हो जाएगा</string>
+    <string name="wallpaper_settings_crop">वॉलपेपर क्रॉप</string>
+    <string name="wallpaper_settings_crop_desc">वॉलपेपर क्रॉप एनेबल करें. वॉलपेपर वर्तमान दृश्य के आधार पर क्रॉप हो जाएगा.
+वॉलपेपर को ज़ूम करने के लिए पिंच या डबल तैप करें</string>
+    <string name="wallpaper_settings_lockscreen">लॉक स्क्रीन बैकग्राउंड</string>
+    <string name="wallpaper_settings_lockscreen_desc">एप्लाय वॉलपेपर को होम स्क्रीन और लॉक स्क्रीन दोनो के बैकग्राउंड के रूप मे लागू कर देगा</string>
+    <string name="wallpaper_settings_lockscreen_not_available">लॉक स्क्रीन का बैकग्राउंड सिर्फ़ एंड्रॉयड नौगत मे उपलब्ध है</string>
+    <string name="pref_wallpaper_location_desc">कम से कम पहले एक वॉलपेपर डाउनलोड करने का प्रयास करें</string>
+    <string name="pref_others_colored_wallpaper_card">रंगीन वॉलपेपर कार्ड</string>
+    <string name="about_dashboard_dev_google_plus_title">गूगल प्लस</string>
+    <string name="about_dashboard_dev_github_title">गिटहब</string>
+</resources>

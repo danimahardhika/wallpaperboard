@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="languages_name">
+        <item>English</item>
+        <item>English (United Kingdom)</item>
+        <item>Bahasa Indonesia</item>
+        <item>Bengali</item>
+        <item>Czech</item>
+        <item>Dutch</item>
+        <item>French</item>
+        <item>German</item>
+        <item>Hindi</item>
+        <item>Italian</item>
+        <item>Japanese</item>
+        <item>Korean</item>
+        <item>Malayalam</item>
+        <item>Polish</item>
+        <item>Portuguese</item>
+        <item>Russian</item>
+        <item>Spanish</item>
+        <item>Turkish</item>
+        <item>Urdu</item>
+    </string-array>
+
+    <string-array name="languages_code">
+        <item>en_US</item>
+        <item>en_GB</item>
+        <item>in_ID</item>
+        <item>bn_IN</item>
+        <item>cs_CZ</item>
+        <item>nl_NL</item>
+        <item>fr_FR</item>
+        <item>de_DE</item>
+        <item>hi_IN</item>
+        <item>it_IT</item>
+        <item>ja_JP</item>
+        <item>ko_KR</item>
+        <item>ml_IN</item>
+        <item>pl_PL</item>
+        <item>pt_BR</item>
+        <item>ru_RU</item>
+        <item>es_ES</item>
+        <item>tr_TR</item>
+        <item>ur_PK</item>
+    </string-array>
+
+</resources>

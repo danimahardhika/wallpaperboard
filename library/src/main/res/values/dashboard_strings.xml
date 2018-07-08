@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Navigation View -->
+    <string name="navigation_view_wallpapers">Wallpapers</string>
+    <string name="navigation_view_favorites">Favorites</string>
+    <string name="navigation_view_settings">Settings</string>
+    <string name="navigation_view_about">About</string>
+    <string name="navigation_view_donate">Support Development</string>
+
+    <string name="navigation_view_share">Share App</string>
+    <string name="navigation_view_rate">Rate &amp; Review</string>
+
+    <!-- Share app -->
+    <string name="share_app_subject">Yo! Check out %s</string>
+    <string name="share_app_body">Check out %1$s, this wallpaper app is really cool! %2$s</string>
+
+    <!-- Menu -->
+    <string name="menu_search">Search</string>
+    <string name="menu_filter">Filter</string>
+    <string name="menu_save">Save to Device</string>
+
+    <string name="menu_wallpaper_crop">Crop Wallpaper</string>
+    <string name="menu_apply_homescreen">Homescreen</string>
+    <string name="menu_apply_lockscreen">Lockscreen</string>
+    <string name="menu_apply_homescreen_lockscreen">Homescreen &amp; Lockscreen</string>
+
+    <string name="menu_sort">Sort by</string>
+    <string name="menu_sort_latest">Latest</string>
+    <string name="menu_sort_oldest">Oldest</string>
+    <string name="menu_sort_name">Name</string>
+    <string name="menu_sort_random">Random</string>
+
+    <!-- Dialog -->
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="clear">Clear</string>
+    <string name="donate">Donate</string>
+    <string name="copy">Copy</string>
+
+    <!-- Tap Intro -->
+    <string name="tap_intro_wallpapers_navigation">Navigation drawer</string>
+    <string name="tap_intro_wallpapers_navigation_desc">Tap here or swipe from left edge of the screen to open navigation drawer</string>
+    <string name="tap_intro_wallpapers_search">Search</string>
+    <string name="tap_intro_wallpapers_search_desc">Tap here to search wallpaper</string>
+    <string name="tap_intro_wallpapers_filter">Filter wallpaper</string>
+    <string name="tap_intro_wallpapers_filter_desc">Tap here to filter wallpaper by category</string>
+    <string name="tap_intro_wallpapers_option">Wallpaper options</string>
+    <string name="tap_intro_wallpapers_option_desc">Tap and hold here to show wallpaper options, %s apply wallpaper.</string>
+    <string name="tap_intro_wallpapers_option_desc_download">download or</string>
+    <string name="tap_intro_wallpapers_preview">Preview wallpaper</string>
+    <string name="tap_intro_wallpapers_preview_desc">Tap here to preview full size of the wallpaper</string>
+    <string name="tap_intro_wallpapers_favorite">Favorite wallpaper</string>
+    <string name="tap_intro_wallpapers_favorite_desc">Tap here to mark wallpaper as favorite</string>
+    <string name="tap_intro_wallpaper_preview_settings">Wallpaper settings</string>
+    <string name="tap_intro_wallpaper_preview_settings_desc">Tap here to open wallpaper settings.
+        Enable set wallpaper as lockscreen background on Android Nougat or enable wallpaper crop.</string>
+
+    <string name="tap_intro_wallpaper_preview_save">Save wallpaper</string>
+    <string name="tap_intro_wallpaper_preview_save_desc">Tap here to download and save wallpaper to your device so you can use it later</string>
+    <string name="tap_intro_wallpaper_preview_apply">Apply wallpaper</string>
+    <string name="tap_intro_wallpaper_preview_apply_desc">Tap here to set wallpaper as homescreen background</string>
+    <string name="tap_intro_wallpaper_preview_full">Wallpaper with original size</string>
+    <string name="tap_intro_wallpaper_preview_full_desc">Tap here to preview the wallpaper with original size</string>
+
+    <!-- Wallpapers -->
+    <string name="wallpaper_filter">Filter by Category</string>
+    <string name="wallpaper_already_downloaded">Wallpaper already downloaded</string>
+    <string name="wallpaper_downloading">Downloading wallpaper …</string>
+    <string name="wallpaper_download_failed">Unable to download wallpaper</string>
+
+    <string name="wallpaper_loading">Loading wallpaper …</string>
+    <string name="wallpaper_applying">Applying wallpaper …</string>
+    <string name="wallpaper_applied">Wallpaper applied</string>
+    <string name="wallpaper_apply_failed">Unable to apply wallpaper</string>
+    <string name="wallpaper_apply_cancelled">Wallpaper apply cancelled</string>
+
+    <string name="wallpaper_favorite_added">%s added to favorite</string>
+    <string name="wallpaper_favorite_removed">%s removed from favorite</string>
+
+    <string name="connection_failed">Unable to fetch data from server</string>
+    <string name="wallpapers_loader_failed">Unable to check new wallpapers</string>
+
+    <string name="wallpaper_preview_full">Preview wallpaper with original size</string>
+    <string name="wallpaper_apply">Apply wallpaper</string>
+    <string name="wallpaper_save_to_device">Save wallpaper</string>
+
+    <string name="wallpapers_favorite_restored">Favorite wallpapers restored</string>
+
+    <!-- Wallpaper Tooltips -->
+    <string name="wallpaper_tooltip_preview">You are currently previewing wallpaper with smaller resolution,
+        which may looks blurry and pixelated.</string>
+    <string name="wallpaper_tooltip_preview_icon_tap">Tap this icon to previews wallpaper with original size</string>
+    <string name="wallpaper_tooltip_dont_show">Don\'t show again</string>
+    
+    <!-- Wallpaper Property -->
+    <string name="wallpaper_property_name">Name: %s</string>
+    <string name="wallpaper_property_author">Author: %s</string>
+    <string name="wallpaper_property_dimensions">Dimensions: %s</string>
+    <string name="wallpaper_property_format">Format: %s</string>
+    <string name="wallpaper_property_size">Size: %s</string>
+    <string name="wallpaper_property_palette">Color Palette</string>
+    <string name="wallpaper_property_color">Color: %s</string>
+    <string name="wallpaper_property_category">Category</string>
+
+    <!-- Muzei -->
+    <string name="minute">Minute</string>
+    <string name="hour">Hour</string>
+
+    <string name="muzei_settings">Muzei Settings</string>
+    <string name="muzei_settings_save">Save</string>
+    <string name="muzei_settings_saved">Settings Saved</string>
+
+    <string name="muzei_refresh_duration">Refresh Duration</string>
+    <string name="muzei_refresh_duration_desc">Every</string>
+
+    <string name="muzei_wifi_only">Refresh from Wifi Only</string>
+    <string name="muzei_wifi_only_desc">Load wallpaper only if device connected to wifi</string>
+
+    <string name="muzei_category">Select Categories</string>
+    <string name="muzei_category_desc">Load wallpaper only from selected categories</string>
+
+    <!-- About -->
+    <string name="about_contributors_title">Contributors</string>
+    <string name="about_open_source_licenses">Open Source Licenses</string>
+
+    <!-- InAppBilling -->
+    <string name="billing_load_product_failed">Unable to load InApp Purchase products</string>
+
+    <!-- Preferences -->
+    <string name="pref_data_header">Data &amp; Cache</string>
+    <string name="pref_data_cache">Clear Cache</string>
+    <string name="pref_data_cache_desc">Remove image cache from your storage created
+        after loading cloud wallpaper thumbnails</string>
+    <string name="pref_data_cache_size">Cache Size: %s</string>
+    <string name="pref_data_cache_cleared">Cache Cleared</string>
+    <string name="pref_data_cache_clear_dialog">Do you really want to clear cache?</string>
+
+    <string name="pref_theme_header">Theme</string>
+    <string name="pref_theme_dark">Dark Theme</string>
+    <string name="pref_theme_dark_desc">Switch between dark or light theme</string>
+
+    <string name="pref_wallpaper_header">Wallpaper</string>
+    <string name="pref_wallpaper_high_quality_preview">Wallpaper Preview Quality</string>
+    <string name="pref_wallpaper_high_quality_preview_low">Low Quality</string>
+    <string name="pref_wallpaper_high_quality_preview_high">High Quality</string>
+    <string name="pref_wallpaper_location">Wallpaper Save Location</string>
+
+    <string name="pref_language_header">Language</string>
+
+    <string name="pref_others_header">Others</string>
+    <string name="pref_others_reset_tutorial">Reset Tutorial</string>
+    <string name="pref_others_reset_tutorial_reset">Tutorial Reset</string>
+
+    <string name="pref_options_default">Default</string>
+
+    <!-- Permission -->
+    <string name="permission_storage_denied">Storage permission needed to save wallpaper</string>
+
+    <!-- Support Development -->
+    <string name="donation_success">Thank you for making a donation. I will use it for good.</string>
+
+    <!-- License -->
+    <string name="license_checking">Checking license …</string>
+    <string name="license_check">License Check</string>
+    <string name="license_check_success">License check success, thank you for downloading the app from Play Store.</string>
+    <string name="license_check_failed">License check failed, you didn\'t download this app from Play Store.
+        You will not able to use the app.</string>
+    <string name="license_check_retry">Unable to check license, please try again in a few moments</string>
+
+    <!-- Search -->
+    <string name="search_result_empty">No result found for \"%s\"</string>
+
+    <!-- Crash Report -->
+    <string name="crash_report">Crash Report</string>
+    <string name="crash_report_message">Unfortunately %s has crashed. Choose send report below to help developer fix the issue.</string>
+    <string name="crash_report_send">Send Report</string>
+    <string name="email_client">Choose Email Client</string>
+
+    <!-- Please don't modify this -->
+    <string name="about_dashboard">Wallpaper Board</string>
+    <string name="about_dashboard_dev">Wallpaper Board is open source wallpaper dashboard licensed under Apache License 2.0 for
+        Android available at GitHub and free to use, developed by Dani Mahardhika.</string>
+    <string name="about_dashboard_contributors">Wallpaper Board Contributors</string>
+    <string name="about_dashboard_translator">Wallpaper Board Translator</string>
+    <string name="about_dashboard_dev_google_plus_url">https://plus.google.com/u/1/+DaniMahardhika</string>
+    <string name="about_dashboard_dev_github_url">https://github.com/danimahardhika</string>
+    <string name="about_dashboard_dev_instagram_url">https://www.instagram.com/_u/danimahardhika112/</string>
+
+    <!-- Splash screen -->
+    <string name="splash_screen_title">Wallpaper Board</string>
+
+    <!-- DrawerToggle -->
+    <string name="txt_open">Open</string>
+    <string name="txt_close">Close</string>
+
+</resources>
