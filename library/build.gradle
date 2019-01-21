@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.jakewharton.butterknife'
 apply plugin: 'com.github.dcendents.android-maven'
 
@@ -33,13 +32,11 @@ buildscript {
 
     dependencies {
         classpath 'com.jakewharton:butterknife-gradle-plugin:9.0.0-SNAPSHOT'
-        classpath 'me.tatarka:gradle-retrolambda:3.7.0'
     }
 }
 
 android {
     compileSdkVersion rootProject.ext.CompileSdk
-    buildToolsVersion rootProject.ext.BuildTools
 
     defaultConfig {
         minSdkVersion rootProject.ext.MinSdk
@@ -74,46 +71,44 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:1.10.19'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:1.10.19'
 
-    retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.5.1'
-    compile 'com.github.danimahardhika.candybar-library:PreLollipopTransitions:3.1.2'
+    implementation 'com.github.danimahardhika.candybar-library:PreLollipopTransitions:3.1.2'
 
-    compile "com.android.support:appcompat-v7:$rootProject.ext.SupportLibrary"
-    compile "com.android.support:recyclerview-v7:$rootProject.ext.SupportLibrary"
-    compile "com.android.support:cardview-v7:$rootProject.ext.SupportLibrary"
-    compile "com.android.support:design:$rootProject.ext.SupportLibrary"
-    compile "com.android.support:palette-v7:$rootProject.ext.SupportLibrary"
+    implementation "com.android.support:appcompat-v7:$rootProject.ext.SupportLibrary"
+    implementation "com.android.support:recyclerview-v7:$rootProject.ext.SupportLibrary"
+    implementation "com.android.support:cardview-v7:$rootProject.ext.SupportLibrary"
+    implementation "com.android.support:design:$rootProject.ext.SupportLibrary"
+    implementation "com.android.support:palette-v7:$rootProject.ext.SupportLibrary"
 
-    compile 'com.bluelinelabs:logansquare:1.3.7'
+    implementation 'com.bluelinelabs:logansquare:1.3.7'
     annotationProcessor 'com.bluelinelabs:logansquare-compiler:1.3.7'
-    compile 'com.jakewharton:butterknife:9.0.0-SNAPSHOT'
+    implementation 'com.jakewharton:butterknife:9.0.0-SNAPSHOT'
     annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-SNAPSHOT'
 
-    compile 'com.squareup.okhttp3:okhttp:3.9.1'
+    implementation 'com.squareup.okhttp3:okhttp:3.9.1'
 
-    compile group: 'cz.msebera.android', name: 'httpclient', version: '4.4.1.1'
-    compile 'uk.co.chrisjenx:calligraphy:2.3.0'
-    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
-    compile 'com.afollestad.material-dialogs:core:0.9.5.0'
-    compile 'com.mikhaellopez:circularimageview:3.0.2'
-    compile 'com.anjlab.android.iab.v3:library:1.0.44'
-    compile 'com.github.chrisbanes:PhotoView:2.1.3'
-    compile 'com.google.android.apps.muzei:muzei-api:2.0'
-    compile 'org.sufficientlysecure:html-textview:3.5'
-    compile 'com.github.KeepSafe:TapTargetView:1.9.1'
-    compile 'com.sothree.slidinguppanel:library:3.3.1'
-    compile 'me.zhanghai.android.materialprogressbar:library:1.4.2'
+    implementation group: 'cz.msebera.android', name: 'httpclient', version: '4.4.1.1'
+    implementation 'uk.co.chrisjenx:calligraphy:2.3.0'
+    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+    implementation 'com.afollestad.material-dialogs:core:0.9.5.0'
+    implementation 'com.mikhaellopez:circularimageview:3.0.2'
+    implementation 'com.anjlab.android.iab.v3:library:1.0.44'
+    implementation 'com.github.chrisbanes:PhotoView:2.1.3'
+    implementation 'com.google.android.apps.muzei:muzei-api:2.0'
+    implementation 'org.sufficientlysecure:html-textview:3.5'
+    implementation 'com.github.KeepSafe:TapTargetView:1.9.1'
+    implementation 'com.sothree.slidinguppanel:library:3.3.1'
+    implementation 'me.zhanghai.android.materialprogressbar:library:1.4.2'
 
-    compile 'com.github.danimahardhika:cafebar:1.3.2'
+    implementation 'com.github.danimahardhika:cafebar:1.3.2'
     implementation('com.github.danimahardhika.android-helpers:core:-SNAPSHOT') {
         changing = true
     }
-    compile 'com.github.danimahardhika.android-helpers:animation:0.1.0'
-    compile 'com.github.danimahardhika.android-helpers:license:0.1.0'
-    compile 'com.github.danimahardhika.android-helpers:permission:0.1.0'
+    implementation 'com.github.danimahardhika.android-helpers:animation:0.1.0'
+    implementation 'com.github.danimahardhika.android-helpers:license:0.1.0'
+    implementation 'com.github.danimahardhika.android-helpers:permission:0.1.0'
 }
 
 configurations.all {
